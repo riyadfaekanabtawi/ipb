@@ -11,7 +11,7 @@
 
 @interface Services : NSObject
 
-+(void)Loginwith:(NSDate *)username andPassword:(NSDate *)password andHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
++(void)Loginwith:(NSString *)username andPassword:(NSString *)password andHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
 
 @end

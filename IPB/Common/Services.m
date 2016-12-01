@@ -11,27 +11,53 @@
 @implementation Services
 
 
-+(void)Loginwith:(NSDate *)username andPassword:(NSDate *)password andHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
-
-
-    NSDictionary *p = @{@"day" : username,@"time" : password};
++(void)Loginwith:(NSString *)username andPassword:(NSString *)password andHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+    NSDictionary *p;
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"token_push"]){
+    p = @{@"email" : username,@"mobile_provider":@"ios",@"password" : password,@"device_token":[[NSUserDefaults standardUserDefaults] objectForKey:@"token_push"]};
+    }else{
+    
+    p = @{@"email" : username,@"password" : password,@"device_token":@"0",@"mobile_provider":@"ios"};
+    }
+    
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.securityPolicy.allowInvalidCertificates = YES;
     
     
-    [manager GET:@"" parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
+    
+    
+    [manager POST:[NSString stringWithFormat:@"%@user/login",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
      
  
      
      
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
      
-        if ([[responseObject objectForKey:@"Status"] isEqualToString:@"OK"]){
-            handler(@"YES");
+        
+        
+        if ([[responseObject objectForKey:@"Result"] isEqualToString:@"Error"]){
+            
+            if ([[responseObject objectForKey:@"Description"] isEqualToString:@"Email does not match password"]){
+            
+                        handler(@"Email does not match password");
+            
+            }else{
+             
+                            handler(@"We could not find any users with that email.");
+            
+            
+            }
+            
+            
+
         }else{
             
-            handler(@"NO");
+            
+            User *user = [[User alloc] initWithDictionary:responseObject];
+            
+            
+            handler(user);
         }
         
      
