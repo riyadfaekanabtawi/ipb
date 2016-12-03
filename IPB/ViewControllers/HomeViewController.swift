@@ -10,6 +10,8 @@ import UIKit
 
 class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuViewControllerDelegate {
 
+    
+    @IBOutlet var titleViewLabel: UILabel!
     @IBOutlet var blockView: UIView!
     @IBOutlet var firstWebView: UIWebView!
     var revealController:SWRevealViewController!
@@ -17,6 +19,8 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         super.viewDidLoad()
         self.setNeedsStatusBarAppearanceUpdate()
         
+        
+        self.titleViewLabel.font = UIFont(name: FONT_BOLD, size: self.titleViewLabel.font.pointSize)
         self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.anabtatec-mobile.com/plants_graph")! as URL) as URLRequest)
            self.blockView.alpha = 0
         self.slideMenuSetUp()
@@ -180,6 +184,12 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         if option == "estilos"{
             
             
+        }
+        
+        
+        if option == "pendingcuts"{
+            
+            self.performSegue(withIdentifier: option, sender: self)
         }
         
     }

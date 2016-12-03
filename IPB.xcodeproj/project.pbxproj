@@ -14,6 +14,15 @@
 		EB5258691DEE675D004A0DA8 /* icon_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5258671DEE675D004A0DA8 /* icon_menu.png */; };
 		EB52586A1DEE675D004A0DA8 /* icon_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5258681DEE675D004A0DA8 /* icon_menu@2x.png */; };
 		EB52586E1DEE7447004A0DA8 /* Planta.m in Sources */ = {isa = PBXBuildFile; fileRef = EB52586D1DEE7447004A0DA8 /* Planta.m */; };
+		EB52591C1DF25C62004A0DA8 /* menu_icon_corte in Resources */ = {isa = PBXBuildFile; fileRef = EB52591B1DF25C62004A0DA8 /* menu_icon_corte */; };
+		EB52591E1DF26074004A0DA8 /* CutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB52591D1DF26074004A0DA8 /* CutsViewController.swift */; };
+		EB5259211DF2612E004A0DA8 /* PendingCut.m in Sources */ = {isa = PBXBuildFile; fileRef = EB5259201DF2612E004A0DA8 /* PendingCut.m */; };
+		EB5259241DF26B56004A0DA8 /* PendingCutCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5259231DF26B56004A0DA8 /* PendingCutCollectionViewCell.swift */; };
+		EB5259281DF283A9004A0DA8 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5259251DF283A9004A0DA8 /* back.png */; };
+		EB5259291DF283A9004A0DA8 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5259261DF283A9004A0DA8 /* back@2x.png */; };
+		EB52592A1DF283A9004A0DA8 /* back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5259271DF283A9004A0DA8 /* back@3x.png */; };
+		EB52592C1DF28D22004A0DA8 /* AsignCutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB52592B1DF28D22004A0DA8 /* AsignCutViewController.swift */; };
+		EB52592E1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB52592D1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift */; };
 		EBD2083C1DED068300FBB4A2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EBD2083B1DED068300FBB4A2 /* main.m */; };
 		EBD2083F1DED068300FBB4A2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EBD2083E1DED068300FBB4A2 /* AppDelegate.m */; };
 		EBD208451DED068300FBB4A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBD208431DED068300FBB4A2 /* Main.storyboard */; };
@@ -47,6 +56,16 @@
 		EB5258A61DEE8853004A0DA8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		EB5258A81DEE885C004A0DA8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EB5258E01DEE8CBB004A0DA8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		EB52591B1DF25C62004A0DA8 /* menu_icon_corte */ = {isa = PBXFileReference; lastKnownFileType = file; path = menu_icon_corte; sourceTree = "<group>"; };
+		EB52591D1DF26074004A0DA8 /* CutsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CutsViewController.swift; sourceTree = "<group>"; };
+		EB52591F1DF2612E004A0DA8 /* PendingCut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PendingCut.h; sourceTree = "<group>"; };
+		EB5259201DF2612E004A0DA8 /* PendingCut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PendingCut.m; sourceTree = "<group>"; };
+		EB5259231DF26B56004A0DA8 /* PendingCutCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingCutCollectionViewCell.swift; sourceTree = "<group>"; };
+		EB5259251DF283A9004A0DA8 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
+		EB5259261DF283A9004A0DA8 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
+		EB5259271DF283A9004A0DA8 /* back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@3x.png"; sourceTree = "<group>"; };
+		EB52592B1DF28D22004A0DA8 /* AsignCutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsignCutViewController.swift; sourceTree = "<group>"; };
+		EB52592D1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlantCollectionViewCell.swift; sourceTree = "<group>"; };
 		EBD208371DED068300FBB4A2 /* IPB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IPB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBD2083B1DED068300FBB4A2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EBD2083D1DED068300FBB4A2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -91,6 +110,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		EB5259221DF26B40004A0DA8 /* cells */ = {
+			isa = PBXGroup;
+			children = (
+				EB5259231DF26B56004A0DA8 /* PendingCutCollectionViewCell.swift */,
+				EB52592D1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift */,
+			);
+			path = cells;
+			sourceTree = "<group>";
+		};
 		EBD2082E1DED068200FBB4A2 = {
 			isa = PBXGroup;
 			children = (
@@ -112,6 +140,7 @@
 		EBD208391DED068300FBB4A2 /* IPB */ = {
 			isa = PBXGroup;
 			children = (
+				EB5259221DF26B40004A0DA8 /* cells */,
 				EBD208681DED202300FBB4A2 /* ViewControllers */,
 				EBD208611DED200500FBB4A2 /* images */,
 				EBD208511DED0C9600FBB4A2 /* Common */,
@@ -144,6 +173,8 @@
 				EBD208561DED10B400FBB4A2 /* User.m */,
 				EB52586C1DEE7447004A0DA8 /* Planta.h */,
 				EB52586D1DEE7447004A0DA8 /* Planta.m */,
+				EB52591F1DF2612E004A0DA8 /* PendingCut.h */,
+				EB5259201DF2612E004A0DA8 /* PendingCut.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -151,6 +182,10 @@
 		EBD208611DED200500FBB4A2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				EB5259251DF283A9004A0DA8 /* back.png */,
+				EB5259261DF283A9004A0DA8 /* back@2x.png */,
+				EB5259271DF283A9004A0DA8 /* back@3x.png */,
+				EB52591B1DF25C62004A0DA8 /* menu_icon_corte */,
 				EB5258671DEE675D004A0DA8 /* icon_menu.png */,
 				EB5258681DEE675D004A0DA8 /* icon_menu@2x.png */,
 				EB5258651DEE5643004A0DA8 /* logoTransparent.png */,
@@ -172,6 +207,8 @@
 				EBD208691DED204400FBB4A2 /* IPB-Bridging-Header.h */,
 				EBD2086C1DED204F00FBB4A2 /* HomeViewController.swift */,
 				EBD2086E1DED206B00FBB4A2 /* MenuViewController.swift */,
+				EB52591D1DF26074004A0DA8 /* CutsViewController.swift */,
+				EB52592B1DF28D22004A0DA8 /* AsignCutViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -255,8 +292,12 @@
 				EBD208651DED200500FBB4A2 /* menuMask.png in Resources */,
 				EBD2084A1DED068300FBB4A2 /* LaunchScreen.storyboard in Resources */,
 				EB5258621DEE5042004A0DA8 /* blueBG.jpg in Resources */,
+				EB5259291DF283A9004A0DA8 /* back@2x.png in Resources */,
 				EBD208671DED200500FBB4A2 /* menuMask@3x.png in Resources */,
+				EB52592A1DF283A9004A0DA8 /* back@3x.png in Resources */,
+				EB52591C1DF25C62004A0DA8 /* menu_icon_corte in Resources */,
 				EB5258661DEE5643004A0DA8 /* logoTransparent.png in Resources */,
+				EB5259281DF283A9004A0DA8 /* back.png in Resources */,
 				EBD208471DED068300FBB4A2 /* Assets.xcassets in Resources */,
 				EB52586A1DEE675D004A0DA8 /* icon_menu@2x.png in Resources */,
 				EBD208451DED068300FBB4A2 /* Main.storyboard in Resources */,
@@ -321,15 +362,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB52592E1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift in Sources */,
 				EBD208571DED10B400FBB4A2 /* User.m in Sources */,
 				EBD2083F1DED068300FBB4A2 /* AppDelegate.m in Sources */,
 				EBD2083C1DED068300FBB4A2 /* main.m in Sources */,
+				EB5259211DF2612E004A0DA8 /* PendingCut.m in Sources */,
 				EB52586E1DEE7447004A0DA8 /* Planta.m in Sources */,
+				EB5259241DF26B56004A0DA8 /* PendingCutCollectionViewCell.swift in Sources */,
 				EB5258601DEE47D9004A0DA8 /* SWRevealViewController.m in Sources */,
 				EBD2086F1DED206B00FBB4A2 /* MenuViewController.swift in Sources */,
 				EBD2086B1DED204400FBB4A2 /* LoginViewController.swift in Sources */,
+				EB52591E1DF26074004A0DA8 /* CutsViewController.swift in Sources */,
 				EBD208541DED0C9600FBB4A2 /* Services.m in Sources */,
 				EBD2086D1DED204F00FBB4A2 /* HomeViewController.swift in Sources */,
+				EB52592C1DF28D22004A0DA8 /* AsignCutViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,4 +6,5 @@
 #import "ipb-prefix.pch"
 #import "UIImageView+WebCache.h"
 #import "User.h"
+#import "Pendingcut.h"
 #import "SWRevealViewController.h"

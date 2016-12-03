@@ -11,7 +11,18 @@
 
 @interface Services : NSObject
 
+
+
+//POST
+
 +(void)Loginwith:(NSString *)username andPassword:(NSString *)password andHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
+
+
+//GET
+
+
++(void)GetPendingCutsWithandHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
+
 
 
 @end

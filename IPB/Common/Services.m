@@ -8,6 +8,7 @@
 
 #import "Services.h"
 #import "User.h"
+#import "PendingCut.h"
 @implementation Services
 
 
@@ -72,6 +73,50 @@
     
     }];
 
+}
+
+
+
++(void)GetPendingCutsWithandHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+ 
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    
+    
+    
+    [manager GET:[NSString stringWithFormat:@"%@getPendingCuts",BASE_URL] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        
+        NSMutableArray *mutableArray = [NSMutableArray new];
+        
+        for(NSDictionary *dict in [responseObject objectForKey:@"api"]){
+        
+            PendingCut *user = [[PendingCut alloc] initWithDictionary:dict];
+            
+            
+            [mutableArray addObject:user];
+        
+        }
+        
+          handler(mutableArray);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
+    
 }
 
 

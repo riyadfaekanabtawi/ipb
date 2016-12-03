@@ -141,7 +141,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
             self.salir_innerView.alpha = 0
-            self.delegate.selectedMenuviewcontrollerOption("cortes")
+            self.delegate.selectedMenuviewcontrollerOption("pendingcuts")
         }
         
         
