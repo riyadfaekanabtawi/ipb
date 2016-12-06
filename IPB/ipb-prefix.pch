@@ -17,7 +17,8 @@
 #define FONT_MEDIUM  @"Copperplate"
 #define FONT_LIGHT  @"Copperplate-Light"
 
-
+#define isNSNull(value) [value isKindOfClass:[NSNull class]]
+#define replaceNSNullValue(value) isNSNull(value) ? nil : value
 
 #define BASE_URL @"http://ipb.anabtatec-mobile.com/"
 

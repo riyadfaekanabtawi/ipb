@@ -37,6 +37,14 @@
 		EBD2086B1DED204400FBB4A2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2086A1DED204400FBB4A2 /* LoginViewController.swift */; };
 		EBD2086D1DED204F00FBB4A2 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2086C1DED204F00FBB4A2 /* HomeViewController.swift */; };
 		EBD2086F1DED206B00FBB4A2 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2086E1DED206B00FBB4A2 /* MenuViewController.swift */; };
+		EBFE8B621DF474E800B54F87 /* TSQCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EBFE8B5B1DF474E800B54F87 /* TSQCalendarCell.m */; };
+		EBFE8B631DF474E800B54F87 /* TSQCalendarMonthHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EBFE8B5D1DF474E800B54F87 /* TSQCalendarMonthHeaderCell.m */; };
+		EBFE8B641DF474E800B54F87 /* TSQCalendarRowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EBFE8B5F1DF474E800B54F87 /* TSQCalendarRowCell.m */; };
+		EBFE8B651DF474E800B54F87 /* TSQCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBFE8B611DF474E800B54F87 /* TSQCalendarView.m */; };
+		EBFE8B681DF4FF9500B54F87 /* Functions.m in Sources */ = {isa = PBXBuildFile; fileRef = EBFE8B671DF4FF9500B54F87 /* Functions.m */; };
+		EBFE8B6A1DF5014100B54F87 /* backLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = EBFE8B691DF5014100B54F87 /* backLogin.png */; };
+		EBFE8B6C1DF5213E00B54F87 /* main-ok.png in Resources */ = {isa = PBXBuildFile; fileRef = EBFE8B6B1DF5213E00B54F87 /* main-ok.png */; };
+		EBFE8B6E1DF6434700B54F87 /* PlantHomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFE8B6D1DF6434700B54F87 /* PlantHomeCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +95,21 @@
 		EBD2086A1DED204400FBB4A2 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		EBD2086C1DED204F00FBB4A2 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		EBD2086E1DED206B00FBB4A2 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		EBFE8B581DF474E800B54F87 /* TimesSquare-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TimesSquare-Prefix.pch"; sourceTree = "<group>"; };
+		EBFE8B591DF474E800B54F87 /* TimesSquare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimesSquare.h; sourceTree = "<group>"; };
+		EBFE8B5A1DF474E800B54F87 /* TSQCalendarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSQCalendarCell.h; sourceTree = "<group>"; };
+		EBFE8B5B1DF474E800B54F87 /* TSQCalendarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSQCalendarCell.m; sourceTree = "<group>"; };
+		EBFE8B5C1DF474E800B54F87 /* TSQCalendarMonthHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSQCalendarMonthHeaderCell.h; sourceTree = "<group>"; };
+		EBFE8B5D1DF474E800B54F87 /* TSQCalendarMonthHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSQCalendarMonthHeaderCell.m; sourceTree = "<group>"; };
+		EBFE8B5E1DF474E800B54F87 /* TSQCalendarRowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSQCalendarRowCell.h; sourceTree = "<group>"; };
+		EBFE8B5F1DF474E800B54F87 /* TSQCalendarRowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSQCalendarRowCell.m; sourceTree = "<group>"; };
+		EBFE8B601DF474E800B54F87 /* TSQCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSQCalendarView.h; sourceTree = "<group>"; };
+		EBFE8B611DF474E800B54F87 /* TSQCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSQCalendarView.m; sourceTree = "<group>"; };
+		EBFE8B661DF4FF9500B54F87 /* Functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Functions.h; sourceTree = "<group>"; };
+		EBFE8B671DF4FF9500B54F87 /* Functions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Functions.m; sourceTree = "<group>"; };
+		EBFE8B691DF5014100B54F87 /* backLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backLogin.png; sourceTree = "<group>"; };
+		EBFE8B6B1DF5213E00B54F87 /* main-ok.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main-ok.png"; sourceTree = "<group>"; };
+		EBFE8B6D1DF6434700B54F87 /* PlantHomeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlantHomeCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +138,7 @@
 			children = (
 				EB5259231DF26B56004A0DA8 /* PendingCutCollectionViewCell.swift */,
 				EB52592D1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift */,
+				EBFE8B6D1DF6434700B54F87 /* PlantHomeCollectionViewCell.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -140,6 +164,7 @@
 		EBD208391DED068300FBB4A2 /* IPB */ = {
 			isa = PBXGroup;
 			children = (
+				EBFE8B571DF474E800B54F87 /* TimesSquare */,
 				EB5259221DF26B40004A0DA8 /* cells */,
 				EBD208681DED202300FBB4A2 /* ViewControllers */,
 				EBD208611DED200500FBB4A2 /* images */,
@@ -167,6 +192,8 @@
 		EBD208511DED0C9600FBB4A2 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				EBFE8B661DF4FF9500B54F87 /* Functions.h */,
+				EBFE8B671DF4FF9500B54F87 /* Functions.m */,
 				EBD208521DED0C9600FBB4A2 /* Services.h */,
 				EBD208531DED0C9600FBB4A2 /* Services.m */,
 				EBD208551DED10B400FBB4A2 /* User.h */,
@@ -182,6 +209,8 @@
 		EBD208611DED200500FBB4A2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				EBFE8B6B1DF5213E00B54F87 /* main-ok.png */,
+				EBFE8B691DF5014100B54F87 /* backLogin.png */,
 				EB5259251DF283A9004A0DA8 /* back.png */,
 				EB5259261DF283A9004A0DA8 /* back@2x.png */,
 				EB5259271DF283A9004A0DA8 /* back@3x.png */,
@@ -211,6 +240,23 @@
 				EB52592B1DF28D22004A0DA8 /* AsignCutViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		EBFE8B571DF474E800B54F87 /* TimesSquare */ = {
+			isa = PBXGroup;
+			children = (
+				EBFE8B581DF474E800B54F87 /* TimesSquare-Prefix.pch */,
+				EBFE8B591DF474E800B54F87 /* TimesSquare.h */,
+				EBFE8B5A1DF474E800B54F87 /* TSQCalendarCell.h */,
+				EBFE8B5B1DF474E800B54F87 /* TSQCalendarCell.m */,
+				EBFE8B5C1DF474E800B54F87 /* TSQCalendarMonthHeaderCell.h */,
+				EBFE8B5D1DF474E800B54F87 /* TSQCalendarMonthHeaderCell.m */,
+				EBFE8B5E1DF474E800B54F87 /* TSQCalendarRowCell.h */,
+				EBFE8B5F1DF474E800B54F87 /* TSQCalendarRowCell.m */,
+				EBFE8B601DF474E800B54F87 /* TSQCalendarView.h */,
+				EBFE8B611DF474E800B54F87 /* TSQCalendarView.m */,
+			);
+			path = TimesSquare;
 			sourceTree = "<group>";
 		};
 		F62B133E3773CF6D9B574B81 /* Frameworks */ = {
@@ -299,9 +345,11 @@
 				EB5258661DEE5643004A0DA8 /* logoTransparent.png in Resources */,
 				EB5259281DF283A9004A0DA8 /* back.png in Resources */,
 				EBD208471DED068300FBB4A2 /* Assets.xcassets in Resources */,
+				EBFE8B6A1DF5014100B54F87 /* backLogin.png in Resources */,
 				EB52586A1DEE675D004A0DA8 /* icon_menu@2x.png in Resources */,
 				EBD208451DED068300FBB4A2 /* Main.storyboard in Resources */,
 				EB5258691DEE675D004A0DA8 /* icon_menu.png in Resources */,
+				EBFE8B6C1DF5213E00B54F87 /* main-ok.png in Resources */,
 				EBD208591DED148000FBB4A2 /* grey-stage-stock-photo-center-light-double-top-lamps-gray-shadow-floor-background-512x288.png in Resources */,
 				EBD208661DED200500FBB4A2 /* menuMask@2x.png in Resources */,
 			);
@@ -364,18 +412,24 @@
 			files = (
 				EB52592E1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift in Sources */,
 				EBD208571DED10B400FBB4A2 /* User.m in Sources */,
+				EBFE8B621DF474E800B54F87 /* TSQCalendarCell.m in Sources */,
 				EBD2083F1DED068300FBB4A2 /* AppDelegate.m in Sources */,
 				EBD2083C1DED068300FBB4A2 /* main.m in Sources */,
 				EB5259211DF2612E004A0DA8 /* PendingCut.m in Sources */,
 				EB52586E1DEE7447004A0DA8 /* Planta.m in Sources */,
 				EB5259241DF26B56004A0DA8 /* PendingCutCollectionViewCell.swift in Sources */,
+				EBFE8B631DF474E800B54F87 /* TSQCalendarMonthHeaderCell.m in Sources */,
 				EB5258601DEE47D9004A0DA8 /* SWRevealViewController.m in Sources */,
 				EBD2086F1DED206B00FBB4A2 /* MenuViewController.swift in Sources */,
+				EBFE8B651DF474E800B54F87 /* TSQCalendarView.m in Sources */,
 				EBD2086B1DED204400FBB4A2 /* LoginViewController.swift in Sources */,
+				EBFE8B6E1DF6434700B54F87 /* PlantHomeCollectionViewCell.swift in Sources */,
 				EB52591E1DF26074004A0DA8 /* CutsViewController.swift in Sources */,
 				EBD208541DED0C9600FBB4A2 /* Services.m in Sources */,
 				EBD2086D1DED204F00FBB4A2 /* HomeViewController.swift in Sources */,
+				EBFE8B681DF4FF9500B54F87 /* Functions.m in Sources */,
 				EB52592C1DF28D22004A0DA8 /* AsignCutViewController.swift in Sources */,
+				EBFE8B641DF474E800B54F87 /* TSQCalendarRowCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,4 +21,5 @@
 @property NSString *cut_fecha_client;
 @property NSString *cut_lista;
 @property NSString *editadoPor;
+@property NSString *estado;
 @end

@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FSCalendar.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-IPB.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,17 +37,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>3266D8D74756DC1DAA3B5AF1219163A8</key>
+		<key>1EFDAF5F210E6286991F75A82829EBBE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5FE7D2026E48181928E562A38312873F</key>
+		<key>4D70540979D0D203ACA13E9C5DEE6CCE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>82AEB53892EB45AAC6D6F10970D6A62F</key>
+		<key>7C2C22C3543D5405979369690F059B0A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -52,7 +57,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CA898CA74C302FD63966A0880F0C459E</key>
+		<key>A2958C5A8CDA5E00F14459C6B6CAFF0F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E734E3D88C719F194167468EA5691E4B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

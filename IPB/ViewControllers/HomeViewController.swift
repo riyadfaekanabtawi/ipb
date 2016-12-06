@@ -8,22 +8,26 @@
 
 import UIKit
 
-class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuViewControllerDelegate {
-
-    
+class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuViewControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+    var plants_array:[Planta] = []
+    @IBOutlet var titleViewLabelColelctionView: UILabel!
     @IBOutlet var titleViewLabel: UILabel!
     @IBOutlet var blockView: UIView!
-    @IBOutlet var firstWebView: UIWebView!
+     @IBOutlet var plant_collectionview: UICollectionView!
     var revealController:SWRevealViewController!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setNeedsStatusBarAppearanceUpdate()
-        
-        
+
+        self.titleViewLabelColelctionView.font = UIFont(name: FONT_BOLD, size: self.titleViewLabelColelctionView.font.pointSize)
+
+        self.refreshHomePlants()
         self.titleViewLabel.font = UIFont(name: FONT_BOLD, size: self.titleViewLabel.font.pointSize)
-        self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.anabtatec-mobile.com/plants_graph")! as URL) as URLRequest)
-           self.blockView.alpha = 0
+                   self.blockView.alpha = 0
         self.slideMenuSetUp()
+        
+             self.setNeedsStatusBarAppearanceUpdate()
+        self.navigationController?.navigationBar.barStyle = UIBarStyle.blackTranslucent
+        //[self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
         // Do any additional setup after loading the view.
     }
 
@@ -192,5 +196,63 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
             self.performSegue(withIdentifier: option, sender: self)
         }
         
+    }
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        
+    }
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return self.plants_array.count
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "homeplant", for: indexPath) as! PlantHomeCollectionViewCell
+        
+        
+        cell.displayPlants(plant: self.plants_array[indexPath.row])
+        return cell
+    
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: self.plant_collectionview.layer.frame.size.width / 4, height: 300)
+    }
+    
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    
+    func refreshHomePlants()
+    
+    {
+    
+    
+    Services.getPlantsWithandHandler({ (response) in
+        
+        self.plants_array = response as! [Planta]
+        
+        
+        self.plant_collectionview.reloadData()
+        
+    }, orErrorHandler: { (err) in
+        
+        
+        
+    })
+
+    
     }
 }

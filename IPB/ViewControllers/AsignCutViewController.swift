@@ -7,14 +7,16 @@
 //
 
 import UIKit
-
-class AsignCutViewController: UIViewController {
+protocol asignDelegate {
+    func asignedCut()
+}
+class AsignCutViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,plantdelegate {
 
     
-    
+    var delegate:asignDelegate!
     @IBOutlet var titleViewcontroller: UILabel!
-    
-    
+    @IBOutlet var plants_collectionview: UICollectionView!
+    var plants_array:[Planta] = []
     @IBOutlet var corte_idLabel: UILabel!
     @IBOutlet var listaLabel: UILabel!
     @IBOutlet var corteLabel: UILabel!
@@ -49,16 +51,26 @@ class AsignCutViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         
-        
-        
+        Services.getPlantsWithandHandler({ (response) in
+            
+            
+            self.plants_array = response as! [Planta]
+            
+            self.plants_collectionview.reloadData()
+            
+        }, orErrorHandler: { (err) in
+            
+            
+            
+        })
         
         self.corteLabel.text = "Corte: \(self.pendingCut.cut_id!)"
-        self.listaLabel.text = "\(self.pendingCut.cut_list!)"
+        self.listaLabel.text = "Lista: \(self.pendingCut.cut_list!)"
         self.corte_idLabel.text = "\(self.pendingCut.cut_id!)"
         
-        self.cantidadLabel.text = "\(self.pendingCut.cut_cantidad!)"
-        self.precioUnitarioLabel.text = "\(self.pendingCut.cut_precio_unitario!)"
-        self.precio_total.text = "\(self.pendingCut.cut_precio_final!)"
+        self.cantidadLabel.text = "Cantidad: \(self.pendingCut.cut_cantidad!)"
+        self.precioUnitarioLabel.text = "Precio/u: \(self.pendingCut.cut_precio_unitario!)"
+        self.precio_total.text = "Precio Final\(self.pendingCut.cut_precio_final!)"
         self.fecha_ib_label.text = "Fecha IPB: \(self.pendingCut.cut_fecha_ipb!)"
         self.fecha_cliente_label.text = "Fecha Cliente: \(self.pendingCut.cut_fecha_client!)"
         
@@ -87,5 +99,95 @@ class AsignCutViewController: UIViewController {
         
         
     
+    }
+    
+    
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        
+    }
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return self.plants_array.count
+        
+    }
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plants", for: indexPath)as!PlantCollectionViewCell
+        cell.displayPlant(plant: self.plants_array[indexPath.row])
+        cell.viewParent = self.view
+        cell.controller = self
+        cell.corteSelected = self.pendingCut
+        cell.delegate = self
+        return cell
+        
+        
+    }
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        
+        return CGSize(width: 359, height: self.plants_collectionview.frame.size.height)
+    }
+    
+    
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func asignedQuantityToPlant(cut: PendingCut) {
+        
+        self.delegate.asignedCut()
+        
+        self.pendingCut = cut
+        
+        
+        self.corteLabel.text = "Corte: \(self.pendingCut.cut_id!)"
+        self.listaLabel.text = "Lista: \(self.pendingCut.cut_list!)"
+        self.corte_idLabel.text = "\(self.pendingCut.cut_id!)"
+        
+        self.cantidadLabel.text = "Cantidad: \(self.pendingCut.cut_cantidad!)"
+        self.precioUnitarioLabel.text = "Precio/u: \(self.pendingCut.cut_precio_unitario!)"
+        self.precio_total.text = "Precio Final\(self.pendingCut.cut_precio_final!)"
+        self.fecha_ib_label.text = "Fecha IPB: \(self.pendingCut.cut_fecha_ipb!)"
+        self.fecha_cliente_label.text = "Fecha Cliente: \(self.pendingCut.cut_fecha_client!)"
+        
+        self.realizadas_label.text = "Realizadas: 0"
+        
+        
+        if self.pendingCut.estado == "Asignado"{
+            self.porAsignar.text = "Asignado"
+            self.porAsignar.textColor = Functions.color(withHexString: "5FBA56", andAlpha: 1)
+        }else{
+            self.porAsignar.text = "Por Asignar"
+            self.porAsignar.textColor = Functions.color(withHexString: "EC2127", andAlpha: 1)
+
+            
+        
+        }
+        Services.getPlantsWithandHandler({ (response) in
+            
+            
+            self.plants_array = response as! [Planta]
+            
+            self.plants_collectionview.reloadData()
+            
+        }, orErrorHandler: { (err) in
+            
+            
+            
+        })
     }
 }

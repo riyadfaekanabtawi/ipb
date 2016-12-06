@@ -12,6 +12,7 @@
 -(Planta *)initWithDictionary:(NSDictionary *)dictionary;
 @property NSNumber *planta_id;
 @property NSString *planta_nombre;
+
 @property NSNumber *planta_capacidadMax;
 @property NSNumber *planta_capacidadUsada;
 @end

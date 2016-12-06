@@ -28,7 +28,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 
         
-        
+         self.navigationController?.navigationBar.barStyle = UIBarStyle.blackTranslucent
         
         self.navigationController?.navigationBar.isHidden = true
         self.emailLabel.font = UIFont(name: FONT_BOLD, size: self.emailLabel.font.pointSize)

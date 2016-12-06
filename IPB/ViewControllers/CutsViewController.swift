@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CutsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+class CutsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,asignDelegate {
     
     
     
@@ -120,8 +120,14 @@ class CutsViewController: UIViewController,UICollectionViewDelegate,UICollection
         let controller = segue.destination as! AsignCutViewController
             
         controller.pendingCut = self.selected_cut
-        
+        controller.delegate = self
         }
         
+    }
+    
+    
+    
+    func asignedCut() {
+        self.getPendingCuts()
     }
 }

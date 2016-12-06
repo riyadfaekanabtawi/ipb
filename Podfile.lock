@@ -15,6 +15,7 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - Fabric (1.6.11)
+  - FSCalendar (2.5.0)
   - pop (1.0.9)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
@@ -24,6 +25,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
   - Fabric
+  - FSCalendar
   - pop
   - SDWebImage (~> 3.8)
   - XHRealTimeBlur
@@ -31,10 +33,11 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
+  FSCalendar: eacc1e0086e8784b395731595033d84ccc13a217
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   XHRealTimeBlur: 661fadd5691ba2d349758e8fd5fbdb499ac55f8c
 
-PODFILE CHECKSUM: 798c1c77f4319fe49d75a30f184af0872f0a0a2f
+PODFILE CHECKSUM: 09658fdf8aa98f57ba0e15728b7604cef6143349
 
 COCOAPODS: 1.0.0.beta.4
