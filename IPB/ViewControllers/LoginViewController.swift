@@ -51,7 +51,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         
         
         self.entrarButton.layer.cornerRadius = 4
-        self.entrarButton.layer.borderColor = UIColor.black.cgColor
+        self.entrarButton.layer.borderColor = UIColor.white.cgColor
         self.entrarButton.layer.borderWidth = 2
         self.entrarButton.layer.masksToBounds = true
         

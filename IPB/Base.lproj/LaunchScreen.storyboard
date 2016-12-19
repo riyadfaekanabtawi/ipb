@@ -21,9 +21,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueBG.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="1rK-dw-26Q">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zcf-5n-t6m">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.50267206671779141" colorSpace="calibratedWhite"/>
@@ -40,11 +37,7 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Zcf-5n-t6m" secondAttribute="trailing" id="1MY-SW-hiR"/>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="Zcf-5n-t6m" secondAttribute="bottom" id="507-x9-OBH"/>
-                            <constraint firstItem="1rK-dw-26Q" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="BTR-vs-0il"/>
                             <constraint firstItem="jC8-H9-oh0" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="CQN-rB-ubs"/>
-                            <constraint firstItem="1rK-dw-26Q" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Ow2-Jh-MzX"/>
-                            <constraint firstAttribute="trailing" secondItem="1rK-dw-26Q" secondAttribute="trailing" id="SC0-ey-QEw"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="1rK-dw-26Q" secondAttribute="bottom" id="W7q-R7-dlj"/>
                             <constraint firstItem="Zcf-5n-t6m" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="ZOe-0g-4i9"/>
                             <constraint firstItem="jC8-H9-oh0" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="lxP-lE-aUp"/>
                             <constraint firstItem="Zcf-5n-t6m" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="xtk-t2-M9A"/>
@@ -57,7 +50,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="blueBG.jpg" width="1920" height="1200"/>
         <image name="logoTransparent.png" width="167" height="167"/>
     </resources>
 </document>

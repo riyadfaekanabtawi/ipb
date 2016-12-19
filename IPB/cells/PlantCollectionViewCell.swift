@@ -11,6 +11,7 @@ import UIKit
 
 protocol plantdelegate {
     func asignedQuantityToPlant(cut:PendingCut)
+   
 }
 class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalendarDelegate {
     
@@ -133,46 +134,63 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
             
             }else{
             
-                Services.assignCutToPlant(withQuantity: NSNumber(value:Int32(self.cantidad_por_asignar_textViewlabel.text!)!), andCliente: self.corteSelected.cut_client, fecha: self.selectedDate, andPrecioTotal: NSNumber(value:preficofinal), andPrecioUnitario: self.corteSelected.cut_precio_unitario, andstyleImage: self.corteSelected.cut_estilo, andStyle: self.corteSelected.cut_estilo, andPlantID: self.selectedPlant.planta_id, andPendingCutID:self.corteSelected.cut_id, andHandler: { (response) in
-                    
-                    if ((response as? String) != nil){
-                    
-                        let alertController = UIAlertController(title: "Oops!", message: "La planta ha llegado a su capacidad maxima.", preferredStyle: .alert)
+                
+                let cantidad = Int32(self.cantidad_por_asignar_textViewlabel.text!)
+                
+                let total = cantidad! * self.corteSelected.cut_precio_unitario.int32Value
+                
+                let alertController = UIAlertController(title: "Atención!", message: "Estas por asignar : \(self.cantidad_por_asignar_textViewlabel.text!) prendas a la planta: \(self.selectedPlant.planta_nombre!) = \(total) MXN $", preferredStyle: .alert)
+                
+                
+                let OKAction = UIAlertAction(title: "Confirmar Asignación", style: .default) { (action) in
+                    Services.assignCutToPlant(withQuantity: NSNumber(value:Int32(self.cantidad_por_asignar_textViewlabel.text!)!), andCliente: self.corteSelected.cut_client, fecha: self.selectedDate, andPrecioTotal: NSNumber(value:preficofinal), andPrecioUnitario: self.corteSelected.cut_precio_unitario, andstyleImage: self.corteSelected.cut_estilo, andStyle: self.corteSelected.cut_estilo, andPlantID: self.selectedPlant.planta_id, andPendingCutID:self.corteSelected.cut_id, andHandler: { (response) in
                         
-                        
-                        
-                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
-                            // ...
+                        if ((response as? String) != nil){
+                            
+                            let alertController = UIAlertController(title: "Oops!", message: "La planta ha llegado a su capacidad maxima.", preferredStyle: .alert)
+                            
+                            
+                            
+                            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                                // ...
+                            }
+                            alertController.addAction(OKAction)
+                            
+                            self.controller.present(alertController, animated: true) {
+                                // ...
+                            }
+                            
+                        }else{
+                            
+                            let alertController = UIAlertController(title: "Bien!", message: "As asignado la cantidad: \(self.cantidad_por_asignar_textViewlabel.text!) a la planta: \(self.selectedPlant.planta_nombre!)", preferredStyle: .alert)
+                            
+                            
+                            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                                // ...
+                            }
+                            alertController.addAction(OKAction)
+                            
+                            self.controller.present(alertController, animated: true) {
+                                // ...
+                            }
+                            
+                            self.delegate.asignedQuantityToPlant(cut: response as! PendingCut)
                         }
-                        alertController.addAction(OKAction)
-                        
-                        self.controller.present(alertController, animated: true) {
-                            // ...
-                        }
-                        
-                    }else{
-                    
-                        let alertController = UIAlertController(title: "Bien!", message: "As asignado la cantidad: \(self.cantidad_por_asignar_textViewlabel.text!) a la planta: \(self.selectedPlant.planta_nombre!)", preferredStyle: .alert)
                         
                         
-                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
-                            // ...
-                        }
-                        alertController.addAction(OKAction)
+                    }, orErrorHandler: { (err) in
                         
-                        self.controller.present(alertController, animated: true) {
-                            // ...
-                        }
                         
-                        self.delegate.asignedQuantityToPlant(cut: response as! PendingCut)
-                    }
-        
-                    
-                }, orErrorHandler: { (err) in
-                    
-                    
-                    
-                })
+                        
+                    })
+                }
+                alertController.addAction(OKAction)
+                
+                self.controller.present(alertController, animated: true) {
+                    // ...
+                }
+
+            
 
             
             }
@@ -227,4 +245,8 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
         
     }
     
+   
+
+
+
 }

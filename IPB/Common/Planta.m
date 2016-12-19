@@ -15,7 +15,7 @@
     if (self) {
         self.planta_id = [dictionary objectForKey:@"id"];
         self.planta_nombre = [dictionary objectForKey:@"name"];
-        self.planta_capacidadMax = [dictionary objectForKey:@"max_capacity"];
+        self.planta_capacidadMax = replaceNSNullValue([dictionary objectForKey:@"max_capacity"]);
         self.planta_capacidadUsada = replaceNSNullValue([dictionary objectForKey:@"used_capacity"]);
         
     }

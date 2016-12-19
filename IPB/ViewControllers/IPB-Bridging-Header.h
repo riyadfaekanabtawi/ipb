@@ -9,5 +9,8 @@
 #import "Pendingcut.h"
 #import "FSCalendar.h"
 #import "Functions.h"
+#import "Cliente.h"
 #import "Planta.h"
+#import "Style.h"
+#import "Report.h"
 #import "SWRevealViewController.h"

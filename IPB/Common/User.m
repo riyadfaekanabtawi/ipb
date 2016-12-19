@@ -13,13 +13,27 @@
     self = [super init];
     
     if (self) {
-        self.user_id = [[dictionary objectForKey:@"user"] objectForKey:@"id"];
-        self.nombre = [[dictionary objectForKey:@"user"] objectForKey:@"nombre"];
-        self.apellido = [[dictionary objectForKey:@"user"] objectForKey:@"apellido"];
-        self.email = [[dictionary objectForKey:@"user"] objectForKey:@"email"];
-        self.puesto = [[dictionary objectForKey:@"user"] objectForKey:@"puesto"];
-        self.telefono = [[dictionary objectForKey:@"user"] objectForKey:@"telefono"];
-        self.avatar_url = [NSString stringWithFormat:@"%@%@",BASE_URL,[[dictionary objectForKey:@"user"] objectForKey:@"photo"]];
+        
+        if ([dictionary objectForKey:@"user"]){
+            self.user_id = [[dictionary objectForKey:@"user"] objectForKey:@"id"];
+            self.nombre = [[dictionary objectForKey:@"user"] objectForKey:@"nombre"];
+            self.apellido = [[dictionary objectForKey:@"user"] objectForKey:@"apellido"];
+            self.email = [[dictionary objectForKey:@"user"] objectForKey:@"email"];
+            self.puesto = [[dictionary objectForKey:@"user"] objectForKey:@"puesto"];
+            self.telefono = [[dictionary objectForKey:@"user"] objectForKey:@"telefono"];
+            self.avatar_url = [NSString stringWithFormat:@"%@%@",BASE_URL,[[dictionary objectForKey:@"user"] objectForKey:@"photo"]];
+        
+        }else{
+        
+            self.user_id = [dictionary  objectForKey:@"id"];
+            self.nombre = [dictionary objectForKey:@"nombre"];
+            self.apellido = [dictionary objectForKey:@"apellido"];
+            self.email = [dictionary  objectForKey:@"email"];
+            self.puesto = [dictionary  objectForKey:@"puesto"];
+            self.telefono = [dictionary objectForKey:@"telefono"];
+            self.avatar_url = [NSString stringWithFormat:@"%@%@",BASE_URL,[dictionary objectForKey:@"photo"]];
+        }
+   
     }
     
     return self;

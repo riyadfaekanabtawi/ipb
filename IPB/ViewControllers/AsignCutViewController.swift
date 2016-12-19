@@ -190,4 +190,9 @@ class AsignCutViewController: UIViewController,UICollectionViewDelegate,UICollec
             
         })
     }
+    
+    
+    func refreshFather() {
+        
+    }
 }

@@ -155,7 +155,7 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         }
         
         
-        if option == "salir"{
+        if option == "cerrar_sesion"{
         
             let defaults = UserDefaults.standard
             
@@ -167,33 +167,61 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         
         }
         
-        if option == "recursos"{
+        if option == "listas"{
             
             
         }
         
         
+        if option == "reportes"{
+            
+            self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+        if option == "dashboard"{
+            
+            self.refreshHomePlants ()
+        }
         if option == "plantas"{
             
+            self.performSegue(withIdentifier: "plantas", sender: self)
             
         }
         
         
         if option == "clientes"{
-            
+              self.performSegue(withIdentifier: "clients", sender: self)
             
         }
         
+        
+        if option == "calculadora"{
+              self.performSegue(withIdentifier: option, sender: self)
+            
+        }
+        
+        if option == "envios_urgentes"{
+            
+             self.performSegue(withIdentifier: "pendingcuts", sender: self)
+        }
+        
+        if option == "envios"{
+             self.performSegue(withIdentifier: "pendingcuts", sender: self)
+            
+        }
         
         if option == "estilos"{
             
-            
+             self.performSegue(withIdentifier: option, sender: self)
         }
         
-        
+        if option == "usuarios"{
+              self.performSegue(withIdentifier: option, sender: self)
+            
+        }
         if option == "pendingcuts"{
             
-            self.performSegue(withIdentifier: option, sender: self)
+            self.performSegue(withIdentifier: "pendingcuts", sender: self)
         }
         
     }
@@ -201,8 +229,7 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        
+   
     }
     
     
@@ -215,18 +242,22 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "homeplant", for: indexPath) as! PlantHomeCollectionViewCell
         
+     
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "homeplant", for: indexPath) as! PlantHomeCollectionViewCell
+            
+            
+            cell.displayPlants(plant: self.plants_array[indexPath.row])
+            return cell
         
-        cell.displayPlants(plant: self.plants_array[indexPath.row])
-        return cell
+       
     
     }
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: self.plant_collectionview.layer.frame.size.width / 4, height: 300)
+        return CGSize(width: self.plant_collectionview.layer.frame.size.width / 4 + 30 , height: 300)
     }
     
     
