@@ -13,7 +13,7 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
     @IBOutlet var titleViewLabelColelctionView: UILabel!
     @IBOutlet var titleViewLabel: UILabel!
     
-    
+    var editingclient = false
     @IBOutlet var BackaddPlantview: UIView!
     @IBOutlet var addPlantview: UIView!
     @IBOutlet var addplantLabelTitle: UILabel!
@@ -23,10 +23,37 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
     @IBOutlet var plantNameTextField: UITextField!
 
     @IBOutlet var closeButton: UIButton!
+    
+    
+    @IBOutlet var nombre_contacto1: UITextField!
+    @IBOutlet var email_contacto1: UITextField!
+    @IBOutlet var telefono_contacto1: UITextField!
+    @IBOutlet var nombre_contacto2: UITextField!
+    @IBOutlet var email_contacto2: UITextField!
+    @IBOutlet var telefono_contacto2: UITextField!
+    @IBOutlet var nombre_contacto3: UITextField!
+    @IBOutlet var email_contacto3: UITextField!
+    @IBOutlet var telefono_contacto3: UITextField!
+    var  selectedclient:Cliente!
+    
     @IBOutlet var plant_collectionview: UICollectionView!
     var revealController:SWRevealViewController!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        self.nombre_contacto1.font = UIFont(name: FONT_REGULAR, size: (self.nombre_contacto1.font?.pointSize)!)
+        self.email_contacto1.font = UIFont(name: FONT_REGULAR, size: (self.email_contacto1.font?.pointSize)!)
+        self.telefono_contacto1.font = UIFont(name: FONT_REGULAR, size: (self.telefono_contacto1.font?.pointSize)!)
+        self.nombre_contacto2.font = UIFont(name: FONT_REGULAR, size: (self.nombre_contacto2.font?.pointSize)!)
+        self.email_contacto2.font = UIFont(name: FONT_REGULAR, size: (self.email_contacto2.font?.pointSize)!)
+        self.telefono_contacto2.font = UIFont(name: FONT_REGULAR, size: (self.telefono_contacto2.font?.pointSize)!)
+        self.nombre_contacto3.font = UIFont(name: FONT_REGULAR, size: (self.nombre_contacto3.font?.pointSize)!)
+        self.email_contacto3.font = UIFont(name: FONT_REGULAR, size: (self.email_contacto3.font?.pointSize)!)
+        self.telefono_contacto3.font = UIFont(name: FONT_REGULAR, size: (self.telefono_contacto3.font?.pointSize)!)
+        
+        
+        
         
          self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)
         NotificationCenter.default.addObserver(self, selector: #selector(ClientesViewController.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -85,24 +112,12 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     
     func keyboardWillShow(notification: NSNotification) {
-        
-        if !self.plantNameTextField.isEditing{
-            
-            if ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue) != nil {
-                self.view.frame.origin.y -= 150
-            }
-        }
-        
+  
         
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        if !self.plantNameTextField.isEditing{
-            
-            if ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue) != nil {
-                self.view.frame.origin.y += 150
-            }
-        }
+ 
     }
     
     
@@ -111,9 +126,67 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         if self.plantNameTextField == textField{
             
-             self.plantNameTextField.resignFirstResponder()
+             self.nombre_contacto1.becomeFirstResponder()
         }
         
+        if self.nombre_contacto1 == textField{
+        
+        self.email_contacto1.becomeFirstResponder()
+        }
+
+        if self.email_contacto1 == textField{
+        
+        self.telefono_contacto1.becomeFirstResponder()
+        }
+        
+        
+        if self.telefono_contacto1 == textField{
+        
+        self.nombre_contacto2.becomeFirstResponder()
+            
+        }
+        
+        
+        if self.nombre_contacto2 == textField{
+        
+        self.email_contacto2.becomeFirstResponder()
+        
+        }
+        
+        
+        if self.email_contacto2 == textField{
+        
+        self.telefono_contacto2.becomeFirstResponder()
+        
+        }
+        
+        
+        if self.telefono_contacto2 == textField{
+        
+        self.nombre_contacto3.becomeFirstResponder()
+        
+        }
+        
+        
+        if self.nombre_contacto3 == textField{
+        
+            self.email_contacto3.becomeFirstResponder()
+        
+        }
+        
+        
+        if self.email_contacto3 == textField{
+        
+        self.telefono_contacto3.becomeFirstResponder()
+        
+        }
+        
+        
+        if self.telefono_contacto3 == textField{
+        
+            self.telefono_contacto3.resignFirstResponder()
+        
+        }
        
         
         
@@ -128,7 +201,51 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     func showAddPlantView(){
         
+        if self.editingclient == true{
         
+            if self.selectedclient.nombrecontacto3 != nil{
+            self.nombre_contacto3.text = self.selectedclient.nombrecontacto3
+            }
+            if self.selectedclient.nombrecontacto1 != nil{
+            self.nombre_contacto1.text = self.selectedclient.nombrecontacto1
+            }
+            if self.selectedclient.nombrecontacto2 != nil{
+            self.nombre_contacto2.text = self.selectedclient.nombrecontacto2
+            }
+            
+            
+            if  self.selectedclient.emailcontacto3 != nil{
+            
+            self.email_contacto3.text = self.selectedclient.emailcontacto3
+            }
+            if self.selectedclient.emailcontacto3 != nil{
+            self.email_contacto3.text = self.selectedclient.emailcontacto3
+            }
+            
+            if self.selectedclient.emailcontacto3 != nil{
+            self.email_contacto3.text = self.selectedclient.emailcontacto3
+            }
+            
+            if  self.selectedclient.telefonocontacto3 != nil{
+            
+            self.telefono_contacto3.text = self.selectedclient.telefonocontacto3
+            }
+            
+            if self.selectedclient.telefonocontacto2 != nil{
+            
+            self.telefono_contacto2.text = self.selectedclient.telefonocontacto2
+            }
+            
+            if self.selectedclient.telefonocontacto1 != nil{
+                 self.telefono_contacto1.text = self.selectedclient.telefonocontacto1
+            
+            }
+       
+            
+            
+            self.plantNameTextField.text = self.selectedclient.client_name
+            
+        }
         UIView.animate(withDuration: 0.4) {
             self.BackaddPlantview.alpha = 1
             self.addPlantview.transform = CGAffineTransform.identity
@@ -159,8 +276,12 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         if indexPath.row == 0{
             
             self.showAddPlantView()
-            
+            self.editingclient = false
         }else{
+            self.editingclient = true
+            self.selectedclient = self.clients_array[indexPath.row-1]
+            
+            self.showAddPlantView()
             
         }
     }
@@ -232,7 +353,7 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         
         
-        if self.plantNameTextField.text == "" {
+        if self.plantNameTextField.text == "" || self.nombre_contacto1.text == "" || self.nombre_contacto2.text == ""  || self.nombre_contacto3.text == ""  || self.email_contacto1.text == "" || self.email_contacto2.text == "" || self.email_contacto3.text == "" || self.telefono_contacto1.text == "" || self.telefono_contacto2.text == "" || self.telefono_contacto3.text == "" {
             let alertController = UIAlertController(title: "Oops!", message: "Debes llenar todos los campos para cargar un cliente", preferredStyle: .alert)
             
             
@@ -253,7 +374,7 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
             
             let OKAction = UIAlertAction(title: "Cargar Cliente", style: .default) { (action) in
                 
-                Services.createClient(forIPB: self.plantNameTextField.text, andHandler: { (response) in
+                Services.createClient(forIPB: self.plantNameTextField.text,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text , andHandler: { (response) in
                     
                     self.closeAddPlantView()
                     self.refreshHomePlants()

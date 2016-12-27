@@ -22,8 +22,8 @@
         self.cut_precio_final = [NSNumber numberWithFloat:[[dictionary objectForKey:@"precio_final"] floatValue]];
         self.cut_fecha_ipb = [dictionary objectForKey:@"fecha_ipb"];
         self.cut_fecha_client = [dictionary objectForKey:@"fecha_cliente"];
-         self.cut_list = [dictionary objectForKey:@"lista"];
-        
+        self.cut_list = [dictionary objectForKey:@"lista"];
+        self.prenda = [dictionary objectForKey:@"prenda"];
         self.editadoPor = [dictionary objectForKey:@"editado_por"];
     }
     

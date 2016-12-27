@@ -8,32 +8,44 @@
 
 import UIKit
 
-class StylesViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UITextFieldDelegate,styledelegateHome,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
+class StylesViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UITextFieldDelegate,styledelegateHome,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIScrollViewDelegate {
     var users_array:[Styles] = []
     @IBOutlet var titleViewLabelColelctionView: UILabel!
     @IBOutlet var titleViewLabel: UILabel!
     @IBOutlet var avatar_placeholder: UIImageView!
     @IBOutlet var user_avatar: UIImageView!
-    
+    @IBOutlet var styleImageView: UIImageView!
+    @IBOutlet var styleImageViewTitle: UILabel!
     @IBOutlet var BackaddPlantview: UIView!
     @IBOutlet var addPlantview: UIView!
     @IBOutlet var addplantLabelTitle: UILabel!
     let imagePicker = UIImagePickerController()
     @IBOutlet var closeButton: UIButton!
     @IBOutlet var guardarButton: UIButton!
-    
+    @IBOutlet var imageViewBig: UIView!
+    @IBOutlet var closeButtonImage: UIButton!
     @IBOutlet var usuario_name: UITextField!
     @IBOutlet var user_nameLabel: UILabel!
-    
+     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var plant_collectionview: UICollectionView!
- 
+    
+    
+    
+    private func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        return self.styleImageView
+    }
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+
           self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)
         NotificationCenter.default.addObserver(self, selector: #selector(StylesViewController.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(StylesViewController.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        self.BackaddPlantview.alpha = 0
+        
         
         self.titleViewLabelColelctionView.font = UIFont(name: FONT_BOLD, size: self.titleViewLabelColelctionView.font.pointSize)
         
@@ -42,18 +54,22 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
         self.user_nameLabel.font = UIFont(name: FONT_BOLD, size: self.user_nameLabel.font.pointSize)
         self.usuario_name.font = UIFont(name: FONT_REGULAR, size: (self.usuario_name.font?.pointSize)!)
         
-        
+        self.styleImageViewTitle.font = UIFont(name: FONT_REGULAR, size: (self.styleImageViewTitle.font?.pointSize)!)
         self.guardarButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.guardarButton.titleLabel?.font.pointSize)!)
+        self.BackaddPlantview.alpha = 0
         self.addPlantview.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
         self.addPlantview.alpha = 0
         self.refreshHomePlants()
         self.titleViewLabel.font = UIFont(name: FONT_BOLD, size: self.titleViewLabel.font.pointSize)
-        
+        self.closeButtonImage.titleLabel?.font = UIFont(name: FONT_REGULAR, size: (self.closeButtonImage.titleLabel?.font?.pointSize)!)
+        self.imageViewBig.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        self.imageViewBig.alpha = 0
         
         self.addPlantview.layer.cornerRadius = 4
         self.addPlantview.layer.masksToBounds = true
         
-        
+        self.imageViewBig.layer.cornerRadius = 4
+        self.imageViewBig.layer.masksToBounds = true
         self.imagePicker.delegate = self
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.navigationBar.barStyle = UIBarStyle.blackTranslucent
@@ -337,4 +353,33 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
         
         self.refreshHomePlants()
     }
+    
+    func showImage(image: String) {
+        
+        UIView.animate(withDuration: 0.4) {
+            self.BackaddPlantview.alpha = 1
+            self.imageViewBig.transform = CGAffineTransform.identity
+            self.imageViewBig.alpha = 1
+            
+            self.styleImageView.sd_setImage(with: NSURL(string: image) as URL!)
+            
+            
+            
+        }
+        
+    }
+    @IBAction func hideImageBackView(){
+        
+        UIView.animate(withDuration: 0.4) {
+            self.BackaddPlantview.alpha = 0
+            self.imageViewBig.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+            self.imageViewBig.alpha = 0
+            
+            self.styleImageView.sd_setImage(with: NSURL(string: "") as URL!)
+            
+            
+            
+        }
+    }
+    
 }

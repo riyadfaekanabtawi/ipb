@@ -12,4 +12,17 @@
 -(Cliente *)initWithDictionary:(NSDictionary *)dictionary;
 @property NSNumber *client_id;
 @property NSString *client_name;
+
+@property NSString *nombrecontacto1;
+@property NSString *nombrecontacto2;
+@property NSString *nombrecontacto3;
+@property NSString *emailcontacto1;
+@property NSString *emailcontacto2;
+@property NSString *emailcontacto3;
+@property NSString *telefonocontacto1;
+@property NSString *telefonocontacto2;
+@property NSString *telefonocontacto3;
+
+
+
 @end

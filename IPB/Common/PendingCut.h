@@ -22,4 +22,5 @@
 @property NSString *cut_lista;
 @property NSString *editadoPor;
 @property NSString *estado;
+@property NSString *prenda;
 @end

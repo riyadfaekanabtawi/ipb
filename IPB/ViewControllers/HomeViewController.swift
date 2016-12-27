@@ -169,7 +169,7 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         
         if option == "listas"{
             
-            
+              self.performSegue(withIdentifier: "pendingcuts", sender: self)
         }
         
         

@@ -21,7 +21,7 @@ class MenuViewController: UIViewController {
     var delegate:MenuViewControllerDelegate!
     
     
-    
+    @IBOutlet var reportesOverall: UILabel!
     @IBOutlet var dashboard_label: UILabel!
     @IBOutlet var lista_label: UILabel!
     @IBOutlet var reportes_label: UILabel!
@@ -33,7 +33,7 @@ class MenuViewController: UIViewController {
     @IBOutlet var calculadora_label: UILabel!
     @IBOutlet var envios_label: UILabel!
     @IBOutlet var cerrarSesion_label: UILabel!
-    
+    @IBOutlet var RPOVERALL_innerView: UIView!
     @IBOutlet var dashboard_innerView: UIView!
     @IBOutlet var listas_innerView: UIView!
     @IBOutlet var reportes_innerView: UIView!
@@ -63,11 +63,14 @@ class MenuViewController: UIViewController {
         self.usuarios_label.font = UIFont(name: FONT_REGULAR, size: self.usuarios_label.font.pointSize)
         self.estilos_label.font = UIFont(name: FONT_REGULAR, size: self.estilos_label.font.pointSize)
         self.envios_urgentes_label.font = UIFont(name: FONT_REGULAR, size: self.envios_urgentes_label.font.pointSize)
+        
+         self.reportesOverall.font = UIFont(name: FONT_REGULAR, size: self.reportesOverall.font.pointSize)
+        
         self.calculadora_label.font = UIFont(name: FONT_REGULAR, size: self.calculadora_label.font.pointSize)
         self.envios_label.font = UIFont(name: FONT_REGULAR, size: self.envios_label.font.pointSize)
         self.cerrarSesion_label.font = UIFont(name: FONT_REGULAR, size: self.cerrarSesion_label.font.pointSize)
         
-        
+        self.RPOVERALL_innerView.alpha = 0
         self.dashboard_innerView.alpha = 0
         self.listas_innerView.alpha = 0
         self.reportes_innerView.alpha = 0
@@ -127,6 +130,7 @@ class MenuViewController: UIViewController {
             
             self.dashboard_innerView.alpha = 1
             self.listas_innerView.alpha = 0
+             self.RPOVERALL_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
             self.clientes_innerView.alpha = 0
@@ -147,7 +151,7 @@ class MenuViewController: UIViewController {
     @IBAction func listasTouchUpInside(){
         
         UIView.animate(withDuration: 0.4) {
-            
+             self.RPOVERALL_innerView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 1
             self.reportes_innerView.alpha = 0
@@ -170,7 +174,7 @@ class MenuViewController: UIViewController {
     @IBAction func reportesTouchUpInside(){
         
         UIView.animate(withDuration: 0.4) {
-            
+             self.RPOVERALL_innerView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 1
@@ -191,7 +195,7 @@ class MenuViewController: UIViewController {
     @IBAction func plantasTouchUpInside(){
         
         UIView.animate(withDuration: 0.4) {
-            
+             self.RPOVERALL_innerView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
@@ -212,7 +216,7 @@ class MenuViewController: UIViewController {
     @IBAction func clientesTouchUpInside(){
         
         UIView.animate(withDuration: 0.4) {
-            
+             self.RPOVERALL_innerView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
@@ -231,7 +235,7 @@ class MenuViewController: UIViewController {
     
     @IBAction func usuariosTouchUpInside(){
         UIView.animate(withDuration: 0.4) {
-            
+             self.RPOVERALL_innerView.alpha = 0
             self.dashboard_innerView.alpha = 1
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
@@ -251,7 +255,7 @@ class MenuViewController: UIViewController {
     
     @IBAction func estilosTouchUpInside(){
         UIView.animate(withDuration: 0.4) {
-            
+             self.RPOVERALL_innerView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
@@ -271,7 +275,7 @@ class MenuViewController: UIViewController {
     
     @IBAction func envios_urgentesTouchUpInside(){
         UIView.animate(withDuration: 0.4) {
-            
+             self.RPOVERALL_innerView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
@@ -290,7 +294,7 @@ class MenuViewController: UIViewController {
     
     @IBAction func calculadorasTouchUpInside(){
         UIView.animate(withDuration: 0.4) {
-            
+             self.RPOVERALL_innerView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
@@ -309,7 +313,7 @@ class MenuViewController: UIViewController {
     
     @IBAction func enviosTouchUpInside(){
         UIView.animate(withDuration: 0.4) {
-            
+             self.RPOVERALL_innerView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
@@ -328,8 +332,8 @@ class MenuViewController: UIViewController {
     
     @IBAction func cerrarSesionTouchUpInside(){
         UIView.animate(withDuration: 0.4) {
-            
-            self.dashboard_innerView.alpha = 0
+             self.RPOVERALL_innerView.alpha = 0
+            self.dashboard_innerView.alpha = 1
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
@@ -339,7 +343,7 @@ class MenuViewController: UIViewController {
             self.envios_urgentes_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
-            self.cerrarSesion_innerView.alpha = 1
+            self.cerrarSesion_innerView.alpha = 0
             self.delegate.selectedMenuviewcontrollerOption("cerrar_sesion")
         }
     }

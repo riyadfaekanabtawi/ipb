@@ -9,6 +9,7 @@
 import UIKit
 protocol styledelegateHome {
     
+    func showImage(image:String)
     func refreshFather()
 }
 class StylesCollectionViewCell: UICollectionViewCell {
@@ -88,6 +89,10 @@ class StylesCollectionViewCell: UICollectionViewCell {
         
     }
     
-
+    @IBAction func showImageTouchUpInside(){
+    
+    self.delegate.showImage(image: self.selectedStyle.style_image)
+        
+    }
 
 }

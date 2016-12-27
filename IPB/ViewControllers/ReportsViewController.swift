@@ -6,9 +6,13 @@
 //  Copyright © 2016 Riyad Anabtawi. All rights reserved.
 //
 
-class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,asignDelegate {
+class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,asignDelegate,pendingCutdelegate {
     
-    
+    @IBOutlet var styleImageView: UIImageView!
+    @IBOutlet var BackaddPlantview: UIView!
+    @IBOutlet var imageViewBig: UIView!
+    @IBOutlet var imagenTitle: UILabel!
+    @IBOutlet var closeButton: UIButton!
     
     @IBOutlet var cortesTitle: UILabel!
     @IBOutlet var noCutsLabel: UILabel!
@@ -20,6 +24,15 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        self.imagenTitle.font = UIFont(name: FONT_BOLD, size: self.imagenTitle.font.pointSize)
+
+        self.imageViewBig.layer.cornerRadius = 4
+        self.imageViewBig.layer.masksToBounds = true
+        self.BackaddPlantview.alpha = 0
+        self.imageViewBig.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        self.imageViewBig.alpha = 0
+         self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)!
         self.noCutsLabel.alpha = 0
         self.cortesTitle.font = UIFont(name: FONT_BOLD, size: self.cortesTitle.font.pointSize)
         self.noCutsLabel.font = UIFont(name: FONT_BOLD, size: self.noCutsLabel.font.pointSize)
@@ -89,9 +102,9 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cortes_pending", for: indexPath) as! PendingCutCollectionViewCell
-        
+        cell.delegate = self
         cell.displayPendingCut(cut: self.pending_cuts_array[indexPath.row])
-        
+        cell.ingreso_label.text = "Ingreso: \(self.pending_cuts_array[indexPath.row].cut_precio_final!) $MXN"
         cell.status_label.text = "ASIGNADO"
         
         return cell
@@ -123,6 +136,35 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
         
     }
     
+    
+    func showImage(image: String) {
+        UIView.animate(withDuration: 0.4) {
+            self.BackaddPlantview.alpha = 1
+            self.imageViewBig.transform = CGAffineTransform.identity
+            self.imageViewBig.alpha = 1
+            
+            self.styleImageView.sd_setImage(with: NSURL(string: image) as URL!)
+            
+            
+            
+        }
+        
+        
+        
+    }
+    @IBAction func hideImageBackView(){
+        
+        UIView.animate(withDuration: 0.4) {
+            self.BackaddPlantview.alpha = 0
+            self.imageViewBig.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+            self.imageViewBig.alpha = 0
+            
+            self.styleImageView.sd_setImage(with: NSURL(string: "") as URL!)
+            
+            
+            
+        }
+    }
     
     
     func asignedCut() {

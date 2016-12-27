@@ -386,9 +386,28 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
         
         self.gastos_operativosTextField.resignFirstResponder()
             
+            if self.ingreso_brutoTextField.text != ""{
         let equation = Int32(self.ingreso_brutoTextField.text!)! - Int32(self.gastos_operativosTextField.text!)!
             
         self.ingreso_netoTextField.text = "\(equation)"
+                
+            }else{
+            self.gastos_operativosTextField.text = ""
+                let alertController = UIAlertController(title: "Atención!", message: "Tienes que calcular el ingreso bruto antes de poder ingresar el gasto operativo.", preferredStyle: .alert)
+                
+                
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    
+                }
+                
+                alertController.addAction(OKAction)
+                
+                self.present(alertController, animated: true) {
+                    // ...
+                }
+
+                
+            }
         }
         
         
@@ -432,7 +451,7 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
             let text = nsString?.replacingCharacters(in: range, with: string)
             
             
-            if Int(text!) != nil {
+            if Int(text!) != nil || text?.range(of: ".") != nil || text == ""{
                 // Text field converted to an Int
                 return true
             } else {

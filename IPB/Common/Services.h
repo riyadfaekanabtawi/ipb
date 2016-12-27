@@ -27,7 +27,7 @@
 //+(void)eliminarReporte:(NSNumber *)reporte_id AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
 
-+(void)createClientForIPB:(NSString *)client_name AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
++(void)createClientForIPB:(NSString *)client_name andContactName1:(NSString *)nombre1 andContactEmail1:(NSString *)email1 andContactTelefone1:(NSString *)telefone1 andContactName2:(NSString *)nombre2 andContactEmail2:(NSString *)email2 andContactTelefone2:(NSString *)telefone2 andContactName3:(NSString *)nombre3 andContactEmail3:(NSString *)email3 andContactTelefone3:(NSString *)telefone3 AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
 +(void)eliminarPlanta:(NSNumber *)plant_id AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 +(void)eliminarCliente:(NSNumber *)client_id AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
@@ -44,7 +44,7 @@
 
 +(void)createStyleForIPB:(NSString *)style_name andbase64String:(NSString *)base64String AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 //GET
-
++(void)getStyleImage:(NSString *)style_name AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 +(void)getCutsForReportAndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 +(void)GetPendingCutsWithandHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 +(void)GetPlantsWithandHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;

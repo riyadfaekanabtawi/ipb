@@ -180,7 +180,8 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cortes_pending", for: indexPath) as! PendingCutCollectionViewCell
             
             cell.displayPendingCut(cut: self.pending_cuts_array[indexPath.row])
-            
+            cell.ingreso_label.text = "Ingreso: \(self.pending_cuts_array[indexPath.row].cut_precio_final!) $MXN"
+            cell.status_label.text = "ASIGNADO"
             
             return cell
         

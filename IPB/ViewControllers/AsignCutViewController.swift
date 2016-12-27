@@ -18,6 +18,11 @@ class AsignCutViewController: UIViewController,UICollectionViewDelegate,UICollec
     @IBOutlet var plants_collectionview: UICollectionView!
     var plants_array:[Planta] = []
     @IBOutlet var corte_idLabel: UILabel!
+    @IBOutlet var style_iamge: UIImageView!
+    
+    @IBOutlet var ingresosLabel: UILabel!
+    @IBOutlet var prendaLabel: UILabel!
+    
     @IBOutlet var listaLabel: UILabel!
     @IBOutlet var corteLabel: UILabel!
     @IBOutlet var estiloLabel: UILabel!
@@ -35,7 +40,8 @@ class AsignCutViewController: UIViewController,UICollectionViewDelegate,UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         self.titleViewcontroller.font = UIFont(name: FONT_BOLD, size: self.titleViewcontroller.font.pointSize)
-        
+        self.ingresosLabel.font = UIFont(name: FONT_REGULAR, size: self.ingresosLabel.font.pointSize)
+        self.prendaLabel.font = UIFont(name: FONT_REGULAR, size: self.prendaLabel.font.pointSize)
         
         self.corte_idLabel.font = UIFont(name: FONT_REGULAR, size: self.corte_idLabel.font.pointSize)
         self.listaLabel.font = UIFont(name: FONT_BOLD, size: self.listaLabel.font.pointSize)
@@ -64,6 +70,21 @@ class AsignCutViewController: UIViewController,UICollectionViewDelegate,UICollec
             
         })
         
+        let ingreso = self.pendingCut.cut_cantidad.int32Value * self.pendingCut.cut_precio_unitario.int32Value
+        self.ingresosLabel.text = "Ingresos: \(ingreso) $MXN"
+        self.prendaLabel.text = "Prenda: \(self.pendingCut.prenda!)"
+        
+        Services.getStyleImage(self.pendingCut.cut_estilo!, andHandler: { (response) in
+       
+        
+            
+            self.style_iamge.sd_setImage(with: NSURL(string:"\(BASE_URL)\(response as! String)") as URL!)
+            
+   
+        }, orErrorHandler: { (err) in
+            
+            
+        })
         self.corteLabel.text = "Corte: \(self.pendingCut.cut_id!)"
         self.listaLabel.text = "Lista: \(self.pendingCut.cut_list!)"
         self.corte_idLabel.text = "\(self.pendingCut.cut_id!)"
