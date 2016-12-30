@@ -36,6 +36,11 @@
 		EB52592A1DF283A9004A0DA8 /* back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5259271DF283A9004A0DA8 /* back@3x.png */; };
 		EB52592C1DF28D22004A0DA8 /* AsignCutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB52592B1DF28D22004A0DA8 /* AsignCutViewController.swift */; };
 		EB52592E1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB52592D1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift */; };
+		EB957C5E1E15C64F00FF0D49 /* UrgentSebdsDashboardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB957C5D1E15C64F00FF0D49 /* UrgentSebdsDashboardCollectionViewCell.swift */; };
+		EB957C601E15EA4C00FF0D49 /* EnviosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB957C5F1E15EA4C00FF0D49 /* EnviosViewController.swift */; };
+		EB957C621E15F78200FF0D49 /* DashboardReportsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB957C611E15F78200FF0D49 /* DashboardReportsViewController.swift */; };
+		EB957C641E15F9F600FF0D49 /* ReportDashboardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB957C631E15F9F600FF0D49 /* ReportDashboardCollectionViewCell.swift */; };
+		EB957C661E16135E00FF0D49 /* PendingHomecutCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB957C651E16135E00FF0D49 /* PendingHomecutCollectionViewCell.swift */; };
 		EBD2083C1DED068300FBB4A2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EBD2083B1DED068300FBB4A2 /* main.m */; };
 		EBD2083F1DED068300FBB4A2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EBD2083E1DED068300FBB4A2 /* AppDelegate.m */; };
 		EBD208451DED068300FBB4A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBD208431DED068300FBB4A2 /* Main.storyboard */; };
@@ -106,6 +111,11 @@
 		EB5259271DF283A9004A0DA8 /* back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@3x.png"; sourceTree = "<group>"; };
 		EB52592B1DF28D22004A0DA8 /* AsignCutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsignCutViewController.swift; sourceTree = "<group>"; };
 		EB52592D1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlantCollectionViewCell.swift; sourceTree = "<group>"; };
+		EB957C5D1E15C64F00FF0D49 /* UrgentSebdsDashboardCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrgentSebdsDashboardCollectionViewCell.swift; sourceTree = "<group>"; };
+		EB957C5F1E15EA4C00FF0D49 /* EnviosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnviosViewController.swift; sourceTree = "<group>"; };
+		EB957C611E15F78200FF0D49 /* DashboardReportsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReportsViewController.swift; sourceTree = "<group>"; };
+		EB957C631E15F9F600FF0D49 /* ReportDashboardCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportDashboardCollectionViewCell.swift; sourceTree = "<group>"; };
+		EB957C651E16135E00FF0D49 /* PendingHomecutCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingHomecutCollectionViewCell.swift; sourceTree = "<group>"; };
 		EBD208371DED068300FBB4A2 /* IPB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IPB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBD2083B1DED068300FBB4A2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EBD2083D1DED068300FBB4A2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -181,6 +191,9 @@
 				EB248A7F1DFFA333004A9B51 /* UserCollectionViewCell.swift */,
 				EB248A891E00816B004A9B51 /* StylesCollectionViewCell.swift */,
 				EBFCAFA81E081B89007D9817 /* ReportCollectionViewCell.swift */,
+				EB957C5D1E15C64F00FF0D49 /* UrgentSebdsDashboardCollectionViewCell.swift */,
+				EB957C631E15F9F600FF0D49 /* ReportDashboardCollectionViewCell.swift */,
+				EB957C651E16135E00FF0D49 /* PendingHomecutCollectionViewCell.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -294,7 +307,9 @@
 				EB248A871E007E46004A9B51 /* StylesViewController.swift */,
 				EB248A8E1E01CA92004A9B51 /* CalculadoraViewController.swift */,
 				EBFCAFA11E074D5E007D9817 /* ReportsViewController.swift */,
+				EB957C5F1E15EA4C00FF0D49 /* EnviosViewController.swift */,
 				EBFCAFA31E074FE9007D9817 /* CutDetailViewController.swift */,
+				EB957C611E15F78200FF0D49 /* DashboardReportsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -475,8 +490,11 @@
 				EBFE8B621DF474E800B54F87 /* TSQCalendarCell.m in Sources */,
 				EBFCAFA41E074FE9007D9817 /* CutDetailViewController.swift in Sources */,
 				EBD2083F1DED068300FBB4A2 /* AppDelegate.m in Sources */,
+				EB957C601E15EA4C00FF0D49 /* EnviosViewController.swift in Sources */,
+				EB957C621E15F78200FF0D49 /* DashboardReportsViewController.swift in Sources */,
 				EB248A731DFF726E004A9B51 /* AddButtonCollectionViewCell.swift in Sources */,
 				EBFCAFA71E078F7E007D9817 /* Report.m in Sources */,
+				EB957C641E15F9F600FF0D49 /* ReportDashboardCollectionViewCell.swift in Sources */,
 				EBD2083C1DED068300FBB4A2 /* main.m in Sources */,
 				EB248A801DFFA333004A9B51 /* UserCollectionViewCell.swift in Sources */,
 				EB5259211DF2612E004A0DA8 /* PendingCut.m in Sources */,
@@ -492,6 +510,7 @@
 				EBFCAFA91E081B89007D9817 /* ReportCollectionViewCell.swift in Sources */,
 				EB52591E1DF26074004A0DA8 /* CutsViewController.swift in Sources */,
 				EB248A8A1E00816B004A9B51 /* StylesCollectionViewCell.swift in Sources */,
+				EB957C661E16135E00FF0D49 /* PendingHomecutCollectionViewCell.swift in Sources */,
 				EB248A7A1DFF96F5004A9B51 /* Cliente.m in Sources */,
 				EBD208541DED0C9600FBB4A2 /* Services.m in Sources */,
 				EB248A8D1E00818D004A9B51 /* Style.m in Sources */,
@@ -501,6 +520,7 @@
 				EBFE8B681DF4FF9500B54F87 /* Functions.m in Sources */,
 				EBFCAFA21E074D5E007D9817 /* ReportsViewController.swift in Sources */,
 				EB52592C1DF28D22004A0DA8 /* AsignCutViewController.swift in Sources */,
+				EB957C5E1E15C64F00FF0D49 /* UrgentSebdsDashboardCollectionViewCell.swift in Sources */,
 				EB248A751DFF75CC004A9B51 /* PlantasViewController.swift in Sources */,
 				EBFE8B641DF474E800B54F87 /* TSQCalendarRowCell.m in Sources */,
 				EB248A7C1DFF988A004A9B51 /* ClientCollectionViewCell.swift in Sources */,

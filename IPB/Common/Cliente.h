@@ -24,5 +24,9 @@
 @property NSString *telefonocontacto3;
 
 
+@property NSString *puestocontacto1;
+@property NSString *puestocontacto2;
+@property NSString *puestocontacto3;
+
 
 @end

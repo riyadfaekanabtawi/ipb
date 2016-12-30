@@ -10,18 +10,28 @@ import UIKit
 
 class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuViewControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     var plants_array:[Planta] = []
+    var enviosUrgentesArray:[PendingCut] = []
+    var pending_cuts_array:[PendingCut] = []
     @IBOutlet var titleViewLabelColelctionView: UILabel!
+    @IBOutlet var enviosUrgentesLabel: UILabel!
     @IBOutlet var titleViewLabel: UILabel!
+    @IBOutlet var pendingCutsTitleLabel: UILabel!
     @IBOutlet var blockView: UIView!
      @IBOutlet var plant_collectionview: UICollectionView!
+    @IBOutlet var enviosUrgentes_collectionview: UICollectionView!
+    @IBOutlet var cortesPendientes_collectionview: UICollectionView!
     var revealController:SWRevealViewController!
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
         self.titleViewLabelColelctionView.font = UIFont(name: FONT_BOLD, size: self.titleViewLabelColelctionView.font.pointSize)
 
         self.refreshHomePlants()
         self.titleViewLabel.font = UIFont(name: FONT_BOLD, size: self.titleViewLabel.font.pointSize)
+        self.enviosUrgentesLabel.font = UIFont(name: FONT_BOLD, size: self.enviosUrgentesLabel.font.pointSize)
+        self.pendingCutsTitleLabel.font = UIFont(name: FONT_BOLD, size: self.pendingCutsTitleLabel.font.pointSize)
+        
                    self.blockView.alpha = 0
         self.slideMenuSetUp()
         
@@ -31,7 +41,10 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         // Do any additional setup after loading the view.
     }
 
-    
+    override func viewDidAppear(_ animated: Bool) {
+        self.getUrgentEnvios()
+        self.getPendingCuts()
+    }
     override var preferredStatusBarStyle: UIStatusBarStyle {
         get {
             return .lightContent
@@ -167,15 +180,28 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         
         }
         
-        if option == "listas"{
+  
+        if option == "envios"{
             
-              self.performSegue(withIdentifier: "pendingcuts", sender: self)
+            self.performSegue(withIdentifier: option, sender: self)
         }
+        
+        if option == "reportsall"{
+            
+            self.performSegue(withIdentifier: option, sender: self)
+        }
+        
         
         
         if option == "reportes"{
             
             self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+        if option == "listas"{
+        
+        self.performSegue(withIdentifier: "pendingcuts", sender: self)
+        
         }
         
         if option == "dashboard"{
@@ -184,13 +210,13 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         }
         if option == "plantas"{
             
-            self.performSegue(withIdentifier: "plantas", sender: self)
+            self.performSegue(withIdentifier: option, sender: self)
             
         }
         
         
         if option == "clientes"{
-              self.performSegue(withIdentifier: "clients", sender: self)
+          self.performSegue(withIdentifier: option, sender: self)
             
         }
         
@@ -200,15 +226,9 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
             
         }
         
-        if option == "envios_urgentes"{
-            
-             self.performSegue(withIdentifier: "pendingcuts", sender: self)
-        }
+     
         
-        if option == "envios"{
-             self.performSegue(withIdentifier: "pendingcuts", sender: self)
-            
-        }
+  
         
         if option == "estilos"{
             
@@ -221,7 +241,7 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         }
         if option == "pendingcuts"{
             
-            self.performSegue(withIdentifier: "pendingcuts", sender: self)
+            self.performSegue(withIdentifier: option, sender: self)
         }
         
     }
@@ -236,13 +256,41 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
+        if self.enviosUrgentes_collectionview == collectionView{
+        
+            return self.enviosUrgentesArray.count
+        
+        }else if self.cortesPendientes_collectionview == collectionView{
+        
+            return self.pending_cuts_array.count
+        
+        
+        }else{
         return self.plants_array.count
+        }
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        if self.enviosUrgentes_collectionview == collectionView{
         
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "urgent", for: indexPath)as!UrgentSebdsDashboardCollectionViewCell
+            
+            cell.displayCuts(cut: self.enviosUrgentesArray[indexPath.row])
+            
+            return cell
+        }else if self.cortesPendientes_collectionview == collectionView{
+        
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pendingHome", for: indexPath)as!PendingHomecutCollectionViewCell
+            
+            cell.displayPendingcuts(cut: self.pending_cuts_array[indexPath
+                .row])
+            
+            return cell
+        
+        
+        }else{
      
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "homeplant", for: indexPath) as! PlantHomeCollectionViewCell
             
@@ -250,16 +298,24 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
             cell.displayPlants(plant: self.plants_array[indexPath.row])
             return cell
         
-       
+        }
     
     }
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: self.plant_collectionview.layer.frame.size.width / 4 + 30 , height: 300)
+         if self.enviosUrgentes_collectionview == collectionView || self.cortesPendientes_collectionview == collectionView{
+            
+            
+            return CGSize(width: 250 , height: 70)
+        
+        
+         }else{
+          return CGSize(width: self.plant_collectionview.layer.frame.size.width , height: self.plant_collectionview.layer.frame.size.width - 100)
+        
+        }
     }
-    
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -286,4 +342,49 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
 
     
     }
+    
+    
+    func getUrgentEnvios()
+        
+    {
+        
+        
+        Services.getEnviosUrgentesWithandHandler({ (response) in
+            
+            self.enviosUrgentesArray = response as! [PendingCut]
+            
+            
+            self.enviosUrgentes_collectionview.reloadData()
+            
+        }, orErrorHandler: { (err) in
+            
+            
+            
+        })
+        
+        
+    }
+    
+    
+    func getPendingCuts()
+        
+    {
+        
+        
+        Services.getPendingCutsWithandHandler({ (response) in
+            
+            self.pending_cuts_array = response as! [PendingCut]
+            
+            
+            self.cortesPendientes_collectionview.reloadData()
+            
+        }, orErrorHandler: { (err) in
+            
+            
+            
+        })
+        
+        
+    }
+
 }

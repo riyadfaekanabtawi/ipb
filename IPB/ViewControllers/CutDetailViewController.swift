@@ -50,7 +50,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
   
         self.selected_cut = self.pending_cuts_array[0]
           self.cuts_collectionview.reloadData()
-        self.cortesTitle.text = "CORTE: \(self.selected_cut.cut_id!)"
+        self.cortesTitle.text = "CORTE: \(self.selected_cut.corte!)"
         self.cortesTitle.font = UIFont(name: FONT_BOLD, size: self.cortesTitle.font.pointSize)
         self.noReportsLabel.font = UIFont(name: FONT_BOLD, size: self.noReportsLabel.font.pointSize)
         self.addBackView.alpha = 0
@@ -91,7 +91,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
         self.en_empaquieField.font = UIFont(name: FONT_REGULAR, size: (self.en_empaquieField.font?.pointSize)!)
         self.bodegaField.font = UIFont(name: FONT_REGULAR, size: (self.bodegaField.font?.pointSize)!)
 
-        self.corteIDLabel.text = "\(self.selected_cut.cut_id!)"
+        self.corteIDLabel.text = "\(self.selected_cut.corte!)"
         // Do any additional setup after loading the view.
     }
     
@@ -180,7 +180,14 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cortes_pending", for: indexPath) as! PendingCutCollectionViewCell
             
             cell.displayPendingCut(cut: self.pending_cuts_array[indexPath.row])
-            cell.ingreso_label.text = "Ingreso: \(self.pending_cuts_array[indexPath.row].cut_precio_final!) $MXN"
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            
+            
+            
+            let resultCantidad = formatter.string(from: NSNumber(value:Int(self.pending_cuts_array[indexPath.row].cut_precio_final.intValue)))
+            
+            cell.ingreso_label.text = "Ingreso: \(resultCantidad!) $MXN"
             cell.status_label.text = "ASIGNADO"
             
             return cell
@@ -238,7 +245,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
             if self.updatingReport{
             
             
-                let alertController = UIAlertController(title: "Atencion!", message: "Está por actualizar el reporte del corte: \(self.selected_cut.cut_id!)", preferredStyle: .alert)
+                let alertController = UIAlertController(title: "Atencion!", message: "Está por actualizar el reporte del corte: \(self.selected_cut.corte!)", preferredStyle: .alert)
                 
                 
                 
@@ -255,7 +262,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                     
                     Services.updateReport(self.selected_cut.cut_list, andReportID:self.report_id, andCut: "\(self.selected_cut.cut_id!)", andStyle: self.selected_cut.cut_estilo, andCantidad: "\(self.selected_cut.cut_cantidad!)", andFechaIPB: self.selected_cut.cut_fecha_ipb, andRealizadas: "", andOperarios: operarios, andFaltas: faltas, andProducidas: producidaas, andPlancha: plancha, andEmpaque: empaque, andBodega: bodega, andHandler: { (response) in
                         
-                        let alertController = UIAlertController(title: "Bien!", message: "Actualizaste el reporte al corte: \(self.selected_cut.cut_id!)", preferredStyle: .alert)
+                        let alertController = UIAlertController(title: "Bien!", message: "Actualizaste el reporte al corte: \(self.selected_cut.corte!)", preferredStyle: .alert)
                         
                         
                         let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
@@ -286,7 +293,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                 
             }else{
             
-            let alertController = UIAlertController(title: "Atencion!", message: "Está por cargar el reporte del corte: \(self.selected_cut.cut_id!)", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Atencion!", message: "Está por cargar el reporte del corte: \(self.selected_cut.corte!)", preferredStyle: .alert)
 
             
             
@@ -303,7 +310,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                 
                 Services.createReport(self.selected_cut.cut_list, andCut: "\(self.selected_cut.cut_id!)", andStyle: self.selected_cut.cut_estilo, andCantidad: "\(self.selected_cut.cut_cantidad!)", andFechaIPB: self.selected_cut.cut_fecha_ipb, andRealizadas: "", andOperarios: operarios, andFaltas: faltas, andProducidas: producidaas, andPlancha: plancha, andEmpaque: empaque, andBodega: bodega, andHandler: { (response) in
                     
-                    let alertController = UIAlertController(title: "Bien!", message: "Cargaste el reporte al corte: \(self.selected_cut.cut_id!)", preferredStyle: .alert)
+                    let alertController = UIAlertController(title: "Bien!", message: "Cargaste el reporte al corte: \(self.selected_cut.corte!)", preferredStyle: .alert)
                     
                     
                     let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in

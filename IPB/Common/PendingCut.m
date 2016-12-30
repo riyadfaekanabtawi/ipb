@@ -18,6 +18,7 @@
         self.cut_estilo = [dictionary objectForKey:@"estilo"];
         self.cut_cantidad = [dictionary objectForKey:@"cantidad"];
         self.cut_precio_unitario = [NSNumber numberWithFloat:[[dictionary objectForKey:@"precio_unitario"] floatValue]];
+        self.corte = replaceNSNullValue([dictionary objectForKey:@"corte"]);
         self.estado = [dictionary objectForKey:@"status"];
         self.cut_precio_final = [NSNumber numberWithFloat:[[dictionary objectForKey:@"precio_final"] floatValue]];
         self.cut_fecha_ipb = [dictionary objectForKey:@"fecha_ipb"];

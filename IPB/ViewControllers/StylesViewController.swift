@@ -246,6 +246,9 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
             self.imagePicker.allowsEditing = false
             self.imagePicker.sourceType = .photoLibrary
             
+ 
+            
+     
             self.present(self.imagePicker, animated: true, completion: nil)
             
             
@@ -256,6 +259,8 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+
         
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             self.user_avatar.contentMode = UIViewContentMode.scaleAspectFill

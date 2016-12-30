@@ -61,10 +61,24 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
         
     self.selectedPlant = plant
     self.plant_name.text = plant.planta_nombre
-    self.capax_max.text = "Capacidad Máxima: \(plant.planta_capacidadMax!) MXN"
+        
+        
+        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        
+        
+        
+      
+        let resultMax = formatter.string(from: NSNumber(value:Int(plant.planta_capacidadMax.intValue)))
+        
+      
+        
+    self.capax_max.text = "Capacidad Máxima: \(resultMax!) MXN"
         
         if plant.planta_capacidadUsada != nil{
-        self.capax_used.text = "Capacidad Usada: \(plant.planta_capacidadUsada!) MXN"
+              let resultUsed = formatter.string(from: NSNumber(value:Int(plant.planta_capacidadUsada.intValue)))
+        self.capax_used.text = "Capacidad Usada: \(resultUsed!) MXN"
         }else{
         self.capax_used.text = "Capacidad Usada: 0 MXN"
         }

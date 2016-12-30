@@ -24,6 +24,10 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
 
     @IBOutlet var closeButton: UIButton!
     
+    @IBOutlet var puesto_contacto1: UITextField!
+    @IBOutlet var puesto_contacto2: UITextField!
+    @IBOutlet var puesto_contacto3: UITextField!
+    
     
     @IBOutlet var nombre_contacto1: UITextField!
     @IBOutlet var email_contacto1: UITextField!
@@ -51,6 +55,12 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         self.nombre_contacto3.font = UIFont(name: FONT_REGULAR, size: (self.nombre_contacto3.font?.pointSize)!)
         self.email_contacto3.font = UIFont(name: FONT_REGULAR, size: (self.email_contacto3.font?.pointSize)!)
         self.telefono_contacto3.font = UIFont(name: FONT_REGULAR, size: (self.telefono_contacto3.font?.pointSize)!)
+        
+        
+        self.puesto_contacto1.font = UIFont(name: FONT_REGULAR, size: (self.puesto_contacto1.font?.pointSize)!)
+        self.puesto_contacto3.font = UIFont(name: FONT_REGULAR, size: (self.puesto_contacto3.font?.pointSize)!)
+        self.puesto_contacto2.font = UIFont(name: FONT_REGULAR, size: (self.puesto_contacto2.font?.pointSize)!)
+     
         
         
         
@@ -240,6 +250,22 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
                  self.telefono_contacto1.text = self.selectedclient.telefonocontacto1
             
             }
+            
+            
+            if  self.selectedclient.puestocontacto3 != nil{
+                
+                self.puesto_contacto3.text = self.selectedclient.puestocontacto3
+            }
+            
+            if self.selectedclient.puestocontacto2 != nil{
+                
+                self.puesto_contacto2.text = self.selectedclient.puestocontacto2
+            }
+            
+            if self.selectedclient.puestocontacto1 != nil{
+                self.puesto_contacto1.text = self.selectedclient.puestocontacto1
+                
+            }
        
             
             
@@ -353,7 +379,7 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         
         
-        if self.plantNameTextField.text == "" || self.nombre_contacto1.text == "" || self.nombre_contacto2.text == ""  || self.nombre_contacto3.text == ""  || self.email_contacto1.text == "" || self.email_contacto2.text == "" || self.email_contacto3.text == "" || self.telefono_contacto1.text == "" || self.telefono_contacto2.text == "" || self.telefono_contacto3.text == "" {
+        if self.plantNameTextField.text == "" || self.nombre_contacto1.text == "" || self.nombre_contacto2.text == ""  || self.nombre_contacto3.text == ""  || self.email_contacto1.text == "" || self.email_contacto2.text == "" || self.email_contacto3.text == "" || self.telefono_contacto1.text == "" || self.telefono_contacto2.text == "" || self.telefono_contacto3.text == "" || self.puesto_contacto3.text == "" || self.puesto_contacto1.text == "" || self.puesto_contacto2.text == "" {
             let alertController = UIAlertController(title: "Oops!", message: "Debes llenar todos los campos para cargar un cliente", preferredStyle: .alert)
             
             
@@ -374,7 +400,7 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
             
             let OKAction = UIAlertAction(title: "Cargar Cliente", style: .default) { (action) in
                 
-                Services.createClient(forIPB: self.plantNameTextField.text,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text , andHandler: { (response) in
+                Services.createClient(forIPB: self.plantNameTextField.text,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andHandler: { (response) in
                     
                     self.closeAddPlantView()
                     self.refreshHomePlants()

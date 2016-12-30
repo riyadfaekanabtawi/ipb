@@ -51,18 +51,26 @@ class PendingCutCollectionViewCell: UICollectionViewCell {
     
     func displayPendingCut(cut:PendingCut){
         
-        
    
+        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+
+      
+        
         let ingreso = cut.cut_cantidad.int32Value * cut.cut_precio_unitario.int32Value
+        let resultIngreso = formatter.string(from: NSNumber(value:Int(ingreso)))
         
-   
-        self.ingreso_label.text = "Ingresos: \(ingreso) $MXN"
+        
+         let resultCantidad = formatter.string(from: NSNumber(value:Int(cut.cut_cantidad.intValue)))
+   let resultPrecio_unitario = formatter.string(from: NSNumber(value:Int(cut.cut_precio_unitario.intValue)))
+        self.ingreso_label.text = "Ingresos: \(resultIngreso!) $MXN"
         self.prenda_label.text = "Prenda: \(cut.prenda!)"
         self.lista_label.text = "Lista: \(cut.cut_list!)"
-        self.corte_label.text = "Corte: \(cut.cut_id!)"
+        self.corte_label.text = "Corte: \(cut.corte!)"
         self.estilo_cliente_label.text = "Estilo cliente: \(cut.cut_estilo!)"
-        self.cantidad_label.text = "Cantidad: \(cut.cut_cantidad!)"
-        self.precio_total_label.text = "Precio Unitario: \(cut.cut_precio_unitario!)"
+        self.cantidad_label.text = "Cantidad: \(resultCantidad!)"
+        self.precio_total_label.text = "Precio/U: \(resultPrecio_unitario!)  $MXN"
         self.fecha_ipb_label.text = "Fecha IPB: \(cut.cut_fecha_ipb!)"
         self.fecha_cliente_label.text = "Fecha Cliente: \(cut.cut_fecha_client!)"
         //self.editado_por_label.text = "Editado por: \()"

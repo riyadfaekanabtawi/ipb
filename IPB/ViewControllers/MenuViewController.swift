@@ -292,6 +292,28 @@ class MenuViewController: UIViewController {
     }
     
     
+    
+    
+    
+    
+    @IBAction func reportsallTouchUpInside(){
+        UIView.animate(withDuration: 0.4) {
+            self.RPOVERALL_innerView.alpha = 1
+            self.dashboard_innerView.alpha = 0
+            self.listas_innerView.alpha = 0
+            self.reportes_innerView.alpha = 0
+            self.plantas_innerView.alpha = 0
+            self.clientes_innerView.alpha = 0
+            self.usuarios_innerView.alpha = 0
+            self.estilos_innerView.alpha = 0
+            self.envios_urgentes_innerView.alpha = 0
+            self.calculadora_innerView.alpha = 0
+            self.envios_innerView.alpha = 0
+            self.cerrarSesion_innerView.alpha = 0
+            self.delegate.selectedMenuviewcontrollerOption("reportsall")
+        }
+    }
+    
     @IBAction func calculadorasTouchUpInside(){
         UIView.animate(withDuration: 0.4) {
              self.RPOVERALL_innerView.alpha = 0

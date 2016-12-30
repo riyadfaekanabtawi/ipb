@@ -7,11 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol AppiShit
+
+-(void)displayMatchFromDeepLink:(NSNumber *)match_id;
+-(void)displayVideoFromDeepLink:(NSDictionary *)video;
+-(void)displayVideoFromDeepLinkFB:(NSNumber *)video_id;
+@end
+
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
-
++(void)setVideoPlaying:(BOOL)isPlaying;
 @property (strong, nonatomic) UIWindow *window;
-
-
+@property (nonatomic,retain) id<AppiShit> delegate;
++(BOOL)isVideoPlaying;
++(BOOL)shouldAutorotate;
++(NSUInteger)supportedInterfaceOrientations;
++(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 @end
 

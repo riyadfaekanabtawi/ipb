@@ -70,8 +70,7 @@ class AsignCutViewController: UIViewController,UICollectionViewDelegate,UICollec
             
         })
         
-        let ingreso = self.pendingCut.cut_cantidad.int32Value * self.pendingCut.cut_precio_unitario.int32Value
-        self.ingresosLabel.text = "Ingresos: \(ingreso) $MXN"
+    
         self.prendaLabel.text = "Prenda: \(self.pendingCut.prenda!)"
         
         Services.getStyleImage(self.pendingCut.cut_estilo!, andHandler: { (response) in
@@ -85,13 +84,30 @@ class AsignCutViewController: UIViewController,UICollectionViewDelegate,UICollec
             
             
         })
-        self.corteLabel.text = "Corte: \(self.pendingCut.cut_id!)"
-        self.listaLabel.text = "Lista: \(self.pendingCut.cut_list!)"
-        self.corte_idLabel.text = "\(self.pendingCut.cut_id!)"
         
-        self.cantidadLabel.text = "Cantidad: \(self.pendingCut.cut_cantidad!)"
-        self.precioUnitarioLabel.text = "Precio/u: \(self.pendingCut.cut_precio_unitario!)"
-        self.precio_total.text = "Precio Final\(self.pendingCut.cut_precio_final!)"
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        
+      
+        
+        let resultCantidad = formatter.string(from: NSNumber(value:Int(self.pendingCut.cut_cantidad.intValue)))
+        let resultPrecio_final = formatter.string(from: NSNumber(value:Int(self.pendingCut.cut_precio_final.intValue)))
+        
+                let resultPrecio_unitario = formatter.string(from: NSNumber(value:Int(self.pendingCut.cut_precio_unitario.intValue)))
+        
+        
+        let ingreso = self.pendingCut.cut_cantidad.int32Value * self.pendingCut.cut_precio_unitario.int32Value
+        
+        let resultIngreso = formatter.string(from: NSNumber(value:ingreso))
+        self.ingresosLabel.text = "Ingresos: \(resultIngreso!) $MXN"
+        
+        self.corteLabel.text = "Corte: \(self.pendingCut.corte!)"
+        self.listaLabel.text = "Lista: \(self.pendingCut.cut_list!)"
+        self.corte_idLabel.text = "\(self.pendingCut.corte!)"
+        
+        self.cantidadLabel.text = "Cantidad: \(resultCantidad!)"
+        self.precioUnitarioLabel.text = "Precio/u: \(resultPrecio_unitario!)"
+        self.precio_total.text = "Precio Final\(resultPrecio_final!)"
         self.fecha_ib_label.text = "Fecha IPB: \(self.pendingCut.cut_fecha_ipb!)"
         self.fecha_cliente_label.text = "Fecha Cliente: \(self.pendingCut.cut_fecha_client!)"
         
@@ -174,14 +190,24 @@ class AsignCutViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         self.pendingCut = cut
         
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
         
-        self.corteLabel.text = "Corte: \(self.pendingCut.cut_id!)"
+        
+        
+        let resultCantidad = formatter.string(from: NSNumber(value:Int(self.pendingCut.cut_cantidad.intValue)))
+        let resultPrecio_final = formatter.string(from: NSNumber(value:Int(self.pendingCut.cut_precio_final.intValue)))
+        
+        let resultPrecio_unitario = formatter.string(from: NSNumber(value:Int(self.pendingCut.cut_precio_unitario.intValue)))
+        
+        
+        self.corteLabel.text = "Corte: \(self.pendingCut.corte!)"
         self.listaLabel.text = "Lista: \(self.pendingCut.cut_list!)"
-        self.corte_idLabel.text = "\(self.pendingCut.cut_id!)"
+        self.corte_idLabel.text = "\(self.pendingCut.corte!)"
         
-        self.cantidadLabel.text = "Cantidad: \(self.pendingCut.cut_cantidad!)"
-        self.precioUnitarioLabel.text = "Precio/u: \(self.pendingCut.cut_precio_unitario!)"
-        self.precio_total.text = "Precio Final\(self.pendingCut.cut_precio_final!)"
+        self.cantidadLabel.text = "Cantidad: \(resultCantidad!)"
+        self.precioUnitarioLabel.text = "Precio/u: \(resultPrecio_unitario!)"
+        self.precio_total.text = "Precio Final\(resultPrecio_final!)"
         self.fecha_ib_label.text = "Fecha IPB: \(self.pendingCut.cut_fecha_ipb!)"
         self.fecha_cliente_label.text = "Fecha Cliente: \(self.pendingCut.cut_fecha_client!)"
         

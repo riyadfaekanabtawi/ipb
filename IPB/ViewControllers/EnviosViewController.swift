@@ -1,12 +1,12 @@
 //
-//  ReportsViewController.swift
+//  EnviosViewController.swift
 //  IPB
 //
-//  Created by Riyad Anabtawi on 12/18/16.
+//  Created by Riyad Anabtawi on 12/29/16.
 //  Copyright © 2016 Riyad Anabtawi. All rights reserved.
 //
 
-class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,asignDelegate,pendingCutdelegate {
+class EnviosViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,asignDelegate,pendingCutdelegate {
     
     @IBOutlet var styleImageView: UIImageView!
     @IBOutlet var BackaddPlantview: UIView!
@@ -26,13 +26,13 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
         
         
         self.imagenTitle.font = UIFont(name: FONT_BOLD, size: self.imagenTitle.font.pointSize)
-
+        
         self.imageViewBig.layer.cornerRadius = 4
         self.imageViewBig.layer.masksToBounds = true
         self.BackaddPlantview.alpha = 0
         self.imageViewBig.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
         self.imageViewBig.alpha = 0
-         self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)!
+        self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)!
         self.noCutsLabel.alpha = 0
         self.cortesTitle.font = UIFont(name: FONT_BOLD, size: self.cortesTitle.font.pointSize)
         self.noCutsLabel.font = UIFont(name: FONT_BOLD, size: self.noCutsLabel.font.pointSize)
@@ -54,7 +54,7 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
     
     func getPendingCuts(){
         
-        Services.getCutsForReportAndHandler({ (response) in
+        Services.getEnviosUrgentesWithandHandler({ (response) in
             
             self.pending_cuts_array = response as! [PendingCut]
             
@@ -81,8 +81,8 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         
-        self.selected_cut = self.pending_cuts_array[indexPath.row]
-        self.performSegue(withIdentifier: "selectedCut", sender: self)
+//        self.selected_cut = self.pending_cuts_array[indexPath.row]
+//        self.performSegue(withIdentifier: "selectedCut", sender: self)
         
         
     }
@@ -107,7 +107,7 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cortes_pending", for: indexPath) as! PendingCutCollectionViewCell
         cell.delegate = self
         cell.displayPendingCut(cut: self.pending_cuts_array[indexPath.row])
-         let resultIngreso = formatter.string(from: NSNumber(value:self.pending_cuts_array[indexPath.row].cut_precio_final.intValue))
+        let resultIngreso = formatter.string(from: NSNumber(value:self.pending_cuts_array[indexPath.row].cut_precio_final.intValue))
         cell.ingreso_label.text = "Ingreso: \(resultIngreso!) $MXN"
         cell.status_label.text = "ASIGNADO"
         

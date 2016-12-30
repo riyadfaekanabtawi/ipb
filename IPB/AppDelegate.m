@@ -15,26 +15,78 @@
 @implementation AppDelegate
 
 
+static BOOL _isVideoPlaying = NO;
 
--(NSUInteger)application:(UIApplication *)application
-supportedInterfaceOrientationsForWindow:(UIWindow *)window
-{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-        return UIInterfaceOrientationMaskAll;
-    else  /* iPad */
-        return UIInterfaceOrientationMaskAllButUpsideDown;
+static BOOL _isClipping = NO;
+
++(void)setVideoPlaying:(BOOL)isPlaying {
+    _isVideoPlaying = isPlaying;
+    
 }
 
 
 
 
++(BOOL)shouldAutorotate {
+    return YES;
+}
+
++(BOOL)isVideoPlaying {
+    return _isVideoPlaying;
+}
+
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    return [AppDelegate supportedInterfaceOrientations];
+}
++(NSUInteger)supportedInterfaceOrientations {
+    if (_isVideoPlaying) {
+        return UIInterfaceOrientationMaskAll;
+    }
+    else {
+        
+        if (_isClipping){
+            return UIInterfaceOrientationMaskLandscape;
+            
+        }else{
+            if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+            {
+                return UIInterfaceOrientationMaskLandscape;
+                
+            }else{
+                return UIInterfaceOrientationMaskPortrait;
+                
+            }
+            
+        }
+        
+    }
+}
++(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if (_isVideoPlaying) {
+        return YES;
+    }
+    else {
+        
+        if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+        {
+            return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+            
+        }else{
+            return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+            
+        }
+        
+    }
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-        for (NSString *font in [UIFont familyNames]) {
-            NSLog(@"%@", [UIFont fontNamesForFamilyName:font]);
-        }
-    
+//        for (NSString *font in [UIFont familyNames]) {
+//            NSLog(@"%@", [UIFont fontNamesForFamilyName:font]);
+//        }
+//    
     
     return YES;
 }

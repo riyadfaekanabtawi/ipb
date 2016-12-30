@@ -42,11 +42,23 @@ class PlantHomeCollectionViewCell: UICollectionViewCell {
     
         
         
+        
+        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        
+        
+    
+        
         let available = plant.planta_capacidadMax.int32Value - plant.planta_capacidadUsada.int32Value
         
         
         
-        self.plantused.text = "Capacidad Disponible: \(available) $MXN"
+        
+        let resultavailable = formatter.string(from: NSNumber(value:Int(available)))
+        
+        
+        self.plantused.text = "Capacidad Disponible: \(resultavailable!) $MXN"
         
         
     }

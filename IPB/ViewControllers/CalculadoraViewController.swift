@@ -364,16 +364,39 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
                 
                 let produccionSemanalEquation = equationMetaDiaria * Int32(self.diasTrabajoalasemana.text!)!
                 
-                self.diasEstimados.text = "\(diasFinishEquation)"
                 
-                self.metaDiaria.text = "\(equationMetaDiaria)"
                 
-                self.produccionSemanal.text = "\(produccionSemanalEquation)"
+                let formatter = NumberFormatter()
+                formatter.numberStyle = .decimal
                 
-                self.ingreso_brutoTextField.text = "\(equation)"
+                
                 
                
-                self.precioPorMinutoReal.text = "\(equationPrecioMinutoReal)"
+                let resultIngrdiasFinishEquationResulteso = formatter.string(from: NSNumber(value:Int(diasFinishEquation)))
+                
+                let equationMetaDiariaResulteso = formatter.string(from: NSNumber(value:Int(equationMetaDiaria)))
+                
+                
+                let produccionSemanalEquationResulteso = formatter.string(from: NSNumber(value:Int(produccionSemanalEquation)))
+                
+                
+                let equationResulteso = formatter.string(from: NSNumber(value:Int(equation)))
+                
+                
+                let equationPrecioMinutoRealResulteso = formatter.string(from: NSNumber(value:Int(equationPrecioMinutoReal)))
+                
+                
+                
+                self.diasEstimados.text = "\(resultIngrdiasFinishEquationResulteso!)"
+                
+                self.metaDiaria.text = "\(equationMetaDiariaResulteso!)"
+                
+                self.produccionSemanal.text = "\(produccionSemanalEquationResulteso!)"
+                
+                self.ingreso_brutoTextField.text = "\(equationResulteso!)"
+                
+               
+                self.precioPorMinutoReal.text = "\(equationPrecioMinutoRealResulteso!)"
 
                 
             }

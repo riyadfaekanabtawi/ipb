@@ -249,6 +249,90 @@
     }];
     
 }
++(void)GetEnviosUrgentesWithandHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    
+    
+    
+    [manager GET:[NSString stringWithFormat:@"%@getEnviosUrgentes",BASE_URL] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        
+        NSMutableArray *mutableArray = [NSMutableArray new];
+        
+        for(NSDictionary *dict in [responseObject objectForKey:@"api"]){
+            
+            PendingCut *cliente = [[PendingCut alloc] initWithDictionary:dict];
+            
+            
+            [mutableArray addObject:cliente];
+            
+        }
+        
+        handler(mutableArray);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
+
+
+
+}
+
++(void)GetReportsWithandHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    
+    
+    
+    [manager GET:[NSString stringWithFormat:@"%@getAllReports",BASE_URL] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        
+        NSMutableArray *mutableArray = [NSMutableArray new];
+        
+        for(NSDictionary *dict in [responseObject objectForKey:@"api"]){
+            
+            Report *cliente = [[Report alloc] initWithDictionary:dict];
+            
+            
+            [mutableArray addObject:cliente];
+            
+        }
+        
+        handler(mutableArray);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
+    
+    
+    
+}
+
 
 +(void)GetUsersWithandHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
     
@@ -590,14 +674,14 @@
     
 }
 
-+(void)createClientForIPB:(NSString *)client_name andContactName1:(NSString *)nombre1 andContactEmail1:(NSString *)email1 andContactTelefone1:(NSString *)telefone1 andContactName2:(NSString *)nombre2 andContactEmail2:(NSString *)email2 andContactTelefone2:(NSString *)telefone2 andContactName3:(NSString *)nombre3 andContactEmail3:(NSString *)email3 andContactTelefone3:(NSString *)telefone3 AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
++(void)createClientForIPB:(NSString *)client_name andContactName1:(NSString *)nombre1 andContactEmail1:(NSString *)email1 andContactTelefone1:(NSString *)telefone1 andContactName2:(NSString *)nombre2 andContactEmail2:(NSString *)email2 andContactTelefone2:(NSString *)telefone2 andContactName3:(NSString *)nombre3 andContactEmail3:(NSString *)email3 andContactTelefone3:(NSString *)telefone3 andContactPuesto1:(NSString *)puesto1 andContactPuesto2:(NSString *)puesto2 andContactPuesto3:(NSString *)puesto3 AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
     
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.securityPolicy.allowInvalidCertificates = YES;
     
     
-    NSDictionary *p = @{@"client":@{@"nombre":client_name,@"nombre_contacto1":nombre1,@"nombre_contacto2":nombre2,@"nombre_contacto3":nombre3,@"telefono_contacto1":telefone1,@"telefono_contacto2":telefone2,@"telefono_contacto3":telefone3,@"email_contacto1":email1,@"email_contacto2":email2,@"email_contacto3":email3}};
+    NSDictionary *p = @{@"client":@{@"nombre":client_name,@"nombre_contacto1":nombre1,@"nombre_contacto2":nombre2,@"nombre_contacto3":nombre3,@"telefono_contacto1":telefone1,@"telefono_contacto2":telefone2,@"telefono_contacto3":telefone3,@"email_contacto1":email1,@"email_contacto2":email2,@"email_contacto3":email3,@"puesto_contacto1":puesto1,@"puesto_contacto2":puesto2,@"puesto_contacto3":puesto3}};
     
     [manager POST:[NSString stringWithFormat:@"%@createClient",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
         

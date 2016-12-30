@@ -23,4 +23,5 @@
 @property NSString *editadoPor;
 @property NSString *estado;
 @property NSString *prenda;
+@property NSString *corte;
 @end
