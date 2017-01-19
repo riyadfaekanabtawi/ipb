@@ -20,6 +20,8 @@
 + (void) runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat;
 
 
++(void)isChoosingImage:(BOOL)value;
+
 
 +(NSDate *)stringToDate:(NSString *)string;
 +(NSDate *)stringToDate:(NSString *)string WithFormat:(NSString *)format;

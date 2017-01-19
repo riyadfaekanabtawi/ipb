@@ -20,7 +20,7 @@ class StylesCollectionViewCell: UICollectionViewCell {
     var controller:UIViewController!
     @IBOutlet var closeButton: UIButton!
     override func awakeFromNib() {
-    self.style_name.font = UIFont(name: FONT_BOLD, size: self.style_name.font.pointSize)
+    self.style_name.font = UIFont(name: FONT_REGULAR, size: self.style_name.font.pointSize)
     self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)
     }
     

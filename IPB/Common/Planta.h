@@ -15,4 +15,19 @@
 
 @property NSNumber *planta_capacidadMax;
 @property NSNumber *planta_capacidadUsada;
+
+
+@property float january_used;
+@property float febuary_used;
+@property float march_used;
+@property float april_used;
+@property float may_used;
+@property float june_used;
+@property float july_used;
+@property float august_used;
+@property float september_used;
+@property float october_used;
+@property float november_used;
+@property float december_used;
+
 @end

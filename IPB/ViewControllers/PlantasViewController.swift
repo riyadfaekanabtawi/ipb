@@ -13,7 +13,7 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
     @IBOutlet var titleViewLabelColelctionView: UILabel!
     @IBOutlet var titleViewLabel: UILabel!
 
-    
+    var editarPlanta = false
     @IBOutlet var BackaddPlantview: UIView!
     @IBOutlet var addPlantview: UIView!
     @IBOutlet var addplantLabelTitle: UILabel!
@@ -163,12 +163,34 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if indexPath.row == 0{
-            
-           self.showAddPlantView()
-            
+            self.editarPlanta = false
+          self.addplantLabelTitle.text = "NUEVA PLANTA"
+              self.plantCapaxMaxTextField.text = ""
+             self.plantNameTextField.text = ""
         }else{
+             self.addplantLabelTitle.text = "EDITAR PLANTA"
+            self.editarPlanta = true
+ 
+            
+            let plant = self.plants_array[indexPath.row - 1]
+            
+            
+            if (plant.planta_nombre != nil){
+            self.plantNameTextField.text = plant.planta_nombre
+                
+            }
+            
+            if (plant.planta_capacidadMax != nil){
+            
+            self.plantCapaxMaxTextField.text = "\(plant.planta_capacidadMax!)"
+            }
+            
             
         }
+        
+        
+        self.showAddPlantView()
+        
     }
     
     

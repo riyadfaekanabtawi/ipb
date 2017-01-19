@@ -21,7 +21,7 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
     let imagePicker = UIImagePickerController()
     
     var pickerDataSource = ["Administrador", "Gerente de Planta", "Gerente de Cortes", "Gerente de Envios"];
-    
+    var pickerDataSourcePlants:[Planta] = []
     @IBOutlet var guardarButton: UIButton!
     
     @IBOutlet var usuario_name: UITextField!
@@ -30,6 +30,11 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
     @IBOutlet var usuario_apellido: UITextField!
     @IBOutlet var user_apellidoLabel: UILabel!
     
+    
+    @IBOutlet var usuario_plantaTextField: UITextField!
+    @IBOutlet var usuario_plantaLabel: UILabel!
+    var pickerView = UIPickerView()
+    var pickerView2 = UIPickerView()
     @IBOutlet var usuario_telefono: UITextField!
     @IBOutlet var user_telefonoLabel: UILabel!
     
@@ -46,6 +51,10 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.usuario_plantaTextField.alpha = 0
+        
+        self.usuario_plantaLabel.alpha = 0
+        
           self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)
         NotificationCenter.default.addObserver(self, selector: #selector(UsuariosViewController.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(UsuariosViewController.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -57,6 +66,24 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         self.user_nameLabel.font = UIFont(name: FONT_BOLD, size: self.user_nameLabel.font.pointSize)
         self.usuario_name.font = UIFont(name: FONT_REGULAR, size: (self.usuario_name.font?.pointSize)!)
+        
+        
+        self.usuario_plantaLabel.font = UIFont(name: FONT_BOLD, size: self.usuario_plantaLabel.font.pointSize)
+        self.usuario_plantaTextField.font = UIFont(name: FONT_REGULAR, size: (self.usuario_plantaTextField.font?.pointSize)!)
+        
+      
+        Services.getPlantsWithandHandler({ (response) in
+            
+            self.pickerDataSourcePlants = response as! [Planta]
+            
+            
+            self.plant_collectionview.reloadData()
+            
+        }, orErrorHandler: { (err) in
+            
+            
+            
+        })
         
         self.user_apellidoLabel.font = UIFont(name: FONT_BOLD, size: self.user_apellidoLabel.font.pointSize)
         self.usuario_apellido.font = UIFont(name: FONT_REGULAR, size: (self.usuario_apellido.font?.pointSize)!)
@@ -77,22 +104,37 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
         self.guardarButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.guardarButton.titleLabel?.font.pointSize)!)
         self.addPlantview.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
         self.addPlantview.alpha = 0
-        let pickerView = UIPickerView()
+       
         
-        pickerView.delegate = self
-        pickerView.dataSource = self
+        
+        self.pickerView2.delegate = self
+        self.pickerView2.dataSource = self
+        
+        
+        
+        
+        self.pickerView2.showsSelectionIndicator = true
+        self.pickerView2.delegate = self
+        self.pickerView2.dataSource = self
+
+        
+        
+ 
+        
+        self.pickerView.delegate = self
+        self.pickerView.dataSource = self
         
 
 
         
-        pickerView.showsSelectionIndicator = true
-        pickerView.delegate = self
-        pickerView.dataSource = self
+        self.pickerView.showsSelectionIndicator = true
+        self.pickerView.delegate = self
+        self.pickerView.dataSource = self
         
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
         toolBar.isTranslucent = true
-        toolBar.tintColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
+        toolBar.tintColor = UIColor(red: 128/255, green: 128/255, blue: 128/255, alpha: 1)
         toolBar.sizeToFit()
         
         let doneButton = UIBarButtonItem(title: "Terminar", style: UIBarButtonItemStyle.plain, target: self, action: #selector(UsuariosViewController.donePicker(sender:)))
@@ -103,8 +145,12 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
         toolBar.isUserInteractionEnabled = true
         
       
+        self.usuario_plantaTextField.inputView = self.pickerView2
+         self.usuario_plantaTextField.inputAccessoryView = toolBar
         
-        self.usuario_puesto.inputView = pickerView
+        self.usuario_puesto.inputView = self.pickerView
+        
+        
           self.usuario_puesto.inputAccessoryView = toolBar
         self.refreshHomePlants()
         self.titleViewLabel.font = UIFont(name: FONT_BOLD, size: self.titleViewLabel.font.pointSize)
@@ -125,11 +171,25 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return self.pickerDataSource.count;
+        
+        if self.pickerView2 == pickerView{
+          return self.pickerDataSourcePlants.count;
+        
+        }else{
+          return self.pickerDataSource.count;
+        
+        }
+      
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
+         if self.pickerView2 == pickerView{
+              return self.pickerDataSourcePlants[row].planta_nombre
+            
+         }else{
         return self.pickerDataSource[row]
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -150,13 +210,44 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     func donePicker (sender:UIBarButtonItem)
     {
-        self.usuario_puesto.resignFirstResponder()
+        
+        if self.usuario_puesto.isEditing{
+        
+        
+                if self.usuario_puesto.text == "Gerente de Planta"{
+                    
+                    UIView.animate(withDuration: 0.2) {
+                        self.usuario_plantaTextField.alpha = 1
+                        
+                        self.usuario_plantaLabel.alpha = 1
+                        
+                    }
+                      self.usuario_puesto.resignFirstResponder()
+                    self.usuario_plantaTextField.becomeFirstResponder()
+                }else{
+                    self.usuario_puesto.resignFirstResponder()
+                    
+                }
+                
+         
+      
+            
+        }
+        
+        
+        if self.usuario_plantaTextField.isEditing{
+        
+          self.usuario_plantaTextField.resignFirstResponder()
+        
+        }
+      
     }
     
     
     func cancelPicker (sender:UIBarButtonItem)
     {
         self.usuario_puesto.resignFirstResponder()
+        self.usuario_plantaTextField.resignFirstResponder()
     }
   
     
@@ -205,9 +296,35 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         if self.usuario_password == textField{
         
-        self.usuario_password.resignFirstResponder()
+        self.usuario_puesto.becomeFirstResponder()
         
         }
+        
+        
+        if self.usuario_puesto == textField{
+            if self.usuario_puesto.text == "Gerente de Planta"{
+            
+                UIView.animate(withDuration: 0.2) {
+                    self.usuario_plantaTextField.alpha = 1
+                
+                    self.usuario_plantaLabel.alpha = 1
+                    
+                }
+               self.usuario_plantaTextField.becomeFirstResponder()
+            }else{
+               self.usuario_puesto.resignFirstResponder()
+            
+            }
+         
+            
+        }
+        
+        if self.usuario_plantaTextField == textField{
+        
+        self.usuario_plantaTextField.resignFirstResponder()
+        
+        }
+        
         
         return true
     }
@@ -324,7 +441,7 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     @IBAction func selectUserImageTouchUpInside(sender: UIButton) {
         self.avatar_placeholder.transform = CGAffineTransform(scaleX: 0.01, y: 0.01);
-        
+        Functions.isChoosingImage(true)
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.30, initialSpringVelocity: 6.0, options: UIViewAnimationOptions.allowUserInteraction, animations: { () -> Void in
             self.avatar_placeholder.transform = CGAffineTransform.identity;
             
@@ -343,7 +460,7 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
+        Functions.isChoosingImage(false)
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             self.user_avatar.contentMode = UIViewContentMode.scaleAspectFill
             self.user_avatar.image = pickedImage
@@ -357,6 +474,7 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        Functions.isChoosingImage(false)
         dismiss(animated: true, completion: nil)
     }
 
@@ -381,55 +499,77 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
             
         }else{
             
+            if self.usuario_puesto.text == "Gerente de Planta" && self.usuario_plantaTextField.text == ""{
             
-            let alertController = UIAlertController(title: "Atencion!", message: "Está por cargar el usuario: \(self.usuario_name.text!) \(self.usuario_apellido.text!)", preferredStyle: .alert)
-            let imageData = UIImageJPEGRepresentation(self.user_avatar.image!, 0.1)
-            
-            let base64String = imageData?.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
-          
-            
-            let defults = UserDefaults.standard
-            var device_token = ""
-            if (defults.object(forKey: "device_token") != nil){
-                device_token = defults.object(forKey: "device_token") as! String
+                let alertController = UIAlertController(title: "Oops!", message: "El usuario es Gerente de Planta, debes asignarle una planta.", preferredStyle: .alert)
+                
+                
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    
+                }
+                alertController.addAction(OKAction)
+                
+                self.present(alertController, animated: true) {
+                    // ...
+                }
+                
             }else{
-                device_token = "0"
-                
-            }
-
             
-            let OKAction = UIAlertAction(title: "Cargar Usuario", style: .default) { (action) in
+                let alertController = UIAlertController(title: "Atencion!", message: "Está por cargar el usuario: \(self.usuario_name.text!) \(self.usuario_apellido.text!)", preferredStyle: .alert)
+                let imageData = UIImageJPEGRepresentation(self.user_avatar.image!, 0.1)
                 
-                Services.createUser(forIPB: self.usuario_name.text, andUserSurname: self.usuario_apellido.text, andTelefone: self.usuario_telefono.text, andEmail: self.usuario_email.text, andPassword: self.usuario_password.text, andPuesto: self.usuario_puesto.text, andbase64String: base64String, andDeviceToken: device_token, andHandler: { (response) in
+                let base64String = imageData?.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
+                
+                
+                let defults = UserDefaults.standard
+                var device_token = ""
+                if (defults.object(forKey: "device_token") != nil){
+                    device_token = defults.object(forKey: "device_token") as! String
+                }else{
+                    device_token = "0"
                     
+                }
+                
+                var string = ""
+                if self.usuario_plantaTextField.text != ""{
+                    string = self.usuario_plantaTextField.text!
+                }
+                
+                let OKAction = UIAlertAction(title: "Cargar Usuario", style: .default) { (action) in
                     
-                    self.closeAddPlantView()
-                    self.refreshHomePlants()
-                    let alertController = UIAlertController(title: "Bien!", message: "Cargaste el usuario: \(self.usuario_name.text!) \(self.usuario_apellido.text!)", preferredStyle: .alert)
-                    
-                    
-                    let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    Services.createUser(forIPB: self.usuario_name.text, andUserSurname: self.usuario_apellido.text, andTelefone: self.usuario_telefono.text, andEmail: self.usuario_email.text, andPassword: self.usuario_password.text, andPuesto: self.usuario_puesto.text, andbase64String: base64String, andDeviceToken: device_token, andPlantName:string, andHandler: { (response) in
                         
-                    }
-                    alertController.addAction(OKAction)
+                        
+                        self.closeAddPlantView()
+                        self.refreshHomePlants()
+                        let alertController = UIAlertController(title: "Bien!", message: "Cargaste el usuario: \(self.usuario_name.text!) \(self.usuario_apellido.text!)", preferredStyle: .alert)
+                        
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        
+                        
+                    }, orErrorHandler: { (err) in
+                        
+                        
+                    })
                     
-                    self.present(alertController, animated: true) {
-                        // ...
-                    }
                     
-                    
-                }, orErrorHandler: { (err) in
-                    
-                    
-                })
+                }
+                alertController.addAction(OKAction)
                 
-                
+                self.present(alertController, animated: true) {
+                    // ...
+                }
+
             }
-            alertController.addAction(OKAction)
             
-            self.present(alertController, animated: true) {
-                // ...
-            }
             
             
             
@@ -442,7 +582,14 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        self.usuario_puesto.text = self.pickerDataSource[row]
+        if self.pickerView == pickerView{
+            self.usuario_puesto.text = self.pickerDataSource[row]
+        
+        }else{
+            self.usuario_plantaTextField.text = self.pickerDataSourcePlants[row].planta_nombre
+        
+        }
+    
     }
     @IBAction func closeAddPlantView(){
         self.hideAddplantView()

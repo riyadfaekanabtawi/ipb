@@ -14,8 +14,8 @@ protocol plantdelegate {
    
 }
 class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalendarDelegate {
-    
-    @IBOutlet var SucessViewAssing: UIView!
+    var currentDate:Date!
+ 
     var controller:UIViewController!
     @IBOutlet var graphview: UIWebView!
     var delegate:plantdelegate!
@@ -25,6 +25,7 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
     @IBOutlet var capax_used: UILabel!
     @IBOutlet var capax_max: UILabel!
     @IBOutlet var plant_name: UILabel!
+    @IBOutlet var capax_disp: UILabel!
     var corteSelected:PendingCut!
     var selectedPlant:Planta!
     @IBOutlet var asignarLabel: UILabel!
@@ -32,8 +33,7 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
     var viewParent:UIView!
     override func awakeFromNib() {
         
-        self.SucessViewAssing.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-          self.SucessViewAssing.alpha = 0
+
         NotificationCenter.default.addObserver(self, selector: #selector(PlantCollectionViewCell.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(PlantCollectionViewCell.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 
@@ -51,8 +51,9 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
         self.asignarLabel.font = UIFont(name: FONT_REGULAR, size: (self.asignarLabel.font?.pointSize)!)
         self.capax_used.font = UIFont(name: FONT_REGULAR, size: (self.capax_used.font?.pointSize)!)
         self.capax_max.font = UIFont(name: FONT_REGULAR, size: (self.capax_max.font?.pointSize)!)
-        self.plant_name.font = UIFont(name: FONT_BOLD, size: (self.plant_name.font?.pointSize)!)
+        self.plant_name.font = UIFont(name: FONT_REGULAR, size: (self.plant_name.font?.pointSize)!)
         
+        self.capax_disp.font = UIFont(name: FONT_REGULAR, size: (self.capax_disp.font?.pointSize)!)
         
     }
     
@@ -74,16 +75,11 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
         
       
         
-    self.capax_max.text = "Capacidad Máxima: \(resultMax!) MXN"
+        self.capax_max.text = "Capacidad Máxima: $ \(resultMax!)"
         
-        if plant.planta_capacidadUsada != nil{
-              let resultUsed = formatter.string(from: NSNumber(value:Int(plant.planta_capacidadUsada.intValue)))
-        self.capax_used.text = "Capacidad Usada: \(resultUsed!) MXN"
-        }else{
-        self.capax_used.text = "Capacidad Usada: 0 MXN"
-        }
-    
-    
+     
+        
+        
     }
     
     
@@ -128,11 +124,11 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
             
             
             
-            let preficofinal = Int32(self.cantidad_por_asignar_textViewlabel.text!)! * self.corteSelected.cut_precio_unitario.int32Value
+            let preficofinal = Float32(self.cantidad_por_asignar_textViewlabel.text!)!
             
-            if preficofinal > self.selectedPlant.planta_capacidadMax.int32Value{
+            if preficofinal > self.corteSelected.cut_cantidad.floatValue{
             
-                let alertController = UIAlertController(title: "Oops!", message: "La capacidad a asignar no puede ser mayor a la capaciad maxima de la planta", preferredStyle: .alert)
+                let alertController = UIAlertController(title: "Oops!", message: "La capacidad a asignar no puede ser mayor a la cantidad del corte", preferredStyle: .alert)
                 
                 
                 
@@ -149,15 +145,15 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
             }else{
             
                 
-                let cantidad = Int32(self.cantidad_por_asignar_textViewlabel.text!)
+                let cantidad = Float32(self.cantidad_por_asignar_textViewlabel.text!)
                 
-                let total = cantidad! * self.corteSelected.cut_precio_unitario.int32Value
+                let total = cantidad! * self.corteSelected.cut_precio_unitario
                 
-                let alertController = UIAlertController(title: "Atención!", message: "Estas por asignar : \(self.cantidad_por_asignar_textViewlabel.text!) prendas a la planta: \(self.selectedPlant.planta_nombre!) = \(total) MXN $", preferredStyle: .alert)
+                let alertController = UIAlertController(title: "Atención!", message: "Estas por asignar : \(self.cantidad_por_asignar_textViewlabel.text!) prendas a la planta: \(self.selectedPlant.planta_nombre!) = \(total)  $", preferredStyle: .alert)
                 
                 
                 let OKAction = UIAlertAction(title: "Confirmar Asignación", style: .default) { (action) in
-                    Services.assignCutToPlant(withQuantity: NSNumber(value:Int32(self.cantidad_por_asignar_textViewlabel.text!)!), andCliente: self.corteSelected.cut_client, fecha: self.selectedDate, andPrecioTotal: NSNumber(value:preficofinal), andPrecioUnitario: self.corteSelected.cut_precio_unitario, andstyleImage: self.corteSelected.cut_estilo, andStyle: self.corteSelected.cut_estilo, andPlantID: self.selectedPlant.planta_id, andPendingCutID:self.corteSelected.cut_id, andHandler: { (response) in
+                    Services.assignCutToPlant(withQuantity: NSNumber(value:Int32(self.cantidad_por_asignar_textViewlabel.text!)!), andCliente: self.corteSelected.cut_client, fecha: self.selectedDate, andPrecioTotal:  NSNumber(value: Float32(total)), andPrecioUnitario: NSNumber(value: Float32(self.corteSelected.cut_precio_unitario)), andstyleImage: self.corteSelected.cut_estilo, andStyle: self.corteSelected.cut_estilo, andPlantID: self.selectedPlant.planta_id, andPendingCutID:self.corteSelected.cut_id, andHandler: { (response) in
                         
                         if ((response as? String) != nil){
                             
@@ -180,7 +176,7 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
                             
                             
                             let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
-                                // ...
+                         self.delegate.asignedQuantityToPlant(cut: response as! PendingCut)
                             }
                             alertController.addAction(OKAction)
                             
@@ -188,9 +184,9 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
                                 // ...
                             }
                             
-                            self.delegate.asignedQuantityToPlant(cut: response as! PendingCut)
+                           
                         }
-                        
+           
                         
                     }, orErrorHandler: { (err) in
                         
@@ -198,7 +194,16 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
                         
                     })
                 }
+                
+                
+                  let CAction = UIAlertAction(title: "Cancelar", style: .default) { (action) in
+                    
+                    
+                }
+                
                 alertController.addAction(OKAction)
+                alertController.addAction(CAction)
+                
                 
                 self.controller.present(alertController, animated: true) {
                     // ...
@@ -231,36 +236,241 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date) {
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
+        UIView.animate(withDuration: 0.2, animations: {
+        
+               self.cantidad_por_asignar_textViewlabel.resignFirstResponder()
+        }, completion: {
+            (value: Bool) in
+          
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd-MM-yyyy"
+            
+            
+            let dateString = formatter.string(from: date)
+            
+            self.selectedDate = dateString
+            
+            
+            
+            
+            let alertController = UIAlertController(title: "Bien!", message: "Ejiste la fecha: \(self.selectedDate!)", preferredStyle: .alert)
+            
+            
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                // ...
+            }
+            alertController.addAction(OKAction)
+            
+            self.controller.present(alertController, animated: true) {
+                // ...
+            }
+
+            
+        })
         
         
-        let dateString = formatter.string(from: date)
-        
-        self.selectedDate = dateString
         
         
-        
-        
-        let alertController = UIAlertController(title: "Bien!", message: "Ejiste la fecha: \(self.selectedDate!)", preferredStyle: .alert)
-        
-        
-        
-        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
-            // ...
-        }
-        alertController.addAction(OKAction)
-        
-        self.controller.present(alertController, animated: true) {
-            // ...
-        }
         
     
         
     }
     
-   
+    
+    func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+        
+       let formatter = DateFormatter()
+        
+        formatter.dateFormat = "MM"
+        
+        let total = self.selectedPlant.planta_capacidadMax.floatValue
+        
+        let stringDate = formatter.string(from: calendar.currentPage)
+        
+        if stringDate == "01"{
+            
+            
+        self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.january_used) "
+        self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.january_used) "
+        }
+        
+        if stringDate == "02"{
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.febuary_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.febuary_used) "
+            
+        }
+        
+        if stringDate == "03"{
+  
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.march_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.march_used) "
+        }
+        
+        if stringDate == "04"{
 
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.april_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.april_used) "
+        }
+        
+        if stringDate == "05"{
+    
+            
+    
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.may_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.may_used) "
+            
+        }
+        
+        if stringDate == "06"{
+   
+            
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.june_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.june_used) "
+            
+        }
+        
+        if stringDate == "07"{
+            
+       
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.july_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.july_used) "
+            
+        }
+        
+        if stringDate == "08"{
+    
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.august_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.august_used) "
+            
+        }
+        
+        if stringDate == "09"{
+         
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.september_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.september_used) "
+        }
+        
+        if stringDate == "10"{
+ 
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.october_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.october_used) "
+        }
+        
+        if stringDate == "11"{
+      
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.november_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.november_used) "
+        }
+        
+        if stringDate == "12"{
+          
+              self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.december_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.december_used) "
+        }
+      
+        
+    }
+   
+    func calendar(_ calendar: FSCalendar, willDisplay cell: FSCalendarCell, for date: Date, at position: FSCalendarMonthPosition) {
+        
+        self.currentDate = calendar.currentPage
+        
+        let formatterdate = DateFormatter()
+        
+        formatterdate.dateFormat = "MM"
+        
+        
+        let total = self.selectedPlant.planta_capacidadMax.floatValue
+        
+        let stringDate = formatterdate.string(from: calendar.currentPage)
+        
+        if stringDate == "01"{
+            
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.january_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.january_used) "
+        }
+        
+        if stringDate == "02"{
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.febuary_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.febuary_used) "
+            
+        }
+        
+        if stringDate == "03"{
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.march_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.march_used) "
+        }
+        
+        if stringDate == "04"{
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.april_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.april_used) "
+        }
+        
+        if stringDate == "05"{
+            
+            
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.may_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.may_used) "
+            
+        }
+        
+        if stringDate == "06"{
+            
+            
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.june_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.june_used) "
+            
+        }
+        
+        if stringDate == "07"{
+            
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.july_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.july_used) "
+            
+        }
+        
+        if stringDate == "08"{
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.august_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.august_used) "
+            
+        }
+        
+        if stringDate == "09"{
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.september_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.september_used) "
+        }
+        
+        if stringDate == "10"{
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.october_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.october_used) "
+        }
+        
+        if stringDate == "11"{
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.november_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.november_used) "
+        }
+        
+        if stringDate == "12"{
+            
+            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.december_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.december_used) "
+        }
+        
+    }
 
 
 }

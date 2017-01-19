@@ -28,7 +28,8 @@ class ReportDashboardCollectionViewCell: UICollectionViewCell {
     
     func displayReports(report:Report){
     
-      self.LabelText.text = "Corte: \( report.corte!)"
+        
+          self.LabelText.text = "Corte: \( report.cut_name!)"
      
     
     }

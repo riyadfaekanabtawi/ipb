@@ -152,10 +152,15 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         if self.telefono_contacto1 == textField{
         
-        self.nombre_contacto2.becomeFirstResponder()
+        self.puesto_contacto1.becomeFirstResponder()
             
         }
         
+        if self.puesto_contacto1 == textField{
+            
+            self.nombre_contacto2.becomeFirstResponder()
+            
+        }
         
         if self.nombre_contacto2 == textField{
         
@@ -173,10 +178,14 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         if self.telefono_contacto2 == textField{
         
-        self.nombre_contacto3.becomeFirstResponder()
+        self.puesto_contacto2.becomeFirstResponder()
         
         }
-        
+        if self.puesto_contacto2 == textField{
+            
+            self.nombre_contacto3.becomeFirstResponder()
+            
+        }
         
         if self.nombre_contacto3 == textField{
         
@@ -194,11 +203,16 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         if self.telefono_contacto3 == textField{
         
-            self.telefono_contacto3.resignFirstResponder()
+            self.puesto_contacto3.becomeFirstResponder()
         
         }
        
         
+        if self.puesto_contacto3 == textField{
+            
+            self.puesto_contacto3.resignFirstResponder()
+            
+        }
         
         
         return true
@@ -212,43 +226,43 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
     func showAddPlantView(){
         
         if self.editingclient == true{
-        
+            
             if self.selectedclient.nombrecontacto3 != nil{
-            self.nombre_contacto3.text = self.selectedclient.nombrecontacto3
+                self.nombre_contacto3.text = self.selectedclient.nombrecontacto3
             }
             if self.selectedclient.nombrecontacto1 != nil{
-            self.nombre_contacto1.text = self.selectedclient.nombrecontacto1
+                self.nombre_contacto1.text = self.selectedclient.nombrecontacto1
             }
             if self.selectedclient.nombrecontacto2 != nil{
-            self.nombre_contacto2.text = self.selectedclient.nombrecontacto2
+                self.nombre_contacto2.text = self.selectedclient.nombrecontacto2
             }
             
             
-            if  self.selectedclient.emailcontacto3 != nil{
-            
-            self.email_contacto3.text = self.selectedclient.emailcontacto3
+            if  self.selectedclient.emailcontacto2 != nil{
+                
+                self.email_contacto2.text = self.selectedclient.emailcontacto2
             }
+            if self.selectedclient.emailcontacto1 != nil{
+                self.email_contacto1.text = self.selectedclient.emailcontacto1
+            }
+            
             if self.selectedclient.emailcontacto3 != nil{
-            self.email_contacto3.text = self.selectedclient.emailcontacto3
-            }
-            
-            if self.selectedclient.emailcontacto3 != nil{
-            self.email_contacto3.text = self.selectedclient.emailcontacto3
+                self.email_contacto3.text = self.selectedclient.emailcontacto3
             }
             
             if  self.selectedclient.telefonocontacto3 != nil{
-            
-            self.telefono_contacto3.text = self.selectedclient.telefonocontacto3
+                
+                self.telefono_contacto3.text = self.selectedclient.telefonocontacto3
             }
             
             if self.selectedclient.telefonocontacto2 != nil{
-            
-            self.telefono_contacto2.text = self.selectedclient.telefonocontacto2
+                
+                self.telefono_contacto2.text = self.selectedclient.telefonocontacto2
             }
             
             if self.selectedclient.telefonocontacto1 != nil{
-                 self.telefono_contacto1.text = self.selectedclient.telefonocontacto1
-            
+                self.telefono_contacto1.text = self.selectedclient.telefonocontacto1
+                
             }
             
             
@@ -266,7 +280,7 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
                 self.puesto_contacto1.text = self.selectedclient.puestocontacto1
                 
             }
-       
+            
             
             
             self.plantNameTextField.text = self.selectedclient.client_name
@@ -293,6 +307,20 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         
      
         self.plantNameTextField.resignFirstResponder()
+        self.nombre_contacto1.resignFirstResponder()
+        self.nombre_contacto2.resignFirstResponder()
+        self.nombre_contacto3.resignFirstResponder()
+        self.email_contacto1.resignFirstResponder()
+        self.email_contacto2.resignFirstResponder()
+        self.email_contacto3.resignFirstResponder()
+        
+        self.telefono_contacto1.resignFirstResponder()
+        self.telefono_contacto2.resignFirstResponder()
+        self.telefono_contacto3.resignFirstResponder()
+        
+        self.puesto_contacto1.resignFirstResponder()
+        self.puesto_contacto2.resignFirstResponder()
+        self.puesto_contacto3.resignFirstResponder()
         
     }
     
@@ -379,8 +407,8 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         
         
-        if self.plantNameTextField.text == "" || self.nombre_contacto1.text == "" || self.nombre_contacto2.text == ""  || self.nombre_contacto3.text == ""  || self.email_contacto1.text == "" || self.email_contacto2.text == "" || self.email_contacto3.text == "" || self.telefono_contacto1.text == "" || self.telefono_contacto2.text == "" || self.telefono_contacto3.text == "" || self.puesto_contacto3.text == "" || self.puesto_contacto1.text == "" || self.puesto_contacto2.text == "" {
-            let alertController = UIAlertController(title: "Oops!", message: "Debes llenar todos los campos para cargar un cliente", preferredStyle: .alert)
+        if self.plantNameTextField.text == "" {
+            let alertController = UIAlertController(title: "Oops!", message: "Debes llenar el nombre de cliente por lo menos para agregarlo", preferredStyle: .alert)
             
             
             let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
@@ -395,38 +423,83 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         }else{
             
             
-            let alertController = UIAlertController(title: "Atencion!", message: "Está por cargar el cliente: \(self.plantNameTextField.text!)", preferredStyle: .alert)
+            if self.editingclient{
             
-            
-            let OKAction = UIAlertAction(title: "Cargar Cliente", style: .default) { (action) in
+                let alertController = UIAlertController(title: "Atencion!", message: "Está por actualizar el cliente: \(self.plantNameTextField.text!)", preferredStyle: .alert)
                 
-                Services.createClient(forIPB: self.plantNameTextField.text,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andHandler: { (response) in
-                    
-                    self.closeAddPlantView()
-                    self.refreshHomePlants()
-                    let alertController = UIAlertController(title: "Bien!", message: "Cargaste el cliente: \(self.plantNameTextField.text!)", preferredStyle: .alert)
+                
+                let OKAction = UIAlertAction(title: "Actualizar Cliente", style: .default) { (action) in
                     
                     
-                    let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    Services.updateClient(self.plantNameTextField.text, andID:self.selectedclient.client_id,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andHandler: { (response) in
                         
-                    }
-                    alertController.addAction(OKAction)
+                        self.closeAddPlantView()
+                        self.refreshHomePlants()
+                        let alertController = UIAlertController(title: "Bien!", message: "Actualizaste el cliente: \(self.plantNameTextField.text!)", preferredStyle: .alert)
+                        
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        
+                    }, orErrorHandler: { (err) in
+                        
+                        
+                    })
                     
-                    self.present(alertController, animated: true) {
-                        // ...
-                    }
-                    
-                }, orErrorHandler: { (err) in
                     
                     
-                })
+                }
+                alertController.addAction(OKAction)
                 
-                
-            }
-            alertController.addAction(OKAction)
+                self.present(alertController, animated: true) {
+                    // ...
+                }
             
-            self.present(alertController, animated: true) {
-                // ...
+            }else{
+            
+                let alertController = UIAlertController(title: "Atencion!", message: "Está por cargar el cliente: \(self.plantNameTextField.text!)", preferredStyle: .alert)
+                
+                
+                let OKAction = UIAlertAction(title: "Cargar Cliente", style: .default) { (action) in
+                    
+                    
+                    Services.createClient(forIPB: self.plantNameTextField.text,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andHandler: { (response) in
+                        
+                        self.closeAddPlantView()
+                        self.refreshHomePlants()
+                        let alertController = UIAlertController(title: "Bien!", message: "Cargaste el cliente: \(self.plantNameTextField.text!)", preferredStyle: .alert)
+                        
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        
+                    }, orErrorHandler: { (err) in
+                        
+                        
+                    })
+                    
+                    
+                    
+                }
+                alertController.addAction(OKAction)
+                
+                self.present(alertController, animated: true) {
+                    // ...
+                }
+            
+            
             }
             
             

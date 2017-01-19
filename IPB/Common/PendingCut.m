@@ -13,19 +13,19 @@
     self = [super init];
     
     if (self) {
-        self.cut_id = [dictionary objectForKey:@"id"];
-        self.cut_client = [dictionary objectForKey:@"cliente"];
-        self.cut_estilo = [dictionary objectForKey:@"estilo"];
-        self.cut_cantidad = [dictionary objectForKey:@"cantidad"];
-        self.cut_precio_unitario = [NSNumber numberWithFloat:[[dictionary objectForKey:@"precio_unitario"] floatValue]];
+        self.cut_id = replaceNSNullValue([dictionary objectForKey:@"id"]);
+        self.cut_client = replaceNSNullValue([dictionary objectForKey:@"cliente"]);
+        self.cut_estilo =  replaceNSNullValue([dictionary objectForKey:@"estilo"]);
+        self.cut_cantidad = replaceNSNullValue([dictionary objectForKey:@"cantidad"]);
+        self.cut_precio_unitario = [[dictionary objectForKey:@"precio_unitario"] floatValue];
         self.corte = replaceNSNullValue([dictionary objectForKey:@"corte"]);
-        self.estado = [dictionary objectForKey:@"status"];
-        self.cut_precio_final = [NSNumber numberWithFloat:[[dictionary objectForKey:@"precio_final"] floatValue]];
-        self.cut_fecha_ipb = [dictionary objectForKey:@"fecha_ipb"];
-        self.cut_fecha_client = [dictionary objectForKey:@"fecha_cliente"];
-        self.cut_list = [dictionary objectForKey:@"lista"];
-        self.prenda = [dictionary objectForKey:@"prenda"];
-        self.editadoPor = [dictionary objectForKey:@"editado_por"];
+        self.estado = replaceNSNullValue([dictionary objectForKey:@"status"]);
+        self.cut_precio_final = [[dictionary objectForKey:@"precio_final"] floatValue];
+        self.cut_fecha_ipb = replaceNSNullValue([dictionary objectForKey:@"fecha_ipb"]);
+        self.cut_fecha_client = replaceNSNullValue([dictionary objectForKey:@"fecha_cliente"]);
+        self.cut_list = replaceNSNullValue([dictionary objectForKey:@"lista"]);
+        self.prenda = replaceNSNullValue([dictionary objectForKey:@"prenda"]);
+        self.editadoPor = replaceNSNullValue([dictionary objectForKey:@"editado_por"]);
     }
     
     return self;

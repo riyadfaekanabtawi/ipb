@@ -15,8 +15,8 @@
 @property NSString *cut_list;
 @property NSString *cut_estilo;
 @property NSNumber *cut_cantidad;
-@property NSNumber *cut_precio_unitario;
-@property NSNumber *cut_precio_final;
+@property float cut_precio_unitario;
+@property float cut_precio_final;
 @property NSString *cut_fecha_ipb;
 @property NSString *cut_fecha_client;
 @property NSString *cut_lista;

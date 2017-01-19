@@ -12,10 +12,11 @@ class UrgentSebdsDashboardCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet var mainView: UIView!
     @IBOutlet var cutNameLabel: UILabel!
+    @IBOutlet var clientLabel: UILabel!
     override func awakeFromNib() {
         
         self.cutNameLabel.font = UIFont(name: FONT_REGULAR, size: self.cutNameLabel.font.pointSize)
-       
+       self.clientLabel.font = UIFont(name: FONT_REGULAR, size: self.clientLabel.font.pointSize)
         self.mainView.layer.cornerRadius = 4
         self.mainView.layer.masksToBounds = true
     }
@@ -24,8 +25,17 @@ class UrgentSebdsDashboardCollectionViewCell: UICollectionViewCell {
     
     func displayCuts(cut:PendingCut){
     
-      self.cutNameLabel.text = "Corte: \(cut.corte!)"
+      self.cutNameLabel.text = "\(cut.corte!)"
+    self.clientLabel.text = "\(cut.cut_client!)"
+    
+    }
     
     
+    func displayCorte(cut:Corte){
+        
+        self.cutNameLabel.text = "\(cut.corte!)"
+        self.clientLabel.text = "\(cut.cut_client!)"
+        
+        
     }
 }

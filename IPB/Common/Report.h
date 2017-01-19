@@ -28,5 +28,15 @@
 @property NSString *dayNumbers;
 @property NSString *hour;
 
+@property NSString *type_report;
+@property NSString *cut_name;
+
+
+@property NSString *status_report;
+@property NSNumber *cantidad_de_envio;
+@property NSNumber *numero_de_envio;
+@property NSNumber *cantidad_por_enviar;
+@property NSNumber *cantidad_enviada;
+@property NSNumber *cantidad_real_envio;
 
 @end

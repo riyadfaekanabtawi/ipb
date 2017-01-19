@@ -17,8 +17,8 @@ class EnviosViewController: UIViewController,UICollectionViewDelegate,UICollecti
     @IBOutlet var cortesTitle: UILabel!
     @IBOutlet var noCutsLabel: UILabel!
     @IBOutlet var cuts_collectionview: UICollectionView!
-    var pending_cuts_array:[PendingCut] = []
-    var selected_cut:PendingCut!
+    var pending_cuts_array:[Corte] = []
+    var selected_cut:Corte!
     
     
     override func viewDidLoad() {
@@ -35,7 +35,7 @@ class EnviosViewController: UIViewController,UICollectionViewDelegate,UICollecti
         self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)!
         self.noCutsLabel.alpha = 0
         self.cortesTitle.font = UIFont(name: FONT_BOLD, size: self.cortesTitle.font.pointSize)
-        self.noCutsLabel.font = UIFont(name: FONT_BOLD, size: self.noCutsLabel.font.pointSize)
+        self.noCutsLabel.font = UIFont(name: FONT_REGULAR, size: self.noCutsLabel.font.pointSize)
         self.noCutsLabel.alpha = 0
         self.cuts_collectionview.alpha = 0
         self.cuts_collectionview.layer.cornerRadius = 4
@@ -56,7 +56,7 @@ class EnviosViewController: UIViewController,UICollectionViewDelegate,UICollecti
         
         Services.getEnviosUrgentesWithandHandler({ (response) in
             
-            self.pending_cuts_array = response as! [PendingCut]
+            self.pending_cuts_array = response as! [Corte]
             
             if self.pending_cuts_array.count != 0{
                 self.noCutsLabel.alpha = 0
@@ -106,11 +106,11 @@ class EnviosViewController: UIViewController,UICollectionViewDelegate,UICollecti
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cortes_pending", for: indexPath) as! PendingCutCollectionViewCell
         cell.delegate = self
-        cell.displayPendingCut(cut: self.pending_cuts_array[indexPath.row])
-        let resultIngreso = formatter.string(from: NSNumber(value:self.pending_cuts_array[indexPath.row].cut_precio_final.intValue))
+        cell.displayCorte(cut: self.pending_cuts_array[indexPath.row])
+        let resultIngreso = formatter.string(from: NSNumber(value:self.pending_cuts_array[indexPath.row].cut_precio_final))
         cell.ingreso_label.text = "Ingreso: \(resultIngreso!) $MXN"
         cell.status_label.text = "ASIGNADO"
-        
+         cell.status_view.backgroundColor = Functions.color(withHexString: "FF3B27", andAlpha: 1)
         return cell
         
         
@@ -118,7 +118,7 @@ class EnviosViewController: UIViewController,UICollectionViewDelegate,UICollecti
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.cuts_collectionview.frame.size.width-20, height: 160)
+        return CGSize(width: self.cuts_collectionview.frame.size.width-20, height: 240)
     }
     
     @IBAction func goBack(){

@@ -4,7 +4,7 @@
 # use_frameworks!
 
 target 'IPB' do
-
+#pod 'NVActivityIndicatorView'
 pod 'FSCalendar'
 pod 'AFNetworking', '~> 3.0'
 pod 'SDWebImage', '~>3.8'

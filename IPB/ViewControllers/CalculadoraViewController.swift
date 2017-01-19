@@ -47,6 +47,45 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let defaults = UserDefaults.standard
+        
+        if (defaults.object(forKey: "minutos_dia_operario") != nil){
+            
+            self.minutosDiaOperario.text = (defaults.object(forKey: "minutos_dia_operario") as! String)
+            
+        }
+        
+        if (defaults.object(forKey: "minutos_semana_operario") != nil){
+            
+            self.minutosSeamanaOperario.text = (defaults.object(forKey: "minutos_semana_operario") as! String)
+            
+        }
+        
+        
+        if (defaults.object(forKey: "minutos_mes_operario") != nil){
+            
+            self.MinutosMesOperario.text = (defaults.object(forKey: "minutos_mes_operario") as! String)
+            
+        }
+        
+        
+        if (defaults.object(forKey: "dias_mes") != nil){
+            
+            self.diasDeTrabajoAlMes.text = (defaults.object(forKey: "dias_mes") as! String)
+            
+        }
+        
+        
+        if (defaults.object(forKey: "dias_semana") != nil){
+            
+            self.diasTrabajoalasemana.text = (defaults.object(forKey: "dias_semana") as! String)
+            
+        }
+        
+        
+        
+        
+
         
         
         self.constantes_button.layer.cornerRadius = 4
@@ -222,45 +261,7 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
         self.gastos_operativosTextField.resignFirstResponder()
         
         
-            let defaults = UserDefaults.standard
-            
-            if (defaults.object(forKey: "minutos_dia_operario") != nil){
-                
-                self.minutosDiaOperario.text = (defaults.object(forKey: "minutos_dia_operario") as! String)
-                
-            }
-            
-            if (defaults.object(forKey: "minutos_semana_operario") != nil){
-                
-                self.minutosSeamanaOperario.text = (defaults.object(forKey: "minutos_semana_operario") as! String)
-                
-            }
-            
-            
-            if (defaults.object(forKey: "minutos_mes_operario") != nil){
-                
-                self.MinutosMesOperario.text = (defaults.object(forKey: "minutos_mes_operario") as! String)
-                
-            }
-            
-            
-            if (defaults.object(forKey: "dias_mes") != nil){
-                
-                self.diasDeTrabajoAlMes.text = (defaults.object(forKey: "dias_mes") as! String)
-                
-            }
-            
-            
-            if (defaults.object(forKey: "dias_semana") != nil){
-                
-                self.diasTrabajoalasemana.text = (defaults.object(forKey: "dias_semana") as! String)
-                
-            }
-            
-      
-
-    
-    
+        
         
         
     }
@@ -349,20 +350,23 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
                 
             }else{
                 
-                let equation = Int32(self.cantidad_estiloTextField.text!)! * Int32(self.precioPorEstilo.text!)!
+                let equation = Float32(self.cantidad_estiloTextField.text!)! * Float32(self.precioPorEstilo.text!)!
                 
-                let equationPrecioMinutoReal = Int32(self.precioPorEstilo.text!)! * Int32(self.minutaje_real_estiloTextField.text!)!
-                
-                let variable = Int32(self.minutosDiaOperario.text!)! * Int32(self.operariosTexField.text!)!
-                
-                
-                let equationMetaDiaria = variable * Int32(self.minutaje_real_estiloTextField.text!)!
-                
-                let diasFinishEquation = equationMetaDiaria * Int32(self.diasTrabajoalasemana.text!)!
+                let equationPrecioMinutoReal = Float32(self.precioPorEstilo.text!)! / Float32(self.minutaje_real_estiloTextField.text!)!
+            
+            
+               // let minutosPorDiaPorHorario = Int32(self.operariosTexField.text!)! * Int32(self.minutosDiaOperario.text!)!
                 
                 
+                let metaDiaria =  Float32(self.operariosTexField.text!)! * Float32(self.minutosDiaOperario.text!)! / Float32(self.minutaje_real_estiloTextField.text!)!
                 
-                let produccionSemanalEquation = equationMetaDiaria * Int32(self.diasTrabajoalasemana.text!)!
+
+                
+                let diasFinishEquation =  Float32(self.cantidad_estiloTextField.text!)! / metaDiaria
+                
+                
+                
+                let produccionSemanalEquation = metaDiaria * Float32(self.diasTrabajoalasemana.text!)!
                 
                 
                 
@@ -372,18 +376,18 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
                 
                 
                
-                let resultIngrdiasFinishEquationResulteso = formatter.string(from: NSNumber(value:Int(diasFinishEquation)))
+                let resultIngrdiasFinishEquationResulteso = formatter.string(from: NSNumber(value:Float32(diasFinishEquation)))
                 
-                let equationMetaDiariaResulteso = formatter.string(from: NSNumber(value:Int(equationMetaDiaria)))
-                
-                
-                let produccionSemanalEquationResulteso = formatter.string(from: NSNumber(value:Int(produccionSemanalEquation)))
+                let equationMetaDiariaResulteso = formatter.string(from: NSNumber(value:Float32(metaDiaria)))
                 
                 
-                let equationResulteso = formatter.string(from: NSNumber(value:Int(equation)))
+                let produccionSemanalEquationResulteso = formatter.string(from: NSNumber(value:Float32(produccionSemanalEquation)))
                 
                 
-                let equationPrecioMinutoRealResulteso = formatter.string(from: NSNumber(value:Int(equationPrecioMinutoReal)))
+                let equationResulteso = formatter.string(from: NSNumber(value:Float32(equation)))
+                
+                
+                let equationPrecioMinutoRealResulteso = formatter.string(from: NSNumber(value:Float32(equationPrecioMinutoReal)))
                 
                 
                 

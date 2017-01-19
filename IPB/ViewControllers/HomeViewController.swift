@@ -10,9 +10,27 @@ import UIKit
 
 class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuViewControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     var plants_array:[Planta] = []
-    var enviosUrgentesArray:[PendingCut] = []
+    var enviosUrgentesArray:[Corte] = []
     var pending_cuts_array:[PendingCut] = []
+    
+    
+    var analisisCuts:[Corte] = []
+    
+    @IBOutlet var heightPlantsGraphs: NSLayoutConstraint!
+    
+    @IBOutlet var listo_confec: UILabel!
+    @IBOutlet var mesa_corte: UILabel!
+    @IBOutlet var enEspera: UILabel!
+    
+    @IBOutlet var listo_confecV: UIView!
+    @IBOutlet var mesa_corteV: UIView!
+    @IBOutlet var enEsperaV: UIView!
+    
+    
+    
+    @IBOutlet var analisisCorteLabel: UILabel!
     @IBOutlet var titleViewLabelColelctionView: UILabel!
+    @IBOutlet var noEnviosLabel: UILabel!
     @IBOutlet var enviosUrgentesLabel: UILabel!
     @IBOutlet var titleViewLabel: UILabel!
     @IBOutlet var pendingCutsTitleLabel: UILabel!
@@ -20,18 +38,76 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
      @IBOutlet var plant_collectionview: UICollectionView!
     @IBOutlet var enviosUrgentes_collectionview: UICollectionView!
     @IBOutlet var cortesPendientes_collectionview: UICollectionView!
+    
+        @IBOutlet var cortes_analisis_collectionview: UICollectionView!
+    
+    
+    @IBOutlet var corteLabel: UILabel!
+    @IBOutlet var clientLabel: UILabel!
+    
+    @IBOutlet var corteLabel2: UILabel!
+    @IBOutlet var clientLabel2: UILabel!
+    
+    
+    @IBOutlet var corteLabelCell: UILabel!
+    @IBOutlet var cantidadLabelCell: UILabel!
+    @IBOutlet var clienteLabelCell: UILabel!
+    @IBOutlet var cortadasLabelCell: UILabel!
+    
+    
+    
     var revealController:SWRevealViewController!
+    
+    var indicatorView1 : MAActivityIndicatorView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        self.corteLabelCell.font = UIFont(name: FONT_BOLD, size: self.corteLabelCell.font.pointSize)
+        self.cantidadLabelCell.font = UIFont(name: FONT_BOLD, size: self.cantidadLabelCell.font.pointSize)
+        self.clienteLabelCell.font = UIFont(name: FONT_BOLD, size: self.clienteLabelCell.font.pointSize)
+        self.cortadasLabelCell.font = UIFont(name: FONT_BOLD, size: self.cortadasLabelCell.font.pointSize)
+        
+        
 
+        self.listo_confecV.layer.cornerRadius = self.listo_confecV.frame.size.width/2
+        self.listo_confecV.clipsToBounds = true
+        
+        self.mesa_corteV.layer.cornerRadius = self.mesa_corteV.frame.size.width/2
+        self.mesa_corteV.clipsToBounds = true
+        
+        self.enEsperaV.layer.cornerRadius = self.enEsperaV.frame.size.width/2
+        self.enEsperaV.clipsToBounds = true
+        
+        
+         self.mesa_corte.font = UIFont(name: FONT_REGULAR, size: self.mesa_corte.font.pointSize)
+         self.listo_confec.font = UIFont(name: FONT_REGULAR, size: self.listo_confec.font.pointSize)
+         self.enEspera.font = UIFont(name: FONT_REGULAR, size: self.enEspera.font.pointSize)
+        
+        
+        self.heightPlantsGraphs.constant = self.view.frame.size.height/2 + 30
+        self.view.layoutIfNeeded()
+        //self.showLoader()
+        self.corteLabel2.font = UIFont(name: FONT_BOLD, size: self.corteLabel2.font.pointSize)
+        
+        self.clientLabel2.font = UIFont(name: FONT_BOLD, size: self.clientLabel2.font.pointSize)
+        
+         self.corteLabel.font = UIFont(name: FONT_BOLD, size: self.corteLabel.font.pointSize)
+        
+         self.clientLabel.font = UIFont(name: FONT_BOLD, size: self.clientLabel.font.pointSize)
         
         self.titleViewLabelColelctionView.font = UIFont(name: FONT_BOLD, size: self.titleViewLabelColelctionView.font.pointSize)
-
+self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteLabel.font.pointSize)
+        
         self.refreshHomePlants()
         self.titleViewLabel.font = UIFont(name: FONT_BOLD, size: self.titleViewLabel.font.pointSize)
         self.enviosUrgentesLabel.font = UIFont(name: FONT_BOLD, size: self.enviosUrgentesLabel.font.pointSize)
         self.pendingCutsTitleLabel.font = UIFont(name: FONT_BOLD, size: self.pendingCutsTitleLabel.font.pointSize)
         
+         self.noEnviosLabel.font = UIFont(name: FONT_REGULAR, size: self.noEnviosLabel.font.pointSize)
+        self.noEnviosLabel.alpha = 0
                    self.blockView.alpha = 0
         self.slideMenuSetUp()
         
@@ -44,6 +120,8 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
     override func viewDidAppear(_ animated: Bool) {
         self.getUrgentEnvios()
         self.getPendingCuts()
+        
+        self.loadAnalisis()
     }
     override var preferredStatusBarStyle: UIStatusBarStyle {
         get {
@@ -216,7 +294,7 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         
         
         if option == "clientes"{
-          self.performSegue(withIdentifier: option, sender: self)
+          self.performSegue(withIdentifier: "clients", sender: self)
             
         }
         
@@ -244,6 +322,11 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
             self.performSegue(withIdentifier: option, sender: self)
         }
         
+        if option == "proveedores"{
+          self.performSegue(withIdentifier: option, sender: self)
+        
+        }
+        
     }
     
     
@@ -265,6 +348,9 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
             return self.pending_cuts_array.count
         
         
+        }else if self.cortes_analisis_collectionview == collectionView{
+        
+        return self.analisisCuts.count
         }else{
         return self.plants_array.count
         }
@@ -277,7 +363,7 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "urgent", for: indexPath)as!UrgentSebdsDashboardCollectionViewCell
             
-            cell.displayCuts(cut: self.enviosUrgentesArray[indexPath.row])
+            cell.displayCorte(cut: self.enviosUrgentesArray[indexPath.row])
             
             return cell
         }else if self.cortesPendientes_collectionview == collectionView{
@@ -289,6 +375,15 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
             
             return cell
         
+        
+        }else if collectionView == self.cortes_analisis_collectionview{
+        
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "analisisCuts", for: indexPath)as!AnalisisCollectionViewCell
+            
+            cell.displayAnalisisCuts(cuts: self.analisisCuts[indexPath
+                .row])
+            
+            return cell
         
         }else{
      
@@ -308,11 +403,14 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
          if self.enviosUrgentes_collectionview == collectionView || self.cortesPendientes_collectionview == collectionView{
             
             
-            return CGSize(width: 250 , height: 70)
+            return CGSize(width: 250 , height: 50)
         
         
+         }else if collectionView == self.cortes_analisis_collectionview{
+          return CGSize(width: self.cortes_analisis_collectionview.frame.size.width-20 , height: 90)
+         
          }else{
-          return CGSize(width: self.plant_collectionview.layer.frame.size.width , height: self.plant_collectionview.layer.frame.size.width - 100)
+          return CGSize(width: self.plant_collectionview.layer.frame.size.width , height: self.view.frame.size.height/2)
         
         }
     }
@@ -326,6 +424,7 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
     
     {
     
+        self.showLoader()
     
     Services.getPlantsWithandHandler({ (response) in
         
@@ -333,9 +432,9 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         
         
         self.plant_collectionview.reloadData()
-        
+        self.hideLoader()
     }, orErrorHandler: { (err) in
-        
+        self.hideLoader()
         
         
     })
@@ -344,6 +443,31 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
     }
     
     
+    func hideLoader(){
+
+    }
+    func showLoader(){
+        
+    }
+    
+    
+    func loadAnalisis(){
+    
+    
+    Services.getAllcuts({ (response) in
+        
+        self.analisisCuts = response as! [Corte]
+        
+        self.cortes_analisis_collectionview.reloadData()
+        
+        
+    }, orErrorHandler: { (err) in
+        
+        
+        
+    })
+        
+    }
     func getUrgentEnvios()
         
     {
@@ -351,11 +475,22 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         
         Services.getEnviosUrgentesWithandHandler({ (response) in
             
-            self.enviosUrgentesArray = response as! [PendingCut]
+            self.enviosUrgentesArray = response as! [Corte]
             
+            if self.enviosUrgentesArray .count == 0{
+            self.noEnviosLabel.alpha = 1
+                self.enviosUrgentes_collectionview.alpha = 0
             
-            self.enviosUrgentes_collectionview.reloadData()
+            }else{
             
+                self.noEnviosLabel.alpha = 0
+                 self.enviosUrgentes_collectionview.alpha = 1
+                self.enviosUrgentes_collectionview.reloadData()
+                
+            
+            }
+            
+           
         }, orErrorHandler: { (err) in
             
             

@@ -50,11 +50,11 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
         self.titleViewLabelColelctionView.font = UIFont(name: FONT_BOLD, size: self.titleViewLabelColelctionView.font.pointSize)
         
         self.addplantLabelTitle.font = UIFont(name: FONT_BOLD, size: self.addplantLabelTitle.font.pointSize)
-        
+     
         self.user_nameLabel.font = UIFont(name: FONT_BOLD, size: self.user_nameLabel.font.pointSize)
         self.usuario_name.font = UIFont(name: FONT_REGULAR, size: (self.usuario_name.font?.pointSize)!)
         
-        self.styleImageViewTitle.font = UIFont(name: FONT_REGULAR, size: (self.styleImageViewTitle.font?.pointSize)!)
+        self.styleImageViewTitle.font = UIFont(name: FONT_BOLD, size: (self.styleImageViewTitle.font?.pointSize)!)
         self.guardarButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.guardarButton.titleLabel?.font.pointSize)!)
         self.BackaddPlantview.alpha = 0
         self.addPlantview.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
@@ -236,6 +236,7 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
     }
     
     @IBAction func selectUserImageTouchUpInside(sender: UIButton) {
+               Functions.isChoosingImage(true)
         self.avatar_placeholder.transform = CGAffineTransform(scaleX: 0.01, y: 0.01);
         
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.30, initialSpringVelocity: 6.0, options: UIViewAnimationOptions.allowUserInteraction, animations: { () -> Void in
@@ -261,6 +262,7 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
 
+        Functions.isChoosingImage(false)
         
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             self.user_avatar.contentMode = UIViewContentMode.scaleAspectFill
@@ -275,6 +277,7 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
     
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        Functions.isChoosingImage(false)
         dismiss(animated: true, completion: nil)
     }
     

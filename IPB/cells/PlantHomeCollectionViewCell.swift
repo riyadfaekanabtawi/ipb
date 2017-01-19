@@ -28,8 +28,11 @@ class PlantHomeCollectionViewCell: UICollectionViewCell {
        
         self.firstWebView.layer.cornerRadius = 4
         self.firstWebView.layer.masksToBounds = true
-        self.plantName.font = UIFont(name: FONT_BOLD, size: self.plantName.font.pointSize)
-        self.plantused.font = UIFont(name: FONT_BOLD, size: self.plantused.font.pointSize)
+        self.plantName.font = UIFont(name: FONT_REGULAR, size: self.plantName.font.pointSize)
+        
+        if self.plantused != nil{
+        self.plantused.font = UIFont(name: FONT_REGULAR, size: self.plantused.font.pointSize)
+        }
     }
     
     
@@ -50,16 +53,15 @@ class PlantHomeCollectionViewCell: UICollectionViewCell {
         
     
         
-        let available = plant.planta_capacidadMax.int32Value - plant.planta_capacidadUsada.int32Value
+        let available = plant.planta_capacidadMax.int32Value
         
         
-        
-        
+         if self.plantused != nil{
         let resultavailable = formatter.string(from: NSNumber(value:Int(available)))
         
         
-        self.plantused.text = "Capacidad Disponible: \(resultavailable!) $MXN"
-        
+        self.plantused.text = "Capacidad Máxima: \(resultavailable!) $MXN"
+        }
         
     }
     

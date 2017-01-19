@@ -34,9 +34,17 @@ class ReportCollectionViewCell: UICollectionViewCell {
     
     func displayReports(report:Report){
     
-        self.reportDayNumber.text = report.dayNumbers
+        if report.dayNumbers != nil{
+         self.reportDayNumber.text = report.dayNumbers
+        }
+        
+        if report.hour != nil{
+        
         self.reportHour.text = report.hour
-        self.reportTitle.text = "REPORTE DIARIO"
+        }
+       
+        
+        self.reportTitle.text = "REPORTE DE \(report.type_report!.uppercased())"
         self.reportDayString.text = report.dayString
         
     

@@ -27,11 +27,11 @@
         self.fecha_ipb = [dictionary objectForKey:@"fecha_ipb"];
         self.realizadas = [dictionary objectForKey:@"realizadas"];
         self.operarios = [dictionary objectForKey:@"operarios"];
-        self.faltas = [NSNumber numberWithInteger:[[dictionary objectForKey:@"faltas"] integerValue]];
-        self.produciad = [NSNumber numberWithInteger:[[dictionary objectForKey:@"produciad"] integerValue]];
-        self.en_plancha = [NSNumber numberWithInteger:[[dictionary objectForKey:@"en_plancha"] integerValue]];
-        self.en_empaque = [NSNumber numberWithInteger:[[dictionary objectForKey:@"en_empaque"] integerValue]];
-        self.bodega = [NSNumber numberWithInteger:[[dictionary objectForKey:@"bodega"] integerValue]];
+        self.faltas = [dictionary objectForKey:@"faltas"];
+        self.produciad = [dictionary objectForKey:@"produciad"];
+        self.en_plancha = [dictionary objectForKey:@"en_plancha"];
+        self.en_empaque = [dictionary objectForKey:@"en_empaque"];
+        self.bodega = [dictionary objectForKey:@"bodega"];
         
         
         NSString *created_at = [dictionary objectForKey:@"created_at"];
@@ -53,7 +53,15 @@
         
         dateformatter.dateFormat = @"EEEE";
         self.dayString = [dateformatter stringFromDate:date];
+        self.status_report = [dictionary objectForKey:@"status"];
+        self.type_report = [dictionary objectForKey:@"tipo"];
+        self.cantidad_de_envio = [dictionary objectForKey:@"cantidad_de_envio"];
+        self.numero_de_envio = [dictionary objectForKey:@"numero_de_envio"];
+        self.cantidad_por_enviar = [dictionary objectForKey:@"cantidad_por_enviar"];
+        self.cantidad_enviada = [dictionary objectForKey:@"cantidad_enviada"];
+        self.cantidad_real_envio = [dictionary objectForKey:@"cantidad_real_envio"];
         
+        self.cut_name = [dictionary objectForKey:@"cut_name"];
     }
     
     return self;

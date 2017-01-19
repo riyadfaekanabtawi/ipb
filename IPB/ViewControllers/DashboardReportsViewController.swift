@@ -68,7 +68,29 @@ class DashboardReportsViewController: UIViewController,UICollectionViewDelegate,
         
         Services.getReportsWithandHandler({ (response) in
             
-            self.array_plant_cuts = response as! [Report]
+            let array = response as! [Report]
+            
+    
+            
+            for report in array{
+            
+                if report.type_report == "planta"{
+                
+                self.array_plant_reports.append(report)
+     
+                }
+            
+                if report.type_report == "envio"{
+                    
+                     self.array_plant_envios.append(report)
+                }
+            
+                if report.type_report == "corte"{
+                     self.array_plant_cuts.append(report)
+                    
+                }
+                
+            }
 
             if self.array_plant_reports.count == 0{
                 self.reportesDePlantaNOLabel.alpha = 1
@@ -148,7 +170,7 @@ class DashboardReportsViewController: UIViewController,UICollectionViewDelegate,
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reports", for: indexPath) as! ReportDashboardCollectionViewCell
         if collectionView == self.reportesDePlantaCollectionView{
             
-            cell.displayReports(report: self.array_plant_envios[indexPath.row])
+            cell.displayReports(report: self.array_plant_reports[indexPath.row])
             
         }else if collectionView == self.reportesDeCortesCollectionView{
             

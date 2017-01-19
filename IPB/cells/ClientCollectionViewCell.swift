@@ -18,11 +18,11 @@ class ClientCollectionViewCell: UICollectionViewCell {
     @IBOutlet var client_nameLabel: UILabel!
     @IBOutlet var mainView: UIView!
     var selectedClient:Cliente!
-    
+    var selectedProveedor:Proveedores!
     @IBOutlet var closeButton: UIButton!
     override func awakeFromNib() {
            self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)
-        self.client_nameLabel.font = UIFont(name: FONT_BOLD, size: self.client_nameLabel.font.pointSize)
+        self.client_nameLabel.font = UIFont(name: FONT_REGULAR, size: self.client_nameLabel.font.pointSize)
         self.mainView.layer.cornerRadius = 4
         self.mainView.layer.masksToBounds = true
     }
@@ -34,54 +34,113 @@ class ClientCollectionViewCell: UICollectionViewCell {
     self.client_nameLabel.text = client.client_name
     }
     
+    func displayProveedor(client:Proveedores){
+        
+        self.selectedProveedor = client
+        self.client_nameLabel.text = client.client_name
+    }
     
     
     @IBAction func eliminarTouchUpInside(){
         
-        let alertController = UIAlertController(title: "Atencion!", message: "Estas seguro que quiere eliminar este cliente?", preferredStyle: .alert)
+        if (self.selectedClient != nil){
         
-        
-        
-        let OKAction = UIAlertAction(title: "Si Estoy Seguro", style: .default) { (action) in
+            let alertController = UIAlertController(title: "Atencion!", message: "Estas seguro que quiere eliminar este cliente?", preferredStyle: .alert)
             
-            Services.eliminarCliente(self.selectedClient.client_id, andHandler: { (response) in
+            
+            
+            let OKAction = UIAlertAction(title: "Si Estoy Seguro", style: .default) { (action) in
                 
-                
-                
-                
-                
-                let alertController = UIAlertController(title: "Atencion!", message: "Has eliminado el cliente", preferredStyle: .alert)
-                
-                
-                
-                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                Services.eliminarCliente(self.selectedClient.client_id, andHandler: { (response) in
                     
                     
-                }
-                alertController.addAction(OKAction)
+                    
+                    
+                    
+                    let alertController = UIAlertController(title: "Atencion!", message: "Has eliminado el cliente", preferredStyle: .alert)
+                    
+                    
+                    
+                    let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                        
+                        
+                    }
+                    alertController.addAction(OKAction)
+                    
+                    self.controller.present(alertController, animated: true) {
+                        // ...
+                    }
+                    
+                    
+                    self.delegate.refreshFather()
+                }, orErrorHandler: { (err) in
+                    
+                    
+                })
+            }
+            
+            let cancelarAction = UIAlertAction(title: "Cancelar", style: .default) { (action) in
                 
-                self.controller.present(alertController, animated: true) {
-                    // ...
-                }
                 
-                
-                self.delegate.refreshFather()
-            }, orErrorHandler: { (err) in
-                
-                
-            })
-        }
-        
-        let cancelarAction = UIAlertAction(title: "Cancelar", style: .default) { (action) in
+            }
+            alertController.addAction(OKAction)
+            alertController.addAction(cancelarAction)
             
             
-        }
-        alertController.addAction(OKAction)
-        alertController.addAction(cancelarAction)
+            self.controller.present(alertController, animated: true) {
+                // ...
+            }
+
         
+        }else{
         
-        self.controller.present(alertController, animated: true) {
-            // ...
+            let alertController = UIAlertController(title: "Atencion!", message: "Estas seguro que quiere eliminar este proveedor?", preferredStyle: .alert)
+            
+            
+            
+            let OKAction = UIAlertAction(title: "Si Estoy Seguro", style: .default) { (action) in
+                
+                Services.eliminarProveedor(self.selectedProveedor.client_id, andHandler: { (response) in
+                    
+                    
+                    
+                    
+                    
+                    let alertController = UIAlertController(title: "Atencion!", message: "Has eliminado el proveedor", preferredStyle: .alert)
+                    
+                    
+                    
+                    let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                        
+                        
+                    }
+                    alertController.addAction(OKAction)
+                    
+                    self.controller.present(alertController, animated: true) {
+                        // ...
+                    }
+                    
+                    
+                    self.delegate.refreshFather()
+                }, orErrorHandler: { (err) in
+                    
+                    
+                })
+            }
+            
+            let cancelarAction = UIAlertAction(title: "Cancelar", style: .default) { (action) in
+                
+                
+            }
+            alertController.addAction(OKAction)
+            alertController.addAction(cancelarAction)
+            
+            
+            self.controller.present(alertController, animated: true) {
+                // ...
+            }
+
+        
         }
         
         

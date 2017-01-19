@@ -16,8 +16,8 @@ class AddButtonCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         
-        self.addLabel.font = UIFont(name: FONT_BOLD, size: 20)
-        self.plusLabel.font = UIFont(name: FONT_BOLD, size: self.plusLabel.font.pointSize)
+        
+    
     }
     
     

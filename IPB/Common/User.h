@@ -18,6 +18,8 @@
 @property NSString *avatar_url;
 @property NSString *puesto;
 @property NSString *telefono;
+@property NSString *plant_name;
+
 - (void)encodeWithCoder:(NSCoder *)coder;
 - (id)initWithCoder:(NSCoder *)aDecoder ;
 @end

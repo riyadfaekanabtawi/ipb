@@ -5,7 +5,7 @@
 //  Created by SmartboxTV on 30-12-13.
 //  Copyright (c) 2013 CDF. All rights reserved.
 //
-
+#import "AppDelegate.h"
 #import "Functions.h"
 
 
@@ -16,6 +16,12 @@
 
 }
 
++(void)isChoosingImage:(BOOL)value{
+
+
+    [AppDelegate setVideoPlaying:value];
+
+}
 
 +(NSDate *)stringToDate:(NSString *)string {
     return [Functions stringToDate:string WithFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];

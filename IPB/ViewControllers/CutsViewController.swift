@@ -118,7 +118,7 @@ class CutsViewController: UIViewController,UICollectionViewDelegate,UICollection
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.cuts_collectionview.frame.size.width-20, height: 160)
+        return CGSize(width: self.cuts_collectionview.frame.size.width-10, height: 240)
     }
     
     @IBAction func goBack(){
