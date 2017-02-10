@@ -84,12 +84,9 @@
 }
 
 
++(void)getCutDetail:(NSNumber *)cut_id AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
 
-+(void)FilterCuts:(NSString *)planta andLista:(NSString *)lista andCorte:(NSString *)corte andEstilo:(NSString *)estilo andStatus:(NSString *)status andfechaIPB:(NSString *)fecha_ipb andFechaCliente:(NSString *)fecha_cliente andHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
-    NSDictionary *p;
-  
-    
-      p = @{@"planta" : planta,@"lista" : lista,@"corte":corte,@"estilo":estilo,@"status":status,@"fecha_ipb":fecha_ipb,@"fecha_cliente":fecha_cliente};
+    NSDictionary *p = @{@"corte_id" : cut_id};
     
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -98,7 +95,46 @@
     
     
     
-    [manager POST:[NSString stringWithFormat:@"%@filterCuts",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
+    [manager GET:[NSString stringWithFormat:@"%@getCutDetail",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        Corte *corte = [[Corte alloc] initWithDictionary:[responseObject objectForKey:@"corte"]];
+        
+        
+        handler(corte);
+        
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
+    
+}
+
++(void)FilterCuts:(NSString *)planta andLista:(NSString *)lista andCorte:(NSString *)corte andEstilo:(NSString *)estilo andStatus:(NSString *)status andfechaIPB:(NSString *)fecha_ipb andFechaCliente:(NSString *)fecha_cliente andCliente:(NSString *)cliente andHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+    NSDictionary *p;
+  
+    
+      p = @{@"planta" : planta,@"lista" : lista,@"corte":corte,@"estilo":estilo,@"status":status,@"fecha_ipb":fecha_ipb,@"fecha_cliente":fecha_cliente,@"cliente":cliente};
+    
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    
+    
+    
+    [manager GET:[NSString stringWithFormat:@"%@filterCuts",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
         
         
         
@@ -107,18 +143,9 @@
         
         
         
-        NSMutableArray *mutableArray = [NSMutableArray new];
+       
         
-        for(NSDictionary *dict in [responseObject objectForKey:@"api"]){
-            
-            Corte *user = [[Corte alloc] initWithDictionary:dict];
-            
-            
-            [mutableArray addObject:user];
-            
-        }
-        
-        handler(mutableArray);
+        handler(responseObject);
         
         
         
@@ -179,6 +206,44 @@
     
     
 }
+
+
++(void)getTotals:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+    
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    
+    
+    
+    [manager GET:[NSString stringWithFormat:@"%@getTotals",BASE_URL] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        
+        
+        
+        
+        handler(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
+    
+    
+    
+    
+}
+
 
 +(void)getStyleImage:(NSString *)style_name AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
     
@@ -342,6 +407,41 @@
     
 }
 
+
++(void)getPlantName:(NSNumber *)plant_id AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler
+
+{
+
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    
+    
+    
+    [manager GET:[NSString stringWithFormat:@"%@getPlantName?plant_id=%@",BASE_URL,plant_id] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        
+      
+        
+        handler(responseObject);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
+
+
+}
 +(void)GetClientsWithandHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
     
     
@@ -441,18 +541,9 @@
         
         
         
-        NSMutableArray *mutableArray = [NSMutableArray new];
+     
         
-        for(NSDictionary *dict in [responseObject objectForKey:@"api"]){
-            
-            Report *cliente = [[Report alloc] initWithDictionary:dict];
-            
-            
-            [mutableArray addObject:cliente];
-            
-        }
-        
-        handler(mutableArray);
+        handler([responseObject objectForKey:@"api"]);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -734,14 +825,14 @@
 
 
 
-+(void)createReportEnvio:(NSNumber *)cantidad_envio andCutName:(NSString *)cut_name andCutID:(NSNumber *)cut_id andNumeroDeEnvio:(NSString *)numero_envio andCantidadPorEnviar:(NSNumber *)cantidadPorEnviar andCantidadEnviada:(NSNumber *)cantidad_enviada AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
++(void)createReportEnvio:(NSNumber *)cantidad_envio andCutName:(NSString *)cut_name andCutID:(NSNumber *)cut_id andNumeroDeEnvio:(NSString *)numero_envio AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
     
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.securityPolicy.allowInvalidCertificates = YES;
     
     
-    NSDictionary *p = @{@"report":@{@"cut_id":cut_id,@"cantidad_por_enviar":cantidad_envio,@"cut_name":cut_name,@"numero_de_envio":numero_envio,@"cantidad_por_enviar":cantidadPorEnviar,@"cantidad_enviada":cantidad_enviada,@"tipo":@"envio"}};
+     NSDictionary *p = @{@"report":@{@"cut_id":cut_id,@"cantidad_por_enviar":cantidad_envio,@"numero_de_envio":numero_envio,@"cantidad_de_envio":cantidad_envio,@"tipo":@"envio",@"cut_name":cut_name}};
     
     [manager POST:[NSString stringWithFormat:@"%@createReportEnvio",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
         
@@ -779,14 +870,14 @@
 }
 
 
-+(void)updateReportEnvio:(NSNumber *)cantidad_envio andReportID:(NSNumber *)report_id andCutName:(NSString *)cut_name andCutID:(NSNumber *)cut_id andNumeroDeEnvio:(NSString *)numero_envio andCantidadPorEnviar:(NSNumber *)cantidadPorEnviar andCantidadEnviada:(NSNumber *)cantidad_enviada AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
++(void)updateReportEnvio:(NSNumber *)cantidad_envio andReportID:(NSNumber *)report_id andCutName:(NSString *)cut_name andCutID:(NSNumber *)cut_id andNumeroDeEnvio:(NSString *)numero_envio AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
     
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.securityPolicy.allowInvalidCertificates = YES;
     
     
-    NSDictionary *p = @{@"report":@{@"id":report_id,@"cut_id":cut_id,@"cantidad_por_enviar":cantidad_envio,@"numero_de_envio":numero_envio,@"cantidad_de_envio":cantidad_envio,@"cantidad_por_enviar":cantidadPorEnviar,@"cantidad_enviada":cantidad_enviada,@"tipo":@"envio",@"cut_name":cut_name}};
+    NSDictionary *p = @{@"report":@{@"id":report_id,@"cut_id":cut_id,@"cantidad_por_enviar":cantidad_envio,@"numero_de_envio":numero_envio,@"cantidad_de_envio":cantidad_envio,@"tipo":@"envio",@"cut_name":cut_name}};
     
     [manager POST:[NSString stringWithFormat:@"%@updateReportEnvio",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
         
@@ -979,6 +1070,39 @@
         
           handler(@"YES");
       
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
+    
+}
+
+
++(void)updatePlantForIPB:(NSString *)plant_name andPlantID:(NSNumber *)plant_id andCapacityMax:(NSNumber *)capacidad_maxima AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+    
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    
+    NSDictionary *p = @{@"plant":@{@"id":plant_id,@"name":plant_name,@"max_capacity":capacidad_maxima}};
+    
+    [manager POST:[NSString stringWithFormat:@"%@updatePlant",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        handler(@"YES");
+        
         
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

@@ -41,21 +41,22 @@ class AnalisisCollectionViewCell: UICollectionViewCell {
     
     
     if cuts.status.lowercased() == "en espera"{
-    
+    self.statusView.alpha = 1
     
       self.statusView.backgroundColor = Functions.color(withHexString: "FF3B27", andAlpha: 1)
     }
     
     if cuts.status.lowercased() == "en mesa de corte"{
-        
+            self.statusView.alpha = 1
         self.statusView.backgroundColor = Functions.color(withHexString: "FFF53C", andAlpha: 1)
         
     }
     
     if cuts.status.lowercased() == "listo para confeccionar"{
-        
+            self.statusView.alpha = 1
         self.statusView.backgroundColor = Functions.color(withHexString: "5FBA56", andAlpha: 1)
         
     }
-    }
+
+}
 }

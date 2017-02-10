@@ -408,15 +408,16 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
         
         
         }
-        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
         if self.gastos_operativosTextField == textField{
         
         self.gastos_operativosTextField.resignFirstResponder()
             
             if self.ingreso_brutoTextField.text != ""{
-        let equation = Int32(self.ingreso_brutoTextField.text!)! - Int32(self.gastos_operativosTextField.text!)!
+        let equation = Int32((self.ingreso_brutoTextField.text?.replacingOccurrences(of: ",", with: ""))!)! - Int32(self.gastos_operativosTextField.text!)!
             
-        self.ingreso_netoTextField.text = "\(equation)"
+        self.ingreso_netoTextField.text = formatter.string(from: NSNumber(value:Float32(equation)))
                 
             }else{
             self.gastos_operativosTextField.text = ""

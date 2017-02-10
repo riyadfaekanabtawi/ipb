@@ -162,6 +162,10 @@ class PendingCutCollectionViewCell: UICollectionViewCell {
     
     func displayCorte(cut:Corte){
         
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        
+        
         if self.enPlancha != nil{
             
             self.enPlancha.text = "En Plancha \(cut.en_plancha!)"
@@ -194,13 +198,15 @@ class PendingCutCollectionViewCell: UICollectionViewCell {
         
         
         if self.prendas_enviadas != nil{
-            
-            self.prendas_enviadas.text = "Prendas Enviadas \(cut.cantidad_enviada!)"
+              let resultIngreso = formatter.string(from: NSNumber(value:Float32(cut.cantidad_enviada)))
+            self.prendas_enviadas.text = "Prendas Enviadas \(resultIngreso!)"
         }
         
         if self.prendas_producidas != nil{
             
-           self.prendas_producidas.text = "Prendas producidas \(cut.produciad!)"
+             let resultIngreso = formatter.string(from: NSNumber(value:Float32(cut.produciad)))
+            
+           self.prendas_producidas.text = "Prendas producidas \(resultIngreso!)"
         }
         
         
@@ -211,30 +217,43 @@ class PendingCutCollectionViewCell: UICollectionViewCell {
             
             if cut.status.lowercased() == "en espera"{
                 
-                
+                self.status_label.text = cut.status!
                 self.status_view.backgroundColor = Functions.color(withHexString: "FF3B27", andAlpha: 1)
             }
             
             if cut.status.lowercased() == "en mesa de corte"{
                 
                 self.status_view.backgroundColor = Functions.color(withHexString: "FFF53C", andAlpha: 1)
-                
+                self.status_label.text = cut.status!
             }
             
             if cut.status.lowercased() == "listo para confeccionar"{
                 
                 self.status_view.backgroundColor = Functions.color(withHexString: "5FBA56", andAlpha: 1)
-                
+              self.status_label.text = cut.status!
+            }else{
+            
+               self.status_label.text = cut.status!.lowercased()
             }
         }
         
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        
+  
         
         if self.plantaLabel != nil{
-        
-        self.plantaLabel.text = "Planta: \(cut.planta.planta_nombre!)"
+            if cut.planta.planta_nombre != nil{
+              self.plantaLabel.text = "\(cut.planta.planta_nombre!)"
+            }else{
+         
+                Services.getPlantName(cut.plant_id, andHandler: { (response) in
+                    
+                    let string = response as? String
+                    self.plantaLabel.text = string!
+                }, orErrorHandler: { (err) in
+                    
+                })
+            
+            }
+      
         }
         let ingreso = cut.cut_cantidad.floatValue * cut.cut_precio_unitario
    
@@ -242,7 +261,10 @@ class PendingCutCollectionViewCell: UICollectionViewCell {
         
         let resultCantidad = formatter.string(from: NSNumber(value:Int(cut.cut_cantidad.intValue)))
     
-        self.ingreso_label.text = "Ingresos $\(ingreso)"
+        
+        
+        let resultIngreso = formatter.string(from: NSNumber(value:Int(ingreso)))
+        self.ingreso_label.text = "Ingresos $\(resultIngreso!)"
         self.prenda_label.text = "\(cut.prenda!)"
         self.lista_label.text = "Lista: \(cut.cut_list!)"
         self.corte_label.text = "Corte: \(cut.corte!)"
@@ -252,7 +274,7 @@ class PendingCutCollectionViewCell: UICollectionViewCell {
         self.fecha_ipb_label.text = "Fecha IPB \(cut.cut_fecha_ipb!)"
         self.fecha_cliente_label.text = "Fecha Cliente \(cut.cut_fecha_client!)"
         //self.editado_por_label.text = "Editado por: \()"
-        self.status_label.text = cut.status!
+        self.client_label.text = cut.cut_client!
         
         
         

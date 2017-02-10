@@ -36,12 +36,67 @@ class PlantHomeCollectionViewCell: UICollectionViewCell {
     }
     
     
+    func displayMonths(month:String){
     
+      self.plantName.text = month
+        
+        
+        if (month == "Enero"){
+            self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?month=january_min")! as URL) as URLRequest)
+            
+            
+        }
+        
+        if (month == "Febrero"){
+                self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?month=febuary_min")! as URL) as URLRequest)
+        }
+        
+        if (month == "Marzo"){
+                self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?month=march_min")! as URL) as URLRequest)
+        }
+        
+        if (month == "Abril"){
+                self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?month=april_min")! as URL) as URLRequest)
+        }
+        
+        if (month == "Mayo"){
+                self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?month=may_min")! as URL) as URLRequest)
+        }
+        
+        if (month == "Junio"){
+                self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?month=june_min")! as URL) as URLRequest)
+        }
+        
+        if (month == "Julio"){
+                self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?month=july_min")! as URL) as URLRequest)
+        }
+        
+        if (month == "Agosto"){
+                self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?month=august_min")! as URL) as URLRequest)
+        }
+        
+        if (month == "Septiembre"){
+                self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?month=september_min")! as URL) as URLRequest)
+        }
+        
+        if (month == "Octubre"){
+                self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?month=october_min")! as URL) as URLRequest)
+        }
+        
+        if (month == "Noviembre"){
+                self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?month=november_min")! as URL) as URLRequest)
+        }
+        
+        if (month == "Diciembre"){
+            
+                self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?month=december_min")! as URL) as URLRequest)
+        }
+    }
     func displayPlants(plant:Planta){
         
         self.selectedPlant = plant
         self.plantName.text = plant.planta_nombre
-            self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.anabtatec-mobile.com/plants_graph?plant_id=\(plant.planta_id!)")! as URL) as URLRequest)
+            self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?plant_id=\(plant.planta_id!)")! as URL) as URLRequest)
     
         
         
@@ -60,7 +115,7 @@ class PlantHomeCollectionViewCell: UICollectionViewCell {
         let resultavailable = formatter.string(from: NSNumber(value:Int(available)))
         
         
-        self.plantused.text = "Capacidad Máxima: \(resultavailable!) $MXN"
+        self.plantused.text = "Capacidad Máxima: $ \(resultavailable!)"
         }
         
     }

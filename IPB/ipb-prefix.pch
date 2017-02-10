@@ -20,7 +20,7 @@
 #define isNSNull(value) [value isKindOfClass:[NSNull class]]
 #define replaceNSNullValue(value) isNSNull(value) ? nil : value
 
-#define BASE_URL @"http://ipb.anabtatec-mobile.com/"
+#define BASE_URL @"http://ipb.railsplayground.net/"
 
 
 #endif /* ipb_prefix_pch */

@@ -13,11 +13,11 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
     var enviosUrgentesArray:[Corte] = []
     var pending_cuts_array:[PendingCut] = []
     
-    
+    var monthsArryay = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre",]
     var analisisCuts:[Corte] = []
     
     @IBOutlet var heightPlantsGraphs: NSLayoutConstraint!
-    
+    @IBOutlet var cortesAsignadosbutton: UIButton!
     @IBOutlet var listo_confec: UILabel!
     @IBOutlet var mesa_corte: UILabel!
     @IBOutlet var enEspera: UILabel!
@@ -27,6 +27,8 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
     @IBOutlet var enEsperaV: UIView!
     
     
+    @IBOutlet var badgeView: UIView!
+    @IBOutlet var badgeLabel: UILabel!
     
     @IBOutlet var analisisCorteLabel: UILabel!
     @IBOutlet var titleViewLabelColelctionView: UILabel!
@@ -41,7 +43,7 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
     
         @IBOutlet var cortes_analisis_collectionview: UICollectionView!
     
-    
+     @IBOutlet var alertEnvios: UIImageView!
     @IBOutlet var corteLabel: UILabel!
     @IBOutlet var clientLabel: UILabel!
     
@@ -54,24 +56,27 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
     @IBOutlet var clienteLabelCell: UILabel!
     @IBOutlet var cortadasLabelCell: UILabel!
     
-    
+    @IBOutlet var firstWebView: UIWebView!
     
     var revealController:SWRevealViewController!
     
     var indicatorView1 : MAActivityIndicatorView!
     
-    
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+      
         
         self.corteLabelCell.font = UIFont(name: FONT_BOLD, size: self.corteLabelCell.font.pointSize)
         self.cantidadLabelCell.font = UIFont(name: FONT_BOLD, size: self.cantidadLabelCell.font.pointSize)
         self.clienteLabelCell.font = UIFont(name: FONT_BOLD, size: self.clienteLabelCell.font.pointSize)
         self.cortadasLabelCell.font = UIFont(name: FONT_BOLD, size: self.cortadasLabelCell.font.pointSize)
-        
-        
+   
 
+        
+        self.badgeView.layer.cornerRadius = self.badgeView.frame.size.width/2
+        self.badgeView.clipsToBounds = true
+        
         self.listo_confecV.layer.cornerRadius = self.listo_confecV.frame.size.width/2
         self.listo_confecV.clipsToBounds = true
         
@@ -91,6 +96,7 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         self.view.layoutIfNeeded()
         //self.showLoader()
         self.corteLabel2.font = UIFont(name: FONT_BOLD, size: self.corteLabel2.font.pointSize)
+        self.badgeLabel.font = UIFont(name: FONT_BOLD, size: self.badgeLabel.font.pointSize)
         
         self.clientLabel2.font = UIFont(name: FONT_BOLD, size: self.clientLabel2.font.pointSize)
         
@@ -118,6 +124,8 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        
+        self.refreshHomePlants()
         self.getUrgentEnvios()
         self.getPendingCuts()
         
@@ -147,6 +155,14 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
     }
     */
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "pendingcutsFilter"{
+        
+        let controller = segue.destination as! ReportsViewController
+            controller.filteringFromHome = true
+        
+        }
+    }
     
     
     func slideMenuSetUp(){
@@ -199,6 +215,29 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
             }
         
         }
+    }
+    @IBAction func refreshHome(){
+  
+        self.refreshHomePlants()
+        self.getUrgentEnvios()
+        self.getPendingCuts()
+        
+        self.loadAnalisis()
+        
+    }
+    
+    @IBAction func goToUrgents(){
+        
+        self.performSegue(withIdentifier: "envios", sender: self)
+    }
+     @IBAction func goToPendings(){
+        
+          self.performSegue(withIdentifier: "pendingcuts", sender: self)
+    }
+    @IBAction func cortesAsignados(){
+        
+        self.performSegue(withIdentifier: "pendingcutsFilter", sender: self)
+        
     }
     
     
@@ -352,7 +391,7 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
         
         return self.analisisCuts.count
         }else{
-        return self.plants_array.count
+        return self.monthsArryay.count
         }
     }
     
@@ -390,7 +429,7 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "homeplant", for: indexPath) as! PlantHomeCollectionViewCell
             
             
-            cell.displayPlants(plant: self.plants_array[indexPath.row])
+            cell.displayMonths(month: self.monthsArryay[indexPath.row])
             return cell
         
         }
@@ -407,7 +446,7 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
         
         
          }else if collectionView == self.cortes_analisis_collectionview{
-          return CGSize(width: self.cortes_analisis_collectionview.frame.size.width-20 , height: 90)
+          return CGSize(width: self.cortes_analisis_collectionview.frame.size.width-20 , height: 50)
          
          }else{
           return CGSize(width: self.plant_collectionview.layer.frame.size.width , height: self.view.frame.size.height/2)
@@ -480,9 +519,9 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
             if self.enviosUrgentesArray .count == 0{
             self.noEnviosLabel.alpha = 1
                 self.enviosUrgentes_collectionview.alpha = 0
-            
+            self.alertEnvios.alpha = 0
             }else{
-            
+            self.alertEnvios.alpha = 1
                 self.noEnviosLabel.alpha = 0
                  self.enviosUrgentes_collectionview.alpha = 1
                 self.enviosUrgentes_collectionview.reloadData()
@@ -510,7 +549,7 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
             
             self.pending_cuts_array = response as! [PendingCut]
             
-            
+            self.badgeLabel.text = "\(self.pending_cuts_array.count)"
             self.cortesPendientes_collectionview.reloadData()
             
         }, orErrorHandler: { (err) in

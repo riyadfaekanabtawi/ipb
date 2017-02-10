@@ -17,7 +17,7 @@
         self.cut_client = replaceNSNullValue([dictionary objectForKey:@"cliente"]);
         self.cut_estilo =  replaceNSNullValue([dictionary objectForKey:@"estilo_cliente"]);
         self.cut_cantidad = replaceNSNullValue([dictionary objectForKey:@"cantidad"]);
-        
+        self.plant_id = replaceNSNullValue([dictionary objectForKey:@"plant_id"]);
       
         
         self.cut_precio_unitario = [[dictionary objectForKey:@"precio_unitario"] floatValue];

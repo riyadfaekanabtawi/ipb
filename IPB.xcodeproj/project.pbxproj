@@ -59,6 +59,17 @@
 		EBCFC9451E2EAF7100E1C4DB /* add_report.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC9441E2EAF7100E1C4DB /* add_report.png */; };
 		EBCFC9481E2EEB7C00E1C4DB /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC9461E2EEB7C00E1C4DB /* Roboto-Black.ttf */; };
 		EBCFC9491E2EEB7C00E1C4DB /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC9471E2EEB7C00E1C4DB /* Roboto-Regular.ttf */; };
+		EBCFC94D1E31ADFB00E1C4DB /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC94A1E31ADFB00E1C4DB /* refresh.png */; };
+		EBCFC94E1E31ADFB00E1C4DB /* refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC94B1E31ADFB00E1C4DB /* refresh@2x.png */; };
+		EBCFC9521E325A0800E1C4DB /* cellback.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC9501E325A0800E1C4DB /* cellback.png */; };
+		EBCFC9531E325A0800E1C4DB /* cellback@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC9511E325A0800E1C4DB /* cellback@2x.png */; };
+		EBCFC9561E340D2600E1C4DB /* glass.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC9541E340D2600E1C4DB /* glass.png */; };
+		EBCFC9571E340D2600E1C4DB /* glass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC9551E340D2600E1C4DB /* glass@2x.png */; };
+		EBCFC95A1E341F5F00E1C4DB /* RecipeCollectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBCFC9591E341F5F00E1C4DB /* RecipeCollectionHeaderView.m */; };
+		EBCFC95D1E344BDB00E1C4DB /* back_login.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC95B1E344BDB00E1C4DB /* back_login.png */; };
+		EBCFC95E1E344BDB00E1C4DB /* back_login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC95C1E344BDB00E1C4DB /* back_login@2x.png */; };
+		EBCFC9611E34FDAC00E1C4DB /* alert.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC95F1E34FDAC00E1C4DB /* alert.png */; };
+		EBCFC9621E34FDAC00E1C4DB /* alert@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC9601E34FDAC00E1C4DB /* alert@2x.png */; };
 		EBD2083C1DED068300FBB4A2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EBD2083B1DED068300FBB4A2 /* main.m */; };
 		EBD2083F1DED068300FBB4A2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EBD2083E1DED068300FBB4A2 /* AppDelegate.m */; };
 		EBD208451DED068300FBB4A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBD208431DED068300FBB4A2 /* Main.storyboard */; };
@@ -156,6 +167,18 @@
 		EBCFC9441E2EAF7100E1C4DB /* add_report.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_report.png; sourceTree = "<group>"; };
 		EBCFC9461E2EEB7C00E1C4DB /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
 		EBCFC9471E2EEB7C00E1C4DB /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		EBCFC94A1E31ADFB00E1C4DB /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
+		EBCFC94B1E31ADFB00E1C4DB /* refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh@2x.png"; sourceTree = "<group>"; };
+		EBCFC9501E325A0800E1C4DB /* cellback.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellback.png; sourceTree = "<group>"; };
+		EBCFC9511E325A0800E1C4DB /* cellback@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cellback@2x.png"; sourceTree = "<group>"; };
+		EBCFC9541E340D2600E1C4DB /* glass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glass.png; sourceTree = "<group>"; };
+		EBCFC9551E340D2600E1C4DB /* glass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "glass@2x.png"; sourceTree = "<group>"; };
+		EBCFC9581E341F5F00E1C4DB /* RecipeCollectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeCollectionHeaderView.h; sourceTree = "<group>"; };
+		EBCFC9591E341F5F00E1C4DB /* RecipeCollectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecipeCollectionHeaderView.m; sourceTree = "<group>"; };
+		EBCFC95B1E344BDB00E1C4DB /* back_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_login.png; sourceTree = "<group>"; };
+		EBCFC95C1E344BDB00E1C4DB /* back_login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_login@2x.png"; sourceTree = "<group>"; };
+		EBCFC95F1E34FDAC00E1C4DB /* alert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alert.png; sourceTree = "<group>"; };
+		EBCFC9601E34FDAC00E1C4DB /* alert@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert@2x.png"; sourceTree = "<group>"; };
 		EBD208371DED068300FBB4A2 /* IPB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IPB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBD2083B1DED068300FBB4A2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EBD2083D1DED068300FBB4A2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -223,6 +246,8 @@
 		EB5259221DF26B40004A0DA8 /* cells */ = {
 			isa = PBXGroup;
 			children = (
+				EBCFC9581E341F5F00E1C4DB /* RecipeCollectionHeaderView.h */,
+				EBCFC9591E341F5F00E1C4DB /* RecipeCollectionHeaderView.m */,
 				EB5259231DF26B56004A0DA8 /* PendingCutCollectionViewCell.swift */,
 				EB52592D1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift */,
 				EBFE8B6D1DF6434700B54F87 /* PlantHomeCollectionViewCell.swift */,
@@ -326,6 +351,16 @@
 		EBD208611DED200500FBB4A2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				EBCFC95F1E34FDAC00E1C4DB /* alert.png */,
+				EBCFC9601E34FDAC00E1C4DB /* alert@2x.png */,
+				EBCFC95B1E344BDB00E1C4DB /* back_login.png */,
+				EBCFC95C1E344BDB00E1C4DB /* back_login@2x.png */,
+				EBCFC9541E340D2600E1C4DB /* glass.png */,
+				EBCFC9551E340D2600E1C4DB /* glass@2x.png */,
+				EBCFC9501E325A0800E1C4DB /* cellback.png */,
+				EBCFC9511E325A0800E1C4DB /* cellback@2x.png */,
+				EBCFC94A1E31ADFB00E1C4DB /* refresh.png */,
+				EBCFC94B1E31ADFB00E1C4DB /* refresh@2x.png */,
 				EBCFC9441E2EAF7100E1C4DB /* add_report.png */,
 				EBCFC9421E2EA66900E1C4DB /* add_proveedor.png */,
 				EBCFC93C1E2EA5A300E1C4DB /* add_client.png */,
@@ -476,25 +511,35 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBCFC9561E340D2600E1C4DB /* glass.png in Resources */,
 				EBD208651DED200500FBB4A2 /* menuMask.png in Resources */,
+				EBCFC9571E340D2600E1C4DB /* glass@2x.png in Resources */,
 				EBD2084A1DED068300FBB4A2 /* LaunchScreen.storyboard in Resources */,
 				EBCFC9311E2E6EAA00E1C4DB /* espacio_corte.png in Resources */,
 				EBCFC93B1E2E9B5100E1C4DB /* eliminar.png in Resources */,
 				EBCFC93F1E2EA5A300E1C4DB /* add_client.png in Resources */,
+				EBCFC9531E325A0800E1C4DB /* cellback@2x.png in Resources */,
 				EBCFC9481E2EEB7C00E1C4DB /* Roboto-Black.ttf in Resources */,
 				EBCFC9451E2EAF7100E1C4DB /* add_report.png in Resources */,
 				EB42DE531E1B650D00E207F1 /* IMG_5244.JPG in Resources */,
+				EBCFC94E1E31ADFB00E1C4DB /* refresh@2x.png in Resources */,
 				EB5259291DF283A9004A0DA8 /* back@2x.png in Resources */,
 				EBCFC9401E2EA5A300E1C4DB /* add_planta.png in Resources */,
+				EBCFC9611E34FDAC00E1C4DB /* alert.png in Resources */,
 				EBD208671DED200500FBB4A2 /* menuMask@3x.png in Resources */,
+				EBCFC94D1E31ADFB00E1C4DB /* refresh.png in Resources */,
 				EB248A861E0065AF004A9B51 /* add photo@3x.png in Resources */,
 				EB52592A1DF283A9004A0DA8 /* back@3x.png in Resources */,
+				EBCFC95D1E344BDB00E1C4DB /* back_login.png in Resources */,
 				EBCFC9491E2EEB7C00E1C4DB /* Roboto-Regular.ttf in Resources */,
+				EBCFC9521E325A0800E1C4DB /* cellback.png in Resources */,
 				EBCFC9331E2E820300E1C4DB /* fondo_square.png in Resources */,
 				EBCFC92F1E2E6E0B00E1C4DB /* rectangle_big.png in Resources */,
 				EBCFC9411E2EA5A300E1C4DB /* add_user.png in Resources */,
+				EBCFC95E1E344BDB00E1C4DB /* back_login@2x.png in Resources */,
 				EB52591C1DF25C62004A0DA8 /* menu_icon_corte in Resources */,
 				EBCFC9391E2E998400E1C4DB /* rectangleFondo.png in Resources */,
+				EBCFC9621E34FDAC00E1C4DB /* alert@2x.png in Resources */,
 				EB5258661DEE5643004A0DA8 /* logoTransparent.png in Resources */,
 				EB5259281DF283A9004A0DA8 /* back.png in Resources */,
 				EB248A851E0065AF004A9B51 /* add photo@2x.png in Resources */,
@@ -580,6 +625,7 @@
 				EBFCAFA71E078F7E007D9817 /* Report.m in Sources */,
 				EB957C641E15F9F600FF0D49 /* ReportDashboardCollectionViewCell.swift in Sources */,
 				EBD2083C1DED068300FBB4A2 /* main.m in Sources */,
+				EBCFC95A1E341F5F00E1C4DB /* RecipeCollectionHeaderView.m in Sources */,
 				EB248A801DFFA333004A9B51 /* UserCollectionViewCell.swift in Sources */,
 				EB5259211DF2612E004A0DA8 /* PendingCut.m in Sources */,
 				EB52586E1DEE7447004A0DA8 /* Planta.m in Sources */,

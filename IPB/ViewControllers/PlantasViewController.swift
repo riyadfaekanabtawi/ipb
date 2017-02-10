@@ -24,6 +24,7 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
     @IBOutlet var plantCapaxMaxTextField: UITextField!
     @IBOutlet var closeButton: UIButton!
     @IBOutlet var plant_collectionview: UICollectionView!
+    var selectedPlant:Planta!
     var revealController:SWRevealViewController!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -173,7 +174,7 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
  
             
             let plant = self.plants_array[indexPath.row - 1]
-            
+            self.selectedPlant = plant
             
             if (plant.planta_nombre != nil){
             self.plantNameTextField.text = plant.planta_nombre
@@ -275,8 +276,54 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
         
         }else{
         
+            if self.editarPlanta{
             
-            let alertController = UIAlertController(title: "Atencion!", message: "Está por crear la planta: \(self.plantNameTextField.text!) con capacidad máxima de: \(self.plantCapaxMaxTextField.text!) $ MXN, está seguro?", preferredStyle: .alert)
+                
+              
+                
+                let alertController = UIAlertController(title: "Atencion!", message: "Está por actualizar la planta: \(self.plantNameTextField.text!) con capacidad máxima de: $ \(self.plantCapaxMaxTextField.text!), está seguro?", preferredStyle: .alert)
+                
+                
+                let OKAction = UIAlertAction(title: "Actualizar Planta", style: .default) { (action) in
+                    
+                    
+                    
+                    Services.updatePlant(forIPB: self.plantNameTextField.text, andPlantID: self.selectedPlant.planta_id, andCapacityMax: NSNumber(value:Int32(self.plantCapaxMaxTextField.text!)!), andHandler: { (response) in
+                        self.closeAddPlantView()
+                        self.refreshHomePlants()
+                        let alertController = UIAlertController(title: "Bien!", message: "Actualizaste la planta: \(self.plantNameTextField.text!)", preferredStyle: .alert)
+                        
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+
+                        
+                    }, orErrorHandler: { (err) in
+                        
+                        
+                    })
+                    
+                    
+                 
+                }
+                alertController.addAction(OKAction)
+                
+                self.present(alertController, animated: true) {
+                    // ...
+                }
+                
+            
+            }else{
+                
+                
+                
+            let alertController = UIAlertController(title: "Atencion!", message: "Está por crear la planta: \(self.plantNameTextField.text!) con capacidad máxima de: $ \(self.plantCapaxMaxTextField.text!), está seguro?", preferredStyle: .alert)
             
             
             let OKAction = UIAlertAction(title: "Crear Planta", style: .default) { (action) in
@@ -301,15 +348,15 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
                     
                     
                 })
+                }
+                alertController.addAction(OKAction)
                 
+                self.present(alertController, animated: true) {
+                    // ...
+                }
                 
             }
-            alertController.addAction(OKAction)
-            
-            self.present(alertController, animated: true) {
-                // ...
-            }
-            
+       
 
       
         

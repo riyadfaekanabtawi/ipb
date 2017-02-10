@@ -24,7 +24,7 @@
 @property NSString *estado;
 @property NSString *prenda;
 @property NSString *corte;
-
+@property NSNumber *plant_id;
 
 @property NSNumber *bodega;
 @property NSNumber *cantidad_enviada;

@@ -108,9 +108,8 @@ class EnviosViewController: UIViewController,UICollectionViewDelegate,UICollecti
         cell.delegate = self
         cell.displayCorte(cut: self.pending_cuts_array[indexPath.row])
         let resultIngreso = formatter.string(from: NSNumber(value:self.pending_cuts_array[indexPath.row].cut_precio_final))
-        cell.ingreso_label.text = "Ingreso: \(resultIngreso!) $MXN"
-        cell.status_label.text = "ASIGNADO"
-         cell.status_view.backgroundColor = Functions.color(withHexString: "FF3B27", andAlpha: 1)
+        cell.ingreso_label.text = "Ingreso: $ \(resultIngreso!)"
+  
         return cell
         
         

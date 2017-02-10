@@ -10,53 +10,24 @@ import UIKit
 
 class DashboardReportsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
 
-    @IBOutlet var heightScroll: NSLayoutConstraint!
-    @IBOutlet var widthScroll: NSLayoutConstraint!
-    
-    
-    @IBOutlet var reportesDePlantaLabel: UILabel!
-    @IBOutlet var reportesDeCortesLabel: UILabel!
-    @IBOutlet var reportesDeEnviosLabel: UILabel!
-    
-    
-    @IBOutlet var reportesDePlantaNOLabel: UILabel!
-    @IBOutlet var reportesDeCortesNOLabel: UILabel!
-    @IBOutlet var reportesDeEnviosNOLabel: UILabel!
+
     
     @IBOutlet var titleViewLabel: UILabel!
-    
+    var array:NSArray = []
     var array_plant_reports:[Report] = []
-    var array_plant_cuts:[Report] = []
-    var array_plant_envios:[Report] = []
+var array_plant:[String] = []
     
-    @IBOutlet var reportesDePlantaCollectionView: UICollectionView!
-    @IBOutlet var reportesDeCortesCollectionView: UICollectionView!
-    @IBOutlet var reportesDeEnviosCollectionView: UICollectionView!
+    @IBOutlet var MycollectionView: UICollectionView!
+
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
-        self.widthScroll.constant  = self.view.frame.size.width
-        self.heightScroll.constant = self.view.frame.size.height  + 400
-        self.view.layoutIfNeeded()
-        self.reportesDePlantaLabel.font = UIFont(name: FONT_BOLD, size: self.reportesDePlantaLabel.font.pointSize)
-        self.reportesDeCortesLabel.font = UIFont(name: FONT_BOLD, size: self.reportesDeCortesLabel.font.pointSize)
-        self.reportesDeEnviosLabel.font = UIFont(name: FONT_BOLD, size: self.reportesDeEnviosLabel.font.pointSize)
+
         
         self.titleViewLabel.font = UIFont(name: FONT_BOLD, size: self.titleViewLabel.font.pointSize)
-        
-        
-        
-        
-        self.reportesDePlantaNOLabel.font = UIFont(name: FONT_REGULAR, size: self.reportesDePlantaNOLabel.font.pointSize)
-        self.reportesDeCortesNOLabel.font = UIFont(name: FONT_REGULAR, size: self.reportesDeCortesNOLabel.font.pointSize)
-        self.reportesDeEnviosNOLabel.font = UIFont(name: FONT_REGULAR, size: self.reportesDeEnviosNOLabel.font.pointSize)
-        
-        self.reportesDePlantaNOLabel.alpha = 0
-        self.reportesDeCortesNOLabel.alpha = 0
-        self.reportesDeEnviosNOLabel.alpha = 0
+
         self.loadReports()
         // Do any additional setup after loading the view.
     }
@@ -68,65 +39,15 @@ class DashboardReportsViewController: UIViewController,UICollectionViewDelegate,
         
         Services.getReportsWithandHandler({ (response) in
             
-            let array = response as! [Report]
-            
-    
-            
-            for report in array{
-            
-                if report.type_report == "planta"{
-                
-                self.array_plant_reports.append(report)
-     
-                }
-            
-                if report.type_report == "envio"{
-                    
-                     self.array_plant_envios.append(report)
-                }
-            
-                if report.type_report == "corte"{
-                     self.array_plant_cuts.append(report)
-                    
-                }
-                
-            }
 
-            if self.array_plant_reports.count == 0{
-                self.reportesDePlantaNOLabel.alpha = 1
-                self.reportesDePlantaCollectionView.alpha = 1
-            }else{
             
-                self.reportesDePlantaNOLabel.alpha = 0
-                self.reportesDePlantaCollectionView.alpha = 1
-                self.reportesDePlantaCollectionView.reloadData()
-            }
-            
-            
-            if self.array_plant_envios.count == 0{
-                self.reportesDeEnviosNOLabel.alpha = 1
-                self.reportesDeEnviosCollectionView.alpha = 1
-            }else{
+                self.array = response as! NSArray
+
                 
-                self.reportesDeEnviosNOLabel.alpha = 0
-                self.reportesDeEnviosCollectionView.alpha = 1
-                self.reportesDeEnviosCollectionView.reloadData()
-            }
+                self.MycollectionView.reloadData()
+           
             
-            
-            if self.array_plant_cuts.count == 0{
-                self.reportesDeCortesNOLabel.alpha = 1
-                self.reportesDeCortesCollectionView.alpha = 1
-            }else{
-                
-                self.reportesDeCortesNOLabel.alpha = 0
-                self.reportesDeCortesCollectionView.alpha = 1
-                self.reportesDeCortesCollectionView.reloadData()
-            }
-            
-            
-            
-            
+   
         }, orErrorHandler: { (err) in
             
             
@@ -148,38 +69,36 @@ class DashboardReportsViewController: UIViewController,UICollectionViewDelegate,
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        if collectionView == self.reportesDePlantaCollectionView{
+    
+        return (self.array[section] as AnyObject).count
         
-        return self.array_plant_reports.count
-            
-        }else if collectionView == self.reportesDeCortesCollectionView{
-        
-        return self.array_plant_cuts.count
-        
-        } else{
-        
-        return self.array_plant_envios.count
-        }
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return self.array.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reports", for: indexPath) as! ReportDashboardCollectionViewCell
-        if collectionView == self.reportesDePlantaCollectionView{
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reports", for: indexPath) as! ReportCollectionViewCell
+     
+        let array = self.array[indexPath.section] as AnyObject
+        
+        let arrayReports = array.object(forKey: "reports")as! [AnyObject]
+        
+        for report in arrayReports{
             
-            cell.displayReports(report: self.array_plant_reports[indexPath.row])
             
-        }else if collectionView == self.reportesDeCortesCollectionView{
+            let reportss = Report.init(dictionary:report as! [AnyHashable : Any])
             
-          cell.displayReports(report: self.array_plant_cuts[indexPath.row])
+            self.array_plant_reports.append(reportss!)
             
-        } else{
             
-            cell.displayReports(report: self.array_plant_envios[indexPath.row])
         }
+
+        
+        cell.displayReports(report: self.array_plant_reports[indexPath.row])
+
+        
         
         return cell
     }
@@ -192,7 +111,31 @@ class DashboardReportsViewController: UIViewController,UICollectionViewDelegate,
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         
-        return CGSize(width: 200, height: 200)
+       return CGSize(width: self.MycollectionView.layer.frame.size.width / 4, height: 300)
         
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        var reusableview:UICollectionReusableView? = nil
+        
+        if (kind == UICollectionElementKindSectionHeader) {
+            
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView", for: indexPath) as! RecipeCollectionHeaderView
+            let plant = self.array[indexPath.section] as AnyObject
+            
+            
+            
+            headerView.title.text = plant.object(forKey: "plant")as?String
+
+            
+            
+            reusableview = headerView
+            
+        }
+        
+        
+        return reusableview!
     }
 }

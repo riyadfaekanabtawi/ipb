@@ -11,7 +11,7 @@ import UIKit
 class LoginViewController: UIViewController,UITextFieldDelegate {
 
     
-    @IBOutlet var entrarButton: UIButton!
+    @IBOutlet var entrarButton: UILabel!
     @IBOutlet var loginViewParent: UIView!
     @IBOutlet var emailView: UIView!
     @IBOutlet var passwordView: UIView!
@@ -31,8 +31,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
          self.navigationController?.navigationBar.barStyle = UIBarStyle.blackTranslucent
         
         self.navigationController?.navigationBar.isHidden = true
-        self.emailLabel.font = UIFont(name: FONT_BOLD, size: self.emailLabel.font.pointSize)
-        self.passwordLabel.font = UIFont(name: FONT_BOLD, size: self.passwordLabel.font.pointSize)
+        self.emailLabel.font = UIFont(name: FONT_REGULAR, size: self.emailLabel.font.pointSize)
+        self.passwordLabel.font = UIFont(name: FONT_REGULAR, size: self.passwordLabel.font.pointSize)
         
         self.passwordTextField.font = UIFont(name: FONT_REGULAR, size: (self.passwordTextField.font?.pointSize)!)
         self.emailTextField.font = UIFont(name: FONT_REGULAR, size: (self.emailTextField.font?.pointSize)!)
@@ -44,16 +44,13 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         self.emailView.layer.cornerRadius = 4
         self.emailView.layer.masksToBounds = true
         
-        
+         self.entrarButton.font = UIFont(name: FONT_REGULAR, size: (self.entrarButton.font?.pointSize)!)
         self.passwordView.layer.cornerRadius = 4
         self.passwordView.layer.masksToBounds = true
         
         
         
-        self.entrarButton.layer.cornerRadius = 4
-        self.entrarButton.layer.borderColor = UIColor.white.cgColor
-        self.entrarButton.layer.borderWidth = 2
-        self.entrarButton.layer.masksToBounds = true
+
         
         
         

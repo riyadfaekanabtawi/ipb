@@ -14,11 +14,18 @@
 
 
 //POST
-+(void)createReportEnvio:(NSNumber *)cantidad_envio andCutName:(NSString *)cut_name andCutID:(NSNumber *)cut_id andNumeroDeEnvio:(NSString *)numero_envio andCantidadPorEnviar:(NSNumber *)cantidadPorEnviar andCantidadEnviada:(NSNumber *)cantidad_enviada AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
-+(void)FilterCuts:(NSString *)planta andLista:(NSString *)lista andCorte:(NSString *)corte andEstilo:(NSString *)estilo andStatus:(NSString *)status andfechaIPB:(NSString *)fecha_ipb andFechaCliente:(NSString *)fecha_cliente andHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
++(void)updatePlantForIPB:(NSString *)plant_name andPlantID:(NSNumber *)plant_id andCapacityMax:(NSNumber *)capacidad_maxima AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
-+(void)updateReportEnvio:(NSNumber *)cantidad_envio andReportID:(NSNumber *)report_id andCutName:(NSString *)cut_name andCutID:(NSNumber *)cut_id andNumeroDeEnvio:(NSString *)numero_envio andCantidadPorEnviar:(NSNumber *)cantidadPorEnviar andCantidadEnviada:(NSNumber *)cantidad_enviada AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
+
++(void)createReportEnvio:(NSNumber *)cantidad_envio andCutName:(NSString *)cut_name andCutID:(NSNumber *)cut_id andNumeroDeEnvio:(NSString *)numero_envio AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
+
++(void)FilterCuts:(NSString *)planta andLista:(NSString *)lista andCorte:(NSString *)corte andEstilo:(NSString *)estilo andStatus:(NSString *)status andfechaIPB:(NSString *)fecha_ipb andFechaCliente:(NSString *)fecha_cliente andCliente:(NSString *)cliente andHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
+
+
++(void)getTotals:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
+
++(void)updateReportEnvio:(NSNumber *)cantidad_envio andReportID:(NSNumber *)report_id andCutName:(NSString *)cut_name andCutID:(NSNumber *)cut_id andNumeroDeEnvio:(NSString *)numero_envio AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
 +(void)createReport:(NSString *)lista andCut:(NSNumber *)corte andStyle:(NSString *)estilo andCantidad:(NSString *)cantidad andFechaIPB:(NSString *)fecha_ipb andRealizadas:(NSString *)realizadas andOperarios:(NSNumber *)operarios andFaltas:(NSNumber *)faltas andProducidas:(NSNumber *)produciad andPlancha:(NSNumber *)en_plancha andEmpaque:(NSNumber *)en_empaque andBodega:(NSNumber *)bodega andCutName:(NSString *)cut_name AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
@@ -78,5 +85,9 @@
 
 +(void)getAllcuts:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
++(void)getCutDetail:(NSNumber *)cut_id AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
+
+
++(void)getPlantName:(NSNumber *)plant_id AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 @end

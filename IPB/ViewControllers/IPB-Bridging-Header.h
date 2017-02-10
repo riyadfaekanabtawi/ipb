@@ -5,6 +5,7 @@
 #import "AppDelegate.h"
 #import "Services.h"
 #import "ipb-prefix.pch"
+#import "RecipeCollectionHeaderView.h"
 #import "UIImageView+WebCache.h"
 #import "User.h"
 #import "Pendingcut.h"

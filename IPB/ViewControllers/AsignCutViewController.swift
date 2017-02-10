@@ -244,7 +244,7 @@ class AsignCutViewController: UIViewController,UICollectionViewDelegate,UICollec
     func refreshFather() {
         
     }
-    
+   
   @IBAction func showImage() {
         UIView.animate(withDuration: 0.4) {
             self.BackaddPlantview.alpha = 1

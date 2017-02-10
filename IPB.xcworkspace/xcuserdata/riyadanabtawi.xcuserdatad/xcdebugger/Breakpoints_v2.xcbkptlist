@@ -2,4 +2,54 @@
 <Bucket
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "IPB/Common/Services.m"
+            timestampString = "506982980.392841"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1095"
+            endingLineNumber = "1095"
+            landmarkName = "+updatePlantForIPB:andPlantID:andCapacityMax:AndHandler:orErrorHandler:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[Services updatePlantForIPB:andPlantID:andCapacityMax:AndHandler:orErrorHandler:]"
+                  moduleName = "IPB"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riyadanabtawi/Desktop/NevuTech/ipb/IPB/Common/Services.m"
+                  timestampString = "506748190.690911"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1025"
+                  endingLineNumber = "1025"
+                  offsetFromSymbolStart = "562">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__82+[Services updatePlantForIPB:andPlantID:andCapacityMax:AndHandler:orErrorHandler:]_block_invoke"
+                  moduleName = "IPB"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riyadanabtawi/Desktop/NevuTech/ipb/IPB/Common/Services.m"
+                  timestampString = "506748190.692951"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1030"
+                  endingLineNumber = "1030"
+                  offsetFromSymbolStart = "30">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

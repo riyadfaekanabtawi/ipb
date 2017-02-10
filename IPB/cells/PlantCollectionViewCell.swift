@@ -85,10 +85,11 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
     
     func keyboardWillShow(notification: NSNotification) {
         
+       
         if !self.cantidad_por_asignar_textViewlabel.isEditing{
             
             if ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue) != nil {
-                self.viewParent.frame.origin.y -= 200
+                self.viewParent.frame.origin.y = -200
             }
         }
         
@@ -96,11 +97,17 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
     }
     
     func keyboardWillHide(notification: NSNotification) {
+        
+        
         if !self.cantidad_por_asignar_textViewlabel.isEditing{
+    
+                if ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue) != nil {
+                    
+                    self.viewParent.frame.origin.y = 0
+                }
             
-            if ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue) != nil {
-                self.viewParent.frame.origin.y += 200
-            }
+          
+          
         }
     }
     
@@ -280,95 +287,196 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         
-       let formatter = DateFormatter()
+       let formatterd = DateFormatter()
         
-        formatter.dateFormat = "MM"
+        formatterd.dateFormat = "MM"
         
         let total = self.selectedPlant.planta_capacidadMax.floatValue
         
-        let stringDate = formatter.string(from: calendar.currentPage)
+        let stringDate = formatterd.string(from: calendar.currentPage)
+        
+        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 1
+        formatter.maximumFractionDigits = 1
+        
         
         if stringDate == "01"{
+
+            
+             let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.january_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+    
+
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.january_used)))
             
             
-        self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.january_used) "
-        self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.january_used) "
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
         }
         
         if stringDate == "02"{
+      
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.febuary_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.febuary_used) "
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.febuary_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.febuary_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
             
         }
         
         if stringDate == "03"{
   
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.march_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.march_used) "
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.march_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.march_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
         }
         
         if stringDate == "04"{
 
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.april_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.april_used) "
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.april_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.april_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
         }
         
         if stringDate == "05"{
     
+        
             
-    
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.may_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.may_used) "
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.may_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.may_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
             
         }
         
         if stringDate == "06"{
    
+     
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.june_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
             
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.june_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.june_used) "
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.june_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
             
         }
         
         if stringDate == "07"{
             
-       
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.july_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.july_used) "
+         
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.july_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.july_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
             
         }
         
         if stringDate == "08"{
     
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.august_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.august_used) "
+          
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.august_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.august_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
             
         }
         
         if stringDate == "09"{
          
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.september_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.september_used) "
+         
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.september_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.september_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
         }
         
         if stringDate == "10"{
  
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.october_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.october_used) "
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.october_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.october_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
         }
         
         if stringDate == "11"{
-      
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.november_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.november_used) "
+
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.november_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.november_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
         }
         
         if stringDate == "12"{
           
-              self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.december_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.december_used) "
+  
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.december_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.december_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
         }
       
         
@@ -382,43 +490,89 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
         
         formatterdate.dateFormat = "MM"
         
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 1
+        formatter.maximumFractionDigits = 1
+        
         
         let total = self.selectedPlant.planta_capacidadMax.floatValue
         
         let stringDate = formatterdate.string(from: calendar.currentPage)
         
         if stringDate == "01"{
+         
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.january_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
             
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.january_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.january_used) "
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.january_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
         }
         
         if stringDate == "02"{
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.febuary_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.febuary_used) "
+       
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.febuary_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.febuary_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
             
         }
         
         if stringDate == "03"{
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.march_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.march_used) "
+
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.march_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.march_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
         }
         
         if stringDate == "04"{
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.april_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.april_used) "
+
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.april_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.april_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
         }
         
         if stringDate == "05"{
             
             
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.may_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.may_used) "
+    
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.may_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.may_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
             
         }
         
@@ -426,51 +580,129 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
             
             
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.june_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.june_used) "
+ 
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.june_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.june_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
             
         }
         
         if stringDate == "07"{
+
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.july_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
             
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.july_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.july_used) "
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.july_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
             
         }
         
         if stringDate == "08"{
+
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.august_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.august_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.august_used) "
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.august_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
             
         }
         
         if stringDate == "09"{
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.september_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.september_used) "
+  
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.september_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.september_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
         }
         
         if stringDate == "10"{
+      
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.october_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.october_used) "
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.october_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.october_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
         }
         
         if stringDate == "11"{
+     
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.november_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.november_used) "
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.november_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.november_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
         }
         
         if stringDate == "12"{
             
-            self.capax_used.text = "Capacidad Usada: $ \(self.selectedPlant.december_used) "
-            self.capax_disp.text = "Capacidad Disponible: $ \(total - self.selectedPlant.december_used) "
+     
+            
+            let totalUsed = formatter.string(from: NSNumber(value:Float32(self.selectedPlant.december_used)))
+            self.capax_used.text = "Capacidad Usada: $ \(totalUsed!) "
+            
+            
+            let totaldisp = formatter.string(from: NSNumber(value:Float32(total - self.selectedPlant.december_used)))
+            
+            
+            self.capax_disp.text = "Capacidad Disponible: $ \(totaldisp!) "
+            
         }
         
     }
 
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
+        
+    {
+     
+            
+            
+            
+            let nsString = textField.text as NSString?
+            let text = nsString?.replacingCharacters(in: range, with: string)
+            
+            
+            if Int(text!) != nil || text?.range(of: ".") != nil || text == ""{
+                // Text field converted to an Int
+                return true
+            } else {
+                // Text field is not an Int
+                return false
+                
+            }
+            
+      
+        
+    }
 
 }

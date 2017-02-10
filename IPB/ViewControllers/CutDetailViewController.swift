@@ -7,9 +7,13 @@
 //
 
 import UIKit
-class CutDetailViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UITextFieldDelegate {
+class CutDetailViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UITextFieldDelegate,pendingCutdelegate {
     
-
+    @IBOutlet var styleImageView: UIImageView!
+ 
+    @IBOutlet var imageViewBig: UIView!
+    @IBOutlet var imagenTitle: UILabel!
+    @IBOutlet var closeButton: UIButton!
     
     @IBOutlet var envioTypeButton: UIButton!
     @IBOutlet var corteTypeButton: UIButton!
@@ -37,10 +41,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
     @IBOutlet var cantidadDeEnvioLabel: UILabel!
     @IBOutlet var numeroDeEnvioTextField: UITextField!
     @IBOutlet var numeroDeEnvioLabel: UILabel!
-    @IBOutlet var cantidadPorenviarTextField: UITextField!
-    @IBOutlet var cantidadPorenviarLabel: UILabel!
-    @IBOutlet var CantidadEnviadatitle: UILabel!
-    @IBOutlet var cantidadEnviadaTextField: UITextField!
+
     
     @IBOutlet var reportEnviosView: UIView!
     @IBOutlet var guardarReporteButtonEnvio: UIButton!
@@ -71,13 +72,23 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
     @IBOutlet var noReportsLabel: UILabel!
     @IBOutlet var cuts_collectionview: UICollectionView!
     @IBOutlet var guardarButton: UIButton!
-    @IBOutlet var closeButton: UIButton!
+    @IBOutlet var closeButtonImage: UIButton!
     @IBOutlet var addBackView: UIView!
     @IBOutlet var AddContainerView: UIView!
     var report_id:NSNumber!
     
     var updatingReport = false
     
+    @IBOutlet var en_plancha: UILabel!
+    @IBOutlet var en_plancha_label: UILabel!
+    @IBOutlet var en_empaque: UILabel!
+    @IBOutlet var en_empaque_label: UILabel!
+    @IBOutlet var en_bodega: UILabel!
+    @IBOutlet var en_bodega_label: UILabel!
+    @IBOutlet var prendas_por_enviar: UILabel!
+    @IBOutlet var prendas_por_enviar_label: UILabel!
+    @IBOutlet var cantidad_real_corte: UILabel!
+    @IBOutlet var cantidad_real_corte_label: UILabel!
     
     var pending_cuts_array:[Corte] = []
     var selected_cut:Corte!
@@ -85,6 +96,15 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.imageViewBig.layer.cornerRadius = 4
+        self.imageViewBig.layer.masksToBounds = true
+
+        self.imageViewBig.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        self.imageViewBig.alpha = 0
+        self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)!
+  self.closeButtonImage.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButtonImage.titleLabel?.font.pointSize)!)!
+        
         
          self.cant_real_textFiled.font = UIFont(name: FONT_REGULAR, size: (self.cant_real_textFiled.font?.pointSize)!)
          self.statusTextField.font = UIFont(name: FONT_REGULAR, size: (self.statusTextField.font?.pointSize)!)
@@ -95,8 +115,6 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
         
         self.fechaLabel.font = UIFont(name: FONT_BOLD, size: self.fechaLabel.font.pointSize)
         self.numeroDeEnvioLabel.font = UIFont(name: FONT_BOLD, size: self.numeroDeEnvioLabel.font.pointSize)
-        self.cantidadPorenviarLabel.font = UIFont(name: FONT_BOLD, size: self.cantidadPorenviarLabel.font.pointSize)
-        self.CantidadEnviadatitle.font = UIFont(name: FONT_BOLD, size: self.CantidadEnviadatitle.font.pointSize)
         
         self.reporteDeEnviosLabel.font = UIFont(name: FONT_BOLD, size: self.reporteDeEnviosLabel.font.pointSize)
         
@@ -109,15 +127,13 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
         
         
        
-        self.cantidadEnviadaTextField.font = UIFont(name: FONT_REGULAR, size: (self.cantidadEnviadaTextField.font?.pointSize)!)
-        self.cantidadPorenviarTextField.font = UIFont(name: FONT_REGULAR, size: (self.cantidadPorenviarTextField.font?.pointSize)!)
+
         self.numeroDeEnvioTextField.font = UIFont(name: FONT_REGULAR, size: (self.numeroDeEnvioTextField.font?.pointSize)!)
         self.cantidadDeEnvioTextfield.font = UIFont(name: FONT_REGULAR, size: (self.cantidadDeEnvioTextfield.font?.pointSize)!)
             
   
-        self.selected_cut = self.pending_cuts_array[0]
-          self.cuts_collectionview.reloadData()
-        self.cortesTitle.text = "CORTE: \(self.selected_cut.corte!)"
+ 
+
         self.cortesTitle.font = UIFont(name: FONT_BOLD, size: self.cortesTitle.font.pointSize)
         self.noReportsLabel.font = UIFont(name: FONT_BOLD, size: self.noReportsLabel.font.pointSize)
         self.addBackView.alpha = 0
@@ -152,7 +168,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
         self.cuts_collectionview.layer.masksToBounds = true
         self.reportsCollectionView.layer.cornerRadius = 4
         self.reportsCollectionView.layer.masksToBounds = true
-        self.getReports()
+      
       
         self.cutIDLabelReport.font = UIFont(name: FONT_BOLD, size: self.cutIDLabelReport.font.pointSize)
          self.reportCutTitleLabel.font = UIFont(name: FONT_BOLD, size: self.reportCutTitleLabel.font.pointSize)
@@ -190,15 +206,94 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
         self.en_planchaField.font = UIFont(name: FONT_REGULAR, size: (self.en_planchaField.font?.pointSize)!)
         self.en_empaquieField.font = UIFont(name: FONT_REGULAR, size: (self.en_empaquieField.font?.pointSize)!)
         self.bodegaField.font = UIFont(name: FONT_REGULAR, size: (self.bodegaField.font?.pointSize)!)
-
         
+        
+        self.en_plancha.font = UIFont(name: FONT_BOLD, size: (self.en_plancha.font?.pointSize)!)
+        self.en_empaque.font = UIFont(name: FONT_BOLD, size: (self.en_empaque.font?.pointSize)!)
+        self.en_bodega.font = UIFont(name: FONT_BOLD, size: (self.en_bodega.font?.pointSize)!)
+        self.prendas_por_enviar.font = UIFont(name: FONT_BOLD, size: (self.prendas_por_enviar.font?.pointSize)!)
+        self.cantidad_real_corte.font = UIFont(name: FONT_BOLD, size: (self.cantidad_real_corte.font?.pointSize)!)
+        
+        
+        
+        self.en_plancha_label.font = UIFont(name: FONT_REGULAR, size: (self.en_plancha_label.font?.pointSize)!)
+        self.en_empaque_label.font = UIFont(name: FONT_REGULAR, size: (self.en_empaque_label.font?.pointSize)!)
+        self.en_bodega_label.font = UIFont(name: FONT_REGULAR, size: (self.en_bodega_label.font?.pointSize)!)
+        self.prendas_por_enviar_label.font = UIFont(name: FONT_REGULAR, size: (self.prendas_por_enviar_label.font?.pointSize)!)
+        self.cantidad_real_corte_label.font = UIFont(name: FONT_REGULAR, size: (self.cantidad_real_corte_label.font?.pointSize)!)
+        
+        
+        
+        
+        self.selected_cut = self.pending_cuts_array[0]
+        self.cuts_collectionview.reloadData()
+        self.cortesTitle.text = "CORTE: \(self.selected_cut.corte!)"
         self.corteNameReporte.text = "\(self.selected_cut.corte!)"
         self.corteNameReporteChoosing.text = "\(self.selected_cut.corte!)"
         self.corteIDLabel.text = "\(self.selected_cut.corte!)"
         self.cutIDLabelReport.text = "\(self.selected_cut.corte!)"
+        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        
+        let resultPlancha = formatter.string(from: self.selected_cut.en_plancha)
+        let resultEmpaque = formatter.string(from: self.selected_cut.en_empaque)
+        let resultBodega = formatter.string(from: self.selected_cut.bodega)
+        let resultEnviar = formatter.string(from: self.selected_cut.cantidad_por_enviar)
+        let resultReal = formatter.string(from: self.selected_cut.cantidad_real_envio)
+        
+        self.en_plancha.text = "\(resultPlancha!)"
+        self.en_empaque.text = "\(resultEmpaque!)"
+        self.en_bodega.text = "\(resultBodega!)"
+        self.prendas_por_enviar.text = "\(resultEnviar!)"
+        self.cantidad_real_corte.text = "\(resultReal!)"
+        
+          self.getReports()
         // Do any additional setup after loading the view.
     }
     
+    
+    
+    func loadCut(){
+    
+        Services.getCutDetail(self.selected_cut.cut_id, andHandler:{ (response) in
+            
+           self.selected_cut = response as! Corte
+            
+            self.pending_cuts_array.removeAll()
+            
+            self.pending_cuts_array.append(self.selected_cut)
+            self.cuts_collectionview.reloadData()
+            
+            
+            self.corteNameReporte.text = "\(self.selected_cut.corte!)"
+            self.corteNameReporteChoosing.text = "\(self.selected_cut.corte!)"
+            self.corteIDLabel.text = "\(self.selected_cut.corte!)"
+            self.cutIDLabelReport.text = "\(self.selected_cut.corte!)"
+            
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            
+            let resultPlancha = formatter.string(from: self.selected_cut.en_plancha)
+            let resultEmpaque = formatter.string(from: self.selected_cut.en_empaque)
+            let resultBodega = formatter.string(from: self.selected_cut.bodega)
+            let resultEnviar = formatter.string(from: self.selected_cut.cantidad_por_enviar)
+            let resultReal = formatter.string(from: self.selected_cut.cantidad_real_envio)
+            
+            self.en_plancha.text = "\(resultPlancha!)"
+            self.en_empaque.text = "\(resultEmpaque!)"
+            self.en_bodega.text = "\(resultBodega!)"
+            self.prendas_por_enviar.text = "\(resultEnviar!)"
+            self.cantidad_real_corte.text = "\(resultReal!)"
+            self.getReports()
+        }, orErrorHandler: { (err) in
+            
+            
+            
+        })
+    
+  
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -236,12 +331,13 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
         else{
         self.updatingReport = true
             
-            self.guardarReporteButtonEnvio.isHidden = true
-            self.guardarButton.isHidden = true
-            self.guardarReportbuttonCut.isHidden = true
+       
+        
+          
             let report = self.reports_array[indexPath.row - 1]
             
             if report.type_report == "planta"{
+                    self.guardarButton.isHidden = true
                 self.operariosField.text = "\(report.operarios!)"
                 self.faltasField.text = "\(report.faltas!)"
                 self.producidasField.text = "\(report.produciad!)"
@@ -254,18 +350,16 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
             
             }else if report.type_report == "corte"{
             
-                
+                  self.guardarReportbuttonCut.isHidden = false
                 self.statusTextField.text = report.status_report!
                 self.cant_real_textFiled.text = "\(report.cantidad_real_envio!)"
                 self.report_id = report.reporte_id
                 self.showAddReportCorte()
             
             }else if report.type_report == "envio"{
-                
+                     self.guardarReporteButtonEnvio.isHidden = true
                 self.cantidadDeEnvioTextfield.text = "\(report.cantidad_de_envio!)"
                 self.numeroDeEnvioTextField.text = "\(report.numero_de_envio!)"
-                self.cantidadPorenviarTextField.text = "\(report.cantidad_por_enviar!)"
-                self.cantidadEnviadaTextField.text = "\(report.cantidad_enviada!)"
                 self.report_id = report.reporte_id
                 self.showAddReportEnvio()
             }
@@ -317,7 +411,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
             cell.displayCorte(cut: self.pending_cuts_array[indexPath.row])
             let formatter = NumberFormatter()
             formatter.numberStyle = .decimal
-            
+            cell.delegate = self
             
 
             
@@ -337,7 +431,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
         
         }else{
         
-         return CGSize(width: self.view.frame.size.width-20, height: 300)
+         return CGSize(width: self.view.frame.size.width-20, height: 240)
         }
        
     }
@@ -392,7 +486,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                     
                     
                    Services.updateReport(self.selected_cut.cut_list, andReportID: self.report_id, andCut: self.selected_cut.corte, andStyle: self.selected_cut.cut_estilo, andCantidad: "\(self.selected_cut.cut_cantidad!)", andFechaIPB: self.selected_cut.cut_fecha_ipb, andRealizadas: "", andOperarios: operarios, andFaltas: faltas, andProducidas: producidaas, andPlancha: plancha, andEmpaque: empaque, andCutName: self.selected_cut.corte, andCutID: self.selected_cut.cut_id, andBodega: bodega, andHandler: { (response) in
-                    
+                    self.loadCut()
                     let alertController = UIAlertController(title: "Bien!", message: "Actualizaste el reporte al corte: \(self.selected_cut.corte!)", preferredStyle: .alert)
                     
                     
@@ -404,8 +498,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                     self.present(alertController, animated: true) {
                         // ...
                     }
-                    self.getReports()
-                    self.hideAddplantView()
+       
 
                    }, orErrorHandler: { (err) in
                     
@@ -439,7 +532,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                 
                 Services.createReport(self.selected_cut.cut_list, andCutID:self.selected_cut.cut_id, andCut: "\(self.selected_cut.corte!)", andStyle: self.selected_cut.cut_estilo, andCantidad: "\(self.selected_cut.cut_cantidad!)", andFechaIPB: self.selected_cut.cut_fecha_ipb, andRealizadas: "", andOperarios: operarios, andFaltas: faltas, andProducidas: producidaas, andPlancha: plancha, andEmpaque: empaque, andBodega: bodega, andHandler: { (response) in
     
-                    
+                    self.loadCut()
                     let alertController = UIAlertController(title: "Bien!", message: "Cargaste el reporte al corte: \(self.selected_cut.corte!)", preferredStyle: .alert)
                     
                     
@@ -451,8 +544,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                     self.present(alertController, animated: true) {
                         // ...
                     }
-                    self.getReports()
-                    self.hideAddplantView()
+    
                     
                 }, orErrorHandler: { (err) in
                     
@@ -565,21 +657,10 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
         
         if self.numeroDeEnvioTextField == textField{
         
-            self.cantidadPorenviarTextField.becomeFirstResponder()
+            self.numeroDeEnvioTextField.resignFirstResponder()
         
         }
         
-        if self.cantidadPorenviarTextField == textField{
-        
-        self.cantidadEnviadaTextField.becomeFirstResponder()
-        
-        }
-        
-        if self.cantidadEnviadaTextField == textField{
-        
-        self.cantidadEnviadaTextField.resignFirstResponder()
-        
-        }
         
         if self.statusTextField == textField{
         
@@ -626,8 +707,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
         
         self.cantidadDeEnvioTextfield.resignFirstResponder()
         self.numeroDeEnvioTextField.resignFirstResponder()
-        self.cantidadPorenviarTextField.resignFirstResponder()
-        self.cantidadEnviadaTextField.resignFirstResponder()
+
      
         
     }
@@ -640,7 +720,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
     
     @IBAction func guardarReporteEnvio(){
         
-        if self.cantidadDeEnvioTextfield.text == "" || self.numeroDeEnvioTextField.text == "" || self.cantidadPorenviarTextField.text == "" || self.cantidadEnviadaTextField.text == ""{
+        if self.cantidadDeEnvioTextfield.text == "" || self.numeroDeEnvioTextField.text == ""{
             
             let alertController = UIAlertController(title: "Oops!", message: "Debes llenar todos los campos para cargar un reporte de envio", preferredStyle: .alert)
             
@@ -666,15 +746,10 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                 let OKAction = UIAlertAction(title: "Actualizar Reporte", style: .default) { (action) in
                     
                     let cantidadEnvio = NSNumber(value: Int32(self.cantidadDeEnvioTextfield.text!)!)
+             
                     
-                    let cantidad_por_enviar = NSNumber(value: Int32(self.cantidadPorenviarTextField.text!)!)
-                    let cantidad_enviada = NSNumber(value: Int32(self.cantidadEnviadaTextField.text!)!)
-                    
-                    
-                    
-                    
-                    Services.updateReportEnvio(cantidadEnvio, andReportID:self.report_id, andCutName: self.corteIDLabel.text, andCutID:self.selected_cut.cut_id, andNumeroDeEnvio: self.numeroDeEnvioTextField.text, andCantidadPorEnviar: cantidad_por_enviar, andCantidadEnviada: cantidad_enviada, andHandler: { (response) in
-                        
+                    Services.updateReportEnvio(cantidadEnvio, andReportID:self.report_id, andCutName: self.corteIDLabel.text, andCutID:self.selected_cut.cut_id, andNumeroDeEnvio: self.numeroDeEnvioTextField.text, andHandler: { (response) in
+                        self.loadCut()
                         let alertController = UIAlertController(title: "Bien!", message: "Actualizaste el reporte de envio: \(self.selected_cut.corte!)", preferredStyle: .alert)
                         
                         
@@ -686,8 +761,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                         self.present(alertController, animated: true) {
                             // ...
                         }
-                        self.getReports()
-                        self.hideAddReportEnvio()
+       
                         
                     }, orErrorHandler: { (err) in
                         
@@ -714,15 +788,14 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                     
                     let cantidadEnvio = NSNumber(value: Int32(self.cantidadDeEnvioTextfield.text!)!)
       
-                    let cantidad_por_enviar = NSNumber(value: Int32(self.cantidadPorenviarTextField.text!)!)
-                    let cantidad_enviada = NSNumber(value: Int32(self.cantidadEnviadaTextField.text!)!)
+
         
                     
                     
                     
-                    Services.createReportEnvio(cantidadEnvio, andCutName: self.corteIDLabel.text, andCutID:self.selected_cut.cut_id, andNumeroDeEnvio: self.numeroDeEnvioTextField.text, andCantidadPorEnviar: cantidad_por_enviar, andCantidadEnviada: cantidad_enviada, andHandler: { (response) in
+                    Services.createReportEnvio(cantidadEnvio, andCutName: self.corteIDLabel.text, andCutID:self.selected_cut.cut_id, andNumeroDeEnvio: self.numeroDeEnvioTextField.text, andHandler: { (response) in
                         
-                        
+                        self.loadCut()
                         let alertController = UIAlertController(title: "Bien!", message: "Cargaste el reporte de envio: \(self.selected_cut.corte!)", preferredStyle: .alert)
                         
                         
@@ -734,8 +807,8 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                         self.present(alertController, animated: true) {
                             // ...
                         }
-                        self.getReports()
-                        self.hideAddReportEnvio()
+         
+                        
  
                         
                     }, orErrorHandler: { (err) in
@@ -805,7 +878,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
     
     @IBAction func guardarReporteCorte(){
         
-        if self.statusTextField.text == "" || self.cant_real_textFiled.text == ""{
+        if self.statusTextField.text == ""{
             
             let alertController = UIAlertController(title: "Oops!", message: "Debes llenar todos los campos para cargar un reporte del corte", preferredStyle: .alert)
             
@@ -830,12 +903,16 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                 
                 let OKAction = UIAlertAction(title: "Actualizar Reporte", style: .default) { (action) in
                     
+                    if self.cant_real_textFiled.text == ""{
+                    
+                    self.cant_real_textFiled.text = "0"
+                    }
                     let cantReal = NSNumber(value: Int32(self.cant_real_textFiled.text!)!)
                     
             
                     
                     Services.updateReportCorte(cantReal, andstatus: self.statusTextField.text, andCutName:self.selected_cut.corte, andCutID:self.selected_cut.cut_id, andReportID:self.report_id, andHandler: { (response) in
-                        
+                        self.loadCut()
                         let alertController = UIAlertController(title: "Bien!", message: "Actualizaste el reporte del corte: \(self.selected_cut.corte!)", preferredStyle: .alert)
                         
                         
@@ -847,8 +924,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                         self.present(alertController, animated: true) {
                             // ...
                         }
-                        self.getReports()
-                        self.hideAddReportCorte()
+          
                     }, orErrorHandler: { (err) in
                         
                         
@@ -871,7 +947,10 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                 
                 
                 let OKAction = UIAlertAction(title: "Cargar Reporte", style: .default) { (action) in
-                    
+                    if self.cant_real_textFiled.text == ""{
+                        
+                        self.cant_real_textFiled.text = "0"
+                    }
                     
                     let cantReal = NSNumber(value: Int32(self.cant_real_textFiled.text!)!)
                     
@@ -879,7 +958,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                     
                     
                     Services.createReportCorte(cantReal, andstatus: self.statusTextField.text, andCutName:self.selected_cut.corte, andCutID:self.selected_cut.cut_id, andHandler: { (response) in
-                        
+                        self.loadCut()
                         if ((response as? String) != nil){
                             let alertController = UIAlertController(title: "Oops", message: "No puedes cargar mas de un reporte de corte", preferredStyle: .alert)
                             
@@ -911,8 +990,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                             
                         }
                         
-                        self.getReports()
-                        self.hideAddplantView()
+               
                         
 
                     }, orErrorHandler: { (err) in
@@ -939,13 +1017,25 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
     }
 
     func showChooseReportView(){
-        
-        
+
+        self.operariosField.text = ""
+        self.faltasField.text = ""
+        self.producidasField.text = ""
+        self.en_planchaField.text = ""
+        self.en_empaquieField.text = ""
+        self.bodegaField.text = ""
+        self.statusTextField.text = ""
+        self.cant_real_textFiled.text = ""
+        self.cantidadDeEnvioTextfield.text = ""
+        self.numeroDeEnvioTextField.text = ""
+
+ 
+    
         UIView.animate(withDuration: 0.4) {
             self.addBackView.alpha = 1
             self.choosingReportTypeView.transform = CGAffineTransform.identity
             self.choosingReportTypeView.alpha = 1
-            
+    
         }
         
     }
@@ -968,8 +1058,54 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
     }
     
     @IBAction func selectedCutType(){
-    self.hideChooseReportView()
-    self.showAddReportCorte()
+        
+ 
+            
+            
+            Services.getReportsForCut(self.selected_cut.cut_id, andHandler:{ (response) in
+                
+                self.reports_array = response as! [Report]
+                
+                var boolReport = false
+                for report in self.reports_array{
+                
+                    if report.type_report.lowercased() == "corte"{
+                    
+                        boolReport = true
+                    
+                    }
+                }
+                
+                
+                if !boolReport{
+                
+                    self.hideChooseReportView()
+                    self.showAddReportCorte()
+                    
+                
+                }else{
+                
+                    
+                    let alertController = UIAlertController(title: "Oops!", message: "No puedes crear otro reporte de corte.", preferredStyle: .alert)
+                    
+                    
+                    let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                        
+                    }
+                    alertController.addAction(OKAction)
+                    
+                    self.present(alertController, animated: true) {
+                        // ...
+                    }
+                
+                }
+                
+            }, orErrorHandler: { (err) in
+                
+                
+                
+            })
+   
     }
     @IBAction func selectedPlantType(){
         self.hideChooseReportView()
@@ -987,4 +1123,33 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
         self.hideChooseReportView()
     }
     
+    
+    func showImage(image: String) {
+        UIView.animate(withDuration: 0.4) {
+            self.addBackView.alpha = 1
+            self.imageViewBig.transform = CGAffineTransform.identity
+            self.imageViewBig.alpha = 1
+            
+            self.styleImageView.sd_setImage(with: NSURL(string: image) as URL!)
+            
+            
+            
+        }
+        
+        
+        
+    }
+    @IBAction func hideImageBackView(){
+        
+        UIView.animate(withDuration: 0.4) {
+            self.addBackView.alpha = 0
+            self.imageViewBig.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+            self.imageViewBig.alpha = 0
+            
+            self.styleImageView.sd_setImage(with: NSURL(string: "") as URL!)
+            
+            
+            
+        }
+    }
 }
