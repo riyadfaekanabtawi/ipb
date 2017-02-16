@@ -23,7 +23,7 @@
 @property NSString *telefonocontacto2;
 @property NSString *telefonocontacto3;
 
-
+@property NSString *direccion;
 @property NSString *puestocontacto1;
 @property NSString *puestocontacto2;
 @property NSString *puestocontacto3;

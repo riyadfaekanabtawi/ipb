@@ -25,7 +25,7 @@
         self.telefonocontacto1 = replaceNSNullValue([dictionary objectForKey:@"telefono_contacto1"]);
         self.telefonocontacto2 = replaceNSNullValue([dictionary objectForKey:@"telefono_contacto2"]);
         self.telefonocontacto3 = replaceNSNullValue([dictionary objectForKey:@"telefono_contacto3"]);
-        
+        self.direccion = replaceNSNullValue([dictionary objectForKey:@"direccion"]);
         
         self.puestocontacto1 = replaceNSNullValue([dictionary objectForKey:@"puesto_contacto1"]);
         self.puestocontacto2 = replaceNSNullValue([dictionary objectForKey:@"puesto_contacto2"]);

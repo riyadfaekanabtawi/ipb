@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import MessageUI
+class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UITextFieldDelegate,clientdelegateHome,MFMailComposeViewControllerDelegate {
+   
 
-class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UITextFieldDelegate,clientdelegateHome {
     var clients_array:[Cliente] = []
     @IBOutlet var titleViewLabelColelctionView: UILabel!
     @IBOutlet var titleViewLabel: UILabel!
@@ -21,7 +23,7 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
 
     @IBOutlet var guardarButton: UIButton!
     @IBOutlet var plantNameTextField: UITextField!
-
+    @IBOutlet var direccionTextField: UITextField!
     @IBOutlet var closeButton: UIButton!
     
     @IBOutlet var puesto_contacto1: UITextField!
@@ -49,6 +51,9 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         self.nombre_contacto1.font = UIFont(name: FONT_REGULAR, size: (self.nombre_contacto1.font?.pointSize)!)
         self.email_contacto1.font = UIFont(name: FONT_REGULAR, size: (self.email_contacto1.font?.pointSize)!)
         self.telefono_contacto1.font = UIFont(name: FONT_REGULAR, size: (self.telefono_contacto1.font?.pointSize)!)
+        self.direccionTextField.font = UIFont(name: FONT_REGULAR, size: (self.direccionTextField.font?.pointSize)!)
+        
+        
         self.nombre_contacto2.font = UIFont(name: FONT_REGULAR, size: (self.nombre_contacto2.font?.pointSize)!)
         self.email_contacto2.font = UIFont(name: FONT_REGULAR, size: (self.email_contacto2.font?.pointSize)!)
         self.telefono_contacto2.font = UIFont(name: FONT_REGULAR, size: (self.telefono_contacto2.font?.pointSize)!)
@@ -136,7 +141,11 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         if self.plantNameTextField == textField{
             
-             self.nombre_contacto1.becomeFirstResponder()
+             self.direccionTextField.becomeFirstResponder()
+        }
+        if self.direccionTextField == textField{
+            
+            self.nombre_contacto1.becomeFirstResponder()
         }
         
         if self.nombre_contacto1 == textField{
@@ -235,6 +244,9 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
             }
             if self.selectedclient.nombrecontacto2 != nil{
                 self.nombre_contacto2.text = self.selectedclient.nombrecontacto2
+            }
+            if self.selectedclient.direccion != nil{
+                self.nombre_contacto2.text = self.selectedclient.direccion
             }
             
             
@@ -431,7 +443,7 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
                 let OKAction = UIAlertAction(title: "Actualizar Cliente", style: .default) { (action) in
                     
                     
-                    Services.updateClient(self.plantNameTextField.text, andID:self.selectedclient.client_id,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andHandler: { (response) in
+                    Services.updateClient(self.plantNameTextField.text, andID:self.selectedclient.client_id,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andDireccion: self.direccionTextField.text, andHandler: { (response) in
                         
                         self.closeAddPlantView()
                         self.refreshHomePlants()
@@ -469,7 +481,7 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
                 let OKAction = UIAlertAction(title: "Cargar Cliente", style: .default) { (action) in
                     
                     
-                    Services.createClient(forIPB: self.plantNameTextField.text,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andHandler: { (response) in
+                    Services.createClient(forIPB: self.plantNameTextField.text,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andDireccion: self.direccionTextField.text, andHandler: { (response) in
                         
                         self.closeAddPlantView()
                         self.refreshHomePlants()
@@ -521,5 +533,38 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
     func refreshFather() {
         
         self.refreshHomePlants()
+    }
+    
+    func sendemail(client: Cliente) {
+        self.selectedclient = client
+        let mailComposeViewController = configuredMailComposeViewController()
+        if MFMailComposeViewController.canSendMail() {
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
+        }
+    }
+ 
+     func sendemailP(client: Proveedores) {
+        
+    }
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
+        
+        mailComposerVC.setToRecipients(["\(self.selectedclient.emailcontacto1),\(self.selectedclient.emailcontacto2),\(self.selectedclient.emailcontacto3)"])
+
+        
+        return mailComposerVC
+    }
+    
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertView(title: "Oops", message: "No pudimos enviar el email, tu dispositivo no tiene cuenta de e-mail configurada.", delegate: self, cancelButtonTitle: "OK")
+        sendMailErrorAlert.show()
+    }
+    
+    // MARK: MFMailComposeViewControllerDelegate Method
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }

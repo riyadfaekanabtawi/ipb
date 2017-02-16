@@ -8,8 +8,8 @@
 
 
 import UIKit
-
-class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UITextFieldDelegate,clientdelegateHome {
+import MessageUI
+class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UITextFieldDelegate,clientdelegateHome,MFMailComposeViewControllerDelegate {
     var clients_array:[Proveedores] = []
     @IBOutlet var titleViewLabelColelctionView: UILabel!
     @IBOutlet var titleViewLabel: UILabel!
@@ -29,7 +29,7 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
     @IBOutlet var puesto_contacto2: UITextField!
     @IBOutlet var puesto_contacto3: UITextField!
     
-    
+    @IBOutlet var direccion: UITextField!
     @IBOutlet var nombre_contacto1: UITextField!
     @IBOutlet var email_contacto1: UITextField!
     @IBOutlet var telefono_contacto1: UITextField!
@@ -45,7 +45,7 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
     var revealController:SWRevealViewController!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.direccion.font = UIFont(name: FONT_REGULAR, size: (self.direccion.font?.pointSize)!)
         
         self.nombre_contacto1.font = UIFont(name: FONT_REGULAR, size: (self.nombre_contacto1.font?.pointSize)!)
         self.email_contacto1.font = UIFont(name: FONT_REGULAR, size: (self.email_contacto1.font?.pointSize)!)
@@ -136,6 +136,10 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         if self.plantNameTextField == textField{
+            
+            self.direccion.becomeFirstResponder()
+        }
+        if self.direccion == textField{
             
             self.nombre_contacto1.becomeFirstResponder()
         }
@@ -234,6 +238,9 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
             }
             if self.selectedclient.nombrecontacto2 != nil{
                 self.nombre_contacto2.text = self.selectedclient.nombrecontacto2
+            }
+            if self.selectedclient.direccion != nil{
+                self.nombre_contacto2.text = self.selectedclient.direccion
             }
             
             
@@ -426,7 +433,7 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
                 
                 let OKAction = UIAlertAction(title: "Actualizar Proveedor", style: .default) { (action) in
                     
-                    Services.updateProveedor(forIPB: self.plantNameTextField.text, andID:self.selectedclient.client_id,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andHandler: { (response) in
+                    Services.updateProveedor(forIPB: self.plantNameTextField.text, andID:self.selectedclient.client_id,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andDireccion: self.direccion.text, andHandler: { (response) in
                         
                         self.closeAddPlantView()
                         self.refreshHomePlants()
@@ -465,7 +472,7 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
                 
                 let OKAction = UIAlertAction(title: "Cargar Proveedor", style: .default) { (action) in
                     
-                    Services.createProveedor(forIPB: self.plantNameTextField.text,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andHandler: { (response) in
+                    Services.createProveedor(forIPB: self.plantNameTextField.text,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andDireccion: self.direccion.text, andHandler: { (response) in
                         
                         self.closeAddPlantView()
                         self.refreshHomePlants()
@@ -517,4 +524,40 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
         
         self.refreshHomePlants()
     }
+    
+    func sendemailP(client: Proveedores) {
+        self.selectedclient = client
+        let mailComposeViewController = configuredMailComposeViewController()
+        if MFMailComposeViewController.canSendMail() {
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
+        }
+    }
+    
+    func sendemail(client: Cliente) {
+     
+    }
+    
+    
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
+        
+        mailComposerVC.setToRecipients(["\(self.selectedclient.emailcontacto1),\(self.selectedclient.emailcontacto2),\(self.selectedclient.emailcontacto3)"])
+        
+        
+        return mailComposerVC
+    }
+    
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertView(title: "Oops", message: "No pudimos enviar el email, tu dispositivo no tiene cuenta de e-mail configurada.", delegate: self, cancelButtonTitle: "OK")
+        sendMailErrorAlert.show()
+    }
+    
+    // MARK: MFMailComposeViewControllerDelegate Method
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+
 }

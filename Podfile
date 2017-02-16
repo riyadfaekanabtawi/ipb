@@ -6,6 +6,8 @@
 target 'IPB' do
 #pod 'NVActivityIndicatorView'
 pod 'FSCalendar'
+pod 'Crashlytics'
+pod 'Fabric'
 pod 'AFNetworking', '~> 3.0'
 pod 'SDWebImage', '~>3.8'
 pod 'Fabric'

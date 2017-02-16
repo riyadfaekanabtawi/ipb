@@ -25,8 +25,8 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
     @IBOutlet var listo_confecV: UIView!
     @IBOutlet var mesa_corteV: UIView!
     @IBOutlet var enEsperaV: UIView!
-    
-    
+ 
+    @IBOutlet var refreshIcon: UIButton!
     @IBOutlet var badgeView: UIView!
     @IBOutlet var badgeLabel: UILabel!
     
@@ -50,11 +50,12 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
     @IBOutlet var corteLabel2: UILabel!
     @IBOutlet var clientLabel2: UILabel!
     
-    
+    @IBOutlet var analisis_count_label: UILabel!
     @IBOutlet var corteLabelCell: UILabel!
     @IBOutlet var cantidadLabelCell: UILabel!
     @IBOutlet var clienteLabelCell: UILabel!
     @IBOutlet var cortadasLabelCell: UILabel!
+    @IBOutlet var badgeViewAnalisis: UIView!
     
     @IBOutlet var firstWebView: UIWebView!
     
@@ -71,8 +72,9 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         self.cantidadLabelCell.font = UIFont(name: FONT_BOLD, size: self.cantidadLabelCell.font.pointSize)
         self.clienteLabelCell.font = UIFont(name: FONT_BOLD, size: self.clienteLabelCell.font.pointSize)
         self.cortadasLabelCell.font = UIFont(name: FONT_BOLD, size: self.cortadasLabelCell.font.pointSize)
-   
-
+        self.analisis_count_label.font = UIFont(name: FONT_BOLD, size: self.analisis_count_label.font.pointSize)
+        self.badgeViewAnalisis.layer.cornerRadius = self.badgeViewAnalisis.frame.size.width/2
+        self.badgeViewAnalisis.clipsToBounds = true
         
         self.badgeView.layer.cornerRadius = self.badgeView.frame.size.width/2
         self.badgeView.clipsToBounds = true
@@ -217,7 +219,8 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
         }
     }
     @IBAction func refreshHome(){
-  
+        Functions.runSpinAnimation(on: self.refreshIcon, duration: 0.6, rotations: 1, repeat: 0)
+       
         self.refreshHomePlants()
         self.getUrgentEnvios()
         self.getPendingCuts()
@@ -344,7 +347,10 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
         }
         
      
+        if option == "proyectos"{
         
+         self.performSegue(withIdentifier: option, sender: self)
+        }
   
         
         if option == "estilos"{
@@ -497,6 +503,8 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
         
         self.analisisCuts = response as! [Corte]
         
+        
+        self.analisis_count_label.text = "\(self.analisisCuts.count)"
         self.cortes_analisis_collectionview.reloadData()
         
         
@@ -561,4 +569,16 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
         
     }
 
+    
+     @IBAction func goToCalculator(){
+        
+        self.performSegue(withIdentifier: "calculadora", sender: self)
+    }
+    
+    
+    @IBAction func analisisTupI(){
+        
+        self.performSegue(withIdentifier: "analisis", sender: self)
+    }
+    
 }

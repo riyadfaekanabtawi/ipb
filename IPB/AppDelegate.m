@@ -87,7 +87,8 @@ static BOOL _isClipping = NO;
 //            NSLog(@"%@", [UIFont fontNamesForFamilyName:font]);
 //        }
     
-    
+    [Fabric with:@[[Crashlytics class]]];
+
     return YES;
 }
 

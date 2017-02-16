@@ -28,5 +28,5 @@
 @property NSString *puestocontacto2;
 @property NSString *puestocontacto3;
 
-
+@property NSString *direccion;
 @end

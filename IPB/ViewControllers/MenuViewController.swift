@@ -44,6 +44,9 @@ class MenuViewController: UIViewController {
     @IBOutlet var usuarios_innerView: UIView!
     @IBOutlet var estilos_innerView: UIView!
   
+     @IBOutlet var proyectos_innerView: UIView!
+     @IBOutlet var proyectos_label: UILabel!
+    
     @IBOutlet var calculadora_innerView: UIView!
     @IBOutlet var envios_innerView: UIView!
     @IBOutlet var cerrarSesion_innerView: UIView!
@@ -66,7 +69,8 @@ class MenuViewController: UIViewController {
         self.clientes_label.font = UIFont(name: FONT_REGULAR, size: self.clientes_label.font.pointSize)
         self.usuarios_label.font = UIFont(name: FONT_REGULAR, size: self.usuarios_label.font.pointSize)
         self.estilos_label.font = UIFont(name: FONT_REGULAR, size: self.estilos_label.font.pointSize)
-
+        self.proyectos_label.font = UIFont(name: FONT_REGULAR, size: self.proyectos_label.font.pointSize)
+        
         
          self.reportesOverall.font = UIFont(name: FONT_REGULAR, size: self.reportesOverall.font.pointSize)
         
@@ -74,6 +78,7 @@ class MenuViewController: UIViewController {
         self.envios_label.font = UIFont(name: FONT_REGULAR, size: self.envios_label.font.pointSize)
         self.cerrarSesion_label.font = UIFont(name: FONT_REGULAR, size: self.cerrarSesion_label.font.pointSize)
         
+        self.proyectos_innerView.alpha = 0
         self.proveedoresView.alpha = 0
         self.RPOVERALL_innerView.alpha = 0
         self.dashboard_innerView.alpha = 0
@@ -142,7 +147,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
-        
+            self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
             self.cerrarSesion_innerView.alpha = 0
@@ -166,7 +171,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
-
+            self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
             self.cerrarSesion_innerView.alpha = 0
@@ -190,7 +195,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
-    
+            self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
             self.cerrarSesion_innerView.alpha = 0
@@ -212,7 +217,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
-   
+            self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
             self.cerrarSesion_innerView.alpha = 0
@@ -234,7 +239,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 1
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
-
+            self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
             self.cerrarSesion_innerView.alpha = 0
@@ -254,7 +259,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 1
             self.estilos_innerView.alpha = 0
-     
+            self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
             self.cerrarSesion_innerView.alpha = 0
@@ -275,7 +280,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 1
-      
+            self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
             self.cerrarSesion_innerView.alpha = 0
@@ -296,7 +301,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
-       
+            self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
             self.cerrarSesion_innerView.alpha = 0
@@ -320,7 +325,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
-        
+            self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
             self.cerrarSesion_innerView.alpha = 0
@@ -339,7 +344,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
-  
+  self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 1
             self.envios_innerView.alpha = 0
             self.cerrarSesion_innerView.alpha = 0
@@ -359,7 +364,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
-        
+        self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 1
             self.cerrarSesion_innerView.alpha = 0
@@ -379,7 +384,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
-      
+      self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
             self.cerrarSesion_innerView.alpha = 0
@@ -399,11 +404,31 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
-          
+          self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
             self.cerrarSesion_innerView.alpha = 0
             self.delegate.selectedMenuviewcontrollerOption("proveedores")
+        }
+    }
+    
+    
+    @IBAction func proyectosTouchUpInside(){
+        UIView.animate(withDuration: 0.4) {
+            self.RPOVERALL_innerView.alpha = 0
+            self.proveedoresView.alpha = 0
+            self.dashboard_innerView.alpha = 0
+            self.listas_innerView.alpha = 0
+            self.reportes_innerView.alpha = 0
+            self.plantas_innerView.alpha = 0
+            self.clientes_innerView.alpha = 0
+            self.usuarios_innerView.alpha = 0
+            self.estilos_innerView.alpha = 0
+            self.proyectos_innerView.alpha = 1
+            self.calculadora_innerView.alpha = 0
+            self.envios_innerView.alpha = 0
+            self.cerrarSesion_innerView.alpha = 0
+            self.delegate.selectedMenuviewcontrollerOption("proyectos")
         }
     }
     

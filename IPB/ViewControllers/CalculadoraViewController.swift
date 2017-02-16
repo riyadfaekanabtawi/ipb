@@ -43,7 +43,12 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
     @IBOutlet var constantesLabelTitle: UILabel!
     @IBOutlet var constantes_button: UIButton!
     
-    @IBOutlet var cotizarButton: UIButton!
+    @IBOutlet var meses_estimados_textfield: UITextField!
+    @IBOutlet var operarios_2_textfield: UITextField!
+    @IBOutlet var ingreso_bruto2_textfield: UITextField!
+    @IBOutlet var minuto_real_produccion: UITextField!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -60,6 +65,7 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
             self.minutosSeamanaOperario.text = (defaults.object(forKey: "minutos_semana_operario") as! String)
             
         }
+        
         
         
         if (defaults.object(forKey: "minutos_mes_operario") != nil){
@@ -83,7 +89,10 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
         }
         
         
-        
+          self.meses_estimados_textfield.font = UIFont(name: FONT_REGULAR, size: (self.meses_estimados_textfield.font?.pointSize)!)
+          self.operarios_2_textfield.font = UIFont(name: FONT_REGULAR, size: (self.operarios_2_textfield.font?.pointSize)!)
+          self.ingreso_bruto2_textfield.font = UIFont(name: FONT_REGULAR, size: (self.ingreso_bruto2_textfield.font?.pointSize)!)
+          self.minuto_real_produccion.font = UIFont(name: FONT_REGULAR, size: (self.minuto_real_produccion.font?.pointSize)!)
         
 
         
@@ -92,7 +101,7 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
         self.constantes_button.layer.borderColor = UIColor.lightGray.cgColor
         self.constantes_button.layer.borderWidth = 2
         self.constantes_button.layer.masksToBounds = true
-        self.cotizarButton.alpha = 0
+      
         self.viewcontrollertitle.font = UIFont(name: FONT_BOLD, size: self.viewcontrollertitle.font.pointSize)
         self.minutosDiaOperario.font = UIFont(name: FONT_REGULAR, size: (self.minutosDiaOperario.font?.pointSize)!)
          self.minutosSeamanaOperario.font = UIFont(name: FONT_REGULAR, size: (self.minutosSeamanaOperario.font?.pointSize)!)
@@ -127,11 +136,7 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
                self.constantesLabelTitle.font = UIFont(name: FONT_BOLD, size: (self.constantesLabelTitle.font?.pointSize)!)
             self.guardarButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.guardarButton.titleLabel?.font?.pointSize)!)
                 self.constantes_button.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.constantes_button.titleLabel?.font?.pointSize)!)
-        
-        self.cotizarButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.cotizarButton.titleLabel?.font?.pointSize)!)
-        
-        
-        
+  
         self.clienteTextField.font = UIFont(name: FONT_REGULAR, size: (self.clienteTextField.font?.pointSize)!)
         
         self.plantaTextField.font = UIFont(name: FONT_REGULAR, size: (self.plantaTextField.font?.pointSize)!)
@@ -393,6 +398,13 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
                 
                 self.diasEstimados.text = "\(resultIngrdiasFinishEquationResulteso!)"
                 
+                
+                let equationmeses = formatter.string(from: NSNumber(value:Int32(equationPrecioMinutoReal/20)))
+                
+                
+               
+                self.meses_estimados_textfield.text = "\(equationmeses)"
+                
                 self.metaDiaria.text = "\(equationMetaDiariaResulteso!)"
                 
                 self.produccionSemanal.text = "\(produccionSemanalEquationResulteso!)"
@@ -463,6 +475,41 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
             
         }
         
+        
+        if self.operarios_2_textfield == textField{
+        
+        self.ingreso_bruto2_textfield.becomeFirstResponder()
+        }
+        
+        
+        if self.ingreso_bruto2_textfield == textField{
+            
+                if self.ingreso_bruto2_textfield.text != ""{
+            
+            let produccionSemanalEquation = Int32(self.minutosDiaOperario.text!)! * Int32(self.operarios_2_textfield.text!)!
+            let minutaje_real_prod = produccionSemanalEquation / Int32(self.ingreso_bruto2_textfield.text!)!
+           
+            
+            self.minuto_real_produccion.text = "\(minutaje_real_prod)"
+                    
+            }
+        }else{
+        
+            let alertController = UIAlertController(title: "Atención!", message: "Tienes que ingresar la producción real diaria", preferredStyle: .alert)
+            
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+
+        
+        }
         
         return true
     }

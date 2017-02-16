@@ -5,15 +5,17 @@
 //  Created by Riyad Anabtawi on 12/12/16.
 //  Copyright © 2016 Riyad Anabtawi. All rights reserved.
 //
-
+import MessageUI
 import UIKit
 protocol clientdelegateHome {
-    
+    func sendemail(client:Cliente)
+    func sendemailP(client:Proveedores)
     func refreshFather()
 }
 class ClientCollectionViewCell: UICollectionViewCell {
     
     var delegate:clientdelegateHome!
+    
     var controller:UIViewController!
     @IBOutlet var client_nameLabel: UILabel!
     @IBOutlet var mainView: UIView!
@@ -148,5 +150,11 @@ class ClientCollectionViewCell: UICollectionViewCell {
         
         
     }
-
+    
+     @IBAction func sendemail(){
+        self.delegate.sendemail(client: self.selectedClient)
+    }
+    @IBAction func sendemailP(){
+        self.delegate.sendemailP(client: self.selectedProveedor)
+    }
 }

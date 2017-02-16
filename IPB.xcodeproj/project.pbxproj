@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EB0599F11E54004900FC9B29 /* AnalisisSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0599F01E54004900FC9B29 /* AnalisisSecondViewController.swift */; };
 		EB248A731DFF726E004A9B51 /* AddButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB248A721DFF726D004A9B51 /* AddButtonCollectionViewCell.swift */; };
 		EB248A751DFF75CC004A9B51 /* PlantasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB248A741DFF75CC004A9B51 /* PlantasViewController.swift */; };
 		EB248A771DFF93E7004A9B51 /* ClientesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB248A761DFF93E7004A9B51 /* ClientesViewController.swift */; };
@@ -25,6 +26,12 @@
 		EB42DE551E1EB0FE00E207F1 /* ProveedoresViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB42DE541E1EB0FE00E207F1 /* ProveedoresViewController.swift */; };
 		EB42DE581E1EB12E00E207F1 /* Proveedores.m in Sources */ = {isa = PBXBuildFile; fileRef = EB42DE571E1EB12E00E207F1 /* Proveedores.m */; };
 		EB42DE5B1E1ECD4F00E207F1 /* Corte.m in Sources */ = {isa = PBXBuildFile; fileRef = EB42DE5A1E1ECD4F00E207F1 /* Corte.m */; };
+		EB4AD6381E53B30C0074EBD5 /* send_email_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EB4AD6361E53B30C0074EBD5 /* send_email_icon.png */; };
+		EB4AD6391E53B30D0074EBD5 /* send_email_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB4AD6371E53B30C0074EBD5 /* send_email_icon@2x.png */; };
+		EB4AD63C1E53BFCA0074EBD5 /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4AD63B1E53BFCA0074EBD5 /* Project.m */; };
+		EB4AD63E1E53C2D80074EBD5 /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4AD63D1E53C2D80074EBD5 /* ProjectsViewController.swift */; };
+		EB4AD6401E53C3810074EBD5 /* ProjectCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4AD63F1E53C3810074EBD5 /* ProjectCollectionViewCell.swift */; };
+		EB4AD6421E53CFD20074EBD5 /* add_project.png in Resources */ = {isa = PBXBuildFile; fileRef = EB4AD6411E53CFD10074EBD5 /* add_project.png */; };
 		EB5258601DEE47D9004A0DA8 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB52585E1DEE47D9004A0DA8 /* SWRevealViewController.m */; };
 		EB5258661DEE5643004A0DA8 /* logoTransparent.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5258651DEE5643004A0DA8 /* logoTransparent.png */; };
 		EB5258691DEE675D004A0DA8 /* icon_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5258671DEE675D004A0DA8 /* icon_menu.png */; };
@@ -45,6 +52,7 @@
 		EB957C621E15F78200FF0D49 /* DashboardReportsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB957C611E15F78200FF0D49 /* DashboardReportsViewController.swift */; };
 		EB957C641E15F9F600FF0D49 /* ReportDashboardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB957C631E15F9F600FF0D49 /* ReportDashboardCollectionViewCell.swift */; };
 		EB957C661E16135E00FF0D49 /* PendingHomecutCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB957C651E16135E00FF0D49 /* PendingHomecutCollectionViewCell.swift */; };
+		EBC78B291E53FD4C009D981F /* Analisis2CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC78B281E53FD4C009D981F /* Analisis2CollectionViewCell.swift */; };
 		EBCFC92F1E2E6E0B00E1C4DB /* rectangle_big.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC92E1E2E6E0B00E1C4DB /* rectangle_big.png */; };
 		EBCFC9311E2E6EAA00E1C4DB /* espacio_corte.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC9301E2E6EAA00E1C4DB /* espacio_corte.png */; };
 		EBCFC9331E2E820300E1C4DB /* fondo_square.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC9321E2E820300E1C4DB /* fondo_square.png */; };
@@ -84,6 +92,8 @@
 		EBD2086B1DED204400FBB4A2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2086A1DED204400FBB4A2 /* LoginViewController.swift */; };
 		EBD2086D1DED204F00FBB4A2 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2086C1DED204F00FBB4A2 /* HomeViewController.swift */; };
 		EBD2086F1DED206B00FBB4A2 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD2086E1DED206B00FBB4A2 /* MenuViewController.swift */; };
+		EBF827FA1E4E841E00ADE034 /* calcu.png in Resources */ = {isa = PBXBuildFile; fileRef = EBF827F81E4E841E00ADE034 /* calcu.png */; };
+		EBF827FB1E4E841E00ADE034 /* calcu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBF827F91E4E841E00ADE034 /* calcu@2x.png */; };
 		EBFCAFA21E074D5E007D9817 /* ReportsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFCAFA11E074D5E007D9817 /* ReportsViewController.swift */; };
 		EBFCAFA41E074FE9007D9817 /* CutDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFCAFA31E074FE9007D9817 /* CutDetailViewController.swift */; };
 		EBFCAFA71E078F7E007D9817 /* Report.m in Sources */ = {isa = PBXBuildFile; fileRef = EBFCAFA61E078F7E007D9817 /* Report.m */; };
@@ -103,6 +113,7 @@
 		01A0DA36AC744B02B4F20CA1 /* libPods-IPB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-IPB.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		16C6F32807330BB3DFC5A0A9 /* Pods-IPB.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IPB.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IPB/Pods-IPB.debug.xcconfig"; sourceTree = "<group>"; };
 		8F58D2A76AE623287F0D948E /* Pods-IPB.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IPB.release.xcconfig"; path = "Pods/Target Support Files/Pods-IPB/Pods-IPB.release.xcconfig"; sourceTree = "<group>"; };
+		EB0599F01E54004900FC9B29 /* AnalisisSecondViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalisisSecondViewController.swift; sourceTree = "<group>"; };
 		EB248A721DFF726D004A9B51 /* AddButtonCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddButtonCollectionViewCell.swift; sourceTree = "<group>"; };
 		EB248A741DFF75CC004A9B51 /* PlantasViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlantasViewController.swift; sourceTree = "<group>"; };
 		EB248A761DFF93E7004A9B51 /* ClientesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientesViewController.swift; sourceTree = "<group>"; };
@@ -125,6 +136,13 @@
 		EB42DE571E1EB12E00E207F1 /* Proveedores.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Proveedores.m; sourceTree = "<group>"; };
 		EB42DE591E1ECD4F00E207F1 /* Corte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Corte.h; sourceTree = "<group>"; };
 		EB42DE5A1E1ECD4F00E207F1 /* Corte.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Corte.m; sourceTree = "<group>"; };
+		EB4AD6361E53B30C0074EBD5 /* send_email_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send_email_icon.png; sourceTree = "<group>"; };
+		EB4AD6371E53B30C0074EBD5 /* send_email_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send_email_icon@2x.png"; sourceTree = "<group>"; };
+		EB4AD63A1E53BFCA0074EBD5 /* Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Project.h; sourceTree = "<group>"; };
+		EB4AD63B1E53BFCA0074EBD5 /* Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Project.m; sourceTree = "<group>"; };
+		EB4AD63D1E53C2D80074EBD5 /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
+		EB4AD63F1E53C3810074EBD5 /* ProjectCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCollectionViewCell.swift; sourceTree = "<group>"; };
+		EB4AD6411E53CFD10074EBD5 /* add_project.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_project.png; sourceTree = "<group>"; };
 		EB52585E1DEE47D9004A0DA8 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		EB52585F1DEE47D9004A0DA8 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		EB5258651DEE5643004A0DA8 /* logoTransparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logoTransparent.png; sourceTree = "<group>"; };
@@ -153,6 +171,7 @@
 		EB957C611E15F78200FF0D49 /* DashboardReportsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReportsViewController.swift; sourceTree = "<group>"; };
 		EB957C631E15F9F600FF0D49 /* ReportDashboardCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportDashboardCollectionViewCell.swift; sourceTree = "<group>"; };
 		EB957C651E16135E00FF0D49 /* PendingHomecutCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingHomecutCollectionViewCell.swift; sourceTree = "<group>"; };
+		EBC78B281E53FD4C009D981F /* Analisis2CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Analisis2CollectionViewCell.swift; sourceTree = "<group>"; };
 		EBCFC92E1E2E6E0B00E1C4DB /* rectangle_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rectangle_big.png; sourceTree = "<group>"; };
 		EBCFC9301E2E6EAA00E1C4DB /* espacio_corte.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = espacio_corte.png; sourceTree = "<group>"; };
 		EBCFC9321E2E820300E1C4DB /* fondo_square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fondo_square.png; sourceTree = "<group>"; };
@@ -200,6 +219,8 @@
 		EBD2086A1DED204400FBB4A2 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		EBD2086C1DED204F00FBB4A2 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		EBD2086E1DED206B00FBB4A2 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		EBF827F81E4E841E00ADE034 /* calcu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calcu.png; sourceTree = "<group>"; };
+		EBF827F91E4E841E00ADE034 /* calcu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calcu@2x.png"; sourceTree = "<group>"; };
 		EBFCAFA11E074D5E007D9817 /* ReportsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportsViewController.swift; sourceTree = "<group>"; };
 		EBFCAFA31E074FE9007D9817 /* CutDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CutDetailViewController.swift; sourceTree = "<group>"; };
 		EBFCAFA51E078F7E007D9817 /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
@@ -260,6 +281,8 @@
 				EB957C631E15F9F600FF0D49 /* ReportDashboardCollectionViewCell.swift */,
 				EB957C651E16135E00FF0D49 /* PendingHomecutCollectionViewCell.swift */,
 				EBCFC9341E2E8F4900E1C4DB /* AnalisisCollectionViewCell.swift */,
+				EB4AD63F1E53C3810074EBD5 /* ProjectCollectionViewCell.swift */,
+				EBC78B281E53FD4C009D981F /* Analisis2CollectionViewCell.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -344,6 +367,8 @@
 				EB42DE571E1EB12E00E207F1 /* Proveedores.m */,
 				EB42DE591E1ECD4F00E207F1 /* Corte.h */,
 				EB42DE5A1E1ECD4F00E207F1 /* Corte.m */,
+				EB4AD63A1E53BFCA0074EBD5 /* Project.h */,
+				EB4AD63B1E53BFCA0074EBD5 /* Project.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -351,6 +376,11 @@
 		EBD208611DED200500FBB4A2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				EB4AD6411E53CFD10074EBD5 /* add_project.png */,
+				EB4AD6361E53B30C0074EBD5 /* send_email_icon.png */,
+				EB4AD6371E53B30C0074EBD5 /* send_email_icon@2x.png */,
+				EBF827F81E4E841E00ADE034 /* calcu.png */,
+				EBF827F91E4E841E00ADE034 /* calcu@2x.png */,
 				EBCFC95F1E34FDAC00E1C4DB /* alert.png */,
 				EBCFC9601E34FDAC00E1C4DB /* alert@2x.png */,
 				EBCFC95B1E344BDB00E1C4DB /* back_login.png */,
@@ -414,6 +444,8 @@
 				EBFCAFA31E074FE9007D9817 /* CutDetailViewController.swift */,
 				EB957C611E15F78200FF0D49 /* DashboardReportsViewController.swift */,
 				EB42DE541E1EB0FE00E207F1 /* ProveedoresViewController.swift */,
+				EB4AD63D1E53C2D80074EBD5 /* ProjectsViewController.swift */,
+				EB0599F01E54004900FC9B29 /* AnalisisSecondViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -461,6 +493,7 @@
 				EBD208351DED068300FBB4A2 /* Resources */,
 				A71E1B83DDA2167E40668AC7 /* Embed Pods Frameworks */,
 				D431B61C47719431CC7DF7EA /* Copy Pods Resources */,
+				EBF827FC1E4EB75D00ADE034 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -482,7 +515,7 @@
 				TargetAttributes = {
 					EBD208361DED068300FBB4A2 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = 4B7WEB8P52;
+						DevelopmentTeam = P4SZK98WUR;
 						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
@@ -519,6 +552,7 @@
 				EBCFC93B1E2E9B5100E1C4DB /* eliminar.png in Resources */,
 				EBCFC93F1E2EA5A300E1C4DB /* add_client.png in Resources */,
 				EBCFC9531E325A0800E1C4DB /* cellback@2x.png in Resources */,
+				EBF827FA1E4E841E00ADE034 /* calcu.png in Resources */,
 				EBCFC9481E2EEB7C00E1C4DB /* Roboto-Black.ttf in Resources */,
 				EBCFC9451E2EAF7100E1C4DB /* add_report.png in Resources */,
 				EB42DE531E1B650D00E207F1 /* IMG_5244.JPG in Resources */,
@@ -527,6 +561,7 @@
 				EBCFC9401E2EA5A300E1C4DB /* add_planta.png in Resources */,
 				EBCFC9611E34FDAC00E1C4DB /* alert.png in Resources */,
 				EBD208671DED200500FBB4A2 /* menuMask@3x.png in Resources */,
+				EB4AD6421E53CFD20074EBD5 /* add_project.png in Resources */,
 				EBCFC94D1E31ADFB00E1C4DB /* refresh.png in Resources */,
 				EB248A861E0065AF004A9B51 /* add photo@3x.png in Resources */,
 				EB52592A1DF283A9004A0DA8 /* back@3x.png in Resources */,
@@ -539,7 +574,9 @@
 				EBCFC95E1E344BDB00E1C4DB /* back_login@2x.png in Resources */,
 				EB52591C1DF25C62004A0DA8 /* menu_icon_corte in Resources */,
 				EBCFC9391E2E998400E1C4DB /* rectangleFondo.png in Resources */,
+				EB4AD6381E53B30C0074EBD5 /* send_email_icon.png in Resources */,
 				EBCFC9621E34FDAC00E1C4DB /* alert@2x.png in Resources */,
+				EB4AD6391E53B30D0074EBD5 /* send_email_icon@2x.png in Resources */,
 				EB5258661DEE5643004A0DA8 /* logoTransparent.png in Resources */,
 				EB5259281DF283A9004A0DA8 /* back.png in Resources */,
 				EB248A851E0065AF004A9B51 /* add photo@2x.png in Resources */,
@@ -548,6 +585,7 @@
 				EBFE8B6A1DF5014100B54F87 /* backLogin.png in Resources */,
 				EB52586A1DEE675D004A0DA8 /* icon_menu@2x.png in Resources */,
 				EBCFC9431E2EA66900E1C4DB /* add_proveedor.png in Resources */,
+				EBF827FB1E4E841E00ADE034 /* calcu@2x.png in Resources */,
 				EB248A841E0065AF004A9B51 /* add photo.png in Resources */,
 				EBD208451DED068300FBB4A2 /* Main.storyboard in Resources */,
 				EB5258691DEE675D004A0DA8 /* icon_menu.png in Resources */,
@@ -605,6 +643,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-IPB/Pods-IPB-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		EBF827FC1E4EB75D00ADE034 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 9518230d36bdfa297bf8fae8aae648f07820ac4b 992f73223ba96500eab27446ecb687ff4963645c9ecbd22033770462dc28bc7a";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -612,9 +663,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB4AD6401E53C3810074EBD5 /* ProjectCollectionViewCell.swift in Sources */,
+				EB4AD63E1E53C2D80074EBD5 /* ProjectsViewController.swift in Sources */,
 				EB42DE5B1E1ECD4F00E207F1 /* Corte.m in Sources */,
 				EB52592E1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift in Sources */,
 				EBD208571DED10B400FBB4A2 /* User.m in Sources */,
+				EBC78B291E53FD4C009D981F /* Analisis2CollectionViewCell.swift in Sources */,
+				EB4AD63C1E53BFCA0074EBD5 /* Project.m in Sources */,
 				EB248A8F1E01CA92004A9B51 /* CalculadoraViewController.swift in Sources */,
 				EBFE8B621DF474E800B54F87 /* TSQCalendarCell.m in Sources */,
 				EBFCAFA41E074FE9007D9817 /* CutDetailViewController.swift in Sources */,
@@ -633,6 +688,7 @@
 				EBFE8B631DF474E800B54F87 /* TSQCalendarMonthHeaderCell.m in Sources */,
 				EB5258601DEE47D9004A0DA8 /* SWRevealViewController.m in Sources */,
 				EB248A881E007E46004A9B51 /* StylesViewController.swift in Sources */,
+				EB0599F11E54004900FC9B29 /* AnalisisSecondViewController.swift in Sources */,
 				EBD2086F1DED206B00FBB4A2 /* MenuViewController.swift in Sources */,
 				EBFE8B651DF474E800B54F87 /* TSQCalendarView.m in Sources */,
 				EBD2086B1DED204400FBB4A2 /* LoginViewController.swift in Sources */,
@@ -779,7 +835,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 4B7WEB8P52;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = P4SZK98WUR;
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "IPB/ipb-prefix.pch";
 				INFOPLIST_FILE = IPB/Info.plist;
@@ -810,8 +867,10 @@
 					"-framework",
 					"\"UIKit\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.contaktme.ipbtest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nevutech.ipb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "IPB/ViewControllers/IPB-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0.1;
@@ -824,7 +883,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 4B7WEB8P52;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = P4SZK98WUR;
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "IPB/ipb-prefix.pch";
 				INFOPLIST_FILE = IPB/Info.plist;
@@ -855,8 +915,10 @@
 					"-framework",
 					"\"UIKit\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.contaktme.ipbtest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nevutech.ipb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "IPB/ViewControllers/IPB-Bridging-Header.h";
 				SWIFT_VERSION = 3.0.1;
 			};
