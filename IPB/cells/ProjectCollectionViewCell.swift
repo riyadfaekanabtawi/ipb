@@ -42,15 +42,151 @@ class ProjectCollectionViewCell: UICollectionViewCell {
     
     func displayUsers(project:Project){
         self.selectedProject = project
-        self.user_image_profile.sd_setImage(with: NSURL(string: BASE_URL+"\(project.photo)") as URL!)
+        let strings = BASE_URL+"\(project.photo!)"
+        self.user_image_profile.sd_setImage(with: NSURL(string:strings) as URL!)
         self.cantidad_label.text = "Cantidad: \(project.cantidad!)"
         self.precio_label.text = "Precio: $ \(project.precio!)"
         self.total_label.text = "Total: $\(project.total!)"
   
         
+        if project.status == "pendiente"{
+        
+            self.approvedButton.backgroundColor = Functions.color(withHexString: "AAAAAA", andAlpha: 1)
+            self.approvedButton.setTitle("Pendiente", for: UIControlState.normal)
+            
+        }
+        
+        if project.status == "aceptado"{
+            self.approvedButton.backgroundColor = Functions.color(withHexString: "4AAC54", andAlpha: 1)
+            self.approvedButton.setTitle("Aceptado", for: UIControlState.normal)
+        
+        }
+        
+        if project.status == "declinado"{
+            self.approvedButton.backgroundColor = Functions.color(withHexString: "F44336", andAlpha: 1)
+            self.approvedButton.setTitle("Declinado", for: UIControlState.normal)
+            
+        }
         
     }
     
+    
+    
+     @IBAction func changeStatusTouchUpInside(){
+        
+        let alertController = UIAlertController(title: "Atencion!", message: "Que status tendrá el proyecto?", preferredStyle: .alert)
+        
+        
+        
+        let aceptado = UIAlertAction(title: "Aceptado", style: .default) { (action) in
+            
+            Services.updateProject(self.selectedProject.project_id, andStatus: "aceptado", andHandler: { (response) in
+                
+                let alertController = UIAlertController(title: "Bien!", message: "Actualizaste el status del proyecto", preferredStyle: .alert)
+                
+                
+                
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    
+                    
+                }
+                alertController.addAction(OKAction)
+                self.delegate.refreshFather()
+                self.controller.present(alertController, animated: true) {
+                    // ...
+                }
+
+                self.approvedButton.backgroundColor = Functions.color(withHexString: "4AAC54", andAlpha: 1)
+                self.approvedButton.setTitle("Aceptado", for: UIControlState.normal)
+
+            }, orErrorHandler: { (err) in
+                
+                
+            })
+            
+        
+        }
+        alertController.addAction(aceptado)
+        
+        
+        let declinado = UIAlertAction(title: "Declinado", style: .default) { (action) in
+            
+            Services.updateProject(self.selectedProject.project_id, andStatus: "declinado", andHandler: { (response) in
+                
+                let alertController = UIAlertController(title: "Bien!", message: "Actualizaste el status del proyecto", preferredStyle: .alert)
+                
+                
+                
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    
+                    
+                }
+                alertController.addAction(OKAction)
+                self.delegate.refreshFather()
+                self.controller.present(alertController, animated: true) {
+                    // ...
+                }
+                self.approvedButton.backgroundColor = Functions.color(withHexString: "F44336", andAlpha: 1)
+                self.approvedButton.setTitle("Declinado", for: UIControlState.normal)
+                
+            }, orErrorHandler: { (err) in
+                
+                
+            })
+            
+            
+           
+        }
+        alertController.addAction(declinado)
+        
+        
+        let Pendiente = UIAlertAction(title: "Pendiente", style: .default) { (action) in
+            
+            Services.updateProject(self.selectedProject.project_id, andStatus: "pendiente", andHandler: { (response) in
+                
+                let alertController = UIAlertController(title: "Bien!", message: "Actualizaste el status del proyecto", preferredStyle: .alert)
+                
+                
+                
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    
+                    
+                }
+                alertController.addAction(OKAction)
+                self.delegate.refreshFather()
+                self.controller.present(alertController, animated: true) {
+                    // ...
+                }
+                self.approvedButton.backgroundColor = Functions.color(withHexString: "AAAAAA", andAlpha: 1)
+                self.approvedButton.setTitle("Pendiente", for: UIControlState.normal)
+                
+            }, orErrorHandler: { (err) in
+                
+                
+            })
+            
+          
+            
+        }
+        alertController.addAction(Pendiente)
+        
+        
+        let Cancelar = UIAlertAction(title: "Cancelar", style: .default) { (action) in
+            
+            
+        }
+        alertController.addAction(Cancelar)
+        
+        
+        
+    
+        
+        self.controller.present(alertController, animated: true) {
+            // ...
+        }
+
+        
+    }
     @IBAction func eliminarTouchUpInside(){
         
         let alertController = UIAlertController(title: "Atencion!", message: "Estas seguro que quiere eliminar este proeycto?", preferredStyle: .alert)

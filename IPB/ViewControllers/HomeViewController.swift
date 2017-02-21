@@ -7,8 +7,8 @@
 //
 
 import UIKit
-
-class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuViewControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+import MessageUI
+class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuViewControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MFMailComposeViewControllerDelegate {
     var plants_array:[Planta] = []
     var enviosUrgentesArray:[Corte] = []
     var pending_cuts_array:[PendingCut] = []
@@ -64,9 +64,37 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
     var indicatorView1 : MAActivityIndicatorView!
     
  
+    
+    
+    @IBOutlet var backAddView: UIView!
+    @IBOutlet var AddView: UIView!
+    
+    @IBOutlet var enviarReporteTitle: UILabel!
+ 
+    @IBOutlet var comentarioLabel: UILabel!
+    @IBOutlet var comentarioTextView: UITextView!
+    @IBOutlet var selectedImage: UIImageView!
+    @IBOutlet var cargarImagenLabel: UILabel!
+    
+    @IBOutlet var enviarButton: UIButton!
+    @IBOutlet var closeButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
       
+        
+        self.backAddView.alpha = 0
+        self.AddView.alpha = 0
+        
+        self.AddView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)
+        
+        self.enviarButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.enviarButton.titleLabel?.font.pointSize)!)
+        
+        self.enviarReporteTitle.font = UIFont(name: FONT_BOLD, size: self.enviarReporteTitle.font.pointSize)
+
+        self.comentarioLabel.font = UIFont(name: FONT_REGULAR, size: self.comentarioLabel.font.pointSize)
+        self.cargarImagenLabel.font = UIFont(name: FONT_REGULAR, size: self.cargarImagenLabel.font.pointSize)
+        
         
         self.corteLabelCell.font = UIFont(name: FONT_BOLD, size: self.corteLabelCell.font.pointSize)
         self.cantidadLabelCell.font = UIFont(name: FONT_BOLD, size: self.cantidadLabelCell.font.pointSize)
@@ -229,6 +257,30 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
         
     }
     
+    
+    
+    func showCargarReport(){
+        UIView.animate(withDuration: 0.3) {
+            self.comentarioTextView.text = ""
+            self.selectedImage.image = UIImage.init(named: "add photo.png")
+            self.backAddView.alpha = 1
+            self.AddView.transform = CGAffineTransform.identity
+            self.AddView.alpha = 1
+        }
+        
+    
+    
+    }
+
+    func hideReport(){
+    
+        UIView.animate(withDuration: 0.3) {
+            self.backAddView.alpha = 0
+            self.AddView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+             self.AddView.alpha = 0
+        }
+    
+    }
     @IBAction func goToUrgents(){
         
         self.performSegue(withIdentifier: "envios", sender: self)
@@ -311,6 +363,10 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
             self.performSegue(withIdentifier: option, sender: self)
         }
         
+        if option == "createReportHome"{
+            
+           self.showCargarReport()
+        }
         
         
         if option == "reportes"{
@@ -569,10 +625,22 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
         
     }
 
+    @IBAction func closeReports(){
+        
+        self.hideReport()
+            
+    }
     
+    
+    @IBAction func enviarEmail(){
+        
+        self.hideReport()
+        self.sendMail()
+    }
      @IBAction func goToCalculator(){
         
-        self.performSegue(withIdentifier: "calculadora", sender: self)
+        self.performSegue(withIdentifier: "calculadora",
+                          sender: self)
     }
     
     
@@ -580,5 +648,45 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
         
         self.performSegue(withIdentifier: "analisis", sender: self)
     }
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        self.selectedImage.image = image
+        picker.dismiss(animated: true, completion: nil);
+    }
     
+    @IBAction func openCameraButton() {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.camera;
+            imagePicker.allowsEditing = false
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    
+  
+    func mailComposeController(_ controller: MFMailComposeViewController,
+                               didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        
+         picker.dismiss(animated: true, completion: nil);
+    }
+    
+    
+    
+    func sendMail() {
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self;
+            mail.setCcRecipients([""])
+            mail.setSubject("Su Mensaje")
+            mail.setMessageBody(self.comentarioTextView.text, isHTML: false)
+            let imageData: NSData = UIImagePNGRepresentation(self.selectedImage.image!)! as NSData
+            mail.addAttachmentData(imageData as Data, mimeType: "image/png", fileName: "imageName")
+            self.present(mail, animated: true, completion: nil)
+        }
+    }
 }

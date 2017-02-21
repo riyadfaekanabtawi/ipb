@@ -15,7 +15,7 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
     @IBOutlet var titleViewLabel: UILabel!
     @IBOutlet var avatar_placeholder: UIImageView!
     @IBOutlet var user_avatar: UIImageView!
-    
+    var editingproject = false
     @IBOutlet var BackaddPlantview: UIView!
     @IBOutlet var addPlantview: UIView!
     @IBOutlet var addplantLabelTitle: UILabel!
@@ -41,7 +41,7 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
     @IBOutlet var usuario_email: UITextField!
     @IBOutlet var user_emailLabel: UILabel!
     @IBOutlet var closeButton: UIButton!
-    
+    var selectedProject:Project!
     @IBOutlet var usuario_password: UITextField!
     @IBOutlet var user_passwordLabel: UILabel!
     @IBOutlet var usuario_puesto: UITextField!
@@ -51,7 +51,7 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
   
-        
+       
         self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)
         NotificationCenter.default.addObserver(self, selector: #selector(UsuariosViewController.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(UsuariosViewController.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -111,6 +111,9 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
         self.navigationController?.navigationBar.barStyle = UIBarStyle.blackTranslucent
         //[self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
         // Do any additional setup after loading the view.
+        
+        
+        
     }
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
@@ -163,7 +166,7 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        if self.user_nameLabel == textField{
+        if self.usuario_name == textField{
             
             self.usuario_apellido.becomeFirstResponder()
         }
@@ -215,6 +218,59 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     func showAddPlantView(){
         
+        if self.editingproject == true{
+        
+            if self.selectedProject.cantidad != nil{
+            
+                self.user_nameLabel.text = self.selectedProject.cantidad!
+            }
+            
+            if self.selectedProject.precio != nil{
+            self.user_apellidoLabel.text = self.selectedProject.precio!
+            
+            }
+            
+            if self.selectedProject.total != nil{
+            
+            self.usuario_telefono.text = self.selectedProject.total!
+            
+            }
+            
+            if self.selectedProject.minutaje != nil{
+            
+            self.usuario_plantaTextField.text = self.selectedProject.minutaje!
+                
+            
+            }
+            
+            if self.selectedProject.cliente != nil{
+            
+            self.proyect_clienteTextField.text = self.selectedProject.cliente!
+            
+            }
+            
+            
+            if self.selectedProject.fecha_entrega != nil{
+            
+            self.usuario_email.text = self.selectedProject.fecha_entrega!
+            
+            }
+            
+            if self.selectedProject.tela != nil{
+            
+            self.usuario_password.text = self.selectedProject.tela!
+                
+            }
+            
+            if self.selectedProject.status != nil{
+            
+                self.usuario_puesto.text = self.selectedProject.status!
+            
+            }
+        
+            
+            self.user_avatar.sd_setImage(with: NSURL(string:BASE_URL + self.selectedProject.photo!) as URL!)
+        }
         
         UIView.animate(withDuration: 0.4) {
             self.BackaddPlantview.alpha = 1
@@ -249,11 +305,41 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if indexPath.row == 0{
-            
+                self.editingproject = false
             self.showAddPlantView()
+            self.guardarButton.alpha = 1
+
+                
+                self.user_nameLabel.text = ""
+ 
+                self.user_apellidoLabel.text = ""
+ 
+                
+                self.usuario_telefono.text = ""
+ 
+                
+                self.usuario_plantaTextField.text = ""
+  
+                
+                self.proyect_clienteTextField.text = ""
+          
+                
+                self.usuario_email.text = ""
+
+                
+                self.usuario_password.text = ""
+   
+                
+                self.usuario_puesto.text = ""
+          
+                self.user_avatar.image = UIImage(named: "")
+            
             
         }else{
-            
+            self.editingproject = true
+            self.selectedProject = self.users_array[indexPath.row-1]
+             self.guardarButton.alpha = 0
+            self.showAddPlantView()
         }
     }
     
@@ -384,16 +470,7 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
             
             let base64String = imageData?.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
             
-            
-            let defults = UserDefaults.standard
-            var device_token = ""
-            if (defults.object(forKey: "device_token") != nil){
-                device_token = defults.object(forKey: "device_token") as! String
-            }else{
-                device_token = "0"
-                
-            }
-            
+
             var string = ""
             if self.usuario_plantaTextField.text != ""{
                 string = self.usuario_plantaTextField.text!
@@ -401,7 +478,7 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
             
             let OKAction = UIAlertAction(title: "Cargar Proyecto", style: .default) { (action) in
                 
-                Services.createProject(forIPB: self.usuario_name.text, andPrecio: self.usuario_apellido.text, andTotal: self.usuario_telefono.text, andMinutaje: self.usuario_plantaTextField.text, andStatus: self.usuario_puesto.text, andCliente: self.proyect_clienteTextField.text, andTela: self.usuario_password.text, andbase64String: base64String, andHandler: { (response) in
+                Services.createProject(forIPB: self.usuario_name.text, andPrecio: self.usuario_apellido.text, andTotal: self.usuario_telefono.text, andMinutaje: self.usuario_plantaTextField.text, andStatus: self.usuario_puesto.text, andCliente: self.proyect_clienteTextField.text, andTela: self.usuario_password.text, andbase64String: base64String, andFechaEntrega:self.usuario_email.text, andHandler: { (response) in
                     
                     self.closeAddPlantView()
                     self.refreshHomePlants()

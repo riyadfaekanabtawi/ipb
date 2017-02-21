@@ -52,6 +52,9 @@ class MenuViewController: UIViewController {
     @IBOutlet var cerrarSesion_innerView: UIView!
     
     
+    @IBOutlet var reportessend_InnerView: UIView!
+    @IBOutlet var reportesSend_label: UILabel!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +62,9 @@ class MenuViewController: UIViewController {
         self.view.layoutIfNeeded()
         
         self.setNeedsStatusBarAppearanceUpdate()
+        
+        
+         self.reportesSend_label.font = UIFont(name: FONT_REGULAR, size: self.reportesSend_label.font.pointSize)
         
         
         self.proveedoresLabel.font = UIFont(name: FONT_REGULAR, size: self.proveedoresLabel.font.pointSize)
@@ -88,7 +94,7 @@ class MenuViewController: UIViewController {
         self.clientes_innerView.alpha = 0
         self.usuarios_innerView.alpha = 0
         self.estilos_innerView.alpha = 0
-      
+      self.reportessend_InnerView.alpha = 0
         self.calculadora_innerView.alpha = 0
         self.envios_innerView.alpha = 0
         self.cerrarSesion_innerView.alpha = 0
@@ -137,7 +143,7 @@ class MenuViewController: UIViewController {
     @IBAction func dashboardTouchUpInside(){
     
         UIView.animate(withDuration: 0.4) {
-            
+            self.reportessend_InnerView.alpha = 0
             self.dashboard_innerView.alpha = 1
             self.listas_innerView.alpha = 0
             self.proveedoresView.alpha = 0
@@ -174,6 +180,7 @@ class MenuViewController: UIViewController {
             self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
+            self.reportessend_InnerView.alpha = 0
             self.cerrarSesion_innerView.alpha = 0
             self.delegate.selectedMenuviewcontrollerOption("listas")
         }
@@ -194,6 +201,7 @@ class MenuViewController: UIViewController {
             self.plantas_innerView.alpha = 0
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
+            self.reportessend_InnerView.alpha = 0
             self.estilos_innerView.alpha = 0
             self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
@@ -236,6 +244,7 @@ class MenuViewController: UIViewController {
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
+            self.reportessend_InnerView.alpha = 0
             self.clientes_innerView.alpha = 1
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
@@ -256,6 +265,7 @@ class MenuViewController: UIViewController {
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
+            self.reportessend_InnerView.alpha = 0
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 1
             self.estilos_innerView.alpha = 0
@@ -279,6 +289,7 @@ class MenuViewController: UIViewController {
             self.plantas_innerView.alpha = 0
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
+            self.reportessend_InnerView.alpha = 0
             self.estilos_innerView.alpha = 1
             self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
@@ -317,6 +328,7 @@ class MenuViewController: UIViewController {
     @IBAction func reportsallTouchUpInside(){
         UIView.animate(withDuration: 0.4) {
             self.RPOVERALL_innerView.alpha = 1
+            self.reportessend_InnerView.alpha = 0
             self.proveedoresView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
@@ -359,6 +371,7 @@ class MenuViewController: UIViewController {
             self.proveedoresView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
+            self.reportessend_InnerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
             self.clientes_innerView.alpha = 0
@@ -378,6 +391,7 @@ class MenuViewController: UIViewController {
              self.RPOVERALL_innerView.alpha = 0
             self.proveedoresView.alpha = 0
             self.dashboard_innerView.alpha = 1
+            self.reportessend_InnerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
@@ -399,6 +413,7 @@ class MenuViewController: UIViewController {
             self.proveedoresView.alpha = 1
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
+            self.reportessend_InnerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
             self.clientes_innerView.alpha = 0
@@ -412,6 +427,27 @@ class MenuViewController: UIViewController {
         }
     }
     
+    @IBAction func createReportHomeTouchUpInside(){
+        UIView.animate(withDuration: 0.4) {
+            self.RPOVERALL_innerView.alpha = 0
+            self.proveedoresView.alpha = 0
+            self.dashboard_innerView.alpha = 0
+            self.listas_innerView.alpha = 0
+            self.reportes_innerView.alpha = 0
+            self.plantas_innerView.alpha = 0
+            self.clientes_innerView.alpha = 0
+            self.usuarios_innerView.alpha = 0
+            self.estilos_innerView.alpha = 0
+            self.proyectos_innerView.alpha = 0
+            self.calculadora_innerView.alpha = 0
+            self.envios_innerView.alpha = 0
+            self.cerrarSesion_innerView.alpha = 0
+            self.reportessend_InnerView.alpha = 1
+            self.delegate.selectedMenuviewcontrollerOption("createReportHome")
+        }
+    }
+    
+    
     
     @IBAction func proyectosTouchUpInside(){
         UIView.animate(withDuration: 0.4) {
@@ -420,6 +456,7 @@ class MenuViewController: UIViewController {
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
+            self.reportessend_InnerView.alpha = 0
             self.plantas_innerView.alpha = 0
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0

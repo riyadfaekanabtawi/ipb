@@ -483,32 +483,52 @@ class CalculadoraViewController: UIViewController,UITextFieldDelegate {
         
         
         if self.ingreso_bruto2_textfield == textField{
-            
-                if self.ingreso_bruto2_textfield.text != ""{
-            
-            let produccionSemanalEquation = Int32(self.minutosDiaOperario.text!)! * Int32(self.operarios_2_textfield.text!)!
-            let minutaje_real_prod = produccionSemanalEquation / Int32(self.ingreso_bruto2_textfield.text!)!
-           
-            
-            self.minuto_real_produccion.text = "\(minutaje_real_prod)"
-                    
-            }
-        }else{
-        
-            let alertController = UIAlertController(title: "Atención!", message: "Tienes que ingresar la producción real diaria", preferredStyle: .alert)
-            
-            
-            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            if self.minutosDiaOperario.text == ""{
                 
-            }
+                if self.ingreso_bruto2_textfield.text != ""{
+                    
+                    let produccionSemanalEquation = Int32(self.minutosDiaOperario.text!)! * Int32(self.operarios_2_textfield.text!)!
+                    let minutaje_real_prod = produccionSemanalEquation / Int32(self.ingreso_bruto2_textfield.text!)!
+                    
+                    
+                    self.minuto_real_produccion.text = "\(minutaje_real_prod)"
+                            self.ingreso_bruto2_textfield.resignFirstResponder()
+                }else{
+                    
+                    let alertController = UIAlertController(title: "Atención!", message: "Tienes que ingresar la producción real diaria", preferredStyle: .alert)
+                    
+                    
+                    let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                        
+                    }
+                    
+                    alertController.addAction(OKAction)
+                    
+                    self.present(alertController, animated: true) {
+                        // ...
+                    }
+self.ingreso_bruto2_textfield.resignFirstResponder()
+                    
+                    
+                }
+            }else{
             
-            alertController.addAction(OKAction)
-            
-            self.present(alertController, animated: true) {
-                // ...
-            }
+                let alertController = UIAlertController(title: "Atención!", message: "Tienes que cargar las constantes antes", preferredStyle: .alert)
+                
+                
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    
+                }
+                
+                alertController.addAction(OKAction)
+                
+                self.present(alertController, animated: true) {
+                    // ...
+                }
 
-        
+            self.ingreso_bruto2_textfield.resignFirstResponder()
+            }
+    
         }
         
         return true

@@ -12,9 +12,11 @@ protocol styledelegateHome {
     func showImage(image:String)
     func refreshFather()
 }
-class StylesCollectionViewCell: UICollectionViewCell {
+class StylesCollectionViewCell: UICollectionViewCell,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout {
     var selectedStyle:Styles!
+    var arrayInfo:[NSDictionary] = []
     var delegate:styledelegateHome!
+    @IBOutlet var plant_collectionview: UICollectionView!
     @IBOutlet var style_image: UIImageView!
     @IBOutlet var style_name: UILabel!
     var controller:UIViewController!
@@ -31,6 +33,19 @@ class StylesCollectionViewCell: UICollectionViewCell {
         self.style_name.text = style.style_name
         self.style_image.sd_setImage(with: NSURL(string: style.style_image) as URL!)
         
+        Services.getPlantsforStyle(style.style_id, andHandler: { (response) in
+            
+            self.arrayInfo = response as! [NSDictionary]
+            
+            
+            self.plant_collectionview.reloadData()
+         
+        }, orErrorHandler: { (err) in
+        
+            
+            
+        })
+
         
   
     }
@@ -94,5 +109,35 @@ class StylesCollectionViewCell: UICollectionViewCell {
     self.delegate.showImage(image: self.selectedStyle.style_image)
         
     }
+    
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.arrayInfo.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: 70, height: 30)
+    }
 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plant", for: indexPath)as!PlantStyleCollectionViewCell
+        
+        
+        cell.showcuts(corte: self.arrayInfo[indexPath.row])
+        
+        return cell
+        
+    }
 }

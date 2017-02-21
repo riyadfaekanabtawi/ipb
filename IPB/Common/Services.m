@@ -122,6 +122,93 @@
     
 }
 
+
++(void)getPlantsforStyle:(NSNumber *)style_id AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+    
+    NSDictionary *p = @{@"id" : style_id};
+    
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    
+    
+    
+    [manager GET:[NSString stringWithFormat:@"%@getPlantsForStyle",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        NSMutableArray *array = [NSMutableArray new];
+        
+        for (NSDictionary *dict in responseObject){
+        
+            [array addObject:dict];
+        
+        
+        }
+        
+        handler(array);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
+    
+}
+
+
++(void)filterCortesByName:(NSString *)corte_name AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+    
+    NSDictionary *p = @{@"name" : corte_name};
+    
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    
+    
+    
+    [manager GET:[NSString stringWithFormat:@"%@filterCortesByName",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        NSMutableArray *array = [NSMutableArray new];
+        
+        for (NSDictionary *dict in [responseObject objectForKey:@"api"]){
+            
+            Corte *corte = [[Corte alloc] initWithDictionary:dict];
+            
+            [array addObject:corte];
+            
+            
+        }
+        
+        handler(array);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
+    
+}
+
+
 +(void)FilterCuts:(NSString *)planta andLista:(NSString *)lista andCorte:(NSString *)corte andEstilo:(NSString *)estilo andStatus:(NSString *)status andfechaIPB:(NSString *)fecha_ipb andFechaCliente:(NSString *)fecha_cliente andCliente:(NSString *)cliente andHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
     NSDictionary *p;
   
@@ -819,6 +906,47 @@
     
 }
 
+
++(void)updateProject:(NSNumber *)project_id andStatus:(NSString *)status AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+    
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    
+    NSDictionary *p = @{@"id":project_id,@"status":status};
+    
+    [manager POST:[NSString stringWithFormat:@"%@updateProjectStatus",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        
+        Project *corte = [[Project alloc] initWithDictionary:[responseObject objectForKey:@"project"]];
+        
+        
+        
+        handler(corte);
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
+    
+    
+}
+
+
+
+
 +(void)createReport:(NSString *)lista andCutID:(NSNumber *)cut_id andCut:(NSString *)corte andStyle:(NSString *)estilo andCantidad:(NSString *)cantidad andFechaIPB:(NSString *)fecha_ipb andRealizadas:(NSString *)realizadas andOperarios:(NSNumber *)operarios andFaltas:(NSNumber *)faltas andProducidas:(NSNumber *)produciad andPlancha:(NSNumber *)en_plancha andEmpaque:(NSNumber *)en_empaque andBodega:(NSNumber *)bodega AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
 
 
@@ -1221,7 +1349,7 @@
 }
 
 
-+(void)createProjectForIPB:(NSString *)cantidad andPrecio:(NSString *)precio andTotal:(NSString *)total andMinutaje:(NSString *)minutaje andStatus:(NSString *)status andCliente:(NSString *)cliente andTela:(NSString *)tela andbase64String:(NSString *)base64String AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
++(void)createProjectForIPB:(NSString *)cantidad andPrecio:(NSString *)precio andTotal:(NSString *)total andMinutaje:(NSString *)minutaje andStatus:(NSString *)status andCliente:(NSString *)cliente andTela:(NSString *)tela andbase64String:(NSString *)base64String andFechaEntrega:(NSString *)fecha_entrega AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
 
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.securityPolicy.allowInvalidCertificates = YES;
@@ -1229,7 +1357,7 @@
     NSNumber *numbeer = [NSNumber numberWithInt:i];
     
     
-    NSDictionary *p = @{@"project":@{@"cantidad":cantidad,@"precio":precio,@"total":total,@"minutaje":minutaje,@"status":status,@"cliente":cliente,@"tela":tela},@"image":@{@"photo_file_name" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_updated_at" :[NSDate date],@"photo_file_size" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_content_type" :@"image/jpg", @"image_url":base64String}};
+    NSDictionary *p = @{@"project":@{@"cantidad":cantidad,@"precio":precio,@"total":total,@"minutaje":minutaje,@"status":status,@"cliente":cliente,@"tela":tela,@"fecha_entrega":fecha_entrega},@"image":@{@"photo_file_name" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_updated_at" :[NSDate date],@"photo_file_size" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_content_type" :@"image/jpg", @"image_url":base64String}};
     
     [manager POST:[NSString stringWithFormat:@"%@createProject",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
         
