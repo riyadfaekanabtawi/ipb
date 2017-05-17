@@ -10,6 +10,7 @@ import UIKit
 
 class StylesViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UITextFieldDelegate,styledelegateHome,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIScrollViewDelegate {
     var users_array:[Styles] = []
+    var plants_array:[Planta] = []
     @IBOutlet var titleViewLabelColelctionView: UILabel!
     @IBOutlet var titleViewLabel: UILabel!
     @IBOutlet var avatar_placeholder: UIImageView!
@@ -192,7 +193,7 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
         }else{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "styles", for: indexPath) as! StylesCollectionViewCell
             
-            
+            cell.plantas_array = self.plants_array
             cell.displayStyles(style: self.users_array[indexPath.row - 1])
             cell.delegate = self
             cell.controller = self
@@ -217,21 +218,58 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
     func refreshHomePlants()
         
     {
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
         
         
-        Services.getStylesWithandHandler({ (response) in
+        Services.getPlantsWithandHandler({ (response) in
             
-            self.users_array = response as! [Styles]
+            self.plants_array = response as! [Planta]
+            
+            Services.getStylesWithandHandler({ (response) in
+                
+                self.users_array = response as! [Styles]
+                
+                
+                self.plant_collectionview.reloadData()
+                loader?.removeFromSuperview()
+            }, orErrorHandler: { (err) in
+                
+                let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
+                
+                
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    
+                }
+                alertController.addAction(OKAction)
+                
+                self.present(alertController, animated: true) {
+                    // ...
+                }
+                loader?.removeFromSuperview()
+                
+            })
+            
+        }) { (err) in
+            
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
             
             
-            self.plant_collectionview.reloadData()
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
             
-        }, orErrorHandler: { (err) in
-            
-            
-            
-        })
-        
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
+        }
+  
         
     }
     
@@ -312,6 +350,15 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
             
             let OKAction = UIAlertAction(title: "Cargar Estilo", style: .default) { (action) in
                 
+                let loader  = SBTVLoaderView.create()
+                
+                let window = UIApplication.shared.keyWindow
+                let sub =   (window?.subviews[0])! as UIView
+                
+                Functions.fillContainerView(sub, with: loader)
+        
+                
+                
            Services.createStyle(forIPB: self.usuario_name.text, andbase64String: base64String, andHandler: { (response) in
             self.closeAddPlantView()
             self.refreshHomePlants()
@@ -327,9 +374,22 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
                 // ...
             }
             
+            loader?.removeFromSuperview()
+            
            }, orErrorHandler: { (err) in
             
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
             
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
            })
                 
             }

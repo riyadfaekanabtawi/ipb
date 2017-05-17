@@ -390,6 +390,13 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
         
     {
         
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
         
         Services.getProveedoresWithandHandler({ (response) in
             
@@ -398,9 +405,21 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
             
             self.plant_collectionview.reloadData()
             
+            loader?.removeFromSuperview()
         }, orErrorHandler: { (err) in
             
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
             
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
             
         })
         
@@ -433,6 +452,15 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
                 
                 let OKAction = UIAlertAction(title: "Actualizar Proveedor", style: .default) { (action) in
                     
+                    let loader  = SBTVLoaderView.create()
+                    
+                    let window = UIApplication.shared.keyWindow
+                    let sub =   (window?.subviews[0])! as UIView
+                    
+                    Functions.fillContainerView(sub, with: loader)
+                    
+        
+                    
                     Services.updateProveedor(forIPB: self.plantNameTextField.text, andID:self.selectedclient.client_id,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andDireccion: self.direccion.text, andHandler: { (response) in
                         
                         self.closeAddPlantView()
@@ -448,10 +476,22 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
                         self.present(alertController, animated: true) {
                             // ...
                         }
+                        loader?.removeFromSuperview()
                         
                     }, orErrorHandler: { (err) in
                         
+                        let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
                         
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        loader?.removeFromSuperview()
                     })
                     
                     
@@ -471,6 +511,13 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
                 
                 
                 let OKAction = UIAlertAction(title: "Cargar Proveedor", style: .default) { (action) in
+                    let loader  = SBTVLoaderView.create()
+                    
+                    let window = UIApplication.shared.keyWindow
+                    let sub =   (window?.subviews[0])! as UIView
+                    
+                    Functions.fillContainerView(sub, with: loader)
+                    
                     
                     Services.createProveedor(forIPB: self.plantNameTextField.text,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andDireccion: self.direccion.text, andHandler: { (response) in
                         
@@ -487,10 +534,22 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
                         self.present(alertController, animated: true) {
                             // ...
                         }
+                        loader?.removeFromSuperview()
                         
                     }, orErrorHandler: { (err) in
                         
+                        let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
                         
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        loader?.removeFromSuperview()
                     })
                     
                     

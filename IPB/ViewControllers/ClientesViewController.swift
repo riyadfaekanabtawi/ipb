@@ -12,14 +12,14 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
    
 
     var clients_array:[Cliente] = []
-    @IBOutlet var titleViewLabelColelctionView: UILabel!
+
     @IBOutlet var titleViewLabel: UILabel!
     
     var editingclient = false
     @IBOutlet var BackaddPlantview: UIView!
     @IBOutlet var addPlantview: UIView!
     @IBOutlet var addplantLabelTitle: UILabel!
-    @IBOutlet var plantNameLabel: UILabel!
+  
 
     @IBOutlet var guardarButton: UIButton!
     @IBOutlet var plantNameTextField: UITextField!
@@ -75,11 +75,9 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         NotificationCenter.default.addObserver(self, selector: #selector(ClientesViewController.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         self.BackaddPlantview.alpha = 0
         
-        self.titleViewLabelColelctionView.font = UIFont(name: FONT_BOLD, size: self.titleViewLabelColelctionView.font.pointSize)
-        
+       
         self.addplantLabelTitle.font = UIFont(name: FONT_BOLD, size: self.addplantLabelTitle.font.pointSize)
-        self.plantNameLabel.font = UIFont(name: FONT_BOLD, size: self.plantNameLabel.font.pointSize)
-   
+       
         self.plantNameTextField.font = UIFont(name: FONT_REGULAR, size: (self.plantNameTextField.font?.pointSize)!)
         
         self.guardarButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.guardarButton.titleLabel?.font.pointSize)!)
@@ -339,44 +337,32 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if indexPath.row == 0{
-            
-            self.showAddPlantView()
-            self.editingclient = false
-        }else{
-            self.editingclient = true
-            self.selectedclient = self.clients_array[indexPath.row-1]
-            
-            self.showAddPlantView()
-            
-        }
+        self.editingclient = true
+        self.selectedclient = self.clients_array[indexPath.row]
+        self.addplantLabelTitle.text = "EDITAR CLIENTE"
+        self.showAddPlantView()
+        
+      
     }
     
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return self.clients_array.count + 1
+        return self.clients_array.count
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "clients", for: indexPath) as! ClientCollectionViewCell
         
-        if indexPath.row == 0{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ADD", for: indexPath)as!AddButtonCollectionViewCell
-            
-            return cell
-            
-        }else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "clients", for: indexPath) as! ClientCollectionViewCell
-            
-            
-            cell.displayClient(client: self.clients_array[indexPath.row - 1])
-            cell.delegate = self
-            cell.controller = self
-            return cell
-        }
+        
+        cell.displayClient(client: self.clients_array[indexPath.row])
+        cell.delegate = self
+        cell.controller = self
+        return cell
+
         
         
     }
@@ -384,7 +370,7 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: 220, height: 340)
+        return CGSize(width: self.plant_collectionview.frame.size.width-20, height: 150)
     }
     
     
@@ -396,17 +382,36 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
     func refreshHomePlants()
         
     {
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
         
         
         Services.getClientsWithandHandler({ (response) in
             
             self.clients_array = response as! [Cliente]
             
-            
+            loader?.removeFromSuperview()
             self.plant_collectionview.reloadData()
             
         }, orErrorHandler: { (err) in
             
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
+            
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
             
             
         })
@@ -414,6 +419,12 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         
     }
     
+    
+    @IBAction func addClient(){
+        self.showAddPlantView()
+        self.editingclient = false
+        self.addplantLabelTitle.text = "NUEVO CLIENTE"
+    }
     
     @IBAction func saveClientInfoAndCreate(){
         
@@ -441,6 +452,13 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
                 
                 
                 let OKAction = UIAlertAction(title: "Actualizar Cliente", style: .default) { (action) in
+                    let loader  = SBTVLoaderView.create()
+                    
+                    let window = UIApplication.shared.keyWindow
+                    let sub =   (window?.subviews[0])! as UIView
+                    
+                    Functions.fillContainerView(sub, with: loader)
+                    
                     
                     
                     Services.updateClient(self.plantNameTextField.text, andID:self.selectedclient.client_id,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andDireccion: self.direccionTextField.text, andHandler: { (response) in
@@ -459,9 +477,22 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
                             // ...
                         }
                         
+                        loader?.removeFromSuperview()
+                        
                     }, orErrorHandler: { (err) in
                         
+                        let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
                         
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        loader?.removeFromSuperview()
                     })
                     
                     
@@ -480,6 +511,13 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
                 
                 let OKAction = UIAlertAction(title: "Cargar Cliente", style: .default) { (action) in
                     
+                    let loader  = SBTVLoaderView.create()
+                    
+                    let window = UIApplication.shared.keyWindow
+                    let sub =   (window?.subviews[0])! as UIView
+                    
+                    Functions.fillContainerView(sub, with: loader)
+                    
                     
                     Services.createClient(forIPB: self.plantNameTextField.text,andContactName1: self.nombre_contacto1.text,andContactEmail1: self.email_contacto1.text,andContactTelefone1:self.telefono_contacto1.text, andContactName2:self.nombre_contacto2.text, andContactEmail2:self.email_contacto2.text, andContactTelefone2:self.telefono_contacto2.text, andContactName3:self.nombre_contacto3.text, andContactEmail3:self.email_contacto3.text, andContactTelefone3:self.telefono_contacto3.text, andContactPuesto1:self.puesto_contacto1.text,andContactPuesto2:self.puesto_contacto2.text,andContactPuesto3:self.puesto_contacto3.text, andDireccion: self.direccionTextField.text, andHandler: { (response) in
                         
@@ -497,9 +535,22 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
                             // ...
                         }
                         
+                        
+                        loader?.removeFromSuperview()
                     }, orErrorHandler: { (err) in
                         
+                        let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
                         
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        loader?.removeFromSuperview()
                     })
                     
                     

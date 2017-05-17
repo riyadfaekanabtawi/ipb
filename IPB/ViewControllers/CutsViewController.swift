@@ -8,12 +8,16 @@
 
 import UIKit
 
-class CutsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,asignDelegate,pendingCutdelegate {
+class CutsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,asignDelegate,pendingCutdelegate,SWRevealViewControllerDelegate,MenuViewControllerDelegate {
     
     @IBOutlet var styleImageView: UIImageView!
     @IBOutlet var BackaddPlantview: UIView!
     @IBOutlet var imageViewBig: UIView!
     @IBOutlet var imagenTitle: UILabel!
+    var revealController:SWRevealViewController!
+    @IBOutlet var backButton: UIView!
+    @IBOutlet var menuButton: UIView!
+     @IBOutlet var refreshIcon: UIButton!
     
     @IBOutlet var closeButton: UIButton!
     @IBOutlet var cortesTitle: UILabel!
@@ -32,6 +36,19 @@ class CutsViewController: UIViewController,UICollectionViewDelegate,UICollection
          self.imagenTitle.font = UIFont(name: FONT_BOLD, size: self.imagenTitle.font.pointSize)
         
         
+        let user = NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.object(forKey: "user_main")as!NSData) as Data)as!User
+    
+        
+           if (user.puesto == "Administrador"){
+            
+            self.backButton.isHidden = false
+            self.menuButton.isHidden = true
+           }else{
+            self.backButton.isHidden = true
+            self.menuButton.isHidden = false
+            self.slideMenuSetUp()
+        
+            }
         self.BackaddPlantview.alpha = 0
         self.imageViewBig.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
         self.imageViewBig.alpha = 0
@@ -56,9 +73,174 @@ class CutsViewController: UIViewController,UICollectionViewDelegate,UICollection
     }
     
     
+    func slideMenuSetUp(){
+        
+        self.revealController = self.revealViewController()
+        
+        if (self.revealController != nil){
+            
+            self.revealController.delegate = self
+            self.revealController.toggleAnimationDuration=1;
+            self.revealController.rearViewRevealWidth=250;
+            
+            
+            let menu = self.revealController.rearViewController as! MenuViewController
+            
+            menu.delegate = self
+            
+        }
+        
+    }
+    func selectedMenuviewcontrollerOption(_ option: String) {
+        
+        
+        let revealController = self.revealController
+        
+        
+        if revealController != nil{
+            
+            revealController?.revealToggle(animated: true)
+            
+        }
+        
+        
+        if option == "cerrar_sesion"{
+            
+            let defaults = UserDefaults.standard
+            
+            defaults.removeObject(forKey: "user_main")
+            defaults.synchronize()
+            
+            self.navigationController?.popToRootViewController(animated: true)
+            
+            
+        }
+        
+        
+        if option == "envios"{
+            
+            self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+        if option == "reportsall"{
+            
+           // self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+      
+        
+        if option == "reportes"{
+            
+          self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+        if option == "listas"{
+            
+            //self.performSegue(withIdentifier: "pendingcuts", sender: self)
+            
+        }
+        
+        if option == "dashboard"{
+            
+            //self.refreshHomePlants ()
+        }
+        if option == "plantas"{
+            
+            //self.performSegue(withIdentifier: option, sender: self)
+            
+        }
+        
+        
+        if option == "clientes"{
+            //self.performSegue(withIdentifier: "clients", sender: self)
+            
+        }
+        
+        
+        if option == "calculadora"{
+           // self.performSegue(withIdentifier: option, sender: self)
+            
+        }
+        
+        
+        if option == "proyectos"{
+            
+           // self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+        
+        if option == "estilos"{
+            
+           // self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+        if option == "usuarios"{
+           // self.performSegue(withIdentifier: option, sender: self)
+            
+        }
+        if option == "pendingcuts"{
+            
+           // self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+        if option == "proveedores"{
+            //self.performSegue(withIdentifier: option, sender: self)
+            
+        }
+        
+    }
+     @IBAction func refreshTUI(){
+        Functions.runSpinAnimation(on: self.refreshIcon, duration: 0.6, rotations: 1, repeat: 0)
+    self.getPendingCuts()
+        
+        
+    }
+    
+    @IBAction func openMenu(){
+        
+        let revealController = self.revealController
+        
+        
+        if revealController != nil{
+            
+            revealController?.revealToggle(animated: true)
+            
+        }
+        
+    }
+    
+    
+    func revealController(_ revealController: SWRevealViewController!, animateTo position: FrontViewPosition) {
+        
+        
+        if position == FrontViewPosition.left{
+          
+            
+        }
+        
+        
+        
+        
+        if position == FrontViewPosition.right{
+            
+            let menu = revealController.rearViewController as! MenuViewController
+            menu.refrsh()
+          
+            
+        }
+    }
+
     
     func getPendingCuts(){
     
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
+        
     Services.getPendingCutsWithandHandler({ (response) in
         
         self.pending_cuts_array = response as! [PendingCut]
@@ -74,9 +256,21 @@ class CutsViewController: UIViewController,UICollectionViewDelegate,UICollection
             self.cuts_collectionview.alpha = 0
         
         }
+        
+        loader?.removeFromSuperview()
     }, orErrorHandler: { (err) in
+        let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
         
         
+        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            
+        }
+        alertController.addAction(OKAction)
+        
+        self.present(alertController, animated: true) {
+            // ...
+        }
+         loader?.removeFromSuperview()
         
     })
         
@@ -118,7 +312,7 @@ class CutsViewController: UIViewController,UICollectionViewDelegate,UICollection
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.cuts_collectionview.frame.size.width-10, height: 200)
+        return CGSize(width: self.cuts_collectionview.frame.size.width-10, height: 66)
     }
     
     @IBAction func goBack(){
@@ -175,4 +369,6 @@ class CutsViewController: UIViewController,UICollectionViewDelegate,UICollection
     func asignedCut() {
         self.getPendingCuts()
     }
+    
+    
 }

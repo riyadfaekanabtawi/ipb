@@ -222,11 +222,11 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
         
             if self.selectedProject.cantidad != nil{
             
-                self.user_nameLabel.text = self.selectedProject.cantidad!
+                self.usuario_name.text = self.selectedProject.cantidad!
             }
             
             if self.selectedProject.precio != nil{
-            self.user_apellidoLabel.text = self.selectedProject.precio!
+            self.usuario_apellido.text = self.selectedProject.precio!
             
             }
             
@@ -310,10 +310,11 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
             self.guardarButton.alpha = 1
 
                 
-                self.user_nameLabel.text = ""
+                self.usuario_name.text = ""
  
-                self.user_apellidoLabel.text = ""
+                self.usuario_apellido.text = ""
  
+            
                 
                 self.usuario_telefono.text = ""
  
@@ -332,13 +333,13 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
                 
                 self.usuario_puesto.text = ""
           
-                self.user_avatar.image = UIImage(named: "")
+                self.user_avatar.image = UIImage(named: "add photo.png")
             
             
         }else{
             self.editingproject = true
             self.selectedProject = self.users_array[indexPath.row-1]
-             self.guardarButton.alpha = 0
+             self.guardarButton.alpha = 1
             self.showAddPlantView()
         }
     }
@@ -387,6 +388,13 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
     func refreshHomePlants()
         
     {
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
         
         
         Services.getAllProjects({ (response) in
@@ -396,9 +404,21 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
             
             self.plant_collectionview.reloadData()
             
+            loader?.removeFromSuperview()
         }, orErrorHandler: { (err) in
             
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
             
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
             
         })
         
@@ -465,45 +485,92 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
             
         }else{
             
-            let alertController = UIAlertController(title: "Atencion!", message: "Está por cargar un proyecto", preferredStyle: .alert)
-            let imageData = UIImageJPEGRepresentation(self.user_avatar.image!, 0.1)
-            
-            let base64String = imageData?.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
-            
-
-            var string = ""
-            if self.usuario_plantaTextField.text != ""{
-                string = self.usuario_plantaTextField.text!
-            }
-            
-            let OKAction = UIAlertAction(title: "Cargar Proyecto", style: .default) { (action) in
+            if self.editingproject{
+                let alertController = UIAlertController(title: "Atencion!", message: "Está por actualizar un proyecto", preferredStyle: .alert)
+                let imageData = UIImageJPEGRepresentation(self.user_avatar.image!, 0.1)
                 
-                Services.createProject(forIPB: self.usuario_name.text, andPrecio: self.usuario_apellido.text, andTotal: self.usuario_telefono.text, andMinutaje: self.usuario_plantaTextField.text, andStatus: self.usuario_puesto.text, andCliente: self.proyect_clienteTextField.text, andTela: self.usuario_password.text, andbase64String: base64String, andFechaEntrega:self.usuario_email.text, andHandler: { (response) in
+                let base64String = imageData?.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
+                
+                
+                var string = ""
+                if self.usuario_plantaTextField.text != ""{
+                    string = self.usuario_plantaTextField.text!
+                }
+                
+                let OKAction = UIAlertAction(title: "Actualizar Proyecto", style: .default) { (action) in
                     
-                    self.closeAddPlantView()
-                    self.refreshHomePlants()
-                    let alertController = UIAlertController(title: "Bien!", message: "Cargaste el proyecto", preferredStyle: .alert)
-                    
-                    
-                    let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    Services.updateProject(forIPB: self.usuario_name.text, andID:self.selectedProject.project_id, andPrecio: self.usuario_apellido.text, andTotal: self.usuario_telefono.text, andMinutaje: self.usuario_plantaTextField.text, andStatus: self.usuario_puesto.text, andCliente: self.proyect_clienteTextField.text, andTela: self.usuario_password.text, andbase64String: base64String, andFechaEntrega:self.usuario_email.text, andHandler: { (response) in
                         
-                    }
-                    alertController.addAction(OKAction)
+                        self.closeAddPlantView()
+                        self.refreshHomePlants()
+                        let alertController = UIAlertController(title: "Bien!", message: "Actualizaste el proyecto", preferredStyle: .alert)
+                        
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        
+                    }, orErrorHandler: { (err) in
+                        
+                        
+                    })
                     
-                    self.present(alertController, animated: true) {
-                        // ...
-                    }
-                    
-                }, orErrorHandler: { (err) in
-                    
-                    
-                })
+                }
+                alertController.addAction(OKAction)
                 
-            }
-            alertController.addAction(OKAction)
+                self.present(alertController, animated: true) {
+                    // ...
+                }
+
             
-            self.present(alertController, animated: true) {
-                // ...
+            }else{
+                let alertController = UIAlertController(title: "Atencion!", message: "Está por cargar un proyecto", preferredStyle: .alert)
+                let imageData = UIImageJPEGRepresentation(self.user_avatar.image!, 0.1)
+                
+                let base64String = imageData?.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
+                
+                
+                var string = ""
+                if self.usuario_plantaTextField.text != ""{
+                    string = self.usuario_plantaTextField.text!
+                }
+                
+                let OKAction = UIAlertAction(title: "Cargar Proyecto", style: .default) { (action) in
+                    
+                    Services.createProject(forIPB: self.usuario_name.text, andPrecio: self.usuario_apellido.text, andTotal: self.usuario_telefono.text, andMinutaje: self.usuario_plantaTextField.text, andStatus: self.usuario_puesto.text, andCliente: self.proyect_clienteTextField.text, andTela: self.usuario_password.text, andbase64String: base64String, andFechaEntrega:self.usuario_email.text, andHandler: { (response) in
+                        
+                        self.closeAddPlantView()
+                        self.refreshHomePlants()
+                        let alertController = UIAlertController(title: "Bien!", message: "Cargaste el proyecto", preferredStyle: .alert)
+                        
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        
+                    }, orErrorHandler: { (err) in
+                        
+                        
+                    })
+                    
+                }
+                alertController.addAction(OKAction)
+                
+                self.present(alertController, animated: true) {
+                    // ...
+                }
+
+            
             }
             
             

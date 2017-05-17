@@ -35,7 +35,14 @@ var array_plant:[String] = []
     
     
     func loadReports(){
-    
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
+        
         
         Services.getReportsWithandHandler({ (response) in
             
@@ -46,10 +53,21 @@ var array_plant:[String] = []
                 
                 self.MycollectionView.reloadData()
            
-            
+            loader?.removeFromSuperview()
    
         }, orErrorHandler: { (err) in
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
             
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
             
         })
     

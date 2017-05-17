@@ -60,7 +60,7 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self.user_id = [aDecoder decodeObjectForKey:@"user_id"];
-    self.nombre = [aDecoder decodeObjectForKey:@"plant_name"];
+    self.plant_name = [aDecoder decodeObjectForKey:@"plant_name"];
     self.nombre = [aDecoder decodeObjectForKey:@"user_nombre"];
     self.apellido = [aDecoder decodeObjectForKey:@"user_apellido"];
     self.email = [aDecoder decodeObjectForKey:@"user_email"];

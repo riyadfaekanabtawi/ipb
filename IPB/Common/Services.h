@@ -17,12 +17,14 @@
 
 +(void)updatePlantForIPB:(NSString *)plant_name andPlantID:(NSNumber *)plant_id andCapacityMax:(NSNumber *)capacidad_maxima AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
++(void)updateProjectForIPB:(NSString *)cantidad andID:(NSNumber *)idproject andPrecio:(NSString *)precio andTotal:(NSString *)total andMinutaje:(NSString *)minutaje andStatus:(NSString *)status andCliente:(NSString *)cliente andTela:(NSString *)tela andbase64String:(NSString *)base64String andFechaEntrega:(NSString *)fecha_entrega AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
 +(void)createReportEnvio:(NSNumber *)cantidad_envio andCutName:(NSString *)cut_name andCutID:(NSNumber *)cut_id andNumeroDeEnvio:(NSString *)numero_envio AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
 +(void)FilterCuts:(NSString *)planta andLista:(NSString *)lista andCorte:(NSString *)corte andEstilo:(NSString *)estilo andStatus:(NSString *)status andfechaIPB:(NSString *)fecha_ipb andFechaCliente:(NSString *)fecha_cliente andCliente:(NSString *)cliente andHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
-
-
++(void)getCutsForPlant:(NSString *)plant_name AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
++(void)getStyle:(NSString *)style_name AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
++(void)getPlantName:(NSString *)plant_id andHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 +(void)getTotals:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
 +(void)updateReportEnvio:(NSNumber *)cantidad_envio andReportID:(NSNumber *)report_id andCutName:(NSString *)cut_name andCutID:(NSNumber *)cut_id andNumeroDeEnvio:(NSString *)numero_envio AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;

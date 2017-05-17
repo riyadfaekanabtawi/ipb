@@ -238,7 +238,12 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
     func refreshHomePlants()
         
     {
+        let loader  = SBTVLoaderView.create()
         
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
         
         Services.getPlantsWithandHandler({ (response) in
             
@@ -247,10 +252,22 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
             
             self.plant_collectionview.reloadData()
             
+            loader?.removeFromSuperview()
         }, orErrorHandler: { (err) in
             
             
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
             
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
         })
         
         
@@ -286,6 +303,12 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
                 
                 let OKAction = UIAlertAction(title: "Actualizar Planta", style: .default) { (action) in
                     
+                    let loader  = SBTVLoaderView.create()
+                    
+                    let window = UIApplication.shared.keyWindow
+                    let sub =   (window?.subviews[0])! as UIView
+                    
+                    Functions.fillContainerView(sub, with: loader)
                     
                     
                     Services.updatePlant(forIPB: self.plantNameTextField.text, andPlantID: self.selectedPlant.planta_id, andCapacityMax: NSNumber(value:Int32(self.plantCapaxMaxTextField.text!)!), andHandler: { (response) in
@@ -303,9 +326,21 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
                             // ...
                         }
 
+                        loader?.removeFromSuperview()
                         
                     }, orErrorHandler: { (err) in
+                        let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
                         
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        loader?.removeFromSuperview()
                         
                     })
                     
@@ -327,7 +362,13 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
             
             
             let OKAction = UIAlertAction(title: "Crear Planta", style: .default) { (action) in
-            
+                let loader  = SBTVLoaderView.create()
+                
+                let window = UIApplication.shared.keyWindow
+                let sub =   (window?.subviews[0])! as UIView
+                
+                Functions.fillContainerView(sub, with: loader)
+                
                 Services.createPlant(forIPB: self.plantNameTextField.text, andCapacityMax: NSNumber(value:Int32(self.plantCapaxMaxTextField.text!)!), andHandler: { (response) in
                     
                     self.closeAddPlantView()
@@ -344,7 +385,20 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
                         // ...
                     }
                     
+                    loader?.removeFromSuperview()
                 }, orErrorHandler: { (err) in
+                    let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
+                    
+                    
+                    let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                        
+                    }
+                    alertController.addAction(OKAction)
+                    
+                    self.present(alertController, animated: true) {
+                        // ...
+                    }
+                    loader?.removeFromSuperview()
                     
                     
                 })

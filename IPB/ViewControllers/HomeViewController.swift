@@ -8,7 +8,7 @@
 
 import UIKit
 import MessageUI
-class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuViewControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MFMailComposeViewControllerDelegate {
+class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuViewControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MFMailComposeViewControllerDelegate,UITextViewDelegate,UITextFieldDelegate {
     var plants_array:[Planta] = []
     var enviosUrgentesArray:[Corte] = []
     var pending_cuts_array:[PendingCut] = []
@@ -84,6 +84,9 @@ class HomeViewController: UIViewController,SWRevealViewControllerDelegate,MenuVi
         
         self.backAddView.alpha = 0
         self.AddView.alpha = 0
+        
+        self.AddView.layer.cornerRadius = 4
+        self.AddView.layer.masksToBounds = true
         
         self.AddView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
         self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)
@@ -261,7 +264,7 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
     
     func showCargarReport(){
         UIView.animate(withDuration: 0.3) {
-            self.comentarioTextView.text = ""
+            self.comentarioTextView.text = "ingresar"
             self.selectedImage.image = UIImage.init(named: "add photo.png")
             self.backAddView.alpha = 1
             self.AddView.transform = CGAffineTransform.identity
@@ -272,6 +275,18 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
     
     }
 
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if self.comentarioTextView == textField{
+            
+            self.comentarioTextView.resignFirstResponder()
+        }
+        
+        
+        
+     return true
+    }
     func hideReport(){
     
         UIView.animate(withDuration: 0.3) {
@@ -310,6 +325,7 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
         
     }
     
+  
     
     
     @IBAction func openMenu(){
@@ -525,17 +541,35 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
     
     {
     
-        self.showLoader()
-    
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
+            
     Services.getPlantsWithandHandler({ (response) in
         
         self.plants_array = response as! [Planta]
         
         
         self.plant_collectionview.reloadData()
-        self.hideLoader()
+           loader?.removeFromSuperview()
     }, orErrorHandler: { (err) in
-        self.hideLoader()
+      loader?.removeFromSuperview()
+        
+        let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
+        
+        
+        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            
+        }
+        alertController.addAction(OKAction)
+        
+        self.present(alertController, animated: true) {
+            // ...
+        }
         
         
     })
@@ -648,12 +682,23 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
         
         self.performSegue(withIdentifier: "analisis", sender: self)
     }
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        self.selectedImage.image = image
-        picker.dismiss(animated: true, completion: nil);
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        Functions.isChoosingImage(false)
+        
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            self.selectedImage.contentMode = UIViewContentMode.scaleAspectFill
+            self.selectedImage.image = pickedImage
+            
+        }
+        
+        dismiss(animated: true, completion: nil)
     }
     
+    
+    
     @IBAction func openCameraButton() {
+            Functions.isChoosingImage(true)
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
             let imagePicker = UIImagePickerController()
             imagePicker.delegate = self

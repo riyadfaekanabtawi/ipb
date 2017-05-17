@@ -55,9 +55,25 @@ class MenuViewController: UIViewController {
     @IBOutlet var reportessend_InnerView: UIView!
     @IBOutlet var reportesSend_label: UILabel!
     
+    @IBOutlet var dashboardHeight: NSLayoutConstraint!
+    @IBOutlet var asignarCortesHeight: NSLayoutConstraint!
+    @IBOutlet var generarReporteHeight: NSLayoutConstraint!
+    @IBOutlet var reportesHeight: NSLayoutConstraint!
+    @IBOutlet var proyectosHeight: NSLayoutConstraint!
+    @IBOutlet var plantasHeight: NSLayoutConstraint!
+    @IBOutlet var clientesHeight: NSLayoutConstraint!
+    @IBOutlet var proveedoresHeight: NSLayoutConstraint!
+    @IBOutlet var usuariosHeight: NSLayoutConstraint!
+    @IBOutlet var estilosHeight: NSLayoutConstraint!
+    @IBOutlet var calculadoraHeight: NSLayoutConstraint!
+    @IBOutlet var enviosUrgentesHeight: NSLayoutConstraint!
     
+    
+    @IBOutlet var scrollView: UIScrollView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
         self.menuHeight.constant = self.view.frame.size.height
         self.view.layoutIfNeeded()
         
@@ -84,6 +100,51 @@ class MenuViewController: UIViewController {
         self.envios_label.font = UIFont(name: FONT_REGULAR, size: self.envios_label.font.pointSize)
         self.cerrarSesion_label.font = UIFont(name: FONT_REGULAR, size: self.cerrarSesion_label.font.pointSize)
         
+        
+        self.proyectos_innerView.layer.cornerRadius = 4
+        self.proyectos_innerView.layer.masksToBounds = true
+        
+        self.proveedoresView.layer.cornerRadius = 4
+        self.proveedoresView.layer.masksToBounds = true
+        
+        self.RPOVERALL_innerView.layer.cornerRadius = 4
+        self.RPOVERALL_innerView.layer.masksToBounds = true
+        
+        self.dashboard_innerView.layer.cornerRadius = 4
+        self.dashboard_innerView.layer.masksToBounds = true
+        
+        self.listas_innerView.layer.cornerRadius = 4
+        self.listas_innerView.layer.masksToBounds = true
+        
+        self.reportes_innerView.layer.cornerRadius = 4
+        self.reportes_innerView.layer.masksToBounds = true
+        
+        self.plantas_innerView.layer.cornerRadius = 4
+        self.plantas_innerView.layer.masksToBounds = true
+        
+        self.clientes_innerView.layer.cornerRadius = 4
+        self.clientes_innerView.layer.masksToBounds = true
+        
+        self.usuarios_innerView.layer.cornerRadius = 4
+        self.usuarios_innerView.layer.masksToBounds = true
+        
+        self.estilos_innerView.layer.cornerRadius = 4
+        self.estilos_innerView.layer.masksToBounds = true
+        
+        self.reportessend_InnerView.layer.cornerRadius = 4
+        self.reportessend_InnerView.layer.masksToBounds = true
+        
+        self.calculadora_innerView.layer.cornerRadius = 4
+        self.calculadora_innerView.layer.masksToBounds = true
+        
+        self.envios_innerView.layer.cornerRadius = 4
+        self.envios_innerView.layer.masksToBounds = true
+        
+        self.cerrarSesion_innerView.layer.cornerRadius = 4
+        self.cerrarSesion_innerView.layer.masksToBounds = true
+        
+     
+        
         self.proyectos_innerView.alpha = 0
         self.proveedoresView.alpha = 0
         self.RPOVERALL_innerView.alpha = 0
@@ -94,7 +155,7 @@ class MenuViewController: UIViewController {
         self.clientes_innerView.alpha = 0
         self.usuarios_innerView.alpha = 0
         self.estilos_innerView.alpha = 0
-      self.reportessend_InnerView.alpha = 0
+        self.reportessend_InnerView.alpha = 0
         self.calculadora_innerView.alpha = 0
         self.envios_innerView.alpha = 0
         self.cerrarSesion_innerView.alpha = 0
@@ -128,7 +189,75 @@ class MenuViewController: UIViewController {
         self.user_nameLabel.text = user.nombre + " " + user.apellido
         self.user_puestoLabel.text = user.puesto
     
-    
+        if (user.puesto == "Administrador"){
+            
+            self.dashboardHeight.constant = 60
+            self.asignarCortesHeight.constant = 60
+            self.generarReporteHeight.constant = 60
+            self.reportesHeight.constant = 60
+            self.proyectosHeight.constant = 60
+            self.plantasHeight.constant = 60
+            self.clientesHeight.constant = 60
+            self.proveedoresHeight.constant = 60
+            self.usuariosHeight.constant = 60
+            self.estilosHeight.constant = 60
+            self.calculadoraHeight.constant = 60
+            self.enviosUrgentesHeight.constant = 60
+                  self.view.layoutIfNeeded()
+        }
+        
+        if (user.puesto == "Gerente de Cortes"){
+            self.dashboardHeight.constant = 0
+            self.asignarCortesHeight.constant = 60
+            self.generarReporteHeight.constant = 0
+            self.reportesHeight.constant = 60
+            self.proyectosHeight.constant = 0
+            self.plantasHeight.constant = 0
+            self.clientesHeight.constant = 0
+            self.proveedoresHeight.constant = 0
+            self.usuariosHeight.constant = 0
+            self.estilosHeight.constant = 0
+            self.calculadoraHeight.constant = 0
+            self.enviosUrgentesHeight.constant = 0
+                  self.view.layoutIfNeeded()
+        }
+        
+        
+        if (user.puesto == "Gerente de Planta"){
+            self.dashboardHeight.constant = 0
+            self.asignarCortesHeight.constant = 0
+            self.generarReporteHeight.constant = 0
+            self.reportesHeight.constant = 60
+            self.proyectosHeight.constant = 0
+            self.plantasHeight.constant = 0
+            self.clientesHeight.constant = 0
+            self.proveedoresHeight.constant = 0
+            self.usuariosHeight.constant = 0
+            self.estilosHeight.constant = 0
+            self.calculadoraHeight.constant = 0
+            self.enviosUrgentesHeight.constant = 0
+                  self.view.layoutIfNeeded()
+        }
+        
+        if (user.puesto == "Gerente de Envios"){
+            
+            self.dashboardHeight.constant = 0
+            self.asignarCortesHeight.constant = 0
+            self.generarReporteHeight.constant = 0
+            self.reportesHeight.constant = 60
+            self.proyectosHeight.constant = 0
+            self.plantasHeight.constant = 0
+            self.clientesHeight.constant = 0
+            self.proveedoresHeight.constant = 0
+            self.usuariosHeight.constant = 0
+            self.estilosHeight.constant = 0
+            self.calculadoraHeight.constant = 0
+            self.enviosUrgentesHeight.constant = 60
+                  self.view.layoutIfNeeded()
+        }
+
+   self.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+  
     }
     /*
     // MARK: - Navigation

@@ -6,8 +6,10 @@
 //  Copyright © 2016 Riyad Anabtawi. All rights reserved.
 //
 
-class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,asignDelegate,pendingCutdelegate,UITextFieldDelegate {
+class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,asignDelegate,pendingCutdelegate,UITextFieldDelegate,MenuViewControllerDelegate,SWRevealViewControllerDelegate {
     
+       @IBOutlet var plantTextfieldView: UIView!
+    var revealController:SWRevealViewController!
     @IBOutlet var styleImageView: UIImageView!
     @IBOutlet var BackaddPlantview: UIView!
     @IBOutlet var imageViewBig: UIView!
@@ -19,6 +21,10 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
     @IBOutlet var cuts_collectionview: UICollectionView!
     var pending_cuts_array:[Corte] = []
     var selected_cut:Corte!
+    
+    @IBOutlet var menuButton: UIView!
+    @IBOutlet var backButton: UIView!
+    
     
     @IBOutlet var planta_textField: UITextField!
     @IBOutlet var lista_textfield: UITextField!
@@ -53,6 +59,33 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
         })
        
         
+        
+        }
+        
+        
+        let user = NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.object(forKey: "user_main")as!NSData) as Data)as!User
+        
+        
+        if (user.puesto == "Gerente de Cortes" || user.puesto == "Gerente de Planta"  || user.puesto == "Gerente de Envios"){
+            
+            self.backButton.isHidden = true
+            self.menuButton.isHidden = false
+                     self.slideMenuSetUp()
+        }else{
+            self.backButton.isHidden = false
+            self.menuButton.isHidden = true
+   
+            
+        }
+        
+        
+        if user.puesto == "Gerente de Planta"{
+        self.plantTextfieldView.isHidden = true
+            self.planta_textField.isHidden = true
+        
+        }else{
+            self.plantTextfieldView.isHidden = false
+            self.planta_textField.isHidden = false
         
         }
         
@@ -103,13 +136,24 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
     
     func getPendingCuts(){
         
-        Services.getCutsForReportAndHandler({ (response) in
-            
-       
-            
-       self.pending_cuts_array = response as! [Corte]
-            
+        let loader  = SBTVLoaderView.create()
         
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
+       
+        let user = NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.object(forKey: "user_main")as!NSData) as Data)as!User
+        
+        
+        if user.puesto == "Gerente de Planta"{
+        
+        Services.getCutsForPlant(user.plant_name!, andHandler: { (response) in
+            
+            self.pending_cuts_array = response as! [Corte]
+            
+            
             
             
             if self.pending_cuts_array.count != 0{
@@ -123,17 +167,88 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
                 self.cuts_collectionview.alpha = 0
                 
             }
+            
+            
+            loader?.removeFromSuperview()
         }, orErrorHandler: { (err) in
+            
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
+            
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
             
             
             
         })
+        }else{
+        
+            Services.getCutsForReportAndHandler({ (response) in
+                
+                
+                
+                self.pending_cuts_array = response as! [Corte]
+                
+                
+                
+                
+                if self.pending_cuts_array.count != 0{
+                    self.noCutsLabel.alpha = 0
+                    self.cuts_collectionview.alpha = 1
+                    self.cuts_collectionview.reloadData()
+                    
+                }else{
+                    self.noCutsLabel.alpha = 1
+                    
+                    self.cuts_collectionview.alpha = 0
+                    
+                }
+                
+                
+                loader?.removeFromSuperview()
+            }, orErrorHandler: { (err) in
+                
+                let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
+                
+                
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    
+                }
+                alertController.addAction(OKAction)
+                
+                self.present(alertController, animated: true) {
+                    // ...
+                }
+                loader?.removeFromSuperview()
+                
+                
+            })
+        
+        }
+        
+    
         
     }
     
     
     
     func getTotals(){
+        
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
+        
     
     Services.getTotals({ (response) in
         
@@ -207,15 +322,26 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
         self.total_enviadas_label.text = "Total Enviadas: \(resulttotal_enviadas!)"
         self.cantidad_total_label.text = "Cantidad Total: \(resultcantidad_total!)"
         self.total_prendas_producidas_label.text = "Total Producidas: \(resulttotal_producidas!)"
-        self.total_en_plancha_label.text = "Total en Plancha: \(resulttotal_plancha!)"
-        self.total_en_emapaque_label.text = "Total en Empaque: \(resulttotal_empaque!)"
-        self.total_en_bodega_label.text = "Total en Bodega: \(resulttotal_bodega!)"
-        self.total_por_enviar_label.text = "Total por enviar: \(resulttotal_enviar!)"
+        self.total_en_plancha_label.text = "Total Plancha: \(resulttotal_plancha!)"
+        self.total_en_emapaque_label.text = "Total Empaque: \(resulttotal_empaque!)"
+        self.total_en_bodega_label.text = "Total Bodega: \(resulttotal_bodega!)"
+        self.total_por_enviar_label.text = "Total a Enviar: \(resulttotal_enviar!)"
         self.total_ingresos_label.text = "Total Ingresos: \(resulttotal_ingresos!)"
-        
+         loader?.removeFromSuperview()
         
     }, orErrorHandler: { (err) in
+        let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
         
+        
+        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            
+        }
+        alertController.addAction(OKAction)
+        
+        self.present(alertController, animated: true) {
+            // ...
+        }
+        loader?.removeFromSuperview()
         
         
     })
@@ -223,10 +349,11 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        
+   
+ 
         self.selected_cut = self.pending_cuts_array[indexPath.row]
         self.performSegue(withIdentifier: "selectedCut", sender: self)
-        
+      
         
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -482,10 +609,10 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
             self.total_enviadas_label.text = "Total Enviadas: \(resulttotal_enviadas!)"
             self.cantidad_total_label.text = "Cantidad Total: \(resultcantidad_total!)"
             self.total_prendas_producidas_label.text = "Total Producidas: \(resulttotal_producidas!)"
-            self.total_en_plancha_label.text = "Total en Plancha: \(resulttotal_plancha!)"
-            self.total_en_emapaque_label.text = "Total en Empaque: \(resulttotal_empaque!)"
-            self.total_en_bodega_label.text = "Total en Bodega: \(resulttotal_bodega!)"
-            self.total_por_enviar_label.text = "Total por enviar: \(resulttotal_enviar!)"
+            self.total_en_plancha_label.text = "Total Plancha: \(resulttotal_plancha!)"
+            self.total_en_emapaque_label.text = "Total Empaque: \(resulttotal_empaque!)"
+            self.total_en_bodega_label.text = "Total Bodega: \(resulttotal_bodega!)"
+            self.total_por_enviar_label.text = "Total a Enviar: \(resulttotal_enviar!)"
             self.total_ingresos_label.text = "Total Ingresos: \(resulttotal_ingresos!)"
             
             
@@ -544,5 +671,155 @@ class ReportsViewController: UIViewController,UICollectionViewDelegate,UICollect
     
     func asignedCut() {
         self.getPendingCuts()
+    }
+    
+    func slideMenuSetUp(){
+        
+        self.revealController = self.revealViewController()
+        
+        if (self.revealController != nil){
+            
+            self.revealController.delegate = self
+            self.revealController.toggleAnimationDuration=1;
+            self.revealController.rearViewRevealWidth=250;
+            
+            
+            let menu = self.revealController.rearViewController as! MenuViewController
+            
+            menu.delegate = self
+            
+        }
+        
+    }
+    func selectedMenuviewcontrollerOption(_ option: String) {
+        
+        
+        let revealController = self.revealController
+        
+        
+        if revealController != nil{
+            
+            revealController?.revealToggle(animated: true)
+            
+        }
+        
+        
+        if option == "cerrar_sesion"{
+            
+            let defaults = UserDefaults.standard
+            
+            defaults.removeObject(forKey: "user_main")
+            defaults.synchronize()
+            
+            self.navigationController?.popToRootViewController(animated: true)
+            
+            
+        }
+        
+        
+        if option == "envios"{
+            
+            self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+        if option == "reportsall"{
+            
+            // self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+        
+        
+        if option == "reportes"{
+            
+           // self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+        if option == "listas"{
+            
+            //self.performSegue(withIdentifier: "pendingcuts", sender: self)
+            
+        }
+        
+        if option == "dashboard"{
+            
+            //self.refreshHomePlants ()
+        }
+        if option == "plantas"{
+            
+            //self.performSegue(withIdentifier: option, sender: self)
+            
+        }
+        
+        
+        if option == "clientes"{
+            //self.performSegue(withIdentifier: "clients", sender: self)
+            
+        }
+        
+        
+        if option == "calculadora"{
+            // self.performSegue(withIdentifier: option, sender: self)
+            
+        }
+        
+        
+        if option == "proyectos"{
+            
+            // self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+        
+        if option == "estilos"{
+            
+            // self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+        if option == "usuarios"{
+            // self.performSegue(withIdentifier: option, sender: self)
+            
+        }
+        if option == "pendingcuts"{
+            
+            // self.performSegue(withIdentifier: option, sender: self)
+        }
+        
+        if option == "proveedores"{
+            //self.performSegue(withIdentifier: option, sender: self)
+            
+        }
+        
+    }
+    @IBAction func openMenu(){
+        
+        let revealController = self.revealController
+        
+        
+        if revealController != nil{
+            
+            revealController?.revealToggle(animated: true)
+            
+        }
+        
+    }
+    
+    
+    func revealController(_ revealController: SWRevealViewController!, animateTo position: FrontViewPosition) {
+        
+        
+        if position == FrontViewPosition.left{
+            
+            
+        }
+        
+        
+        
+        
+        if position == FrontViewPosition.right{
+            
+            let menu = revealController.rearViewController as! MenuViewController
+            menu.refrsh()
+            
+            
+        }
     }
 }

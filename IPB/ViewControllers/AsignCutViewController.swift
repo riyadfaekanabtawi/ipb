@@ -16,6 +16,7 @@ class AsignCutViewController: UIViewController,UICollectionViewDelegate,UICollec
     @IBOutlet var imageViewBig: UIView!
     @IBOutlet var imagenTitle: UILabel!
     @IBOutlet var closeButton: UIButton!
+    @IBOutlet var plant_label: UILabel!
     
     var delegate:asignDelegate!
     @IBOutlet var titleViewcontroller: UILabel!
@@ -32,13 +33,13 @@ class AsignCutViewController: UIViewController,UICollectionViewDelegate,UICollec
     @IBOutlet var estiloLabel: UILabel!
     @IBOutlet var cantidadLabel: UILabel!
     @IBOutlet var precioUnitarioLabel: UILabel!
- 
+    var styles_array:[Styles] = []
     @IBOutlet var fecha_cliente_label: UILabel!
     @IBOutlet var fecha_ib_label: UILabel!
     @IBOutlet var clientLabel: UILabel!
     var imageString:String!
     @IBOutlet var porAsignar: UILabel!
-    
+    var styleSelected:Styles!
     var pendingCut:PendingCut!
     
     override func viewDidLoad() {
@@ -69,16 +70,110 @@ class AsignCutViewController: UIViewController,UICollectionViewDelegate,UICollec
         self.imageViewBig.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
         self.imageViewBig.alpha = 0
 
+        
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
         Services.getPlantsWithandHandler({ (response) in
-            
             
             self.plants_array = response as! [Planta]
             
+        
+            
+           Services.getStyle(self.pendingCut.cut_estilo, andHandler: { (response) in
+            
+            self.styleSelected = response as! Styles
+            
+            
             self.plants_collectionview.reloadData()
+            
+            var arrayMUT = [""]
+            let arrayPlant = self.styleSelected.plants_array as! [Corte]
+            for plant in arrayPlant {
+                
+                arrayMUT.append(plant.plant_id.stringValue)
+                
+                
+            }
+            let arr = arrayMUT
+            var counts:[String:Int] = [:]
+            
+            for item in arr {
+                if (item != ""){
+                    counts[item] = (counts[item] ?? 0) + 1
+                }
+                
+            }
+            
+            print(counts)  // "[BAR: 1, FOOBAR: 1, FOO: 2]"
+            
+            if (counts.description != "[:]"){
+                
+                
+                var stringArray = [""]
+                for (key, value) in counts {
+                    
+                    
+                    for plant in self.plants_array{
+                        
+                        if (plant.planta_id.stringValue == key){
+                            
+                            stringArray.append("\(plant.planta_nombre!) : \(value) Estilos")
+                            
+                        }
+                        
+                        
+                    }
+                    
+                    
+                    
+                    
+                }
+                let string = stringArray.joined(separator: ", ").replacingOccurrences(of: ",", with: " ")
+                self.plant_label.text = "Estilo asignados a plantas: \(string)"
+                
+            }else{
+                self.plant_label.text = "Estilo no asignado a planta"
+                
+            }
+            
+  loader?.removeFromSuperview()
+            
+           }, orErrorHandler: { (err) in
+            
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
+            
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
+           })
+        
             
         }, orErrorHandler: { (err) in
             
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
             
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
             
         })
         
@@ -273,4 +368,7 @@ class AsignCutViewController: UIViewController,UICollectionViewDelegate,UICollec
             
         }
     }
+    
+    
+ 
 }

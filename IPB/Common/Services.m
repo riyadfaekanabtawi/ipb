@@ -165,6 +165,33 @@
 }
 
 
++(void)getPlantName:(NSString *)plant_id andHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+
+    [manager GET:[NSString stringWithFormat:@"%@getPlantN?id=%@",BASE_URL,plant_id] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+  
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+    
+        
+        handler(responseObject);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
+
+
+}
 +(void)filterCortesByName:(NSString *)corte_name AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
     
     NSDictionary *p = @{@"name" : corte_name};
@@ -329,6 +356,38 @@
     
     
     
+    
+}
+
++(void)getStyle:(NSString *)style_name AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+    
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    
+    
+    
+    [manager GET:[NSString stringWithFormat:@"%@getStyle?name=%@",BASE_URL,style_name] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        Styles *style = [[Styles alloc] initWithDictionary:[responseObject objectForKey:@"style"]];
+        
+        handler(style);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
     
 }
 
@@ -818,7 +877,48 @@
     
 }
 
-
++(void)getCutsForPlant:(NSString *)plant_name AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+    
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    
+    
+    
+    [manager GET:[NSString stringWithFormat:@"%@getCutsByPlant?planta=%@",BASE_URL,plant_name] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        
+        NSMutableArray *mutableArray = [NSMutableArray new];
+        
+        for(NSDictionary *dict in [responseObject objectForKey:@"api"]){
+            
+            Corte *user = [[Corte alloc] initWithDictionary:dict];
+            
+            
+            [mutableArray addObject:user];
+            
+        }
+        
+        handler(mutableArray);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
+    
+    
+}
 
 +(void)getCutsForReportAndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
 
@@ -1347,6 +1447,45 @@
     }];
     
 }
+
+
+
++(void)updateProjectForIPB:(NSString *)cantidad andID:(NSNumber *)idproject andPrecio:(NSString *)precio andTotal:(NSString *)total andMinutaje:(NSString *)minutaje andStatus:(NSString *)status andCliente:(NSString *)cliente andTela:(NSString *)tela andbase64String:(NSString *)base64String andFechaEntrega:(NSString *)fecha_entrega AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    int i = arc4random() % 1000;
+    NSNumber *numbeer = [NSNumber numberWithInt:i];
+    
+    
+    NSDictionary *p = @{@"project":@{@"id":idproject,@"cantidad":cantidad,@"precio":precio,@"total":total,@"minutaje":minutaje,@"status":status,@"cliente":cliente,@"tela":tela,@"fecha_entrega":fecha_entrega},@"image":@{@"photo_file_name" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_updated_at" :[NSDate date],@"photo_file_size" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_content_type" :@"image/jpg", @"image_url":base64String}};
+    
+    [manager POST:[NSString stringWithFormat:@"%@updateProject",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        handler(@"YES");
+        
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        
+        errorHandler(error);
+        
+        
+    }];
+    
+    
+    
+    
+}
+
 
 
 +(void)createProjectForIPB:(NSString *)cantidad andPrecio:(NSString *)precio andTotal:(NSString *)total andMinutaje:(NSString *)minutaje andStatus:(NSString *)status andCliente:(NSString *)cliente andTela:(NSString *)tela andbase64String:(NSString *)base64String andFechaEntrega:(NSString *)fecha_entrega AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{

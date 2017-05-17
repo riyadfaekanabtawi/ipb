@@ -17,4 +17,6 @@
 @property NSNumber *style_id;
 @property NSString *style_name;
 @property NSString *style_image;
+
+@property NSArray *plants_array;
 @end

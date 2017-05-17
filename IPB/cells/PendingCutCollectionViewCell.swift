@@ -22,7 +22,7 @@ class PendingCutCollectionViewCell: UICollectionViewCell {
     @IBOutlet var precio_total_label: UILabel!
     @IBOutlet var fecha_ipb_label: UILabel!
     @IBOutlet var fecha_cliente_label: UILabel!
-    @IBOutlet var editado_por_label: UILabel!
+   
     @IBOutlet var status_label: UILabel!
     @IBOutlet var prenda_label: UILabel!
     @IBOutlet var style_iamge: UIImageView!
@@ -86,19 +86,38 @@ class PendingCutCollectionViewCell: UICollectionViewCell {
             self.prendas_producidas.font = UIFont(name: FONT_REGULAR, size: self.prendas_producidas.font.pointSize)
         }
         self.client_label.font = UIFont(name: FONT_REGULAR, size: self.client_label.font.pointSize)
+         if self.lista_label != nil{
         self.lista_label.font = UIFont(name: FONT_REGULAR, size: self.lista_label.font.pointSize)
+        }
         self.corte_label.font = UIFont(name: FONT_REGULAR, size: self.corte_label.font.pointSize)
+        
+        if self.estilo_cliente_label != nil{
+        
         self.estilo_cliente_label.font = UIFont(name: FONT_REGULAR, size: self.estilo_cliente_label.font.pointSize)
+        }
+        
         self.cantidad_label.font = UIFont(name: FONT_REGULAR, size: self.cantidad_label.font.pointSize)
+        
+        if self.precio_total_label != nil{
         self.precio_total_label.font = UIFont(name: FONT_REGULAR, size: self.precio_total_label.font.pointSize)
+        
+        }
+        
         self.fecha_ipb_label.font = UIFont(name: FONT_REGULAR, size: self.fecha_ipb_label.font.pointSize)
         self.fecha_cliente_label.font = UIFont(name: FONT_REGULAR, size: self.fecha_cliente_label.font.pointSize)
        // self.editado_por_label.font = UIFont(name: FONT_REGULAR, size: self.editado_por_label.font.pointSize)
-        self.status_label.font = UIFont(name: FONT_REGULAR, size: self.status_label.font.pointSize)
+        
+        if self.status_label != nil{
+          self.status_label.font = UIFont(name: FONT_REGULAR, size: self.status_label.font.pointSize)
+        
+        }
+      
         
          self.prenda_label.font = UIFont(name: FONT_REGULAR, size: self.prenda_label.font.pointSize)
-        self.ingreso_label.font = UIFont(name: FONT_REGULAR, size: self.ingreso_label.font.pointSize)
-        
+       
+        if self.ingreso_label != nil{
+         self.ingreso_label.font = UIFont(name: FONT_REGULAR, size: self.ingreso_label.font.pointSize)
+        }
        // self.editado_por_label.isHidden = true
     }
     
@@ -121,27 +140,50 @@ class PendingCutCollectionViewCell: UICollectionViewCell {
         
          let resultCantidad = formatter.string(from: NSNumber(value:Int(cut.cut_cantidad.intValue)))
         self.client_label.text = "\(cut.cut_client!)"
-        self.ingreso_label.text = "Ingresos: $\(resultIngreso!)"
+        
+        if self.ingreso_label != nil{
+        
+          self.ingreso_label.text = "Ingresos: $\(resultIngreso!)"
+        }
+      
+        
         self.prenda_label.text = "\(cut.prenda!)"
+         if self.lista_label != nil{
         self.lista_label.text = "Lista: \(cut.cut_list!)"
+        }
         self.corte_label.text = "Corte: \(cut.corte!)"
-        self.estilo_cliente_label.text = "Estilo cliente: \(cut.cut_estilo!)"
+        
+        if self.estilo_cliente_label != nil{
+         self.estilo_cliente_label.text = "Estilo cliente: \(cut.cut_estilo!)"
+        }
+       
         self.cantidad_label.text = "Cantidad \(resultCantidad!)"
-        self.precio_total_label.text = "Precio/U: $\(cut.cut_precio_unitario)"
+        
+         if self.precio_total_label != nil{
+            
+             self.precio_total_label.text = "Precio/U: $\(cut.cut_precio_unitario)"
+            
+        }
+       
         self.fecha_ipb_label.text = "Fecha IPB \(cut.cut_fecha_ipb!)"
         self.fecha_cliente_label.text = "Fecha Cliente \(cut.cut_fecha_client!)"
         //self.editado_por_label.text = "Editado por: \()"
-        self.status_label.text = "ASIGNAR"
         
+        if self.status_label != nil{
+        
+        self.status_label.text = "ASIGNAR"
+        }
     Services.getStyleImage(cut.cut_estilo!, andHandler: { (response) in
         
         
+        if (self.style_iamge != nil){
+            
+            self.style_iamge.sd_setImage(with: NSURL(string:"\(BASE_URL)\(response as! String)") as URL!)
+            
+            self.stringImage = "\(BASE_URL)\(response as! String)"
+            
+        }
         
-               self.style_iamge.sd_setImage(with: NSURL(string:"\(BASE_URL)\(response as! String)") as URL!)
-        
-        self.stringImage = "\(BASE_URL)\(response as! String)"
-        
-
     }, orErrorHandler: { (err) in
     
     
@@ -264,13 +306,29 @@ class PendingCutCollectionViewCell: UICollectionViewCell {
         
         
         let resultIngreso = formatter.string(from: NSNumber(value:Int(ingreso)))
+        
+        if self.ingreso_label != nil{
         self.ingreso_label.text = "Ingresos $\(resultIngreso!)"
+        }
+        
         self.prenda_label.text = "\(cut.prenda!)"
+        if self.lista_label != nil{
         self.lista_label.text = "Lista: \(cut.cut_list!)"
+        }
+        
         self.corte_label.text = "Corte: \(cut.corte!)"
+        
+        if self.estilo_cliente_label != nil{
         self.estilo_cliente_label.text = "\(cut.cut_estilo!)"
+        }
+        
         self.cantidad_label.text = "Cantidad: \(resultCantidad!)"
+        
+        if self.precio_total_label != nil{
         self.precio_total_label.text = "Precio/U: $\(cut.cut_precio_unitario)"
+        
+        }
+        
         self.fecha_ipb_label.text = "Fecha IPB \(cut.cut_fecha_ipb!)"
         self.fecha_cliente_label.text = "Fecha Cliente \(cut.cut_fecha_client!)"
         //self.editado_por_label.text = "Editado por: \()"
@@ -280,11 +338,14 @@ class PendingCutCollectionViewCell: UICollectionViewCell {
         
         Services.getStyleImage(cut.cut_estilo!, andHandler: { (response) in
             
+            if (self.style_iamge != nil){
+                
+                self.style_iamge.sd_setImage(with: NSURL(string:"\(BASE_URL)\(response as! String)") as URL!)
+                
+                self.stringImage = "\(BASE_URL)\(response as! String)"
             
-            
-            self.style_iamge.sd_setImage(with: NSURL(string:"\(BASE_URL)\(response as! String)") as URL!)
-            
-            self.stringImage = "\(BASE_URL)\(response as! String)"
+            }
+      
             
             
         }, orErrorHandler: { (err) in

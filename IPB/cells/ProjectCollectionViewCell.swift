@@ -37,6 +37,9 @@ class ProjectCollectionViewCell: UICollectionViewCell {
         
         self.approvedButton.layer.cornerRadius = 4
         self.approvedButton.layer.masksToBounds = true
+        
+        self.approvedButton.backgroundColor = Functions.color(withHexString: "AAAAAA", andAlpha: 1)
+        self.approvedButton.setTitle("Pendiente", for: UIControlState.normal)
     }
     
     

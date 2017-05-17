@@ -11,13 +11,11 @@ import UIKit
 class LoginViewController: UIViewController,UITextFieldDelegate {
 
     
-    @IBOutlet var entrarButton: UILabel!
+
     @IBOutlet var loginViewParent: UIView!
     @IBOutlet var emailView: UIView!
     @IBOutlet var passwordView: UIView!
     @IBOutlet var titleWelcome: UILabel!
-    @IBOutlet var emailLabel: UILabel!
-    @IBOutlet var passwordLabel: UILabel!
     
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var emailTextField: UITextField!
@@ -31,9 +29,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
          self.navigationController?.navigationBar.barStyle = UIBarStyle.blackTranslucent
         
         self.navigationController?.navigationBar.isHidden = true
-        self.emailLabel.font = UIFont(name: FONT_REGULAR, size: self.emailLabel.font.pointSize)
-        self.passwordLabel.font = UIFont(name: FONT_REGULAR, size: self.passwordLabel.font.pointSize)
-        
+      
         self.passwordTextField.font = UIFont(name: FONT_REGULAR, size: (self.passwordTextField.font?.pointSize)!)
         self.emailTextField.font = UIFont(name: FONT_REGULAR, size: (self.emailTextField.font?.pointSize)!)
         
@@ -44,7 +40,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         self.emailView.layer.cornerRadius = 4
         self.emailView.layer.masksToBounds = true
         
-         self.entrarButton.font = UIFont(name: FONT_REGULAR, size: (self.entrarButton.font?.pointSize)!)
+     
         self.passwordView.layer.cornerRadius = 4
         self.passwordView.layer.masksToBounds = true
         
@@ -55,8 +51,29 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         
         
         if ((UserDefaults.standard.object(forKey: "user_main")) != nil){
-        
-        self.performSegue(withIdentifier: "home", sender: self)
+         let user = NSKeyedUnarchiver.unarchiveObject(with: UserDefaults.standard.object(forKey: "user_main")as!Data)as!User
+            
+            if (user.puesto == "Gerente de Cortes"){
+                self.performSegue(withIdentifier: "cortes", sender: self)
+                
+            }
+            
+            if (user.puesto == "Administrador"){
+                self.performSegue(withIdentifier: "home", sender: self)
+                
+            }
+            
+            if (user.puesto == "Gerente de Envios"){
+                self.performSegue(withIdentifier: "reportes", sender: self)
+                
+            }
+            
+            if (user.puesto == "Gerente de Planta"){
+                self.performSegue(withIdentifier: "reportes", sender: self)
+                
+            }
+            
+       
         }
         
         // Do any additional setup after loading the view.
@@ -108,6 +125,14 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             
         
         }else{
+            
+            let loader  = SBTVLoaderView.create()
+         
+            let window = UIApplication.shared.keyWindow
+            let sub =   (window?.subviews[0])! as UIView
+            
+        Functions.fillContainerView(sub, with: loader)
+            
        Services.loginwith(self.emailTextField.text, andPassword: self.passwordTextField.text, andHandler: { (response) in
         
         
@@ -131,7 +156,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
                 self.present(alertController, animated: true) {
                     // ...
                 }
-            
+             loader?.removeFromSuperview()
             }
             
             if response as! String == "We could not find any users with that email."{
@@ -151,7 +176,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
                 self.present(alertController, animated: true) {
                     // ...
                 }
-                
+                 loader?.removeFromSuperview()
             }
             
             
@@ -167,13 +192,33 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             
             defaults.synchronize()
             
+             loader?.removeFromSuperview()
             
-            self.performSegue(withIdentifier: "home", sender: self)
+            if (user.puesto == "Gerente de Cortes"){
+            self.performSegue(withIdentifier: "cortes", sender: self)
+            
+            }
+            
+            if (user.puesto == "Administrador"){
+                self.performSegue(withIdentifier: "home", sender: self)
+                
+            }
+            if (user.puesto == "Gerente de Envios"){
+                self.performSegue(withIdentifier: "reportes", sender: self)
+                
+            }
+            
+            if (user.puesto == "Gerente de Planta"){
+                self.performSegue(withIdentifier: "reportes", sender: self)
+                
+            }
+            
+       
         
         }
        }, orErrorHandler: { (err) in
         
-        
+        loader?.removeFromSuperview()
         
        })
         }

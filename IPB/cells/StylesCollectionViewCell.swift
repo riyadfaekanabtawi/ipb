@@ -14,7 +14,8 @@ protocol styledelegateHome {
 }
 class StylesCollectionViewCell: UICollectionViewCell,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout {
     var selectedStyle:Styles!
-    var arrayInfo:[NSDictionary] = []
+    var arrayInfo:[Corte] = []
+    var plantas_array:[Planta] = []
     var delegate:styledelegateHome!
     @IBOutlet var plant_collectionview: UICollectionView!
     @IBOutlet var style_image: UIImageView!
@@ -33,19 +34,10 @@ class StylesCollectionViewCell: UICollectionViewCell,UICollectionViewDataSource,
         self.style_name.text = style.style_name
         self.style_image.sd_setImage(with: NSURL(string: style.style_image) as URL!)
         
-        Services.getPlantsforStyle(style.style_id, andHandler: { (response) in
-            
-            self.arrayInfo = response as! [NSDictionary]
-            
-            
-            self.plant_collectionview.reloadData()
-         
-        }, orErrorHandler: { (err) in
+        self.arrayInfo = style.plants_array as! [Corte]
         
-            
-            
-        })
-
+        
+        self.plant_collectionview.reloadData()
         
   
     }
@@ -117,12 +109,12 @@ class StylesCollectionViewCell: UICollectionViewCell,UICollectionViewDataSource,
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.arrayInfo.count
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: 70, height: 30)
+        return CGSize(width: collectionView.frame.size.width-10, height: 30)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -135,7 +127,30 @@ class StylesCollectionViewCell: UICollectionViewCell,UICollectionViewDataSource,
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plant", for: indexPath)as!PlantStyleCollectionViewCell
         
         
-        cell.showcuts(corte: self.arrayInfo[indexPath.row])
+        var arrayMUT = [""]
+        
+        for plant in self.arrayInfo{
+            
+            arrayMUT.append(plant.plant_id.stringValue)
+            
+            
+        }
+        let arr = arrayMUT
+        var counts:[String:Int] = [:]
+        
+        for item in arr {
+            if (item != ""){
+              counts[item] = (counts[item] ?? 0) + 1
+            }
+          
+        }
+        
+        print(counts)  // "[BAR: 1, FOOBAR: 1, FOO: 2]"
+        
+        
+
+        cell.plantsArray = self.plantas_array
+        cell.showcuts(counts: counts)
         
         return cell
         

@@ -97,6 +97,10 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
+     
+        
+        
         self.imageViewBig.layer.cornerRadius = 4
         self.imageViewBig.layer.masksToBounds = true
 
@@ -247,14 +251,55 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
         self.en_bodega.text = "\(resultBodega!)"
         self.prendas_por_enviar.text = "\(resultEnviar!)"
         self.cantidad_real_corte.text = "\(resultReal!)"
+        let loader  = SBTVLoaderView.create()
         
-          self.getReports()
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
+        
+        
+        Services.getReportsForCut(self.selected_cut.cut_id, andHandler:{ (response) in
+            
+            self.reports_array = response as! [Report]
+            
+            
+            self.reportsCollectionView.reloadData()
+            
+            
+            loader?.removeFromSuperview()
+        }, orErrorHandler: { (err) in
+            
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
+            
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
+            
+        })
         // Do any additional setup after loading the view.
     }
     
     
     
     func loadCut(){
+        
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
+        
     
         Services.getCutDetail(self.selected_cut.cut_id, andHandler:{ (response) in
             
@@ -285,11 +330,46 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
             self.en_bodega.text = "\(resultBodega!)"
             self.prendas_por_enviar.text = "\(resultEnviar!)"
             self.cantidad_real_corte.text = "\(resultReal!)"
-            self.getReports()
+            Services.getReportsForCut(self.selected_cut.cut_id, andHandler:{ (response) in
+                
+                self.reports_array = response as! [Report]
+                
+                
+                self.reportsCollectionView.reloadData()
+                
+                
+                loader?.removeFromSuperview()
+            }, orErrorHandler: { (err) in
+                
+                let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
+                
+                
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    
+                }
+                alertController.addAction(OKAction)
+                
+                self.present(alertController, animated: true) {
+                    // ...
+                }
+                loader?.removeFromSuperview()
+                
+            })
         }, orErrorHandler: { (err) in
             
             
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
             
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
         })
     
   
@@ -300,32 +380,56 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
     }
     
     
-    func getReports(){
-    
-        
-        Services.getReportsForCut(self.selected_cut.cut_id, andHandler:{ (response) in
-            
-            self.reports_array = response as! [Report]
-            
-            
-            self.reportsCollectionView.reloadData()
-            
-        }, orErrorHandler: { (err) in
-    
-    
-    
-    })
-    }
+ 
     
     
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+                let user = NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.object(forKey: "user_main")as!NSData) as Data)as!User
+        
         
         if indexPath.row == 0{
          self.updatingReport = false
             self.guardarReporteButtonEnvio.isHidden = false
             self.guardarButton.isHidden = false
             self.guardarReportbuttonCut.isHidden = false
+            
+            
+            let user = NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.object(forKey: "user_main")as!NSData) as Data)as!User
+            
+            
+                  self.statusTextField.text = ""
+            self.numeroDeEnvioTextField.text = ""
+            self.cantidadDeEnvioTextfield.text = ""
+            self.cant_real_textFiled.text = ""
+            self.operariosField.text = ""
+            self.fechaLabelContainer.text = ""
+            self.hourLabelContainer.text = ""
+            self.faltasField.text = ""
+            self.bodegaField.text = ""
+            self.en_planchaField.text = ""
+            self.producidasField.text = ""
+            self.en_empaquieField.text = ""
+            if (user.puesto == "Gerente de Envios"){
+      
+               self.showAddReportEnvio()
+                   return;
+            }
+            
+            if (user.puesto == "Gerente de Planta"){
+                
+             self.showAddPlantView()
+                return;
+            }
+            
+            
+            if (user.puesto == "Gerente de Cortes"){
+                
+                self.showAddReportCorte()
+                return;
+            }
+            
+            
         self.showChooseReportView()
         }
         else{
@@ -337,6 +441,12 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
             let report = self.reports_array[indexPath.row - 1]
             
             if report.type_report == "planta"{
+                
+        
+                
+                
+                if (user.puesto == "Gerente de Planta" || user.puesto == "Administrador"){
+                    
                     self.guardarButton.isHidden = true
                 self.operariosField.text = "\(report.operarios!)"
                 self.faltasField.text = "\(report.faltas!)"
@@ -346,22 +456,29 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                 self.bodegaField.text = "\(report.bodega!)"
                 self.report_id = report.reporte_id
                 self.showAddPlantView()
-
+                }
             
             }else if report.type_report == "corte"{
+                       if (user.puesto == "Gerente de Cortes" || user.puesto == "Administrador"){
             
                   self.guardarReportbuttonCut.isHidden = false
                 self.statusTextField.text = report.status_report!
                 self.cant_real_textFiled.text = "\(report.cantidad_real_envio!)"
                 self.report_id = report.reporte_id
                 self.showAddReportCorte()
+                        
+                }
             
             }else if report.type_report == "envio"{
+                
+                   if (user.puesto == "Gerente de Envios" || user.puesto == "Administrador"){
                      self.guardarReporteButtonEnvio.isHidden = true
                 self.cantidadDeEnvioTextfield.text = "\(report.cantidad_de_envio!)"
                 self.numeroDeEnvioTextField.text = "\(report.numero_de_envio!)"
                 self.report_id = report.reporte_id
                 self.showAddReportEnvio()
+                    
+                }
             }
             
             
@@ -484,6 +601,13 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                     let operarios = NSNumber(value: Int32(self.operariosField.text!)!)
                     
                     
+                    let loader  = SBTVLoaderView.create()
+                    
+                    let window = UIApplication.shared.keyWindow
+                    let sub =   (window?.subviews[0])! as UIView
+                    
+                    Functions.fillContainerView(sub, with: loader)
+                    
                     
                    Services.updateReport(self.selected_cut.cut_list, andReportID: self.report_id, andCut: self.selected_cut.corte, andStyle: self.selected_cut.cut_estilo, andCantidad: "\(self.selected_cut.cut_cantidad!)", andFechaIPB: self.selected_cut.cut_fecha_ipb, andRealizadas: "", andOperarios: operarios, andFaltas: faltas, andProducidas: producidaas, andPlancha: plancha, andEmpaque: empaque, andCutName: self.selected_cut.corte, andCutID: self.selected_cut.cut_id, andBodega: bodega, andHandler: { (response) in
                     self.loadCut()
@@ -499,9 +623,21 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                         // ...
                     }
        
-
+                    loader?.removeFromSuperview()
                    }, orErrorHandler: { (err) in
                     
+                    let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
+                    
+                    
+                    let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                        
+                    }
+                    alertController.addAction(OKAction)
+                    
+                    self.present(alertController, animated: true) {
+                        // ...
+                    }
+                    loader?.removeFromSuperview()
                    })
                     
                 }
@@ -529,6 +665,14 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                 let bodega = NSNumber(value: Int32(self.bodegaField.text!)!)
                 let operarios = NSNumber(value: Int32(self.operariosField.text!)!)
                 
+                let loader  = SBTVLoaderView.create()
+                
+                let window = UIApplication.shared.keyWindow
+                let sub =   (window?.subviews[0])! as UIView
+                
+                Functions.fillContainerView(sub, with: loader)
+                
+                
                 
                 Services.createReport(self.selected_cut.cut_list, andCutID:self.selected_cut.cut_id, andCut: "\(self.selected_cut.corte!)", andStyle: self.selected_cut.cut_estilo, andCantidad: "\(self.selected_cut.cut_cantidad!)", andFechaIPB: self.selected_cut.cut_fecha_ipb, andRealizadas: "", andOperarios: operarios, andFaltas: faltas, andProducidas: producidaas, andPlancha: plancha, andEmpaque: empaque, andBodega: bodega, andHandler: { (response) in
     
@@ -545,10 +689,21 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                         // ...
                     }
     
-                    
+                    loader?.removeFromSuperview()
                 }, orErrorHandler: { (err) in
                     
+                    let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
                     
+                    
+                    let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                        
+                    }
+                    alertController.addAction(OKAction)
+                    
+                    self.present(alertController, animated: true) {
+                        // ...
+                    }
+                    loader?.removeFromSuperview()
                 })
                 
             }
@@ -746,7 +901,14 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                 let OKAction = UIAlertAction(title: "Actualizar Reporte", style: .default) { (action) in
                     
                     let cantidadEnvio = NSNumber(value: Int32(self.cantidadDeEnvioTextfield.text!)!)
-             
+                    let loader  = SBTVLoaderView.create()
+                    
+                    let window = UIApplication.shared.keyWindow
+                    let sub =   (window?.subviews[0])! as UIView
+                    
+                    Functions.fillContainerView(sub, with: loader)
+                    
+                    
                     
                     Services.updateReportEnvio(cantidadEnvio, andReportID:self.report_id, andCutName: self.corteIDLabel.text, andCutID:self.selected_cut.cut_id, andNumeroDeEnvio: self.numeroDeEnvioTextField.text, andHandler: { (response) in
                         self.loadCut()
@@ -761,10 +923,21 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                         self.present(alertController, animated: true) {
                             // ...
                         }
-       
+       loader?.removeFromSuperview()
                         
                     }, orErrorHandler: { (err) in
+                        let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
                         
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        loader?.removeFromSuperview()
                         
                     })
                     
@@ -791,6 +964,13 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
 
         
                     
+                    let loader  = SBTVLoaderView.create()
+                    
+                    let window = UIApplication.shared.keyWindow
+                    let sub =   (window?.subviews[0])! as UIView
+                    
+                    Functions.fillContainerView(sub, with: loader)
+                    
                     
                     
                     Services.createReportEnvio(cantidadEnvio, andCutName: self.corteIDLabel.text, andCutID:self.selected_cut.cut_id, andNumeroDeEnvio: self.numeroDeEnvioTextField.text, andHandler: { (response) in
@@ -808,13 +988,24 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                             // ...
                         }
          
-                        
+                        loader?.removeFromSuperview()
  
                         
                     }, orErrorHandler: { (err) in
                         
                         
+                        let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
                         
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        loader?.removeFromSuperview()
                         
                     })
                     
@@ -909,7 +1100,13 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                     }
                     let cantReal = NSNumber(value: Int32(self.cant_real_textFiled.text!)!)
                     
-            
+                    let loader  = SBTVLoaderView.create()
+                    
+                    let window = UIApplication.shared.keyWindow
+                    let sub =   (window?.subviews[0])! as UIView
+                    
+                    Functions.fillContainerView(sub, with: loader)
+                    
                     
                     Services.updateReportCorte(cantReal, andstatus: self.statusTextField.text, andCutName:self.selected_cut.corte, andCutID:self.selected_cut.cut_id, andReportID:self.report_id, andHandler: { (response) in
                         self.loadCut()
@@ -924,9 +1121,22 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                         self.present(alertController, animated: true) {
                             // ...
                         }
+                        
+                        loader?.removeFromSuperview()
           
                     }, orErrorHandler: { (err) in
+                        let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
                         
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        loader?.removeFromSuperview()
                         
                     })
                     
@@ -955,6 +1165,12 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                     let cantReal = NSNumber(value: Int32(self.cant_real_textFiled.text!)!)
                     
                     
+                    let loader  = SBTVLoaderView.create()
+                    
+                    let window = UIApplication.shared.keyWindow
+                    let sub =   (window?.subviews[0])! as UIView
+                    
+                    Functions.fillContainerView(sub, with: loader)
                     
                     
                     Services.createReportCorte(cantReal, andstatus: self.statusTextField.text, andCutName:self.selected_cut.corte, andCutID:self.selected_cut.cut_id, andHandler: { (response) in
@@ -971,7 +1187,7 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                             self.present(alertController, animated: true) {
                                 // ...
                             }
-                            
+                            loader?.removeFromSuperview()
                             
                         }else{
                             let alertController = UIAlertController(title: "Bien!", message: "Cargaste el reporte al corte: \(self.selected_cut.corte!)", preferredStyle: .alert)
@@ -990,11 +1206,22 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                             
                         }
                         
-               
+                        loader?.removeFromSuperview()
                         
 
                     }, orErrorHandler: { (err) in
+                        let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
                         
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        loader?.removeFromSuperview()
                         
                     })
                 }
@@ -1060,8 +1287,14 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
     @IBAction func selectedCutType(){
         
  
-            
-            
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
+        
             Services.getReportsForCut(self.selected_cut.cut_id, andHandler:{ (response) in
                 
                 self.reports_array = response as! [Report]
@@ -1100,8 +1333,22 @@ class CutDetailViewController: UIViewController,UICollectionViewDelegate,UIColle
                 
                 }
                 
-            }, orErrorHandler: { (err) in
                 
+                
+                loader?.removeFromSuperview()
+            }, orErrorHandler: { (err) in
+                let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
+                
+                
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    
+                }
+                alertController.addAction(OKAction)
+                
+                self.present(alertController, animated: true) {
+                    // ...
+                }
+                loader?.removeFromSuperview()
                 
                 
             })

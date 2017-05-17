@@ -184,6 +184,15 @@ class AnalisisSecondViewController: UIViewController,UICollectionViewDelegate,UI
         self.en_listo_array.removeAll()
         self.en_mesa_array.removeAll()
         self.en_espera_array.removeAll()
+        
+        
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
         Services.getAllcuts({ (response) in
             
             self.cortes_array = response as! [Corte]
@@ -203,10 +212,21 @@ class AnalisisSecondViewController: UIViewController,UICollectionViewDelegate,UI
             self.corte_collectionView.reloadData()
             self.corte_collectionView_listo.reloadData()
             self.corte_collectionView_mesa.reloadData()
-            
+            loader?.removeFromSuperview()
         }, orErrorHandler: { (err) in
             
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
             
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
             
         })
         
@@ -226,6 +246,15 @@ class AnalisisSecondViewController: UIViewController,UICollectionViewDelegate,UI
     @IBAction func filter1(){
      
         self.en_espera_array.removeAll()
+        
+        
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
         Services.filterCortes(byName: self.status1_textfield.text, andHandler:{ (response) in
             
             self.cortes_array = response as! [Corte]
@@ -237,11 +266,22 @@ class AnalisisSecondViewController: UIViewController,UICollectionViewDelegate,UI
                 }
             }
             self.corte_collectionView.reloadData()
-        
+        loader?.removeFromSuperview()
             
         }, orErrorHandler: { (err) in
             
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
             
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
             
         })
         
@@ -250,6 +290,12 @@ class AnalisisSecondViewController: UIViewController,UICollectionViewDelegate,UI
     
     @IBAction func filter2(){
         
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
         self.en_mesa_array.removeAll()
         Services.filterCortes(byName: self.status2_textfield.text, andHandler:{ (response) in
             
@@ -264,8 +310,20 @@ class AnalisisSecondViewController: UIViewController,UICollectionViewDelegate,UI
             }
  
             self.corte_collectionView_mesa.reloadData()
-            
+            loader?.removeFromSuperview()
         }, orErrorHandler: { (err) in
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
+            
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
             
             
             
@@ -276,6 +334,12 @@ class AnalisisSecondViewController: UIViewController,UICollectionViewDelegate,UI
     
     @IBAction func filter3(){
         
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
         self.en_listo_array.removeAll()
         Services.filterCortes(byName: self.status3_textfield.text, andHandler:{ (response) in
             
@@ -289,10 +353,22 @@ class AnalisisSecondViewController: UIViewController,UICollectionViewDelegate,UI
             }
           
             self.corte_collectionView_listo.reloadData()
-    
+     loader?.removeFromSuperview()
             
         }, orErrorHandler: { (err) in
             
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
+            
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
             
             
         })

@@ -71,7 +71,14 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
         self.usuario_plantaLabel.font = UIFont(name: FONT_BOLD, size: self.usuario_plantaLabel.font.pointSize)
         self.usuario_plantaTextField.font = UIFont(name: FONT_REGULAR, size: (self.usuario_plantaTextField.font?.pointSize)!)
         
-      
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
+        
+        
         Services.getPlantsWithandHandler({ (response) in
             
             self.pickerDataSourcePlants = response as! [Planta]
@@ -79,9 +86,22 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
             
             self.plant_collectionview.reloadData()
             
+            
+            loader?.removeFromSuperview()
         }, orErrorHandler: { (err) in
             
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
             
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
             
         })
         
@@ -421,6 +441,12 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
     func refreshHomePlants()
         
     {
+        let loader  = SBTVLoaderView.create()
+        
+        let window = UIApplication.shared.keyWindow
+        let sub =   (window?.subviews[0])! as UIView
+        
+        Functions.fillContainerView(sub, with: loader)
         
         
         Services.getUsersWithandHandler({ (response) in
@@ -428,11 +454,24 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
             self.users_array = response as! [User]
             
             
+            
+            loader?.removeFromSuperview()
             self.plant_collectionview.reloadData()
             
         }, orErrorHandler: { (err) in
             
+            let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
             
+            
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                
+            }
+            alertController.addAction(OKAction)
+            
+            self.present(alertController, animated: true) {
+                // ...
+            }
+            loader?.removeFromSuperview()
             
         })
         
@@ -537,6 +576,13 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
                 
                 let OKAction = UIAlertAction(title: "Cargar Usuario", style: .default) { (action) in
                     
+                    let loader  = SBTVLoaderView.create()
+                    
+                    let window = UIApplication.shared.keyWindow
+                    let sub =   (window?.subviews[0])! as UIView
+                    
+                    Functions.fillContainerView(sub, with: loader)
+                    
                     Services.createUser(forIPB: self.usuario_name.text, andUserSurname: self.usuario_apellido.text, andTelefone: self.usuario_telefono.text, andEmail: self.usuario_email.text, andPassword: self.usuario_password.text, andPuesto: self.usuario_puesto.text, andbase64String: base64String, andDeviceToken: device_token, andPlantName:string, andHandler: { (response) in
                         
                         
@@ -555,8 +601,20 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
                         }
                         
                         
+                        loader?.removeFromSuperview()
                     }, orErrorHandler: { (err) in
+                        let alertController = UIAlertController(title: "Oops!", message: "Revisa tu conexión a internet.", preferredStyle: .alert)
                         
+                        
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.present(alertController, animated: true) {
+                            // ...
+                        }
+                        loader?.removeFromSuperview()
                         
                     })
                     
