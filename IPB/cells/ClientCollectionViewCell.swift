@@ -46,12 +46,15 @@ class ClientCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
            self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)
-        self.client_nameLabel.font = UIFont(name: FONT_MEDIUM, size: self.client_nameLabel.font.pointSize)
+        self.client_nameLabel.font = UIFont(name: FONT_REGULAR, size: self.client_nameLabel.font.pointSize)
         self.mainView.layer.cornerRadius = 4
         self.mainView.layer.masksToBounds = true
         
         //self.giro_label.font = UIFont(name: FONT_REGULAR, size: self.giro_label.font.pointSize)
-        self.direccion_label.font = UIFont(name: FONT_MEDIUM, size: self.direccion_label.font.pointSize)
+        if(self.direccion_label != nil){
+         self.direccion_label.font = UIFont(name: FONT_REGULAR, size: self.direccion_label.font.pointSize)
+        }
+       
         self.nombre1_label.font = UIFont(name: FONT_REGULAR, size: self.nombre1_label.font.pointSize)
         self.nombre3_label.font = UIFont(name: FONT_REGULAR, size: self.nombre3_label.font.pointSize)
         self.nombre2_label.font = UIFont(name: FONT_REGULAR, size: self.nombre2_label.font.pointSize)
@@ -63,7 +66,7 @@ class ClientCollectionViewCell: UICollectionViewCell {
         self.email3_label.font = UIFont(name: FONT_REGULAR, size: self.email3_label.font.pointSize)
         self.telefono1_label.font = UIFont(name: FONT_REGULAR, size: self.telefono1_label.font.pointSize)
         self.telefono2_label.font = UIFont(name: FONT_REGULAR, size: self.telefono2_label.font.pointSize)
-        self.telefono3_label.font = UIFont(name: FONT_MEDIUM, size: self.telefono3_label.font.pointSize)
+        self.telefono3_label.font = UIFont(name: FONT_REGULAR, size: self.telefono3_label.font.pointSize)
     }
     
     
@@ -145,6 +148,71 @@ class ClientCollectionViewCell: UICollectionViewCell {
         
         self.selectedProveedor = client
         self.client_nameLabel.text = client.client_name
+        
+        if(client.direccion != nil){
+            
+            self.direccion_label.text = "Dirección: \(client.direccion!)"
+        }
+        
+        
+        if(client.nombrecontacto1 != nil){
+            
+            self.nombre1_label.text = "Nombre contacto1: \(client.nombrecontacto1!)"
+        }
+        
+        if(client.nombrecontacto2 != nil){
+            
+            self.nombre2_label.text = "Nombre contacto2: \(client.nombrecontacto2!)"
+        }
+        
+        if(client.nombrecontacto3 != nil){
+            
+            self.nombre3_label.text = "Nombre contacto3: \(client.nombrecontacto3!)"
+        }
+        if(client.puestocontacto1 != nil){
+            
+            self.puesto1_label.text = "Puesto contacto1: \(client.puestocontacto1!)"
+        }
+        
+        if(client.puestocontacto2 != nil){
+            
+            self.puesto2_label.text = "Puesto contacto2: \(client.puestocontacto2!)"
+        }
+        
+        if(client.puestocontacto3 != nil){
+            
+            self.puesto3_label.text = "Puesto contacto3: \(client.puestocontacto3!)"
+        }
+        
+        if(client.emailcontacto1 != nil){
+            
+            self.email1_label.text = "Email contacto1: \(client.emailcontacto1!)"
+        }
+        
+        if(client.emailcontacto2 != nil){
+            
+            self.email2_label.text = "Email contacto2: \(client.emailcontacto2!)"
+        }
+        
+        if(client.emailcontacto3 != nil){
+            
+            self.email3_label.text = "Email contacto3: \(client.emailcontacto3!)"
+        }
+        
+        if(client.telefonocontacto1 != nil){
+            
+            self.telefono1_label.text = "Teléfono contacto1: \(client.telefonocontacto1!)"
+        }
+        if(client.telefonocontacto2 != nil){
+            
+            self.telefono2_label.text = "Teléfono contacto2: \(client.telefonocontacto2!)"
+        }
+        
+        if(client.telefonocontacto3 != nil){
+            
+            self.telefono3_label.text = "Teléfono contacto3: \(client.telefonocontacto3!)"
+        }
+        
     }
     
     

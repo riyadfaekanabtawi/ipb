@@ -332,52 +332,49 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if indexPath.row == 0{
-            
-            self.showAddPlantView()
-            self.editingclient = false
-        }else{
+      
             self.editingclient = true
-            self.selectedclient = self.clients_array[indexPath.row-1]
+            self.selectedclient = self.clients_array[indexPath.row]
             
             self.showAddPlantView()
-            
-        }
+    
     }
     
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return self.clients_array.count + 1
+        return self.clients_array.count
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         
-        if indexPath.row == 0{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ADD", for: indexPath)as!AddButtonCollectionViewCell
-            
-            return cell
-            
-        }else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "clients", for: indexPath) as! ClientCollectionViewCell
-            
-            
-            cell.displayProveedor(client: self.clients_array[indexPath.row - 1])
-            cell.delegate = self
-            cell.controller = self
-            return cell
-        }
+//        if indexPath.row == 0{
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ADD", for: indexPath)as!AddButtonCollectionViewCell
+//            
+//            return cell
+//            
+//        }else{
+//      
+//        }
         
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "clients", for: indexPath) as! ClientCollectionViewCell
+        
+        
+        cell.displayProveedor(client: self.clients_array[indexPath.row])
+        cell.delegate = self
+        cell.controller = self
+        return cell
         
     }
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: 240, height: 340)
+        return CGSize(width: collectionView.frame.size.width, height: 150)
     }
     
     
@@ -426,7 +423,11 @@ class ProveedoresViewController: UIViewController,UICollectionViewDelegate,UICol
         
     }
     
-    
+  
+       @IBAction func newProveedor(){
+        self.showAddPlantView()
+        self.editingclient = false
+    }
     @IBAction func saveClientInfoAndCreate(){
         
         

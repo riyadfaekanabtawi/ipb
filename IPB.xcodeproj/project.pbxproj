@@ -61,6 +61,7 @@
 		EB52592C1DF28D22004A0DA8 /* AsignCutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB52592B1DF28D22004A0DA8 /* AsignCutViewController.swift */; };
 		EB52592E1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB52592D1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift */; };
 		EB5EEC6C1F39586300CD4656 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5EEC6B1F39586300CD4656 /* CalendarViewController.swift */; };
+		EB64E6EA1F3A01AB00255D23 /* fondo_square@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB64E6E91F3A01AB00255D23 /* fondo_square@2x.png */; };
 		EB6FC9971E5D276D00A48F2E /* Rectangle-gris.png in Resources */ = {isa = PBXBuildFile; fileRef = EB6FC9961E5D276D00A48F2E /* Rectangle-gris.png */; };
 		EB6FC9991E5D277F00A48F2E /* Rectangle-gris@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB6FC9981E5D277F00A48F2E /* Rectangle-gris@2x.png */; };
 		EB92A2B31E21F0190094BA1F /* MAActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB92A2B21E21F0190094BA1F /* MAActivityIndicatorView.swift */; };
@@ -200,6 +201,7 @@
 		EB52592B1DF28D22004A0DA8 /* AsignCutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsignCutViewController.swift; sourceTree = "<group>"; };
 		EB52592D1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlantCollectionViewCell.swift; sourceTree = "<group>"; };
 		EB5EEC6B1F39586300CD4656 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		EB64E6E91F3A01AB00255D23 /* fondo_square@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fondo_square@2x.png"; sourceTree = "<group>"; };
 		EB6FC9961E5D276D00A48F2E /* Rectangle-gris.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Rectangle-gris.png"; sourceTree = "<group>"; };
 		EB6FC9981E5D277F00A48F2E /* Rectangle-gris@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Rectangle-gris@2x.png"; sourceTree = "<group>"; };
 		EB92A2B21E21F0190094BA1F /* MAActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MAActivityIndicatorView.swift; sourceTree = "<group>"; };
@@ -420,6 +422,7 @@
 		EBD208611DED200500FBB4A2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				EB64E6E91F3A01AB00255D23 /* fondo_square@2x.png */,
 				EB358F531EC8D79600AD0F76 /* Back_login_back.png */,
 				EB358F4D1EC8D13800AD0F76 /* Botón Agregar Clientes.png */,
 				EB358F4E1EC8D13800AD0F76 /* Botón Agregar Clientes@2x.png */,
@@ -638,6 +641,7 @@
 				EBD208671DED200500FBB4A2 /* menuMask@3x.png in Resources */,
 				EB4AD6421E53CFD20074EBD5 /* add_project.png in Resources */,
 				EBCFC94D1E31ADFB00E1C4DB /* refresh.png in Resources */,
+				EB64E6EA1F3A01AB00255D23 /* fondo_square@2x.png in Resources */,
 				EB358F521EC8D13800AD0F76 /* Botón Agregar Estilo.png in Resources */,
 				EB248A861E0065AF004A9B51 /* add photo@3x.png in Resources */,
 				EB52592A1DF283A9004A0DA8 /* back@3x.png in Resources */,

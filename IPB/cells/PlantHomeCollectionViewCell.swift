@@ -25,9 +25,10 @@ class PlantHomeCollectionViewCell: UICollectionViewCell {
         if self.closeButton != nil{
          self.closeButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.closeButton.titleLabel?.font.pointSize)!)
         }
-       
+        if(self.firstWebView != nil){
         self.firstWebView.layer.cornerRadius = 4
         self.firstWebView.layer.masksToBounds = true
+        }
         self.plantName.font = UIFont(name: FONT_REGULAR, size: self.plantName.font.pointSize)
         
         if self.plantused != nil{
@@ -96,9 +97,11 @@ class PlantHomeCollectionViewCell: UICollectionViewCell {
         
         self.selectedPlant = plant
         self.plantName.text = plant.planta_nombre
+        
+         if(self.firstWebView != nil){
             self.firstWebView.loadRequest(NSURLRequest(url: NSURL(string: "http://ipb.railsplayground.net/plants_graph?plant_id=\(plant.planta_id!)")! as URL) as URLRequest)
     
-        
+        }
         
         
         

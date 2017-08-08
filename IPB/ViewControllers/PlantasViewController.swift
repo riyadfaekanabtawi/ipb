@@ -162,18 +162,12 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        if indexPath.row == 0{
-            self.editarPlanta = false
-          self.addplantLabelTitle.text = "NUEVA PLANTA"
-              self.plantCapaxMaxTextField.text = ""
-             self.plantNameTextField.text = ""
-        }else{
+   
              self.addplantLabelTitle.text = "EDITAR PLANTA"
             self.editarPlanta = true
  
             
-            let plant = self.plants_array[indexPath.row - 1]
+            let plant = self.plants_array[indexPath.row]
             self.selectedPlant = plant
             
             if (plant.planta_nombre != nil){
@@ -187,7 +181,7 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
             }
             
             
-        }
+
         
         
         self.showAddPlantView()
@@ -198,27 +192,30 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return self.plants_array.count + 1
+        return self.plants_array.count
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         
-        if indexPath.row == 0{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ADD", for: indexPath)as!AddButtonCollectionViewCell
-            
-            return cell
-            
-        }else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "homeplant", for: indexPath) as! PlantHomeCollectionViewCell
-            
-            
-            cell.displayPlants(plant: self.plants_array[indexPath.row - 1])
-            cell.delegate = self
-            cell.controller = self
-            return cell
-        }
+//        if indexPath.row == 0{
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ADD", for: indexPath)as!AddButtonCollectionViewCell
+//            
+//            return cell
+//            
+//        }else{
+//          
+//        }
+        
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "homeplant", for: indexPath) as! PlantHomeCollectionViewCell
+        
+        
+        cell.displayPlants(plant: self.plants_array[indexPath.row])
+        cell.delegate = self
+        cell.controller = self
+        return cell
         
         
     }
@@ -226,7 +223,7 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: self.plant_collectionview.layer.frame.size.width / 4, height: 300)
+        return CGSize(width: collectionView.layer.frame.size.width, height: 120)
     }
     
     
@@ -273,6 +270,15 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
         
     }
     
+    
+ 
+      @IBAction func newPlant (){
+        self.editarPlanta = false
+        self.addplantLabelTitle.text = "NUEVA PLANTA"
+        self.plantCapaxMaxTextField.text = ""
+        self.plantNameTextField.text = ""
+        
+    }
     
     @IBAction func savePlantInfoAndCreate(){
         
