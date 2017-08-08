@@ -165,48 +165,42 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if indexPath.row == 0{
-            
-            self.showAddPlantView()
-            
-        }else{
-            
-        }
+       
     }
     
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return self.users_array.count + 1
+        return self.users_array.count
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         
-        if indexPath.row == 0{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ADD", for: indexPath)as!AddButtonCollectionViewCell
-            
-            return cell
-            
-        }else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "styles", for: indexPath) as! StylesCollectionViewCell
-            
-            cell.plantas_array = self.plants_array
-            cell.displayStyles(style: self.users_array[indexPath.row - 1])
-            cell.delegate = self
-            cell.controller = self
-            return cell
-        }
+//        if indexPath.row == 0{
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ADD", for: indexPath)as!AddButtonCollectionViewCell
+//            
+//            return cell
+//            
+//        }else{
+//            
+//        }
+//        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "styles", for: indexPath) as! StylesCollectionViewCell
         
-        
+        cell.plantas_array = self.plants_array
+        cell.displayStyles(style: self.users_array[indexPath.row])
+        cell.delegate = self
+        cell.controller = self
+        return cell
     }
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-       return CGSize(width: self.plant_collectionview.layer.frame.size.width / 4, height: 300)
+       return CGSize(width: 250, height: 250)
     }
     
     
@@ -273,6 +267,9 @@ class StylesViewController: UIViewController,UICollectionViewDelegate,UICollecti
         
     }
     
+     @IBAction func showAddStyleTouchUpInside() {
+            self.showAddPlantView()
+    }
     @IBAction func selectUserImageTouchUpInside(sender: UIButton) {
                Functions.isChoosingImage(true)
         self.avatar_placeholder.transform = CGAffineTransform(scaleX: 0.01, y: 0.01);

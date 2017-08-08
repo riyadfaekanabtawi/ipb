@@ -1450,7 +1450,7 @@
 
 
 
-+(void)updateProjectForIPB:(NSString *)cantidad andID:(NSNumber *)idproject andPrecio:(NSString *)precio andTotal:(NSString *)total andMinutaje:(NSString *)minutaje andStatus:(NSString *)status andCliente:(NSString *)cliente andTela:(NSString *)tela andbase64String:(NSString *)base64String andFechaEntrega:(NSString *)fecha_entrega AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
++(void)updateProjectForIPB:(NSString *)cantidad andID:(NSNumber *)idproject andPrecio:(NSString *)precio andTotal:(NSString *)total andMinutaje:(NSString *)minutaje andStatus:(NSString *)status andCliente:(NSString *)cliente andTela:(NSString *)tela andbase64String:(NSString *)base64String andFechaEntrega:(NSString *)fecha_entrega andNotes:(NSString *)notes AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.securityPolicy.allowInvalidCertificates = YES;
@@ -1488,7 +1488,7 @@
 
 
 
-+(void)createProjectForIPB:(NSString *)cantidad andPrecio:(NSString *)precio andTotal:(NSString *)total andMinutaje:(NSString *)minutaje andStatus:(NSString *)status andCliente:(NSString *)cliente andTela:(NSString *)tela andbase64String:(NSString *)base64String andFechaEntrega:(NSString *)fecha_entrega AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
++(void)createProjectForIPB:(NSString *)cantidad andPrecio:(NSString *)precio andTotal:(NSString *)total andMinutaje:(NSString *)minutaje andStatus:(NSString *)status andCliente:(NSString *)cliente andTela:(NSString *)tela andbase64String:(NSString *)base64String andFechaEntrega:(NSString *)fecha_entrega andNote:(NSString *)note AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler{
 
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.securityPolicy.allowInvalidCertificates = YES;

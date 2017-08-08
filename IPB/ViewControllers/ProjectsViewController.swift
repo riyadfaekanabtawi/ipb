@@ -177,11 +177,24 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
         }
         if self.usuario_telefono == textField{
             
-            self.usuario_email.becomeFirstResponder()
+            self.usuario_plantaTextField.becomeFirstResponder()
         }
-        if self.usuario_email == textField{
+        if self.usuario_plantaTextField == textField{
             
-            self.usuario_password.becomeFirstResponder()
+            self.proyect_clienteTextField.becomeFirstResponder()
+        }
+        
+        if self.proyect_clienteTextField == textField{
+            
+            self.usuario_email.becomeFirstResponder()
+            
+        }
+        
+        
+        if self.usuario_email == textField{
+           self.usuario_password.becomeFirstResponder()
+            
+            
         }
         
         if self.usuario_password == textField{
@@ -190,22 +203,9 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
             
         }
         
-        
         if self.usuario_puesto == textField{
-           self.usuario_plantaTextField.becomeFirstResponder()
             
-            
-        }
-        
-        if self.usuario_plantaTextField == textField{
-            
-            self.proyect_clienteTextField.becomeFirstResponder()
-            
-        }
-        
-        if self.proyect_clienteTextField == textField{
-            
-            self.proyect_clienteTextField.resignFirstResponder()
+            self.usuario_puesto.resignFirstResponder()
             
         }
         return true
@@ -304,79 +304,79 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if indexPath.row == 0{
-                self.editingproject = false
-            self.showAddPlantView()
-            self.guardarButton.alpha = 1
-
-                
-                self.usuario_name.text = ""
- 
-                self.usuario_apellido.text = ""
- 
-            
-                
-                self.usuario_telefono.text = ""
- 
-                
-                self.usuario_plantaTextField.text = ""
-  
-                
-                self.proyect_clienteTextField.text = ""
-          
-                
-                self.usuario_email.text = ""
-
-                
-                self.usuario_password.text = ""
-   
-                
-                self.usuario_puesto.text = ""
-          
-                self.user_avatar.image = UIImage(named: "add photo.png")
-            
-            
-        }else{
+//        if indexPath.row == 0{
+//                self.editingproject = false
+//            self.showAddPlantView()
+//            self.guardarButton.alpha = 1
+//
+//                
+//                self.usuario_name.text = ""
+// 
+//                self.usuario_apellido.text = ""
+// 
+//            
+//                
+//                self.usuario_telefono.text = ""
+// 
+//                
+//                self.usuario_plantaTextField.text = ""
+//  
+//                
+//                self.proyect_clienteTextField.text = ""
+//          
+//                
+//                self.usuario_email.text = ""
+//
+//                
+//                self.usuario_password.text = ""
+//   
+//                
+//                self.usuario_puesto.text = ""
+//          
+//                self.user_avatar.image = UIImage(named: "add photo.png")
+//            
+//            
+//        }else{
             self.editingproject = true
             self.selectedProject = self.users_array[indexPath.row-1]
              self.guardarButton.alpha = 1
             self.showAddPlantView()
-        }
+      //  }
     }
     
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return self.users_array.count + 1
+        return self.users_array.count
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         
-        if indexPath.row == 0{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ADD", for: indexPath)as!AddButtonCollectionViewCell
-            
-            return cell
-            
-        }else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "users", for: indexPath) as! ProjectCollectionViewCell
-            
-            
-            cell.displayUsers(project: self.users_array[indexPath.row - 1])
-            cell.delegate = self
-            cell.controller = self
-            return cell
-        }
+//        if indexPath.row == 0{
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ADD", for: indexPath)as!AddButtonCollectionViewCell
+//            
+//            return cell
+//            
+//        }else{
+//            
+//        }
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "users", for: indexPath) as! ProjectCollectionViewCell
         
         
+        cell.displayUsers(project: self.users_array[indexPath.row])
+        cell.delegate = self
+        cell.controller = self
+        return cell
     }
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: 220, height: 340)
+        return CGSize(width: collectionView.frame.size.width, height: 170)
     }
     
     
@@ -470,7 +470,7 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         
         
-        if self.usuario_name.text == "" || self.usuario_telefono.text == "" || self.usuario_password.text == "" || self.usuario_apellido.text == "" || self.usuario_email.text == "" {
+        if self.usuario_name.text == "" || self.usuario_telefono.text == "" || self.usuario_password.text == "" || self.usuario_apellido.text == "" || self.usuario_email.text == "" || self.usuario_plantaTextField.text == "" || self.proyect_clienteTextField.text == "" || self.usuario_puesto.text == "" {
             let alertController = UIAlertController(title: "Oops!", message: "Debes llenar todos los campos para cargar un proyecto", preferredStyle: .alert)
             
             
@@ -499,7 +499,7 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
                 
                 let OKAction = UIAlertAction(title: "Actualizar Proyecto", style: .default) { (action) in
                     
-                    Services.updateProject(forIPB: self.usuario_name.text, andID:self.selectedProject.project_id, andPrecio: self.usuario_apellido.text, andTotal: self.usuario_telefono.text, andMinutaje: self.usuario_plantaTextField.text, andStatus: self.usuario_puesto.text, andCliente: self.proyect_clienteTextField.text, andTela: self.usuario_password.text, andbase64String: base64String, andFechaEntrega:self.usuario_email.text, andHandler: { (response) in
+                    Services.updateProject(forIPB: self.usuario_plantaTextField.text, andID:self.selectedProject.project_id, andPrecio: self.proyect_clienteTextField.text, andTotal: "\(Float(self.usuario_plantaTextField.text!)!*Float(self.proyect_clienteTextField.text!)!)", andMinutaje: self.usuario_apellido.text, andStatus: self.usuario_puesto.text, andCliente: self.usuario_name.text, andTela: self.usuario_telefono.text, andbase64String: base64String, andFechaEntrega:self.usuario_email.text, andNotes:self.usuario_password.text, andHandler: { (response) in
                         
                         self.closeAddPlantView()
                         self.refreshHomePlants()
@@ -542,7 +542,7 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
                 
                 let OKAction = UIAlertAction(title: "Cargar Proyecto", style: .default) { (action) in
                     
-                    Services.createProject(forIPB: self.usuario_name.text, andPrecio: self.usuario_apellido.text, andTotal: self.usuario_telefono.text, andMinutaje: self.usuario_plantaTextField.text, andStatus: self.usuario_puesto.text, andCliente: self.proyect_clienteTextField.text, andTela: self.usuario_password.text, andbase64String: base64String, andFechaEntrega:self.usuario_email.text, andHandler: { (response) in
+                    Services.createProject(forIPB: self.usuario_plantaTextField.text, andPrecio: self.proyect_clienteTextField.text, andTotal: "\(Float(self.usuario_plantaTextField.text!)!*Float(self.proyect_clienteTextField.text!)!)", andMinutaje: self.usuario_apellido.text, andStatus: self.usuario_puesto.text, andCliente: self.usuario_name.text, andTela: self.usuario_telefono.text, andbase64String: base64String, andFechaEntrega:self.usuario_email.text, andNote:self.usuario_password.text, andHandler: { (response) in
                         
                         self.closeAddPlantView()
                         self.refreshHomePlants()
@@ -582,7 +582,9 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
         
     }
     
-   
+    @IBAction func ShowAddPlantViewTouchUpInside(){
+        self.showAddPlantView()
+    }
     @IBAction func closeAddPlantView(){
         self.hideAddplantView()
     }

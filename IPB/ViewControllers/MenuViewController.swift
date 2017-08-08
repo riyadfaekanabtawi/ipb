@@ -43,6 +43,9 @@ class MenuViewController: UIViewController {
     @IBOutlet var clientes_innerView: UIView!
     @IBOutlet var usuarios_innerView: UIView!
     @IBOutlet var estilos_innerView: UIView!
+    
+    
+    @IBOutlet var calendar_innerView: UIView!
   
      @IBOutlet var proyectos_innerView: UIView!
      @IBOutlet var proyectos_label: UILabel!
@@ -50,11 +53,12 @@ class MenuViewController: UIViewController {
     @IBOutlet var calculadora_innerView: UIView!
     @IBOutlet var envios_innerView: UIView!
     @IBOutlet var cerrarSesion_innerView: UIView!
-    
+    @IBOutlet var calendarViewHeight: NSLayoutConstraint!
+
     
     @IBOutlet var reportessend_InnerView: UIView!
     @IBOutlet var reportesSend_label: UILabel!
-    
+    @IBOutlet var calendar_label: UILabel!
     @IBOutlet var dashboardHeight: NSLayoutConstraint!
     @IBOutlet var asignarCortesHeight: NSLayoutConstraint!
     @IBOutlet var generarReporteHeight: NSLayoutConstraint!
@@ -92,6 +96,7 @@ class MenuViewController: UIViewController {
         self.usuarios_label.font = UIFont(name: FONT_REGULAR, size: self.usuarios_label.font.pointSize)
         self.estilos_label.font = UIFont(name: FONT_REGULAR, size: self.estilos_label.font.pointSize)
         self.proyectos_label.font = UIFont(name: FONT_REGULAR, size: self.proyectos_label.font.pointSize)
+        self.calendar_label.font = UIFont(name: FONT_REGULAR, size: self.proyectos_label.font.pointSize)
         
         
          self.reportesOverall.font = UIFont(name: FONT_REGULAR, size: self.reportesOverall.font.pointSize)
@@ -115,6 +120,11 @@ class MenuViewController: UIViewController {
         
         self.listas_innerView.layer.cornerRadius = 4
         self.listas_innerView.layer.masksToBounds = true
+        
+        
+        self.calendar_innerView.layer.cornerRadius = 4
+        self.calendar_innerView.layer.masksToBounds = true
+        
         
         self.reportes_innerView.layer.cornerRadius = 4
         self.reportes_innerView.layer.masksToBounds = true
@@ -159,6 +169,7 @@ class MenuViewController: UIViewController {
         self.calculadora_innerView.alpha = 0
         self.envios_innerView.alpha = 0
         self.cerrarSesion_innerView.alpha = 0
+        self.calendar_innerView.alpha = 0
 
         
         self.user_nameLabel.font = UIFont(name: FONT_BOLD, size: self.user_nameLabel.font.pointSize)
@@ -169,6 +180,11 @@ class MenuViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: collectionView.frame.size.width/3, height: collectionView.frame.size.height/3)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -192,6 +208,7 @@ class MenuViewController: UIViewController {
         if (user.puesto == "Administrador"){
             
             self.dashboardHeight.constant = 60
+            self.calendarViewHeight.constant = 60
             self.asignarCortesHeight.constant = 60
             self.generarReporteHeight.constant = 60
             self.reportesHeight.constant = 60
@@ -219,7 +236,9 @@ class MenuViewController: UIViewController {
             self.estilosHeight.constant = 0
             self.calculadoraHeight.constant = 0
             self.enviosUrgentesHeight.constant = 0
+             self.calendarViewHeight.constant = 0
                   self.view.layoutIfNeeded()
+           
         }
         
         
@@ -236,6 +255,7 @@ class MenuViewController: UIViewController {
             self.estilosHeight.constant = 0
             self.calculadoraHeight.constant = 0
             self.enviosUrgentesHeight.constant = 0
+            self.calendarViewHeight.constant = 0
                   self.view.layoutIfNeeded()
         }
         
@@ -253,6 +273,7 @@ class MenuViewController: UIViewController {
             self.estilosHeight.constant = 0
             self.calculadoraHeight.constant = 0
             self.enviosUrgentesHeight.constant = 60
+             self.calendarViewHeight.constant = 0
                   self.view.layoutIfNeeded()
         }
 
@@ -282,6 +303,7 @@ class MenuViewController: UIViewController {
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
+             self.calendar_innerView.alpha = 0
             self.proyectos_innerView.alpha = 0
             self.calculadora_innerView.alpha = 0
             self.envios_innerView.alpha = 0
@@ -292,12 +314,36 @@ class MenuViewController: UIViewController {
     
     }
 
+    @IBAction func calendarTouchUpInside(){
+        
+        UIView.animate(withDuration: 0.4) {
+            self.RPOVERALL_innerView.alpha = 0
+            self.dashboard_innerView.alpha = 0
+            self.calendar_innerView.alpha = 1
+            self.proveedoresView.alpha = 0
+            self.listas_innerView.alpha = 0
+            self.reportes_innerView.alpha = 0
+            self.plantas_innerView.alpha = 0
+            self.clientes_innerView.alpha = 0
+            self.usuarios_innerView.alpha = 0
+            self.estilos_innerView.alpha = 0
+            self.proyectos_innerView.alpha = 0
+            self.calculadora_innerView.alpha = 0
+            self.envios_innerView.alpha = 0
+            self.reportessend_InnerView.alpha = 0
+            self.cerrarSesion_innerView.alpha = 0
+            self.delegate.selectedMenuviewcontrollerOption("calendar")
+        }
+        
+    }
+    
     
     
     @IBAction func listasTouchUpInside(){
         
         UIView.animate(withDuration: 0.4) {
              self.RPOVERALL_innerView.alpha = 0
+            self.calendar_innerView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.proveedoresView.alpha = 0
             self.listas_innerView.alpha = 1
@@ -326,6 +372,7 @@ class MenuViewController: UIViewController {
             self.dashboard_innerView.alpha = 0
             self.proveedoresView.alpha = 0
             self.listas_innerView.alpha = 0
+            self.calendar_innerView.alpha = 0
             self.reportes_innerView.alpha = 1
             self.plantas_innerView.alpha = 0
             self.clientes_innerView.alpha = 0
@@ -348,6 +395,7 @@ class MenuViewController: UIViewController {
              self.RPOVERALL_innerView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.proveedoresView.alpha = 0
+            self.calendar_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 1
@@ -370,6 +418,7 @@ class MenuViewController: UIViewController {
              self.RPOVERALL_innerView.alpha = 0
             self.proveedoresView.alpha = 0
             self.dashboard_innerView.alpha = 0
+            self.calendar_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
@@ -394,6 +443,7 @@ class MenuViewController: UIViewController {
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
+            self.calendar_innerView.alpha = 0
             self.reportessend_InnerView.alpha = 0
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 1
@@ -415,6 +465,7 @@ class MenuViewController: UIViewController {
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
+            self.calendar_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
@@ -439,6 +490,7 @@ class MenuViewController: UIViewController {
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
             self.clientes_innerView.alpha = 0
+            self.calendar_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
             self.estilos_innerView.alpha = 0
             self.proyectos_innerView.alpha = 0
@@ -461,6 +513,7 @@ class MenuViewController: UIViewController {
             self.proveedoresView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
+            self.calendar_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
             self.clientes_innerView.alpha = 0
@@ -481,6 +534,7 @@ class MenuViewController: UIViewController {
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
+            
             self.plantas_innerView.alpha = 0
             self.clientes_innerView.alpha = 0
             self.usuarios_innerView.alpha = 0
@@ -500,6 +554,7 @@ class MenuViewController: UIViewController {
             self.proveedoresView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
+            self.calendar_innerView.alpha = 0
             self.reportessend_InnerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
@@ -522,6 +577,7 @@ class MenuViewController: UIViewController {
             self.dashboard_innerView.alpha = 1
             self.reportessend_InnerView.alpha = 0
             self.listas_innerView.alpha = 0
+            self.calendar_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
             self.clientes_innerView.alpha = 0
@@ -540,6 +596,7 @@ class MenuViewController: UIViewController {
         UIView.animate(withDuration: 0.4) {
             self.RPOVERALL_innerView.alpha = 0
             self.proveedoresView.alpha = 1
+            self.calendar_innerView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportessend_InnerView.alpha = 0
@@ -561,6 +618,7 @@ class MenuViewController: UIViewController {
             self.RPOVERALL_innerView.alpha = 0
             self.proveedoresView.alpha = 0
             self.dashboard_innerView.alpha = 0
+            self.calendar_innerView.alpha = 0
             self.listas_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.plantas_innerView.alpha = 0
@@ -584,6 +642,7 @@ class MenuViewController: UIViewController {
             self.proveedoresView.alpha = 0
             self.dashboard_innerView.alpha = 0
             self.listas_innerView.alpha = 0
+            self.calendar_innerView.alpha = 0
             self.reportes_innerView.alpha = 0
             self.reportessend_InnerView.alpha = 0
             self.plantas_innerView.alpha = 0

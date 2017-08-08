@@ -60,6 +60,7 @@
 		EB52592A1DF283A9004A0DA8 /* back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5259271DF283A9004A0DA8 /* back@3x.png */; };
 		EB52592C1DF28D22004A0DA8 /* AsignCutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB52592B1DF28D22004A0DA8 /* AsignCutViewController.swift */; };
 		EB52592E1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB52592D1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift */; };
+		EB5EEC6C1F39586300CD4656 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5EEC6B1F39586300CD4656 /* CalendarViewController.swift */; };
 		EB6FC9971E5D276D00A48F2E /* Rectangle-gris.png in Resources */ = {isa = PBXBuildFile; fileRef = EB6FC9961E5D276D00A48F2E /* Rectangle-gris.png */; };
 		EB6FC9991E5D277F00A48F2E /* Rectangle-gris@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB6FC9981E5D277F00A48F2E /* Rectangle-gris@2x.png */; };
 		EB92A2B31E21F0190094BA1F /* MAActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB92A2B21E21F0190094BA1F /* MAActivityIndicatorView.swift */; };
@@ -68,6 +69,7 @@
 		EB957C621E15F78200FF0D49 /* DashboardReportsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB957C611E15F78200FF0D49 /* DashboardReportsViewController.swift */; };
 		EB957C641E15F9F600FF0D49 /* ReportDashboardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB957C631E15F9F600FF0D49 /* ReportDashboardCollectionViewCell.swift */; };
 		EB957C661E16135E00FF0D49 /* PendingHomecutCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB957C651E16135E00FF0D49 /* PendingHomecutCollectionViewCell.swift */; };
+		EBC1C0711F37CF74001B87CC /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC1C0701F37CF74001B87CC /* CalendarCollectionViewCell.swift */; };
 		EBC78B291E53FD4C009D981F /* Analisis2CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC78B281E53FD4C009D981F /* Analisis2CollectionViewCell.swift */; };
 		EBCFC92F1E2E6E0B00E1C4DB /* rectangle_big.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC92E1E2E6E0B00E1C4DB /* rectangle_big.png */; };
 		EBCFC9311E2E6EAA00E1C4DB /* espacio_corte.png in Resources */ = {isa = PBXBuildFile; fileRef = EBCFC9301E2E6EAA00E1C4DB /* espacio_corte.png */; };
@@ -197,6 +199,7 @@
 		EB5259271DF283A9004A0DA8 /* back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@3x.png"; sourceTree = "<group>"; };
 		EB52592B1DF28D22004A0DA8 /* AsignCutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsignCutViewController.swift; sourceTree = "<group>"; };
 		EB52592D1DF2A6B9004A0DA8 /* PlantCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlantCollectionViewCell.swift; sourceTree = "<group>"; };
+		EB5EEC6B1F39586300CD4656 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		EB6FC9961E5D276D00A48F2E /* Rectangle-gris.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Rectangle-gris.png"; sourceTree = "<group>"; };
 		EB6FC9981E5D277F00A48F2E /* Rectangle-gris@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Rectangle-gris@2x.png"; sourceTree = "<group>"; };
 		EB92A2B21E21F0190094BA1F /* MAActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MAActivityIndicatorView.swift; sourceTree = "<group>"; };
@@ -205,6 +208,7 @@
 		EB957C611E15F78200FF0D49 /* DashboardReportsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReportsViewController.swift; sourceTree = "<group>"; };
 		EB957C631E15F9F600FF0D49 /* ReportDashboardCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportDashboardCollectionViewCell.swift; sourceTree = "<group>"; };
 		EB957C651E16135E00FF0D49 /* PendingHomecutCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingHomecutCollectionViewCell.swift; sourceTree = "<group>"; };
+		EBC1C0701F37CF74001B87CC /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		EBC78B281E53FD4C009D981F /* Analisis2CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Analisis2CollectionViewCell.swift; sourceTree = "<group>"; };
 		EBCFC92E1E2E6E0B00E1C4DB /* rectangle_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rectangle_big.png; sourceTree = "<group>"; };
 		EBCFC9301E2E6EAA00E1C4DB /* espacio_corte.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = espacio_corte.png; sourceTree = "<group>"; };
@@ -321,6 +325,7 @@
 				EB4AD63F1E53C3810074EBD5 /* ProjectCollectionViewCell.swift */,
 				EBC78B281E53FD4C009D981F /* Analisis2CollectionViewCell.swift */,
 				EB38A5381E579A1F0019C446 /* PlantStyleCollectionViewCell.swift */,
+				EBC1C0701F37CF74001B87CC /* CalendarCollectionViewCell.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -500,6 +505,7 @@
 				EB42DE541E1EB0FE00E207F1 /* ProveedoresViewController.swift */,
 				EB4AD63D1E53C2D80074EBD5 /* ProjectsViewController.swift */,
 				EB0599F01E54004900FC9B29 /* AnalisisSecondViewController.swift */,
+				EB5EEC6B1F39586300CD4656 /* CalendarViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -767,6 +773,8 @@
 				EB52586E1DEE7447004A0DA8 /* Planta.m in Sources */,
 				EB5259241DF26B56004A0DA8 /* PendingCutCollectionViewCell.swift in Sources */,
 				EBFE8B631DF474E800B54F87 /* TSQCalendarMonthHeaderCell.m in Sources */,
+				EBC1C0711F37CF74001B87CC /* CalendarCollectionViewCell.swift in Sources */,
+				EB5EEC6C1F39586300CD4656 /* CalendarViewController.swift in Sources */,
 				EB5258601DEE47D9004A0DA8 /* SWRevealViewController.m in Sources */,
 				EB248A881E007E46004A9B51 /* StylesViewController.swift in Sources */,
 				EB0599F11E54004900FC9B29 /* AnalisisSecondViewController.swift in Sources */,

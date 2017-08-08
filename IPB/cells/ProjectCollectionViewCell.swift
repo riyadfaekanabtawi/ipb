@@ -19,6 +19,11 @@ class ProjectCollectionViewCell: UICollectionViewCell {
     var controller:UIViewController!
     @IBOutlet var cantidad_label: UILabel!
     @IBOutlet var precio_label: UILabel!
+    @IBOutlet var fecha_entrega_label: UILabel!
+    @IBOutlet var nota_label: UILabel!
+    @IBOutlet var cliente_label: UILabel!
+    @IBOutlet var minutaje_label: UILabel!
+    @IBOutlet var tela_label: UILabel!
     @IBOutlet var total_label: UILabel!
     @IBOutlet var approvedButton:  UIButton!
     @IBOutlet var closeButton:  UIButton!
@@ -51,7 +56,11 @@ class ProjectCollectionViewCell: UICollectionViewCell {
         self.precio_label.text = "Precio: $ \(project.precio!)"
         self.total_label.text = "Total: $\(project.total!)"
   
-        
+        self.cliente_label.text = "Cliente: \(project.cliente!)"
+        self.minutaje_label.text = "Minutaje: \(project.minutaje!)"
+        self.tela_label.text = "Tela: \(project.tela!)"
+       // self.nota_label.text = "Notas: \(project.notas)"
+        self.fecha_entrega_label.text = "Fecha de Entrega: \(project.fecha_entrega!)"
         if project.status == "pendiente"{
         
             self.approvedButton.backgroundColor = Functions.color(withHexString: "AAAAAA", andAlpha: 1)

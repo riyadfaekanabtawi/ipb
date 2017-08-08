@@ -388,40 +388,27 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if indexPath.row == 0{
-            
-            self.showAddPlantView()
-            
-        }else{
-            
-        }
+
     }
     
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return self.users_array.count + 1
+        return self.users_array.count
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         
-        if indexPath.row == 0{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ADD", for: indexPath)as!AddButtonCollectionViewCell
-            
-            return cell
-            
-        }else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "users", for: indexPath) as! UserCollectionViewCell
-            
-            
-            cell.displayUsers(user: self.users_array[indexPath.row - 1])
-            cell.delegate = self
-            cell.controller = self
-            return cell
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "users", for: indexPath) as! UserCollectionViewCell
+        
+        
+        cell.displayUsers(user: self.users_array[indexPath.row])
+        cell.delegate = self
+        cell.controller = self
+        return cell
         
         
     }
@@ -429,7 +416,7 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: 220, height: 340)
+        return CGSize(width: collectionView.frame.size.width, height: 150)
     }
     
     
@@ -476,6 +463,13 @@ class UsuariosViewController: UIViewController,UICollectionViewDelegate,UICollec
         })
         
         
+    }
+    
+    @IBAction func addUserTI(){
+    self.showAddPlantView()
+    
+    
+    
     }
     
     @IBAction func selectUserImageTouchUpInside(sender: UIButton) {

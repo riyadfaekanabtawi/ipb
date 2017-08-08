@@ -82,9 +82,9 @@
 
 +(void)createStyleForIPB:(NSString *)style_name andbase64String:(NSString *)base64String AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
-+(void)createProjectForIPB:(NSString *)cantidad andPrecio:(NSString *)precio andTotal:(NSString *)total andMinutaje:(NSString *)minutaje andStatus:(NSString *)status andCliente:(NSString *)cliente andTela:(NSString *)tela andbase64String:(NSString *)base64String andFechaEntrega:(NSString *)fecha_entrega AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
++(void)createProjectForIPB:(NSString *)cantidad andPrecio:(NSString *)precio andTotal:(NSString *)total andMinutaje:(NSString *)minutaje andStatus:(NSString *)status andCliente:(NSString *)cliente andTela:(NSString *)tela andbase64String:(NSString *)base64String andFechaEntrega:(NSString *)fecha_entrega andNote:(NSString *)note AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
-+(void)updateProjectForIPB:(NSString *)cantidad andID:(NSString *)id_project andPrecio:(NSString *)precio andTotal:(NSString *)total andMinutaje:(NSString *)minutaje andStatus:(NSString *)status andCliente:(NSString *)cliente andTela:(NSString *)tela andFechaEntrega:(NSString *)fecha_entrega andbase64String:(NSString *)base64String AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
++(void)updateProjectForIPB:(NSString *)cantidad andID:(NSNumber *)idproject andPrecio:(NSString *)precio andTotal:(NSString *)total andMinutaje:(NSString *)minutaje andStatus:(NSString *)status andCliente:(NSString *)cliente andTela:(NSString *)tela andbase64String:(NSString *)base64String andFechaEntrega:(NSString *)fecha_entrega andNotes:(NSString *)notes AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;
 
 //GET
 +(void)getStyleImage:(NSString *)style_name AndHandler:(void (^)(id))handler orErrorHandler:(void (^)(NSError *))errorHandler;

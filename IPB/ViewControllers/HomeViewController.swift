@@ -395,7 +395,11 @@ self.analisisCorteLabel.font = UIFont(name: FONT_BOLD, size: self.analisisCorteL
         self.performSegue(withIdentifier: "pendingcuts", sender: self)
         
         }
-        
+        if option == "calendar"{
+            
+            self.performSegue(withIdentifier: "calendar", sender: self)
+            
+        }
         if option == "dashboard"{
             
             self.refreshHomePlants ()
