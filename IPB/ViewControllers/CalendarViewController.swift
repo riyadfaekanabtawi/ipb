@@ -88,6 +88,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
         cell.displayPlant(plant: self.plants_array[indexPath.row])
         cell.viewParent = self.view
         cell.controller = self
+        cell.cameFromCalendar = true
         cell.corteSelected = self.pendingCut
        // cell.delegate = self
         return cell
@@ -100,7 +101,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         
-        return CGSize(width: 359, height: self.plants_collectionview.frame.size.height)
+        return CGSize(width: 250, height: 420)
     }
     
     
