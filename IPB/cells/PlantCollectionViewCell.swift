@@ -82,8 +82,22 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
         self.capax_max.text = "Capacidad Máxima: $ \(resultMax!)"
         
      
-        
-        
+       
+        if (self.cameFromCalendar){
+            
+            let cortes = plant.cortes as! [Corte]
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd-MM-yyyy"
+            
+            
+            for corte in cortes{
+                NSLog("\(corte.cut_fecha_client!)", "")
+                 self.calendar.select(formatter.date(from: corte.cut_fecha_client!)!, scrollToDate: false)
+                
+            }
+           
+        }
     }
     
     
@@ -164,7 +178,7 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
                 
                 
                 let OKAction = UIAlertAction(title: "Confirmar Asignación", style: .default) { (action) in
-                    Services.assignCutToPlant(withQuantity: NSNumber(value:Int32(self.cantidad_por_asignar_textViewlabel.text!)!), andCliente: self.corteSelected.cut_client, fecha: self.selectedDate, andPrecioTotal:  NSNumber(value: Float32(total)), andPrecioUnitario: NSNumber(value: Float32(self.corteSelected.cut_precio_unitario)), andstyleImage: self.corteSelected.cut_estilo, andStyle: self.corteSelected.cut_estilo, andPlantID: self.selectedPlant.planta_id, andPendingCutID:self.corteSelected.cut_id, andHandler: { (response) in
+                    Services.assignCutToPlant(withQuantity: NSNumber(value:Float32(self.cantidad_por_asignar_textViewlabel.text!)!), andCliente: self.corteSelected.cut_client, fecha: self.selectedDate, andPrecioTotal:  NSNumber(value: Float32(total)), andPrecioUnitario: NSNumber(value: Float32(self.corteSelected.cut_precio_unitario)), andstyleImage: self.corteSelected.cut_estilo, andStyle: self.corteSelected.cut_estilo, andPlantID: self.selectedPlant.planta_id, andPendingCutID:self.corteSelected.cut_id, andHandler: { (response) in
                         
                         if ((response as? String) != nil){
                             
@@ -244,6 +258,7 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
         
     
     }
+    
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date) {
         if (self.cameFromCalendar){
@@ -507,6 +522,7 @@ class PlantCollectionViewCell: UICollectionViewCell,UITextFieldDelegate,FSCalend
         formatter.minimumFractionDigits = 1
         formatter.maximumFractionDigits = 1
         
+        cell.performSelecting()
         
         let total = self.selectedPlant.planta_capacidadMax.floatValue
         

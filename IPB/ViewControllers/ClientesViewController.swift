@@ -233,7 +233,7 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
     func showAddPlantView(){
         
         if self.editingclient == true{
-            
+    
             if self.selectedclient.nombrecontacto3 != nil{
                 self.nombre_contacto3.text = self.selectedclient.nombrecontacto3
             }
@@ -243,8 +243,12 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
             if self.selectedclient.nombrecontacto2 != nil{
                 self.nombre_contacto2.text = self.selectedclient.nombrecontacto2
             }
-            if self.selectedclient.direccion != nil{
-                self.nombre_contacto2.text = self.selectedclient.direccion
+          
+            if self.selectedclient.direccion != nil {
+            
+            
+                
+                self.direccionTextField.text = self.selectedclient.direccion!
             }
             
             
@@ -295,6 +299,27 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
             
             self.plantNameTextField.text = self.selectedclient.client_name
             
+        }else{
+         self.puesto_contacto1.text = "";
+        self.puesto_contacto2.text = ""
+        self.puesto_contacto3.text = ""
+            
+        self.telefono_contacto1.text = ""
+        self.telefono_contacto2.text  = ""
+        self.telefono_contacto3.text = ""
+            
+            self.email_contacto1.text = ""
+            self.email_contacto2.text  = ""
+            self.email_contacto3.text = ""
+            
+            self.nombre_contacto1.text = ""
+            self.nombre_contacto2.text  = ""
+            self.nombre_contacto3.text = ""
+            
+            self.direccionTextField.text = ""
+            self.plantNameTextField.text  = ""
+      self.addplantLabelTitle.text = "NUEVO CLIENTE"
+        
         }
         UIView.animate(withDuration: 0.4) {
             self.BackaddPlantview.alpha = 1
@@ -421,8 +446,9 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     
     @IBAction func addClient(){
-        self.showAddPlantView()
         self.editingclient = false
+        self.showAddPlantView()
+        
         self.addplantLabelTitle.text = "NUEVO CLIENTE"
     }
     
@@ -498,8 +524,16 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
                     
                     
                 }
-                alertController.addAction(OKAction)
                 
+                
+                   let cancelAction = UIAlertAction(title: "Cancelar", style: .default) { (action) in
+                    
+                    alertController.dismiss(animated: true, completion: nil)
+                    
+                }
+                
+                alertController.addAction(OKAction)
+                alertController.addAction(cancelAction)
                 self.present(alertController, animated: true) {
                     // ...
                 }
@@ -556,8 +590,14 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
                     
                     
                 }
-                alertController.addAction(OKAction)
+                let cancelAction = UIAlertAction(title: "Cancelar", style: .default) { (action) in
+                    
+                    alertController.dismiss(animated: true, completion: nil)
+                    
+                }
                 
+                alertController.addAction(OKAction)
+                   alertController.addAction(cancelAction)
                 self.present(alertController, animated: true) {
                     // ...
                 }
@@ -603,7 +643,7 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
         let mailComposerVC = MFMailComposeViewController()
         mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
         
-        mailComposerVC.setToRecipients(["\(self.selectedclient.emailcontacto1),\(self.selectedclient.emailcontacto2),\(self.selectedclient.emailcontacto3)"])
+        mailComposerVC.setToRecipients(["\(self.selectedclient.emailcontacto1!.lowercased())","\(self.selectedclient.emailcontacto2!.lowercased())","\(self.selectedclient.emailcontacto3!.lowercased())"])
 
         
         return mailComposerVC
@@ -618,4 +658,34 @@ class ClientesViewController: UIViewController,UICollectionViewDelegate,UICollec
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
     }
+
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
+        
+    {
+        
+        if (self.telefono_contacto1 == textField || self.telefono_contacto2 == textField || self.telefono_contacto3 == textField){
+            let nsString = textField.text as NSString?
+            let text = nsString?.replacingCharacters(in: range, with: string)
+            
+            
+            if Int(text!) != nil || text == ""{
+                // Text field converted to an Int
+                return true
+            } else {
+                // Text field is not an Int
+                return false
+                
+            }
+            
+            
+        }
+        return true
+        
+        
+        
+        
+    }
+    
+
 }

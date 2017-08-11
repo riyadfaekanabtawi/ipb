@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UITextFieldDelegate,projectdelegateHome,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     var users_array:[Project] = []
     @IBOutlet var titleViewLabelColelctionView: UILabel!
@@ -20,32 +19,35 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
     @IBOutlet var addPlantview: UIView!
     @IBOutlet var addplantLabelTitle: UILabel!
     let imagePicker = UIImagePickerController()
-
+ let mask = "##/##"
     @IBOutlet var guardarButton: UIButton!
     
-    @IBOutlet var usuario_name: UITextField!
-    @IBOutlet var user_nameLabel: UILabel!
+    @IBOutlet var cliente_textfield: UITextField!
+    @IBOutlet var cliente_name_label: UILabel!
     
-    @IBOutlet var usuario_apellido: UITextField!
-    @IBOutlet var user_apellidoLabel: UILabel!
+    @IBOutlet var minutaje_textfield: UITextField!
+    @IBOutlet var minutaje_label: UILabel!
     
-    @IBOutlet var proyect_clienteTextField: UITextField!
-    @IBOutlet var proyect_clienteLabel: UILabel!
+    @IBOutlet var tela_textfield: UITextField!
+    @IBOutlet var tela_label: UILabel!
     
-    @IBOutlet var usuario_plantaTextField: UITextField!
-    @IBOutlet var usuario_plantaLabel: UILabel!
+    @IBOutlet var cantidad_textfield: UITextField!
+    @IBOutlet var cantidad_label: UILabel!
 
-    @IBOutlet var usuario_telefono: UITextField!
-    @IBOutlet var user_telefonoLabel: UILabel!
+    @IBOutlet var precio_textfield: UITextField!
+    @IBOutlet var precio_label: UILabel!
     
-    @IBOutlet var usuario_email: UITextField!
-    @IBOutlet var user_emailLabel: UILabel!
+    @IBOutlet var fecha_entrega_textfield: UITextField!
+    @IBOutlet var fecha_entrega_label: UILabel!
+    
     @IBOutlet var closeButton: UIButton!
     var selectedProject:Project!
-    @IBOutlet var usuario_password: UITextField!
-    @IBOutlet var user_passwordLabel: UILabel!
-    @IBOutlet var usuario_puesto: UITextField!
-    @IBOutlet var user_puestoLabel: UILabel!
+    @IBOutlet var status_textfield: UITextField!
+    @IBOutlet var status_label: UILabel!
+    @IBOutlet var notas_textfield: UITextField!
+    @IBOutlet var notas_label: UILabel!
+    
+    
     @IBOutlet var plant_collectionview: UICollectionView!
     var revealController:SWRevealViewController!
     override func viewDidLoad() {
@@ -61,34 +63,34 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         self.addplantLabelTitle.font = UIFont(name: FONT_BOLD, size: self.addplantLabelTitle.font.pointSize)
         
-        self.user_nameLabel.font = UIFont(name: FONT_BOLD, size: self.user_nameLabel.font.pointSize)
-        self.usuario_name.font = UIFont(name: FONT_REGULAR, size: (self.usuario_name.font?.pointSize)!)
+        self.cliente_name_label.font = UIFont(name: FONT_BOLD, size: self.cliente_name_label.font.pointSize)
+        self.cliente_textfield.font = UIFont(name: FONT_REGULAR, size: (self.cliente_textfield.font?.pointSize)!)
         
         
-        self.usuario_plantaLabel.font = UIFont(name: FONT_BOLD, size: self.usuario_plantaLabel.font.pointSize)
-        self.usuario_plantaTextField.font = UIFont(name: FONT_REGULAR, size: (self.usuario_plantaTextField.font?.pointSize)!)
+        self.minutaje_label.font = UIFont(name: FONT_BOLD, size: self.minutaje_label.font.pointSize)
+        self.minutaje_textfield.font = UIFont(name: FONT_REGULAR, size: (self.minutaje_textfield.font?.pointSize)!)
         
-        self.proyect_clienteLabel.font = UIFont(name: FONT_BOLD, size: self.proyect_clienteLabel.font.pointSize)
-        self.proyect_clienteTextField.font = UIFont(name: FONT_REGULAR, size: (self.proyect_clienteTextField.font?.pointSize)!)
+        self.tela_label.font = UIFont(name: FONT_BOLD, size: self.tela_label.font.pointSize)
+        self.tela_textfield.font = UIFont(name: FONT_REGULAR, size: (self.tela_textfield.font?.pointSize)!)
         
         
 
         
-        self.user_apellidoLabel.font = UIFont(name: FONT_BOLD, size: self.user_apellidoLabel.font.pointSize)
-        self.usuario_apellido.font = UIFont(name: FONT_REGULAR, size: (self.usuario_apellido.font?.pointSize)!)
+        self.cantidad_label.font = UIFont(name: FONT_BOLD, size: self.cantidad_label.font.pointSize)
+        self.cantidad_textfield.font = UIFont(name: FONT_REGULAR, size: (self.cantidad_textfield.font?.pointSize)!)
         
-        self.user_telefonoLabel.font = UIFont(name: FONT_BOLD, size: self.user_telefonoLabel.font.pointSize)
-        self.usuario_telefono.font = UIFont(name: FONT_REGULAR, size: (self.usuario_telefono.font?.pointSize)!)
+        self.precio_label.font = UIFont(name: FONT_BOLD, size: self.precio_label.font.pointSize)
+        self.precio_textfield.font = UIFont(name: FONT_REGULAR, size: (self.precio_textfield.font?.pointSize)!)
         
-        self.user_emailLabel.font = UIFont(name: FONT_BOLD, size: self.user_emailLabel.font.pointSize)
-        self.usuario_email.font = UIFont(name: FONT_REGULAR, size: (self.usuario_email.font?.pointSize)!)
+        self.fecha_entrega_label.font = UIFont(name: FONT_BOLD, size: self.fecha_entrega_label.font.pointSize)
+        self.fecha_entrega_textfield.font = UIFont(name: FONT_REGULAR, size: (self.fecha_entrega_textfield.font?.pointSize)!)
         
-        self.user_puestoLabel.font = UIFont(name: FONT_BOLD, size: self.user_puestoLabel.font.pointSize)
-        self.usuario_puesto.font = UIFont(name: FONT_REGULAR, size: (self.usuario_puesto.font?.pointSize)!)
+        self.notas_label.font = UIFont(name: FONT_BOLD, size: self.notas_label.font.pointSize)
+        self.notas_textfield.font = UIFont(name: FONT_REGULAR, size: (self.notas_textfield.font?.pointSize)!)
         
         
-        self.user_passwordLabel.font = UIFont(name: FONT_BOLD, size: self.user_passwordLabel.font.pointSize)
-        self.usuario_password.font = UIFont(name: FONT_REGULAR, size: (self.usuario_password.font?.pointSize)!)
+        self.status_label.font = UIFont(name: FONT_BOLD, size: self.status_label.font.pointSize)
+        self.status_textfield.font = UIFont(name: FONT_REGULAR, size: (self.status_textfield.font?.pointSize)!)
         
         self.guardarButton.titleLabel?.font = UIFont(name: FONT_BOLD, size: (self.guardarButton.titleLabel?.font.pointSize)!)
         self.addPlantview.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
@@ -166,46 +168,46 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        if self.usuario_name == textField{
+        if self.cliente_textfield == textField{
             
-            self.usuario_apellido.becomeFirstResponder()
+            self.minutaje_textfield.becomeFirstResponder()
         }
         
-        if self.usuario_apellido == textField{
+        if self.minutaje_textfield == textField{
             
-            self.usuario_telefono.becomeFirstResponder()
+            self.tela_textfield.becomeFirstResponder()
         }
-        if self.usuario_telefono == textField{
+        if self.tela_textfield == textField{
             
-            self.usuario_plantaTextField.becomeFirstResponder()
+            self.cantidad_textfield.becomeFirstResponder()
         }
-        if self.usuario_plantaTextField == textField{
+        if self.cantidad_textfield == textField{
             
-            self.proyect_clienteTextField.becomeFirstResponder()
-        }
-        
-        if self.proyect_clienteTextField == textField{
-            
-            self.usuario_email.becomeFirstResponder()
-            
+            self.precio_textfield.becomeFirstResponder()
         }
         
-        
-        if self.usuario_email == textField{
-           self.usuario_password.becomeFirstResponder()
+        if self.precio_textfield == textField{
             
+            self.fecha_entrega_textfield.becomeFirstResponder()
             
         }
         
-        if self.usuario_password == textField{
+        
+        if self.fecha_entrega_textfield == textField{
+           self.notas_textfield.becomeFirstResponder()
             
-            self.usuario_puesto.becomeFirstResponder()
             
         }
         
-        if self.usuario_puesto == textField{
+        if self.notas_textfield == textField{
             
-            self.usuario_puesto.resignFirstResponder()
+            self.status_textfield.becomeFirstResponder()
+            
+        }
+        
+        if self.status_textfield == textField{
+            
+            self.status_textfield.resignFirstResponder()
             
         }
         return true
@@ -219,57 +221,77 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
     func showAddPlantView(){
         
         if self.editingproject == true{
-        
+          self.addplantLabelTitle.text = "EDITAR PEOYECTO"
             if self.selectedProject.cantidad != nil{
             
-                self.usuario_name.text = self.selectedProject.cantidad!
+                self.cantidad_textfield.text = self.selectedProject.cantidad!
             }
             
             if self.selectedProject.precio != nil{
-            self.usuario_apellido.text = self.selectedProject.precio!
+            self.precio_textfield.text = self.selectedProject.precio!
             
             }
             
-            if self.selectedProject.total != nil{
-            
-            self.usuario_telefono.text = self.selectedProject.total!
-            
-            }
+      
             
             if self.selectedProject.minutaje != nil{
             
-            self.usuario_plantaTextField.text = self.selectedProject.minutaje!
+            self.minutaje_textfield.text = self.selectedProject.minutaje!
                 
             
             }
             
             if self.selectedProject.cliente != nil{
             
-            self.proyect_clienteTextField.text = self.selectedProject.cliente!
+            self.cliente_textfield.text = self.selectedProject.cliente!
             
             }
             
             
             if self.selectedProject.fecha_entrega != nil{
             
-            self.usuario_email.text = self.selectedProject.fecha_entrega!
+            self.fecha_entrega_textfield.text = self.selectedProject.fecha_entrega!
             
             }
             
             if self.selectedProject.tela != nil{
             
-            self.usuario_password.text = self.selectedProject.tela!
+            self.tela_textfield.text = self.selectedProject.tela!
                 
             }
             
             if self.selectedProject.status != nil{
             
-                self.usuario_puesto.text = self.selectedProject.status!
+                self.status_textfield.text = self.selectedProject.status!
             
             }
         
+            if self.selectedProject.notes != nil{
+                
+                self.notas_textfield.text = self.selectedProject.notes!
+                
+            }
+            
             
             self.user_avatar.sd_setImage(with: NSURL(string:BASE_URL + self.selectedProject.photo!) as URL!)
+        }else{
+        
+        
+                self.cliente_textfield.text = "";
+                self.minutaje_textfield.text = ""
+                self.tela_textfield.text = ""
+                
+                self.cantidad_textfield.text = ""
+                self.precio_textfield.text  = ""
+                self.fecha_entrega_textfield.text = ""
+                
+                self.notas_textfield.text = ""
+            
+                self.status_textfield.text  = ""
+       
+                self.addplantLabelTitle.text = "NUEVO PEOYECTO"
+                
+            
         }
         
         UIView.animate(withDuration: 0.4) {
@@ -292,12 +314,14 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
         }
         
         
-        self.usuario_name.resignFirstResponder()
-        self.usuario_email.resignFirstResponder()
-        self.usuario_apellido.resignFirstResponder()
-        self.usuario_password.resignFirstResponder()
-        self.usuario_telefono.resignFirstResponder()
-        self.proyect_clienteTextField.resignFirstResponder()
+        self.cliente_textfield.resignFirstResponder()
+        self.minutaje_textfield.resignFirstResponder()
+        self.tela_textfield.resignFirstResponder()
+        self.cantidad_textfield.resignFirstResponder()
+        self.precio_textfield.resignFirstResponder()
+        self.fecha_entrega_textfield.resignFirstResponder()
+        self.notas_textfield.resignFirstResponder()
+        self.status_textfield.resignFirstResponder()
         
     }
     
@@ -338,7 +362,7 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
 //            
 //        }else{
             self.editingproject = true
-            self.selectedProject = self.users_array[indexPath.row-1]
+            self.selectedProject = self.users_array[indexPath.row]
              self.guardarButton.alpha = 1
             self.showAddPlantView()
       //  }
@@ -470,7 +494,7 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         
         
-        if self.usuario_name.text == "" || self.usuario_telefono.text == "" || self.usuario_password.text == "" || self.usuario_apellido.text == "" || self.usuario_email.text == "" || self.usuario_plantaTextField.text == "" || self.proyect_clienteTextField.text == "" || self.usuario_puesto.text == "" {
+        if self.cliente_textfield.text == "" || self.minutaje_textfield.text == "" || self.tela_textfield.text == "" || self.cantidad_textfield.text == "" || self.precio_textfield.text == "" || self.fecha_entrega_textfield.text == "" || self.notas_textfield.text == "" || self.status_textfield.text == "" {
             let alertController = UIAlertController(title: "Oops!", message: "Debes llenar todos los campos para cargar un proyecto", preferredStyle: .alert)
             
             
@@ -492,14 +516,11 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
                 let base64String = imageData?.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
                 
                 
-                var string = ""
-                if self.usuario_plantaTextField.text != ""{
-                    string = self.usuario_plantaTextField.text!
-                }
+            
                 
                 let OKAction = UIAlertAction(title: "Actualizar Proyecto", style: .default) { (action) in
                     
-                    Services.updateProject(forIPB: self.usuario_plantaTextField.text, andID:self.selectedProject.project_id, andPrecio: self.proyect_clienteTextField.text, andTotal: "\(Float(self.usuario_plantaTextField.text!)!*Float(self.proyect_clienteTextField.text!)!)", andMinutaje: self.usuario_apellido.text, andStatus: self.usuario_puesto.text, andCliente: self.usuario_name.text, andTela: self.usuario_telefono.text, andbase64String: base64String, andFechaEntrega:self.usuario_email.text, andNotes:self.usuario_password.text, andHandler: { (response) in
+                    Services.updateProject(forIPB: self.cantidad_textfield.text, andID:self.selectedProject.project_id, andPrecio: self.precio_textfield.text, andTotal: "\(Float(self.cantidad_textfield.text!)!*Float(self.precio_textfield.text!)!)", andMinutaje: self.minutaje_textfield.text, andStatus: self.status_textfield.text, andCliente: self.cliente_textfield.text, andTela: self.tela_textfield.text, andbase64String: base64String, andFechaEntrega:self.fecha_entrega_textfield.text, andNotes:self.notas_textfield.text, andHandler: { (response) in
                         
                         self.closeAddPlantView()
                         self.refreshHomePlants()
@@ -521,7 +542,12 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
                     })
                     
                 }
+                
+                let cancel = UIAlertAction(title: "Cancelar", style: .default) { (action) in
+                    
+                }
                 alertController.addAction(OKAction)
+                alertController.addAction(cancel)
                 
                 self.present(alertController, animated: true) {
                     // ...
@@ -535,14 +561,11 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
                 let base64String = imageData?.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
                 
                 
-                var string = ""
-                if self.usuario_plantaTextField.text != ""{
-                    string = self.usuario_plantaTextField.text!
-                }
+             
                 
                 let OKAction = UIAlertAction(title: "Cargar Proyecto", style: .default) { (action) in
                     
-                    Services.createProject(forIPB: self.usuario_plantaTextField.text, andPrecio: self.proyect_clienteTextField.text, andTotal: "\(Float(self.usuario_plantaTextField.text!)!*Float(self.proyect_clienteTextField.text!)!)", andMinutaje: self.usuario_apellido.text, andStatus: self.usuario_puesto.text, andCliente: self.usuario_name.text, andTela: self.usuario_telefono.text, andbase64String: base64String, andFechaEntrega:self.usuario_email.text, andNote:self.usuario_password.text, andHandler: { (response) in
+                    Services.createProject(forIPB: self.cantidad_textfield.text, andPrecio: self.precio_textfield.text, andTotal: "\(Float(self.cantidad_textfield.text!)!*Float(self.precio_textfield.text!)!)", andMinutaje: self.minutaje_textfield.text, andStatus: self.status_textfield.text, andCliente: self.cliente_textfield.text, andTela: self.tela_textfield.text, andbase64String: base64String, andFechaEntrega:self.fecha_entrega_textfield.text, andNote:self.notas_textfield.text, andHandler: { (response) in
                         
                         self.closeAddPlantView()
                         self.refreshHomePlants()
@@ -564,7 +587,11 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
                     })
                     
                 }
+                let cancel = UIAlertAction(title: "Cancelar", style: .default) { (action) in
+                    
+                }
                 alertController.addAction(OKAction)
+                alertController.addAction(cancel)
                 
                 self.present(alertController, animated: true) {
                     // ...
@@ -583,6 +610,7 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
     }
     
     @IBAction func ShowAddPlantViewTouchUpInside(){
+        self.editingproject = false
         self.showAddPlantView()
     }
     @IBAction func closeAddPlantView(){
@@ -597,5 +625,36 @@ class ProjectsViewController: UIViewController,UICollectionViewDelegate,UICollec
         
         self.refreshHomePlants()
     }
+    
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
+        
+    {
+        
+        
+        
+        
+        let nsString = textField.text as NSString?
+        let text = nsString?.replacingCharacters(in: range, with: string)
+        
+        if self.cantidad_textfield == textField || self.precio_textfield == textField{
+            if Int(text!) != nil || text?.range(of: ".") != nil || text == ""{
+                // Text field converted to an Int
+                return true
+            } else {
+                // Text field is not an Int
+                return false
+                
+            }
+
+        }
+        
+        
+    return true
+        
+    }
+    
+  
+
 }
 

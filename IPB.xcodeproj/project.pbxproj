@@ -64,6 +64,16 @@
 		EB64E6EA1F3A01AB00255D23 /* fondo_square@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB64E6E91F3A01AB00255D23 /* fondo_square@2x.png */; };
 		EB6FC9971E5D276D00A48F2E /* Rectangle-gris.png in Resources */ = {isa = PBXBuildFile; fileRef = EB6FC9961E5D276D00A48F2E /* Rectangle-gris.png */; };
 		EB6FC9991E5D277F00A48F2E /* Rectangle-gris@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB6FC9981E5D277F00A48F2E /* Rectangle-gris@2x.png */; };
+		EB789FA91F3BB7A500B23178 /* BotónAgregarProveedor.png in Resources */ = {isa = PBXBuildFile; fileRef = EB789FA71F3BB7A400B23178 /* BotónAgregarProveedor.png */; };
+		EB789FAA1F3BB7A500B23178 /* BotónAgregarProveedor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB789FA81F3BB7A400B23178 /* BotónAgregarProveedor@2x.png */; };
+		EB789FAD1F3BBB7900B23178 /* BotónAgregarPlanta.png in Resources */ = {isa = PBXBuildFile; fileRef = EB789FAB1F3BBB7900B23178 /* BotónAgregarPlanta.png */; };
+		EB789FAE1F3BBB7900B23178 /* BotónAgregarPlanta@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB789FAC1F3BBB7900B23178 /* BotónAgregarPlanta@2x.png */; };
+		EB789FB11F3BBC3500B23178 /* BotónAgregarProyecto.png in Resources */ = {isa = PBXBuildFile; fileRef = EB789FAF1F3BBC3500B23178 /* BotónAgregarProyecto.png */; };
+		EB789FB21F3BBC3500B23178 /* BotónAgregarProyecto@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB789FB01F3BBC3500B23178 /* BotónAgregarProyecto@2x.png */; };
+		EB789FB51F3BBCEE00B23178 /* BotónAgregarEstilo.png in Resources */ = {isa = PBXBuildFile; fileRef = EB789FB31F3BBCEE00B23178 /* BotónAgregarEstilo.png */; };
+		EB789FB61F3BBCEE00B23178 /* BotónAgregarEstilo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB789FB41F3BBCEE00B23178 /* BotónAgregarEstilo@2x.png */; };
+		EB789FB81F3BBDA600B23178 /* BotónAgregarUsuario.png in Resources */ = {isa = PBXBuildFile; fileRef = EB789FB71F3BBDA600B23178 /* BotónAgregarUsuario.png */; };
+		EB789FBA1F3BBDBE00B23178 /* BotónAgregarUsuario@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB789FB91F3BBDBE00B23178 /* BotónAgregarUsuario@2x.png */; };
 		EB92A2B31E21F0190094BA1F /* MAActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB92A2B21E21F0190094BA1F /* MAActivityIndicatorView.swift */; };
 		EB957C5E1E15C64F00FF0D49 /* UrgentSebdsDashboardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB957C5D1E15C64F00FF0D49 /* UrgentSebdsDashboardCollectionViewCell.swift */; };
 		EB957C601E15EA4C00FF0D49 /* EnviosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB957C5F1E15EA4C00FF0D49 /* EnviosViewController.swift */; };
@@ -204,6 +214,16 @@
 		EB64E6E91F3A01AB00255D23 /* fondo_square@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fondo_square@2x.png"; sourceTree = "<group>"; };
 		EB6FC9961E5D276D00A48F2E /* Rectangle-gris.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Rectangle-gris.png"; sourceTree = "<group>"; };
 		EB6FC9981E5D277F00A48F2E /* Rectangle-gris@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Rectangle-gris@2x.png"; sourceTree = "<group>"; };
+		EB789FA71F3BB7A400B23178 /* BotónAgregarProveedor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BotónAgregarProveedor.png"; sourceTree = "<group>"; };
+		EB789FA81F3BB7A400B23178 /* BotónAgregarProveedor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BotónAgregarProveedor@2x.png"; sourceTree = "<group>"; };
+		EB789FAB1F3BBB7900B23178 /* BotónAgregarPlanta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BotónAgregarPlanta.png"; sourceTree = "<group>"; };
+		EB789FAC1F3BBB7900B23178 /* BotónAgregarPlanta@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BotónAgregarPlanta@2x.png"; sourceTree = "<group>"; };
+		EB789FAF1F3BBC3500B23178 /* BotónAgregarProyecto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BotónAgregarProyecto.png"; sourceTree = "<group>"; };
+		EB789FB01F3BBC3500B23178 /* BotónAgregarProyecto@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BotónAgregarProyecto@2x.png"; sourceTree = "<group>"; };
+		EB789FB31F3BBCEE00B23178 /* BotónAgregarEstilo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BotónAgregarEstilo.png"; sourceTree = "<group>"; };
+		EB789FB41F3BBCEE00B23178 /* BotónAgregarEstilo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BotónAgregarEstilo@2x.png"; sourceTree = "<group>"; };
+		EB789FB71F3BBDA600B23178 /* BotónAgregarUsuario.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BotónAgregarUsuario.png"; sourceTree = "<group>"; };
+		EB789FB91F3BBDBE00B23178 /* BotónAgregarUsuario@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BotónAgregarUsuario@2x.png"; sourceTree = "<group>"; };
 		EB92A2B21E21F0190094BA1F /* MAActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MAActivityIndicatorView.swift; sourceTree = "<group>"; };
 		EB957C5D1E15C64F00FF0D49 /* UrgentSebdsDashboardCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrgentSebdsDashboardCollectionViewCell.swift; sourceTree = "<group>"; };
 		EB957C5F1E15EA4C00FF0D49 /* EnviosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnviosViewController.swift; sourceTree = "<group>"; };
@@ -422,6 +442,16 @@
 		EBD208611DED200500FBB4A2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				EB789FB91F3BBDBE00B23178 /* BotónAgregarUsuario@2x.png */,
+				EB789FB71F3BBDA600B23178 /* BotónAgregarUsuario.png */,
+				EB789FB31F3BBCEE00B23178 /* BotónAgregarEstilo.png */,
+				EB789FB41F3BBCEE00B23178 /* BotónAgregarEstilo@2x.png */,
+				EB789FAF1F3BBC3500B23178 /* BotónAgregarProyecto.png */,
+				EB789FB01F3BBC3500B23178 /* BotónAgregarProyecto@2x.png */,
+				EB789FAB1F3BBB7900B23178 /* BotónAgregarPlanta.png */,
+				EB789FAC1F3BBB7900B23178 /* BotónAgregarPlanta@2x.png */,
+				EB789FA71F3BB7A400B23178 /* BotónAgregarProveedor.png */,
+				EB789FA81F3BB7A400B23178 /* BotónAgregarProveedor@2x.png */,
 				EB64E6E91F3A01AB00255D23 /* fondo_square@2x.png */,
 				EB358F531EC8D79600AD0F76 /* Back_login_back.png */,
 				EB358F4D1EC8D13800AD0F76 /* Botón Agregar Clientes.png */,
@@ -618,8 +648,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBCFC9561E340D2600E1C4DB /* glass.png in Resources */,
+				EB789FBA1F3BBDBE00B23178 /* BotónAgregarUsuario@2x.png in Resources */,
 				EBD208651DED200500FBB4A2 /* menuMask.png in Resources */,
 				EBCFC9571E340D2600E1C4DB /* glass@2x.png in Resources */,
+				EB789FA91F3BB7A500B23178 /* BotónAgregarProveedor.png in Resources */,
+				EB789FB21F3BBC3500B23178 /* BotónAgregarProyecto@2x.png in Resources */,
 				EB358F4B1EC8CED500AD0F76 /* Enivar Correo.png in Resources */,
 				EB358F511EC8D13800AD0F76 /* Botón Agregar Clientes@2x.png in Resources */,
 				EBD2084A1DED068300FBB4A2 /* LaunchScreen.storyboard in Resources */,
@@ -633,6 +666,7 @@
 				EB358F3C1EC8CB3300AD0F76 /* LogoIPB@2x.png in Resources */,
 				EBCFC9451E2EAF7100E1C4DB /* add_report.png in Resources */,
 				EB358F431EC8CBFB00AD0F76 /* User Icon.png in Resources */,
+				EB789FB11F3BBC3500B23178 /* BotónAgregarProyecto.png in Resources */,
 				EB42DE531E1B650D00E207F1 /* IMG_5244.JPG in Resources */,
 				EBCFC94E1E31ADFB00E1C4DB /* refresh@2x.png in Resources */,
 				EB5259291DF283A9004A0DA8 /* back@2x.png in Resources */,
@@ -646,11 +680,13 @@
 				EB248A861E0065AF004A9B51 /* add photo@3x.png in Resources */,
 				EB52592A1DF283A9004A0DA8 /* back@3x.png in Resources */,
 				EBCFC95D1E344BDB00E1C4DB /* back_login.png in Resources */,
+				EB789FAA1F3BB7A500B23178 /* BotónAgregarProveedor@2x.png in Resources */,
 				EBCFC9491E2EEB7C00E1C4DB /* Roboto-Regular.ttf in Resources */,
 				EBCFC9521E325A0800E1C4DB /* cellback.png in Resources */,
 				EBCFC9331E2E820300E1C4DB /* fondo_square.png in Resources */,
 				EB358F541EC8D79600AD0F76 /* Back_login_back.png in Resources */,
 				EB358F501EC8D13800AD0F76 /* Botón Agregar Clientes.png in Resources */,
+				EB789FB51F3BBCEE00B23178 /* BotónAgregarEstilo.png in Resources */,
 				EB6FC9971E5D276D00A48F2E /* Rectangle-gris.png in Resources */,
 				EBCFC92F1E2E6E0B00E1C4DB /* rectangle_big.png in Resources */,
 				EBCFC9411E2EA5A300E1C4DB /* add_user.png in Resources */,
@@ -659,9 +695,11 @@
 				EB358F481EC8CD2800AD0F76 /* Login button@2x.png in Resources */,
 				EB358F3B1EC8CB3300AD0F76 /* LogoIPB.png in Resources */,
 				EB358F471EC8CD2800AD0F76 /* Login button.png in Resources */,
+				EB789FB81F3BBDA600B23178 /* BotónAgregarUsuario.png in Resources */,
 				EBCFC9391E2E998400E1C4DB /* rectangleFondo.png in Resources */,
 				EB4AD6381E53B30C0074EBD5 /* send_email_icon.png in Resources */,
 				EB358F411EC8CBFB00AD0F76 /* PW Icon.png in Resources */,
+				EB789FAE1F3BBB7900B23178 /* BotónAgregarPlanta@2x.png in Resources */,
 				EBCFC9621E34FDAC00E1C4DB /* alert@2x.png in Resources */,
 				EB4AD6391E53B30D0074EBD5 /* send_email_icon@2x.png in Resources */,
 				EB5259281DF283A9004A0DA8 /* back.png in Resources */,
@@ -679,8 +717,10 @@
 				EBD208591DED148000FBB4A2 /* grey-stage-stock-photo-center-light-double-top-lamps-gray-shadow-floor-background-512x288.png in Resources */,
 				EBD208661DED200500FBB4A2 /* menuMask@2x.png in Resources */,
 				EB358F4C1EC8CED500AD0F76 /* Enivar Correo@2x.png in Resources */,
+				EB789FB61F3BBCEE00B23178 /* BotónAgregarEstilo@2x.png in Resources */,
 				EB358F441EC8CBFB00AD0F76 /* User Icon@2x.png in Resources */,
 				EBD8B47B1E6CF93600E75AD4 /* SBTVLoaderView.xib in Resources */,
+				EB789FAD1F3BBB7900B23178 /* BotónAgregarPlanta.png in Resources */,
 				EB358F421EC8CBFB00AD0F76 /* PW Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

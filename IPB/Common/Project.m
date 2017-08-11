@@ -20,6 +20,7 @@
         self.precio = [dictionary objectForKey:@"precio"];
         self.status = [dictionary  objectForKey:@"status"];
         self.cliente = [dictionary  objectForKey:@"cliente"];
+        self.notes = [dictionary  objectForKey:@"notes"];
         self.photo = [dictionary objectForKey:@"photo"];
         self.minutaje = [dictionary objectForKey:@"minutaje"];
         self.tela = [dictionary objectForKey:@"tela"];

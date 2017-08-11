@@ -59,7 +59,14 @@ class ProjectCollectionViewCell: UICollectionViewCell {
         self.cliente_label.text = "Cliente: \(project.cliente!)"
         self.minutaje_label.text = "Minutaje: \(project.minutaje!)"
         self.tela_label.text = "Tela: \(project.tela!)"
-       // self.nota_label.text = "Notas: \(project.notas)"
+        
+        
+        
+        if (project.notes != nil){
+        self.nota_label.text = "Notas: \(project.notes!)"
+        }else{
+        self.nota_label.text = "Notas: "
+        }
         self.fecha_entrega_label.text = "Fecha de Entrega: \(project.fecha_entrega!)"
         if project.status == "pendiente"{
         

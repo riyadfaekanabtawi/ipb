@@ -149,68 +149,111 @@ class ClientCollectionViewCell: UICollectionViewCell {
         self.selectedProveedor = client
         self.client_nameLabel.text = client.client_name
         
-        if(client.direccion != nil){
+        if(client.direccion != nil || client.direccion != ""){
             
-            self.direccion_label.text = "Dirección: \(client.direccion!)"
+            self.direccion_label.text = "\(client.direccion!)"
+        }else{
+         self.direccion_label.text = "Dirección: "
+        
         }
         
         
-        if(client.nombrecontacto1 != nil){
+        if(client.nombrecontacto1 != nil || client.nombrecontacto1 != ""){
             
-            self.nombre1_label.text = "Nombre contacto1: \(client.nombrecontacto1!)"
+            self.nombre1_label.text = "\(client.nombrecontacto1!)"
+        }else{
+            self.nombre1_label.text = "Nombre 1: "
+            
         }
         
-        if(client.nombrecontacto2 != nil){
+        
+        if(client.nombrecontacto2 != nil || client.nombrecontacto2 != ""){
             
-            self.nombre2_label.text = "Nombre contacto2: \(client.nombrecontacto2!)"
+            self.nombre2_label.text = "\(client.nombrecontacto2!)"
+        }else{
+            self.nombre2_label.text = "Nombre 2: "
+            
         }
         
-        if(client.nombrecontacto3 != nil){
+        
+        if(client.nombrecontacto3 != nil || client.nombrecontacto3 != ""){
             
-            self.nombre3_label.text = "Nombre contacto3: \(client.nombrecontacto3!)"
-        }
-        if(client.puestocontacto1 != nil){
+            self.nombre3_label.text = "\(client.nombrecontacto3!)"
+        }else{
+            self.nombre3_label.text = "Nombre 3: "
             
-            self.puesto1_label.text = "Puesto contacto1: \(client.puestocontacto1!)"
         }
         
-        if(client.puestocontacto2 != nil){
+        if(client.puestocontacto1 != nil || client.puestocontacto1 != ""){
             
-            self.puesto2_label.text = "Puesto contacto2: \(client.puestocontacto2!)"
+            self.puesto1_label.text = "\(client.puestocontacto1!)"
+        }else{
+            self.puesto1_label.text = "Puesto 1: "
+            
         }
         
-        if(client.puestocontacto3 != nil){
+        
+        if(client.puestocontacto2 != nil || client.puestocontacto2 != ""){
             
-            self.puesto3_label.text = "Puesto contacto3: \(client.puestocontacto3!)"
+            self.puesto2_label.text = "\(client.puestocontacto2!)"
+        }else{
+            self.puesto2_label.text = "Puesto 2: "
+            
         }
         
-        if(client.emailcontacto1 != nil){
+        if(client.puestocontacto3 != nil || client.puestocontacto3 != ""){
             
-            self.email1_label.text = "Email contacto1: \(client.emailcontacto1!)"
+            self.puesto3_label.text = "\(client.puestocontacto3!)"
+        }else{
+            self.puesto3_label.text = "Puesto 3: "
+            
         }
         
-        if(client.emailcontacto2 != nil){
+        if(client.emailcontacto1 != nil || client.emailcontacto1 != ""){
             
-            self.email2_label.text = "Email contacto2: \(client.emailcontacto2!)"
+            self.email1_label.text = "\(client.emailcontacto1!)"
+        }else{
+            self.email1_label.text = "Email 1: "
+            
         }
         
-        if(client.emailcontacto3 != nil){
+        if(client.emailcontacto2 != nil || client.emailcontacto2 != ""){
             
-            self.email3_label.text = "Email contacto3: \(client.emailcontacto3!)"
+            self.email2_label.text = "\(client.emailcontacto2!)"
+        }else{
+            self.email2_label.text = "Email 2: "
+            
         }
         
-        if(client.telefonocontacto1 != nil){
+        if(client.emailcontacto3 != nil || client.emailcontacto3 != ""){
             
-            self.telefono1_label.text = "Teléfono contacto1: \(client.telefonocontacto1!)"
-        }
-        if(client.telefonocontacto2 != nil){
+            self.email3_label.text = "\(client.emailcontacto3!)"
+        }else{
+            self.email3_label.text = "Email 3: "
             
-            self.telefono2_label.text = "Teléfono contacto2: \(client.telefonocontacto2!)"
         }
         
-        if(client.telefonocontacto3 != nil){
+        if(client.telefonocontacto1 != nil || client.telefonocontacto1 != ""){
             
-            self.telefono3_label.text = "Teléfono contacto3: \(client.telefonocontacto3!)"
+            self.telefono1_label.text = "\(client.telefonocontacto1!)"
+        }else{
+            self.telefono1_label.text = "Teléfono 1: "
+            
+        }
+        if(client.telefonocontacto2 != nil || client.telefonocontacto2 != ""){
+            
+            self.telefono2_label.text = "\(client.telefonocontacto2!)"
+        }else{
+            self.telefono2_label.text = "Teléfono 2: "
+            
+        }
+        
+        if(client.telefonocontacto3 != nil || client.telefonocontacto3 != ""){
+            
+            self.telefono3_label.text = "\(client.telefonocontacto3!)"
+        }else{
+            self.telefono3_label.text = "Teléfono 3: "
+            
         }
         
     }
@@ -325,6 +368,7 @@ class ClientCollectionViewCell: UICollectionViewCell {
     }
     
      @IBAction func sendemail(){
+        
         self.delegate.sendemail(client: self.selectedClient)
     }
     @IBAction func sendemailP(){

@@ -20,4 +20,5 @@
 @property NSString *tela;
 @property NSString *minutaje;
 @property NSString *photo;
+@property NSString *notes;
 @end

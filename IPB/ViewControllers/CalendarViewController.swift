@@ -85,10 +85,11 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "plants", for: indexPath)as!PlantCollectionViewCell
+         cell.cameFromCalendar = true
         cell.displayPlant(plant: self.plants_array[indexPath.row])
         cell.viewParent = self.view
         cell.controller = self
-        cell.cameFromCalendar = true
+       
         cell.corteSelected = self.pendingCut
        // cell.delegate = self
         return cell
@@ -101,7 +102,7 @@ class CalendarViewController: UIViewController,UICollectionViewDelegate,UICollec
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         
-        return CGSize(width: 250, height: 420)
+        return CGSize(width: 250, height: 410)
     }
     
     

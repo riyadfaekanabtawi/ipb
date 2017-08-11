@@ -277,6 +277,7 @@ class PlantasViewController: UIViewController,UICollectionViewDelegate,UICollect
         self.addplantLabelTitle.text = "NUEVA PLANTA"
         self.plantCapaxMaxTextField.text = ""
         self.plantNameTextField.text = ""
+               self.showAddPlantView()
         
     }
     

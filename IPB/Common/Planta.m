@@ -7,7 +7,7 @@
 //
 
 #import "Planta.h"
-
+#import "Corte.h"
 @implementation Planta
 -(Planta *)initWithDictionary:(NSDictionary *)dictionary {
     self = [super init];
@@ -111,7 +111,21 @@
     
         
        
-       
+        if ([[dictionary objectForKey:@"cortes"] description]){
+        
+            NSMutableArray *cortesmut = [NSMutableArray new];
+        
+            
+            for(NSDictionary *dict in [dictionary objectForKey:@"cortes"]){
+            
+                Corte *corte = [[Corte alloc] initWithDictionary:dict];
+                
+                [cortesmut addObject:corte];
+            
+            }
+            
+            self.cortes = [NSArray arrayWithArray:cortesmut];
+        }
     
        
     }

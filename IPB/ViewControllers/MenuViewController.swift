@@ -78,7 +78,7 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
         
 
-        self.menuHeight.constant = self.view.frame.size.height
+        self.menuHeight.constant = self.view.frame.size.height + 80
         self.view.layoutIfNeeded()
         
         self.setNeedsStatusBarAppearanceUpdate()

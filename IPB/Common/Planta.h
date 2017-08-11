@@ -16,6 +16,7 @@
 @property NSNumber *planta_capacidadMax;
 @property NSNumber *planta_capacidadUsada;
 
+@property NSArray *cortes;
 
 @property float january_used;
 @property float febuary_used;

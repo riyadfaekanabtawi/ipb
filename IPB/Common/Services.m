@@ -1458,7 +1458,7 @@
     NSNumber *numbeer = [NSNumber numberWithInt:i];
     
     
-    NSDictionary *p = @{@"project":@{@"id":idproject,@"cantidad":cantidad,@"precio":precio,@"total":total,@"minutaje":minutaje,@"status":status,@"cliente":cliente,@"tela":tela,@"fecha_entrega":fecha_entrega},@"image":@{@"photo_file_name" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_updated_at" :[NSDate date],@"photo_file_size" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_content_type" :@"image/jpg", @"image_url":base64String}};
+    NSDictionary *p = @{@"project":@{@"id":idproject,@"cantidad":cantidad,@"precio":precio,@"total":total,@"minutaje":minutaje,@"status":status,@"cliente":cliente,@"tela":tela,@"fecha_entrega":fecha_entrega,@"notes":notes},@"image":@{@"photo_file_name" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_updated_at" :[NSDate date],@"photo_file_size" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_content_type" :@"image/jpg", @"image_url":base64String}};
     
     [manager POST:[NSString stringWithFormat:@"%@updateProject",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
         
@@ -1496,7 +1496,7 @@
     NSNumber *numbeer = [NSNumber numberWithInt:i];
     
     
-    NSDictionary *p = @{@"project":@{@"cantidad":cantidad,@"precio":precio,@"total":total,@"minutaje":minutaje,@"status":status,@"cliente":cliente,@"tela":tela,@"fecha_entrega":fecha_entrega},@"image":@{@"photo_file_name" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_updated_at" :[NSDate date],@"photo_file_size" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_content_type" :@"image/jpg", @"image_url":base64String}};
+    NSDictionary *p = @{@"project":@{@"cantidad":cantidad,@"precio":precio,@"total":total,@"minutaje":minutaje,@"status":status,@"cliente":cliente,@"tela":tela,@"fecha_entrega":fecha_entrega,@"notes":note},@"image":@{@"photo_file_name" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_updated_at" :[NSDate date],@"photo_file_size" :[NSString stringWithFormat:@"Project-%@.jpg",numbeer],@"photo_content_type" :@"image/jpg", @"image_url":base64String}};
     
     [manager POST:[NSString stringWithFormat:@"%@createProject",BASE_URL] parameters:p progress:^(NSProgress * _Nonnull downloadProgress) {
         
