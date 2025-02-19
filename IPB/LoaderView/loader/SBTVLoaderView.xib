@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D12b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="u1j-LD-Q6m" customClass="SBTVLoaderView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zui-M7-BAx">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cargando" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8N-CR-J2N">
+                            <rect key="frame" x="97" y="334" width="126" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="126" id="f6x-5u-1rN"/>
+                                <constraint firstAttribute="height" constant="21" id="v6M-Ih-NFp"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="imn-ie-UaP">
+                            <rect key="frame" x="142" y="289" width="37" height="37"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="37" id="1SZ-kx-gXB"/>
+                                <constraint firstAttribute="height" constant="37" id="br1-IS-zCT"/>
+                            </constraints>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="g8N-CR-J2N" firstAttribute="top" secondItem="imn-ie-UaP" secondAttribute="bottom" constant="8" id="3ah-px-9AV"/>
+                        <constraint firstItem="imn-ie-UaP" firstAttribute="centerX" secondItem="Zui-M7-BAx" secondAttribute="centerX" id="W3e-Gh-PlO"/>
+                        <constraint firstItem="imn-ie-UaP" firstAttribute="centerY" secondItem="Zui-M7-BAx" secondAttribute="centerY" constant="23.5" id="bT0-wY-amN"/>
+                        <constraint firstItem="g8N-CR-J2N" firstAttribute="centerX" secondItem="Zui-M7-BAx" secondAttribute="centerX" id="dFl-17-U1r"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Zui-M7-BAx" secondAttribute="bottom" id="A32-Eh-RDS"/>
+                <constraint firstAttribute="trailing" secondItem="Zui-M7-BAx" secondAttribute="trailing" id="Ud7-GY-8Ju"/>
+                <constraint firstItem="Zui-M7-BAx" firstAttribute="top" secondItem="u1j-LD-Q6m" secondAttribute="top" id="d4Z-80-JIx"/>
+                <constraint firstItem="Zui-M7-BAx" firstAttribute="leading" secondItem="u1j-LD-Q6m" secondAttribute="leading" id="eel-Li-j7D"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="activity" destination="imn-ie-UaP" id="16j-y9-5WH"/>
+                <outlet property="cargandoLabel" destination="g8N-CR-J2N" id="V5t-yi-XvP"/>
+                <outlet property="mainView" destination="Zui-M7-BAx" id="2BT-yh-rnq"/>
+            </connections>
+            <point key="canvasLocation" x="243" y="305"/>
+        </view>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
+</document>
