@@ -776,7 +776,7 @@
 				PRODUCT_NAME = Trama;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
-				TRAMA_API_BASE_URL = "https://trama-app.vercel.app/api";
+				TRAMA_API_BASE_URL = "https://trama-platform.vercel.app/api";
 			};
 			name = Debug;
 		};
@@ -804,7 +804,7 @@
 				PRODUCT_NAME = Trama;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
-				TRAMA_API_BASE_URL = "https://trama-app.vercel.app/api";
+				TRAMA_API_BASE_URL = "https://trama-platform.vercel.app/api";
 			};
 			name = Release;
 		};

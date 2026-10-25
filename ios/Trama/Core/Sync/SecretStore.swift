@@ -46,7 +46,7 @@ final class MemorySecretStore: SecretStore {
 /// API configuration. The base URL comes from Info.plist (`TramaAPIBaseURL`, set by the
 /// `TRAMA_API_BASE_URL` build setting); DEBUG builds accept `-apiBase <url>` as a launch argument.
 enum AppConfig {
-    static let defaultAPIBase = URL(string: "https://trama-app.vercel.app/api")!
+    static let defaultAPIBase = URL(string: "https://trama-platform.vercel.app/api")!
 
     static var apiBaseURL: URL {
         #if DEBUG
