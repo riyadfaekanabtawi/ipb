@@ -38,7 +38,7 @@ enum LegacyFixtures {
 
     static let users = #"""
         {"api": [
-          {"id": 100, "nombre": "Jorge", "apellido": "Peña", "email": "JORGE@demo.local", "puesto": "Gerente de Planta", "telefono": "8112345678", "plant_name": "planta norte"},
+          {"id": 100, "nombre": "Jorge", "apellido": "Salinas", "email": "JORGE@demo.local", "puesto": "Gerente de Planta", "telefono": "8112345678", "plant_name": "planta norte"},
           {"id": 101, "nombre": "Ana", "apellido": "Villarreal", "email": "envios@demo.local", "puesto": "Gerente de Envíos", "telefono": null, "plant_name": null},
           {"user": {"id": 102, "nombre": "Admin", "apellido": "IPB", "email": "admin@demo.local", "puesto": "Administrador"}}
         ]}
@@ -339,7 +339,7 @@ struct LegacyImporterTests {
     @Test func upsertUpdatesChangedFieldsAndKeepsLocalData() async throws {
         // A local admin created before import keeps password and active state, and gets linked.
         let admin = try Session.createUser(
-            firstName: "Riyad", lastName: "A", email: "admin@demo.local", phone: "", password: "secreto1",
+            firstName: "Mariana", lastName: "T", email: "admin@demo.local", phone: "", password: "secreto1",
             role: .admin, plant: nil, avatar: nil, in: context)
         let localPlant = Plant(context: context)
         localPlant.stampCreated()

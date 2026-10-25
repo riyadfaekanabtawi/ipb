@@ -143,7 +143,7 @@ struct CatalogServiceTests {
 
     @Test func serviceEnforcesLastAdminRule() throws {
         var adminDraft = UserDraft()
-        adminDraft.firstName = "Riyad"
+        adminDraft.firstName = "Mariana"
         adminDraft.email = "admin@demo.local"
         adminDraft.role = .admin
         let admin = try service.createUser(adminDraft, password: "secreto")
