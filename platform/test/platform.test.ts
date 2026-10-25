@@ -162,6 +162,17 @@ describe("sync", () => {
     expect(again.json.changes).toHaveLength(0);
   });
 
+  it("accepts uppercase ids (iOS/backup format) and can still decrypt them", async () => {
+    const { email } = await newCompany("planta");
+    const s = (await login(email, "ios")).json;
+    const id = randomUUID().toUpperCase();
+    const pushed = await call("POST", "/sync/push", { token: s.accessToken, body: { changes: [{ entity: "clients", id, updatedAt: now(), data: { name: "Mayúsculas" } }] } });
+    expect(pushed.json.applied[0].id).toBe(id.toLowerCase());
+    const pulled = await call("GET", "/sync/pull?cursor=0", { token: s.accessToken });
+    expect(pulled.status).toBe(200);
+    expect(pulled.json.changes.find((ch: Json) => ch.id === id.toLowerCase()).data.name).toBe("Mayúsculas");
+  });
+
   it("resolves conflicts last-writer-wins and returns the server copy", async () => {
     const { email } = await newCompany("planta");
     const session = (await login(email, "web")).json;

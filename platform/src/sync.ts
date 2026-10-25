@@ -19,7 +19,9 @@ export type Entity = (typeof ENTITIES)[number];
 
 export const changeSchema = z.object({
   entity: z.enum(ENTITIES),
-  id: z.string().uuid(),
+  // Postgres returns uuids lowercase; normalize so the AAD used to encrypt matches the one used on pull
+  // (iOS and the backup format send uppercase UUIDs).
+  id: z.string().uuid().transform((value) => value.toLowerCase()),
   updatedAt: z.string().datetime({ offset: true }),
   deleted: z.boolean().optional().default(false),
   data: z.record(z.string(), z.unknown()).nullable().optional(),
