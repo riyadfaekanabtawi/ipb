@@ -58,7 +58,7 @@ struct AssignmentDetailView: View {
             }
         }
         .fullScreenCover(isPresented: $zoom) {
-            ZoomableImageViewer(data: assignment.order?.style?.imageData, title: assignment.order?.styleName ?? "Estilo")
+            ZoomableImageViewer(data: assignment.order?.style?.imageData, title: assignment.order?.styleName ?? String(localized: "Estilo"))
         }
         .confirmDelete("¿Eliminar este reporte?", isPresented: Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } })) {
             guard let report = deleting else { return }

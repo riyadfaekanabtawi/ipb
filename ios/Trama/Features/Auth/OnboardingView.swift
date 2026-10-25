@@ -104,7 +104,7 @@ struct OnboardingView: View {
     private func loadDemo() {
         DemoSeeder.seed(into: context)
         demoSeeded = true
-        companyName = "Textiles Demo"
+        companyName = DemoSeeder.companyName()
         if let admin = Session.findUser(email: "admin@demo.local", in: context) {
             session.adopt(admin)
             toasts.show("Datos de ejemplo cargados. Sesión iniciada como administrador.")

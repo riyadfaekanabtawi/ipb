@@ -17,6 +17,22 @@ struct UsersView: View {
         case inactive = "Inactivos"
         case all = "Todos"
         var id: String { rawValue }
+
+        var title: String {
+            switch self {
+            case .active: String(localized: "Activos")
+            case .inactive: String(localized: "Inactivos")
+            case .all: String(localized: "Todos")
+            }
+        }
+
+        var emptyTitle: LocalizedStringKey {
+            switch self {
+            case .active: "Sin usuarios activos"
+            case .inactive: "Sin usuarios inactivos"
+            case .all: "Sin usuarios"
+            }
+        }
     }
 
     @State private var filter: Filter = .active
@@ -57,7 +73,7 @@ struct UsersView: View {
             LazyVGrid(columns: AdaptiveGrid.adaptive(min: 150), spacing: 18) {
                 ForEach(Role.allCases) { role in
                     KPITile(
-                        title: role.title,
+                        title: .verbatim(role.title),
                         value: Fmt.int(users.filter { $0.role == role && $0.isActive }.count),
                         symbol: role.symbol,
                         tint: Theme.accent(for: role.rawValue),
@@ -70,7 +86,7 @@ struct UsersView: View {
 
             Picker("Mostrar", selection: $filter.animation(.snappy)) {
                 ForEach(Filter.allCases) { option in
-                    Text("\(option.rawValue) (\(count(option)))").tag(option)
+                    Text("\(option.title) (\(count(option)))").tag(option)
                 }
             }
             .pickerStyle(.segmented)
@@ -79,7 +95,7 @@ struct UsersView: View {
             if visible.isEmpty {
                 if search.isEmpty {
                     ContentUnavailableView(
-                        "Sin usuarios \(filter.rawValue.lowercased())", systemImage: "person.crop.circle.badge.questionmark")
+                        filter.emptyTitle, systemImage: "person.crop.circle.badge.questionmark")
                 } else {
                     ContentUnavailableView.search(text: search)
                 }
@@ -105,7 +121,7 @@ struct UsersView: View {
         .sheet(item: $editor) { target in UserEditorSheet(user: target.user) }
         .sheet(item: $resettingPassword) { user in PasswordResetSheet(user: user) }
         .confirmDelete(
-            "¿Eliminar a \(pendingDelete?.fullName ?? "este usuario")?", item: $pendingDelete,
+            "¿Eliminar a \(pendingDelete?.fullName ?? String(localized: "este usuario"))?", item: $pendingDelete,
             message: "Perderá el acceso a Trama. Si solo quieres pausar su acceso, desactívalo."
         ) { user in
             let name = user.fullName
@@ -194,10 +210,10 @@ private struct UserCard: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 if role == .plantManager {
-                    Label(user.plant?.displayName ?? "Sin planta asignada", systemImage: "building.2")
+                    Label(user.plant?.displayName ?? String(localized: "Sin planta asignada"), systemImage: "building.2")
                         .foregroundStyle(user.plant == nil ? Theme.danger : .primary)
                 }
-                Label(user.email ?? "Sin correo", systemImage: "envelope")
+                Label(user.email ?? String(localized: "Sin correo"), systemImage: "envelope")
                 if let phone = user.phone, !phone.isEmpty {
                     Label(phone, systemImage: "phone")
                 }
@@ -251,8 +267,8 @@ struct UserEditorSheet: View {
     private var passwordProblem: String? {
         guard isNew else { return nil }
         if password.isEmpty { return nil }
-        if password.count < 6 { return "Al menos 6 caracteres." }
-        if !confirmation.isEmpty, confirmation != password { return "Las contraseñas no coinciden." }
+        if password.count < 6 { return String(localized: "Al menos 6 caracteres.") }
+        if !confirmation.isEmpty, confirmation != password { return String(localized: "Las contraseñas no coinciden.") }
         return nil
     }
 

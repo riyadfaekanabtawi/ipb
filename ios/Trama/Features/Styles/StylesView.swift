@@ -12,6 +12,14 @@ struct StylesView: View {
         case orders = "Más cortes"
         case recent = "Recientes"
         var id: String { rawValue }
+
+        var title: String {
+            switch self {
+            case .name: String(localized: "Nombre")
+            case .orders: String(localized: "Más cortes")
+            case .recent: String(localized: "Recientes")
+            }
+        }
     }
 
     @State private var search = ""
@@ -70,7 +78,7 @@ struct StylesView: View {
         .toolbar {
             ToolbarItem(placement: .secondaryAction) {
                 Picker("Ordenar", selection: $sort) {
-                    ForEach(SortOrder.allCases) { Text($0.rawValue).tag($0) }
+                    ForEach(SortOrder.allCases) { Text($0.title).tag($0) }
                 }
             }
             AddToolbarButton(title: "Nuevo estilo") { editor = .new }
@@ -80,7 +88,7 @@ struct StylesView: View {
             ZoomableImageViewer(data: style.imageData, title: style.displayName)
         }
         .confirmDelete(
-            "¿Eliminar \(pendingDelete?.displayName ?? "estilo")?", item: $pendingDelete,
+            "¿Eliminar \(pendingDelete?.displayName ?? String(localized: "estilo"))?", item: $pendingDelete,
             message: "Los cortes que lo usan quedarán sin estilo."
         ) { style in
             let name = style.displayName
@@ -133,7 +141,7 @@ private struct StyleCard: View {
                             Text(style.displayName)
                                 .font(.headline)
                                 .lineLimit(2)
-                            Text(orderCount == 1 ? "1 corte" : "\(orderCount) cortes")
+                            Text("\(orderCount) cortes")
                                 .font(.caption.weight(.medium))
                                 .opacity(0.85)
                         }
@@ -219,7 +227,7 @@ struct StyleEditorSheet: View {
                 TextField("Nombre o clave (p. ej. Falda plisada SK-210)", text: $name)
             }
             Section("Foto") {
-                PhotoField(title: name.isEmpty ? "Estilo" : name, data: $imageData)
+                PhotoField(title: name.isEmpty ? "Estilo" : .verbatim(name), data: $imageData)
             }
         }
         .onAppear {

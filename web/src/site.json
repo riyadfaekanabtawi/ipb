@@ -5,9 +5,9 @@
   "contact_endpoint": "https://trama-contact-api.vercel.app/api/contact",
   "lastmod": "2026-10-25",
   "languages": [
-    { "code": "es", "dir": "", "hreflang": ["es-MX", "es"], "label": "ES", "flag": "🇲🇽", "name": "Español", "default": true, "legal": { "privacy": "privacidad.html", "terms": "terminos.html" } },
-    { "code": "en", "dir": "en/", "hreflang": ["en"], "label": "EN", "flag": "🇺🇸", "name": "English", "legal": { "privacy": "privacy.html", "terms": "terms.html" } },
-    { "code": "pt", "dir": "pt/", "hreflang": ["pt-BR", "pt"], "label": "PT", "flag": "🇧🇷", "name": "Português", "legal": { "privacy": "privacidade.html", "terms": "termos.html" } }
+    { "code": "es", "dir": "", "shots": "assets/shots/", "hreflang": ["es-MX", "es"], "label": "ES", "flag": "🇲🇽", "name": "Español", "default": true, "legal": { "privacy": "privacidad.html", "terms": "terminos.html" } },
+    { "code": "en", "dir": "en/", "shots": "assets/shots/en/", "hreflang": ["en"], "label": "EN", "flag": "🇺🇸", "name": "English", "legal": { "privacy": "privacy.html", "terms": "terms.html" } },
+    { "code": "pt", "dir": "pt/", "shots": "assets/shots/pt/", "hreflang": ["pt-BR", "pt"], "label": "PT", "flag": "🇧🇷", "name": "Português", "legal": { "privacy": "privacidade.html", "terms": "termos.html" } }
   ],
   "legal": {
     "_comment": "Legal pages (web/src/legal.html + web/src/legal/{lang}.json). Set owner (legal name) and address before relying on them.",

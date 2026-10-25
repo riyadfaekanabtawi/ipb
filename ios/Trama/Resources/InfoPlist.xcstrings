@@ -1,0 +1,33 @@
+{
+  "sourceLanguage" : "es-MX",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Home screen name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Trama" } },
+        "es-MX" : { "stringUnit" : { "state" : "translated", "value" : "Trama" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Trama" } }
+      }
+    },
+    "NSCameraUsageDescription" : {
+      "comment" : "Camera permission prompt",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Trama uses the camera to photograph styles, samples and projects." } },
+        "es-MX" : { "stringUnit" : { "state" : "translated", "value" : "Trama usa la cámara para fotografiar estilos, muestras y proyectos." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "O Trama usa a câmera para fotografar modelos, amostras e projetos." } }
+      }
+    },
+    "NSPhotoLibraryUsageDescription" : {
+      "comment" : "Photo library permission prompt",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Trama uses your photos to attach images to styles and projects." } },
+        "es-MX" : { "stringUnit" : { "state" : "translated", "value" : "Trama usa tus fotos para adjuntar imágenes de estilos y proyectos." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "O Trama usa suas fotos para anexar imagens a modelos e projetos." } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

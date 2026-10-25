@@ -6,7 +6,14 @@ struct PartyEditorSheet: View {
     enum Kind {
         case client, supplier
 
-        var noun: String { self == .client ? "cliente" : "proveedor" }
+        func title(isNew: Bool) -> LocalizedStringKey {
+            switch (self, isNew) {
+            case (.client, true): "Nuevo cliente"
+            case (.client, false): "Editar cliente"
+            case (.supplier, true): "Nuevo proveedor"
+            case (.supplier, false): "Editar proveedor"
+            }
+        }
     }
 
     var kind: Kind
@@ -41,7 +48,7 @@ struct PartyEditorSheet: View {
 
     var body: some View {
         FormSheet(
-            title: isNew ? "Nuevo \(kind.noun)" : "Editar \(kind.noun)",
+            title: kind.title(isNew: isNew),
             canSave: !name.trimmingCharacters(in: .whitespaces).isEmpty,
             onSave: save
         ) {
@@ -130,7 +137,7 @@ struct PartyCard<Footer: View>: View {
                 AvatarView(name: name, size: 52)
                 VStack(alignment: .leading, spacing: 3) {
                     Text(name).font(.title3.weight(.bold)).lineLimit(1)
-                    Label(address ?? "Sin dirección", systemImage: "mappin.and.ellipse")
+                    Label(address ?? String(localized: "Sin dirección"), systemImage: "mappin.and.ellipse")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)

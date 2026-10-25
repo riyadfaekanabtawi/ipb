@@ -78,7 +78,7 @@ struct OrderDetailView: View {
                 }
                 Text("\(order.clientName) · Lista \(order.list ?? "—")").font(.title3).foregroundStyle(.secondary)
                 HStack(spacing: 8) {
-                    Pill(text: order.garment ?? "Prenda", symbol: "tshirt", tint: Theme.brand)
+                    Pill(text: order.garment ?? String(localized: "Prenda"), symbol: "tshirt", tint: Theme.brand)
                     Pill(text: order.styleName, symbol: "paintpalette", tint: Theme.accent(for: order.styleName))
                     DaysLeftBadge(date: order.clientDate)
                 }
@@ -119,7 +119,7 @@ struct OrderDetailView: View {
             }
             .frame(width: 150, height: 150)
             VStack(spacing: 4) {
-                Text("\(Fmt.int(order.remainingQuantity)) prendas por asignar").font(.headline)
+                Text("\(order.remainingQuantity) prendas por asignar").font(.headline)
                 Text("de \(Fmt.int(Int(order.quantity)))").font(.subheadline).foregroundStyle(.secondary)
             }
             Button {
@@ -166,7 +166,7 @@ private struct AssignmentLine: View {
             AvatarView(name: assignment.plantName, size: 44, symbol: "building.2.fill")
             VStack(alignment: .leading, spacing: 4) {
                 Text(assignment.plantName).font(.headline)
-                Text("\(Fmt.int(Int(assignment.quantity))) prendas · \(Fmt.money(metrics.revenue)) · \(Fmt.date(assignment.scheduledDate))")
+                Text("\(Int(assignment.quantity)) prendas · \(Fmt.money(metrics.revenue)) · \(Fmt.date(assignment.scheduledDate))")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }

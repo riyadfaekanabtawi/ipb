@@ -79,7 +79,7 @@ struct LegacyImportPanel: View {
         case .running(let step, let total, let resource):
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    Label("Importando \(resource.title.lowercased())…", systemImage: resource.symbol)
+                    Label("Importando \(resource.title.lowercased(with: .current))…", systemImage: resource.symbol)
                         .font(.subheadline.weight(.medium))
                         .contentTransition(.interpolate)
                     Spacer()
@@ -104,7 +104,7 @@ struct LegacyImportPanel: View {
             await model.run(baseURL: baseURL, context: context)
             switch model.phase {
             case .finished(let summary):
-                toasts.show("Importación completa: \(Fmt.int(summary.totalCreated)) nuevos, \(Fmt.int(summary.totalUpdated)) actualizados")
+                toasts.show("Importación completa: \(summary.totalCreated) nuevos, \(summary.totalUpdated) actualizados")
             case .failed(let message):
                 toasts.show(message, style: .error)
             default: break
@@ -135,7 +135,7 @@ private struct LegacyImportResult: View {
                 }
             }
             if summary.imagesDownloaded > 0 {
-                Text("\(Fmt.int(summary.imagesDownloaded)) imágenes descargadas").font(.caption).foregroundStyle(.secondary)
+                Text("\(summary.imagesDownloaded) imágenes descargadas").font(.caption).foregroundStyle(.secondary)
             }
             if summary[.users].created > 0 {
                 Label(
@@ -150,8 +150,8 @@ private struct LegacyImportResult: View {
     }
 
     private func detail(_ count: LegacyImportSummary.Count) -> String {
-        var parts = ["\(count.created) nuevos", "\(count.updated) act."]
-        if count.skipped > 0 { parts.append("\(count.skipped) omitidos") }
+        var parts = [String(localized: "\(count.created) nuevos"), String(localized: "\(count.updated) act.")]
+        if count.skipped > 0 { parts.append(String(localized: "\(count.skipped) omitidos")) }
         return parts.joined(separator: " · ")
     }
 }

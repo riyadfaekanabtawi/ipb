@@ -56,7 +56,7 @@ struct CutBoardView: View {
                         ForEach(plants) { Text($0.displayName).tag(Optional($0)) }
                     }
                 } label: {
-                    Label(plantFilter?.displayName ?? "Todas las plantas", systemImage: "building.2")
+                    Label(plantFilter?.displayName ?? String(localized: "Todas las plantas"), systemImage: "building.2")
                 }
             }
         }
@@ -72,7 +72,7 @@ struct CutBoardView: View {
                     .background(status.tint.gradient, in: .rect(cornerRadius: 10, style: .continuous))
                 VStack(alignment: .leading, spacing: 1) {
                     Text(status.title).font(.headline)
-                    Text("\(items.count) \(items.count == 1 ? "corte" : "cortes") · \(Fmt.int(garments)) prendas")
+                    (Text("\(items.count) cortes") + Text(verbatim: " · ") + Text("\(garments) prendas"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .contentTransition(.numericText())
@@ -142,7 +142,7 @@ struct CutBoardView: View {
             try withAnimation(.spring(duration: 0.35)) {
                 try session.service.move(assignment, to: status)
             }
-            toasts.show("\(assignment.title) → \(status.title)")
+            toasts.show(assignment.title + " → " + status.title)
         } catch {
             toasts.error(error)
         }

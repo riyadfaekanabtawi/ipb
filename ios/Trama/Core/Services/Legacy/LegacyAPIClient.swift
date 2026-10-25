@@ -22,15 +22,15 @@ enum LegacyResource: String, CaseIterable, Identifiable, Sendable {
 
     var title: String {
         switch self {
-        case .plants: "Plantas"
-        case .clients: "Clientes"
-        case .suppliers: "Proveedores"
-        case .styles: "Estilos"
-        case .users: "Usuarios"
-        case .projects: "Proyectos"
-        case .pendingCuts: "Cortes"
-        case .cuts: "Asignaciones"
-        case .reports: "Reportes"
+        case .plants: String(localized: "Plantas")
+        case .clients: String(localized: "Clientes")
+        case .suppliers: String(localized: "Proveedores")
+        case .styles: String(localized: "Estilos")
+        case .users: String(localized: "Usuarios")
+        case .projects: String(localized: "Proyectos")
+        case .pendingCuts: String(localized: "Cortes")
+        case .cuts: String(localized: "Asignaciones")
+        case .reports: String(localized: "Reportes")
         }
     }
 
@@ -65,11 +65,11 @@ enum LegacyError: LocalizedError, Equatable {
 
     var errorDescription: String? {
         switch self {
-        case .invalidURL: "La dirección del servidor anterior no es válida. Usa el formato https://servidor/."
-        case .insecureURL: "iOS bloquea conexiones sin cifrar (http). Usa la dirección https del servidor anterior."
-        case .http(let code, let endpoint): "El servidor respondió \(code) en \(endpoint)."
-        case .malformed(let endpoint): "La respuesta de \(endpoint) no tiene el formato esperado."
-        case .offline: "Sin conexión. Conéctate a internet para importar del sistema anterior."
+        case .invalidURL: String(localized: "La dirección del servidor anterior no es válida. Usa el formato https://servidor/.")
+        case .insecureURL: String(localized: "iOS bloquea conexiones sin cifrar (http). Usa la dirección https del servidor anterior.")
+        case .http(let code, let endpoint): String(localized: "El servidor respondió \(code) en \(endpoint).")
+        case .malformed(let endpoint): String(localized: "La respuesta de \(endpoint) no tiene el formato esperado.")
+        case .offline: String(localized: "Sin conexión. Conéctate a internet para importar del sistema anterior.")
         }
     }
 }

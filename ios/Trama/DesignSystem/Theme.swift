@@ -6,7 +6,7 @@ import UIKit
 /// Name of the customer company shown in the app (set during onboarding or in Ajustes).
 enum Brand {
     static let productName = "Trama"
-    static let tagline = "Control de producción textil"
+    static var tagline: String { String(localized: "Control de producción textil") }
     static let companyKey = "company.name"
 }
 
@@ -73,44 +73,81 @@ extension Color {
 
 // MARK: - Formatting
 
+/// Locale-aware formatting. Amounts are always stored in MXN; only their presentation follows the
+/// user's locale ("$1.8 M" in es-MX, "MX$1.8M" in en, "MX$ 1,8 mi" in pt-BR). Every function takes a
+/// `locale` (default: the app's current locale) so tests can pin one.
 enum Fmt {
     static let currencyCode = "MXN"
 
-    static func money(_ value: Double, compact: Bool = false) -> String {
+    static func money(_ value: Double, compact: Bool = false, locale: Locale = .autoupdatingCurrent) -> String {
+        let style = FloatingPointFormatStyle<Double>.Currency(code: currencyCode, locale: locale)
         if compact, abs(value) >= 10_000 {
-            return "$" + value.formatted(.number.notation(.compactName).precision(.fractionLength(0...1)))
+            // Compact number placed where the locale puts the digits of a currency amount ("$0", "MX$0", "MX$ 0").
+            // (ICU's compact currency is iOS 18+ and yields "1.8 M$" in es-MX.)
+            let number = value.formatted(.number.notation(.compactName).precision(.fractionLength(0...1)).locale(locale))
+            return 0.0.formatted(style.precision(.fractionLength(0))).replacingOccurrences(of: "0", with: number)
         }
-        return value.formatted(.currency(code: currencyCode).precision(.fractionLength(0...2)))
+        return value.formatted(style.precision(.fractionLength(0...2)))
     }
 
-    static func int(_ value: Int) -> String { value.formatted(.number) }
-
-    static func number(_ value: Double, digits: Int = 1) -> String {
-        value.formatted(.number.precision(.fractionLength(0...digits)))
+    static func int(_ value: Int, locale: Locale = .autoupdatingCurrent) -> String {
+        value.formatted(.number.locale(locale))
     }
 
-    static func percent(_ value: Double) -> String {
-        value.formatted(.percent.precision(.fractionLength(0)))
+    static func number(_ value: Double, digits: Int = 1, locale: Locale = .autoupdatingCurrent) -> String {
+        value.formatted(.number.precision(.fractionLength(0...digits)).locale(locale))
     }
 
-    static func date(_ date: Date?) -> String {
+    static func percent(_ value: Double, locale: Locale = .autoupdatingCurrent) -> String {
+        value.formatted(.percent.precision(.fractionLength(0)).locale(locale))
+    }
+
+    static func date(_ date: Date?, locale: Locale = .autoupdatingCurrent) -> String {
         guard let date else { return "—" }
-        return date.formatted(.dateTime.day().month(.abbreviated).year())
+        return date.formatted(.dateTime.day().month(.abbreviated).year().locale(locale))
     }
 
-    static func shortDate(_ date: Date?) -> String {
+    static func shortDate(_ date: Date?, locale: Locale = .autoupdatingCurrent) -> String {
         guard let date else { return "—" }
-        return date.formatted(.dateTime.day().month(.abbreviated))
+        return date.formatted(.dateTime.day().month(.abbreviated).locale(locale))
     }
 
-    static func relativeDays(_ days: Int?) -> String {
-        guard let days else { return "Sin fecha" }
+    static func relativeDays(_ days: Int?, locale: Locale = .autoupdatingCurrent) -> String {
+        let bundle = L10n.bundle(for: locale)
+        guard let days else { return String(localized: "Sin fecha", bundle: bundle, locale: locale) }
         switch days {
-        case ..<(-1): return "Vencido hace \(-days) días"
-        case -1: return "Venció ayer"
-        case 0: return "Vence hoy"
-        case 1: return "Vence mañana"
-        default: return "En \(days) días"
+        case ..<(-1): return String(localized: "Vencido hace \(-days) días", bundle: bundle, locale: locale)
+        case -1: return String(localized: "Venció ayer", bundle: bundle, locale: locale)
+        case 0: return String(localized: "Vence hoy", bundle: bundle, locale: locale)
+        case 1: return String(localized: "Vence mañana", bundle: bundle, locale: locale)
+        default: return String(localized: "En \(days) días", bundle: bundle, locale: locale)
         }
     }
+}
+
+// MARK: - Localization helpers
+
+/// The app ships in Spanish (Mexico, source language), English and Portuguese (Brazil).
+enum L10n {
+    /// Language the app is running in ("es-MX", "en" or "pt-BR").
+    static var language: String { Bundle.main.preferredLocalizations.first ?? "es-MX" }
+
+    /// The `.lproj` bundle matching `locale`, so a pinned locale also pins the translation (tests).
+    /// Falls back to the main bundle, which resolves the user's language.
+    static func bundle(for locale: Locale) -> Bundle {
+        guard locale != .autoupdatingCurrent, let code = locale.language.languageCode?.identifier else { return .main }
+        let region = locale.region?.identifier
+        let candidates = [region.map { "\(code)-\($0)" }, code, code == "es" ? "es-MX" : nil, code == "pt" ? "pt-BR" : nil]
+        for name in candidates.compactMap({ $0 }) {
+            if let path = Bundle.main.path(forResource: name, ofType: "lproj"), let bundle = Bundle(path: path) { return bundle }
+        }
+        return .main
+    }
+}
+
+extension LocalizedStringKey {
+    /// Shows user data (names, codes) or text that is already localized as-is, where an API takes a key.
+    static func verbatim(_ text: String) -> LocalizedStringKey { "\(text)" }
+
+    static func verbatim(_ text: String?) -> LocalizedStringKey? { text.map { "\($0)" } }
 }

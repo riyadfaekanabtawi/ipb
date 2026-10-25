@@ -24,10 +24,10 @@ enum UserPolicy {
 
         var errorDescription: String? {
             switch self {
-            case .cannotDeleteSelf: "No puedes eliminar tu propio usuario."
-            case .cannotDeactivateSelf: "No puedes desactivar tu propio usuario."
-            case .cannotChangeOwnRole: "No puedes cambiar tu propio puesto."
-            case .lastAdmin: "Debe quedar al menos un administrador activo."
+            case .cannotDeleteSelf: String(localized: "No puedes eliminar tu propio usuario.")
+            case .cannotDeactivateSelf: String(localized: "No puedes desactivar tu propio usuario.")
+            case .cannotChangeOwnRole: String(localized: "No puedes cambiar tu propio puesto.")
+            case .lastAdmin: String(localized: "Debe quedar al menos un administrador activo.")
             }
         }
     }

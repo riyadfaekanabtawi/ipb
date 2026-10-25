@@ -60,7 +60,7 @@ struct PlantsView: View {
             PlantEditorSheet(plant: target.plant)
         }
         .confirmDelete(
-            "¿Eliminar \(pendingDelete?.displayName ?? "planta")?", item: $pendingDelete,
+            "¿Eliminar \(pendingDelete?.displayName ?? String(localized: "planta"))?", item: $pendingDelete,
             message: "Solo se pueden eliminar plantas sin cortes asignados."
         ) { plant in
             delete(plant)
@@ -189,7 +189,7 @@ struct ManagersStack: View {
                             }
                     }
                 }
-                Text(managers.count == 1 ? managers[0].fullName : "\(managers.count) gerentes")
+                (managers.count == 1 ? Text(managers[0].fullName) : Text("\(managers.count) gerentes"))
                     .font(.caption.weight(.medium))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)

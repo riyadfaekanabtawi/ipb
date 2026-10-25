@@ -26,7 +26,7 @@
     <xhtml:link rel="alternate" hreflang="pt" href="https://trama-platform.vercel.app/pt/index.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://trama-platform.vercel.app/index.html"/>
     <image:image><image:loc>https://trama-platform.vercel.app/assets/og.jpg</image:loc><image:title>Trama | Garment manufacturing software for the factory floor</image:title></image:image>
-    <image:image><image:loc>https://trama-platform.vercel.app/assets/shots/board.webp</image:loc><image:title>Kanban-style cutting board</image:title></image:image>
+    <image:image><image:loc>https://trama-platform.vercel.app/assets/shots/en/board.webp</image:loc><image:title>Kanban-style cutting board</image:title></image:image>
   </url>
   <url>
     <loc>https://trama-platform.vercel.app/pt/index.html</loc>
@@ -40,7 +40,7 @@
     <xhtml:link rel="alternate" hreflang="pt" href="https://trama-platform.vercel.app/pt/index.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://trama-platform.vercel.app/index.html"/>
     <image:image><image:loc>https://trama-platform.vercel.app/assets/og.jpg</image:loc><image:title>Trama | Software de produção têxtil para confecções</image:title></image:image>
-    <image:image><image:loc>https://trama-platform.vercel.app/assets/shots/board.webp</image:loc><image:title>Quadro de corte estilo kanban</image:title></image:image>
+    <image:image><image:loc>https://trama-platform.vercel.app/assets/shots/pt/board.webp</image:loc><image:title>Quadro de corte estilo kanban</image:title></image:image>
   </url>
   <url>
     <loc>https://trama-platform.vercel.app/privacidad.html</loc>

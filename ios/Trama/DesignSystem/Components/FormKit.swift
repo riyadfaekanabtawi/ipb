@@ -3,8 +3,8 @@ import SwiftUI
 
 /// Standard modal editor: NavigationStack + Form with Cancel / Save.
 struct FormSheet<Content: View>: View {
-    var title: String
-    var saveTitle: String = "Guardar"
+    var title: LocalizedStringKey
+    var saveTitle: LocalizedStringKey = "Guardar"
     var canSave: Bool = true
     var onSave: () -> Void
     @ViewBuilder var content: Content
@@ -34,7 +34,7 @@ struct FormSheet<Content: View>: View {
 
 /// Numeric text field that edits an Int. Empty input maps to 0.
 struct IntField: View {
-    var title: String
+    var title: LocalizedStringKey
     @Binding var value: Int
     var prompt: String = "0"
 
@@ -50,7 +50,7 @@ struct IntField: View {
 
 /// Numeric text field that edits a Double (currency or decimal).
 struct DecimalField: View {
-    var title: String
+    var title: LocalizedStringKey
     @Binding var value: Double
     var currency = false
 
@@ -72,7 +72,7 @@ struct DecimalField: View {
 
 /// Image picker row: photo library or camera, with preview and remove.
 struct PhotoField: View {
-    var title: String = "Imagen"
+    var title: LocalizedStringKey = "Imagen"
     @Binding var data: Data?
 
     @State private var item: PhotosPickerItem?
@@ -80,7 +80,7 @@ struct PhotoField: View {
 
     var body: some View {
         HStack(spacing: 16) {
-            SwatchImage(data: data, name: title, cornerRadius: 14)
+            SwatchImage(data: data, name: "Imagen", cornerRadius: 14)
                 .frame(width: 84, height: 84)
             VStack(alignment: .leading, spacing: 8) {
                 PhotosPicker(selection: $item, matching: .images) {
@@ -234,7 +234,9 @@ struct ZoomableImageViewer: View {
 
 /// Destructive confirmation used before deletes.
 extension View {
-    func confirmDelete(_ title: String, isPresented: Binding<Bool>, message: String? = nil, action: @escaping () -> Void) -> some View {
+    func confirmDelete(
+        _ title: LocalizedStringKey, isPresented: Binding<Bool>, message: LocalizedStringKey? = nil, action: @escaping () -> Void
+    ) -> some View {
         confirmationDialog(title, isPresented: isPresented, titleVisibility: .visible) {
             Button("Eliminar", role: .destructive, action: action)
         } message: {

@@ -2,11 +2,11 @@ import SwiftUI
 
 /// Big-number KPI tile with animated numeric transitions.
 struct KPITile: View {
-    var title: String
+    var title: LocalizedStringKey
     var value: String
     var symbol: String
     var tint: Color = Theme.brand
-    var footnote: String?
+    var footnote: LocalizedStringKey?
     var action: (() -> Void)?
 
     var body: some View {

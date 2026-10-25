@@ -16,7 +16,7 @@ struct Sidebar: View {
             ForEach(AppSection.Group.allCases, id: \.self) { group in
                 let items = session.role.sections.filter { $0.group == group }
                 if !items.isEmpty {
-                    Section(group.rawValue) {
+                    Section(group.title) {
                         ForEach(items) { section in
                             NavigationLink(value: section) {
                                 Label {

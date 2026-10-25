@@ -12,10 +12,10 @@ enum Role: String, CaseIterable, Identifiable, Codable {
 
     var title: String {
         switch self {
-        case .admin: "Administrador"
-        case .plantManager: "Gerente de planta"
-        case .cutManager: "Gerente de cortes"
-        case .shippingManager: "Gerente de envíos"
+        case .admin: String(localized: "Administrador")
+        case .plantManager: String(localized: "Gerente de planta")
+        case .cutManager: String(localized: "Gerente de cortes")
+        case .shippingManager: String(localized: "Gerente de envíos")
         }
     }
 
@@ -69,9 +69,9 @@ enum CutStatus: String, CaseIterable, Identifiable, Codable {
 
     var title: String {
         switch self {
-        case .waiting: "En espera"
-        case .onTable: "En mesa de corte"
-        case .ready: "Listo para confeccionar"
+        case .waiting: String(localized: "En espera")
+        case .onTable: String(localized: "En mesa de corte")
+        case .ready: String(localized: "Listo para confeccionar")
         }
     }
 
@@ -111,17 +111,17 @@ enum ReportKind: String, CaseIterable, Identifiable, Codable {
 
     var title: String {
         switch self {
-        case .plant: "Reporte de planta"
-        case .cut: "Reporte de corte"
-        case .shipment: "Reporte de envío"
+        case .plant: String(localized: "Reporte de planta")
+        case .cut: String(localized: "Reporte de corte")
+        case .shipment: String(localized: "Reporte de envío")
         }
     }
 
     var shortTitle: String {
         switch self {
-        case .plant: "Planta"
-        case .cut: "Corte"
-        case .shipment: "Envío"
+        case .plant: String(localized: "Planta")
+        case .cut: String(localized: "Corte")
+        case .shipment: String(localized: "Envío")
         }
     }
 
@@ -151,9 +151,9 @@ enum ProjectStatus: String, CaseIterable, Identifiable, Codable {
 
     var title: String {
         switch self {
-        case .pending: "Pendiente"
-        case .accepted: "Aceptado"
-        case .declined: "Declinado"
+        case .pending: String(localized: "Pendiente")
+        case .accepted: String(localized: "Aceptado")
+        case .declined: String(localized: "Declinado")
         }
     }
 
@@ -182,9 +182,9 @@ enum OrderAssignmentState: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .unassigned: "Por asignar"
-        case .partial: "Parcial"
-        case .assigned: "Asignado"
+        case .unassigned: String(localized: "Por asignar")
+        case .partial: String(localized: "Parcial")
+        case .assigned: String(localized: "Asignado")
         }
     }
 
@@ -206,20 +206,20 @@ enum AppSection: String, CaseIterable, Identifiable, Hashable {
 
     var title: String {
         switch self {
-        case .dashboard: "Dashboard"
-        case .orders: "Cortes por asignar"
-        case .board: "Tablero de corte"
-        case .production: "Reportes de producción"
-        case .shipments: "Envíos urgentes"
-        case .calendar: "Calendario de plantas"
-        case .plants: "Plantas"
-        case .clients: "Clientes"
-        case .suppliers: "Proveedores"
-        case .styles: "Estilos"
-        case .projects: "Proyectos"
-        case .users: "Usuarios"
-        case .calculator: "Calculadora"
-        case .settings: "Ajustes"
+        case .dashboard: String(localized: "Dashboard")
+        case .orders: String(localized: "Cortes por asignar")
+        case .board: String(localized: "Tablero de corte")
+        case .production: String(localized: "Reportes de producción")
+        case .shipments: String(localized: "Envíos urgentes")
+        case .calendar: String(localized: "Calendario de plantas")
+        case .plants: String(localized: "Plantas")
+        case .clients: String(localized: "Clientes")
+        case .suppliers: String(localized: "Proveedores")
+        case .styles: String(localized: "Estilos")
+        case .projects: String(localized: "Proyectos")
+        case .users: String(localized: "Usuarios")
+        case .calculator: String(localized: "Calculadora")
+        case .settings: String(localized: "Ajustes")
         }
     }
 
@@ -251,6 +251,15 @@ enum AppSection: String, CaseIterable, Identifiable, Hashable {
     }
 
     enum Group: String, CaseIterable {
+        /// Sidebar heading. The raw value is the Spanish source text.
+        var title: String {
+            switch self {
+            case .operations: String(localized: "Operación")
+            case .catalogs: String(localized: "Catálogos")
+            case .tools: String(localized: "Herramientas")
+            }
+        }
+
         case operations = "Operación"
         case catalogs = "Catálogos"
         case tools = "Herramientas"

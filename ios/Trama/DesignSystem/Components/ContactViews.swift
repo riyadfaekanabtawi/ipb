@@ -120,8 +120,8 @@ struct ContactCard: View {
             HStack(spacing: 12) {
                 AvatarView(name: contact.name ?? "?", size: 46)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(contact.name ?? "Sin nombre").font(.headline).lineLimit(1)
-                    Text(contact.role ?? "Sin puesto").font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+                    Text(contact.name ?? String(localized: "Sin nombre")).font(.headline).lineLimit(1)
+                    Text(contact.role ?? String(localized: "Sin puesto")).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
                 }
                 Spacer(minLength: 0)
                 if isPrimary {
@@ -157,7 +157,7 @@ private struct ContactLinkRow: View {
     var symbol: String
     var text: String
     var url: URL
-    var label: String
+    var label: LocalizedStringKey
 
     var body: some View {
         Link(destination: url) {
@@ -214,10 +214,9 @@ struct ContactsSection: View {
         }
     }
 
-    private var subtitle: String {
+    private var subtitle: LocalizedStringKey {
         switch contacts.count {
         case 0: "Sin contactos"
-        case 1: "1 contacto"
         default: "\(contacts.count) contactos"
         }
     }
@@ -231,7 +230,7 @@ struct PrimaryContactLine: View {
         if let first = contacts.first {
             HStack(spacing: 8) {
                 Image(systemName: "person.crop.circle").foregroundStyle(Theme.brand)
-                Text(first.name ?? first.email ?? "Contacto").lineLimit(1)
+                Text(first.name ?? first.email ?? String(localized: "Contacto")).lineLimit(1)
                 if contacts.count > 1 {
                     Text("+\(contacts.count - 1)").foregroundStyle(.secondary)
                 }
