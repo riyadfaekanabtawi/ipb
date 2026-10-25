@@ -137,7 +137,7 @@ fun MainShell(debugStartSection: String? = null) {
     when {
         width >= 1000 -> Row(Modifier.fillMaxSize()) {
             Box(Modifier.width(290.dp).fillMaxHeight()) { sidebar() }
-            host(Modifier.weight(1f).fillMaxHeight())
+            host(Modifier.weight(1f).fillMaxHeight().statusBarsPadding())
         }
         width >= 600 -> Row(Modifier.fillMaxSize()) {
             NavigationRail(containerColor = Tokens.colors.surfaceRaised, modifier = Modifier.statusBarsPadding()) {
@@ -151,7 +151,7 @@ fun MainShell(debugStartSection: String? = null) {
                 Spacer(Modifier.weight(1f))
                 NavigationRailItem(false, { confirmSignOut = true }, icon = { Icon(Icons.AutoMirrored.Filled.Logout, "Cerrar sesión") })
             }
-            host(Modifier.weight(1f).fillMaxHeight())
+            host(Modifier.weight(1f).fillMaxHeight().statusBarsPadding())
         }
         else -> ModalNavigationDrawer(drawerContent = { ModalDrawerSheet { sidebar() } }, drawerState = drawerState) {
             Column(Modifier.fillMaxSize()) {

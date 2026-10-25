@@ -2,6 +2,7 @@ package com.nevutech.trama
 
 import android.app.Application
 import android.content.Context
+import com.nevutech.trama.core.data.CatalogService
 import com.nevutech.trama.core.data.ImageStore
 import com.nevutech.trama.core.data.ProductionService
 import com.nevutech.trama.core.data.Session
@@ -24,6 +25,8 @@ class AppContainer(context: Context, val db: TramaDatabase = TramaDatabase.build
 
     /** Production writes stamped with the signed-in user's name. */
     fun production(): ProductionService = session.service(db)
+
+    fun catalog(): CatalogService = CatalogService(db, images)
 }
 
 class TramaApplication : Application() {

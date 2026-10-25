@@ -175,10 +175,7 @@ object BackupService {
 
     /** Stores [data] untouched so restored images match the backup byte for byte. */
     private fun saveRaw(images: ImageStore, data: ByteArray): String {
-        // An empty payload is not a decodable image, so ImageStore keeps it as-is; then fill it.
-        val name = images.save(ByteArray(0))
-        images.file(name)?.writeBytes(data)
-        return name
+        return images.saveRaw(data)
     }
 
     // Coding

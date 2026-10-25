@@ -24,6 +24,13 @@ class ImageStore(context: Context) {
         return name
     }
 
+    /** Stores bytes untouched (backup restore keeps images byte-identical). */
+    fun saveRaw(bytes: ByteArray): String {
+        val name = "${newId()}.jpg"
+        File(dir, name).writeBytes(bytes)
+        return name
+    }
+
     fun save(context: Context, uri: Uri): String? =
         context.contentResolver.openInputStream(uri)?.use { save(it.readBytes()) }
 

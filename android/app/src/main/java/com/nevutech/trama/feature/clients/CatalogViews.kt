@@ -145,8 +145,7 @@ fun mapsLink(address: String?): String? =
  * top app bar that already sits below the status bar, mirroring its own layout switch.
  */
 @Composable
-fun Modifier.sectionTopInset(): Modifier =
-    if (androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp >= 600) statusBarsPadding() else this
+fun Modifier.sectionTopInset(): Modifier = this // MainShell pads the status bar now
 
 /**
  * Scrolling catalog page: a full-width header (title, search, actions) above an adaptive grid.
@@ -552,7 +551,7 @@ fun WithContextMenu(menu: @Composable ColumnScope.(close: () -> Unit) -> Unit, c
 @Composable
 fun rememberCatalog(): com.nevutech.trama.core.data.CatalogService {
     val app = LocalApp.current
-    return remember(app) { com.nevutech.trama.core.data.CatalogService(app.db, app.images) }
+    return remember(app) { app.catalog() }
 }
 
 /** Toasts from composables without reaching into the container each time. */

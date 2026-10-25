@@ -99,7 +99,7 @@ import com.nevutech.trama.designsystem.Tokens
 import com.nevutech.trama.designsystem.TramaCard
 import com.nevutech.trama.designsystem.TramaField
 import com.nevutech.trama.designsystem.TramaScreen
-import com.nevutech.trama.feature.dashboard.rememberIsOnline
+import com.nevutech.trama.app.rememberIsOnline
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
