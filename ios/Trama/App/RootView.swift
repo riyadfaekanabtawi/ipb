@@ -32,6 +32,14 @@ struct RootView: View {
         .onChange(of: connectivity.isOnline) { wasOnline, isOnline in
             if isOnline, !wasOnline { sync.requestSync(after: .seconds(1)) }
         }
+        // While the app is in the foreground, pull other devices' changes every 30 s (same as the web app).
+        .task(id: scenePhase) {
+            guard scenePhase == .active else { return }
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(30))
+                if !Task.isCancelled, connectivity.isOnline { sync.requestSync() }
+            }
+        }
     }
 }
 
