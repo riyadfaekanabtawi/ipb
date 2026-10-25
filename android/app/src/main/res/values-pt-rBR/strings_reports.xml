@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Production reports -->
+    <string name="reports_title_plant">Produção · %1$s</string>
+    <string name="reports_no_plant_title">Nenhuma unidade atribuída</string>
+    <string name="reports_no_plant_message">Peça ao administrador que atribua uma unidade a você para ver a produção dela.</string>
+    <string name="reports_export_csv">Exportar CSV</string>
+    <string name="reports_search_placeholder">Corte, lista, modelo, cliente…</string>
+    <string name="reports_date_range">%1$s – %2$s</string>
+    <string name="reports_filter_pending_shipment">Com peças a expedir</string>
+    <string name="reports_clear_filters">Limpar</string>
+    <string name="reports_no_results_message">Ajuste ou limpe os filtros.</string>
+    <string name="reports_empty_title">Ainda não há cortes em produção</string>
+    <string name="reports_empty_message">Aloque cortes às unidades para vê-los aqui.</string>
+    <string name="reports_filter_by_client_date">Filtrar por data do cliente</string>
+    <string name="reports_date_from">De</string>
+    <string name="reports_date_to">Até</string>
+    <string name="reports_sort">Ordenar</string>
+    <string name="reports_sort_by">Ordenar por</string>
+    <string name="reports_sort_ascending">Crescente</string>
+    <string name="reports_sort_descending">Decrescente</string>
+    <string name="reports_total_quantity">Quantidade total</string>
+    <string name="reports_produced">Produzidas</string>
+    <string name="reports_ironing">Passadoria</string>
+    <string name="reports_packing">Embalagem</string>
+    <string name="reports_warehouse">Estoque</string>
+    <string name="reports_shipped">Expedidas</string>
+    <string name="reports_to_ship_total">A expedir</string>
+    <string name="reports_revenue_total">Receita</string>
+    <string name="reports_row_client_list">%1$s · Lista %2$s</string>
+    <string name="reports_cut_done">Cortadas</string>
+    <string name="reports_to_ship">A expedir</string>
+    <string name="reports_delivery">Entrega</string>
+    <string name="reports_revenue">Receita</string>
+    <string name="reports_share_subject">Relatório de produção · Trama</string>
+
+    <!-- Urgent shipments -->
+    <string name="shipments_overdue">Vencidas</string>
+    <string name="shipments_garments_to_ship">Peças a expedir</string>
+    <string name="shipments_empty_title">Nenhuma expedição urgente</string>
+    <plurals name="shipments_empty_message">
+        <item quantity="one">Nenhum corte com peças pendentes vence no próximo %1$d dia.</item>
+        <item quantity="many">Nenhum corte com peças pendentes vence nos próximos %1$d dias.</item>
+        <item quantity="other">Nenhum corte com peças pendentes vence nos próximos %1$d dias.</item>
+    </plurals>
+    <plurals name="shipments_next_days">
+        <item quantity="one">Próximo %1$d dia</item>
+        <item quantity="many">Próximos %1$d dias</item>
+        <item quantity="other">Próximos %1$d dias</item>
+    </plurals>
+    <plurals name="shipments_window_description">
+        <item quantity="one">Janela: %1$d dia. Entregas dentro deste prazo ou vencidas são consideradas urgentes</item>
+        <item quantity="many">Janela: %1$d dias. Entregas dentro deste prazo ou vencidas são consideradas urgentes</item>
+        <item quantity="other">Janela: %1$d dias. Entregas dentro deste prazo ou vencidas são consideradas urgentes</item>
+    </plurals>
+    <plurals name="shipments_window">
+        <item quantity="one">Janela: %1$d dia</item>
+        <item quantity="many">Janela: %1$d dias</item>
+        <item quantity="other">Janela: %1$d dias</item>
+    </plurals>
+    <plurals name="shipments_days_count">
+        <item quantity="one">%1$d dia</item>
+        <item quantity="many">%1$d dias</item>
+        <item quantity="other">%1$d dias</item>
+    </plurals>
+    <plurals name="shipments_days_unit" tools:ignore="ImpliedQuantity">
+        <item quantity="one">dia</item>
+        <item quantity="many">dias</item>
+        <item quantity="other">dias</item>
+    </plurals>
+    <plurals name="shipments_days_late_unit" tools:ignore="ImpliedQuantity">
+        <item quantity="one">dia de atraso</item>
+        <item quantity="many">dias de atraso</item>
+        <item quantity="other">dias de atraso</item>
+    </plurals>
+    <string name="shipments_fewer_days">Menos dias</string>
+    <string name="shipments_more_days">Mais dias</string>
+    <string name="shipments_delivery_on">Entrega %1$s</string>
+    <string name="shipments_shipped_of">%1$s de %2$s expedidas</string>
+    <string name="shipments_to_ship_count">%1$s a expedir</string>
+    <string name="shipments_record_shipment">Registrar expedição</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_good_morning">Bom dia</string>
+    <string name="dashboard_good_afternoon">Boa tarde</string>
+    <string name="dashboard_good_evening">Boa noite</string>
+    <string name="dashboard_greeting_name">%1$s, %2$s</string>
+    <string name="dashboard_no_urgent">Nenhuma expedição urgente</string>
+    <plurals name="dashboard_urgent_count">
+        <item quantity="one">%1$s expedição urgente</item>
+        <item quantity="many">%1$s expedições urgentes</item>
+        <item quantity="other">%1$s expedições urgentes</item>
+    </plurals>
+    <string name="dashboard_all_assigned">tudo alocado</string>
+    <plurals name="dashboard_garments_to_assign">
+        <item quantity="one">%1$s peça a alocar</item>
+        <item quantity="many">%1$s peças a alocar</item>
+        <item quantity="other">%1$s peças a alocar</item>
+    </plurals>
+    <string name="dashboard_online">On-line</string>
+    <string name="dashboard_offline">Sem conexão · modo local</string>
+    <string name="dashboard_updated_at">Atualizado às %1$s</string>
+    <string name="dashboard_kpi_revenue">Receita em produção</string>
+    <plurals name="dashboard_kpi_assignments">
+        <item quantity="one">%1$s alocação</item>
+        <item quantity="many">%1$s alocações</item>
+        <item quantity="other">%1$s alocações</item>
+    </plurals>
+    <string name="dashboard_kpi_to_assign">Peças a alocar</string>
+    <plurals name="dashboard_kpi_pending_cuts">
+        <item quantity="one">%1$s corte pendente</item>
+        <item quantity="many">%1$s cortes pendentes</item>
+        <item quantity="other">%1$s cortes pendentes</item>
+    </plurals>
+    <string name="dashboard_kpi_in_production">Em produção</string>
+    <string name="dashboard_kpi_unfinished_cuts">Cortes não concluídos</string>
+    <plurals name="dashboard_next_days">
+        <item quantity="one">Próximo %1$d dia</item>
+        <item quantity="many">Próximos %1$d dias</item>
+        <item quantity="other">Próximos %1$d dias</item>
+    </plurals>
+    <string name="dashboard_kpi_to_ship">A expedir</string>
+    <string name="dashboard_kpi_a11y">%1$s: %2$s. %3$s</string>
+    <string name="dashboard_capacity_title">Capacidade das unidades</string>
+    <string name="dashboard_capacity_used">%1$s de %2$s · %3$s</string>
+    <string name="dashboard_capacity_subtitle">Usado vs. capacidade mensal</string>
+    <string name="dashboard_no_plants">Nenhuma unidade</string>
+    <string name="dashboard_no_plants_message">Cadastre unidades para ver a capacidade delas.</string>
+    <string name="dashboard_pipeline_title">Mesa de corte</string>
+    <string name="dashboard_pipeline_subtitle">Alocações por status</string>
+    <string name="dashboard_pipeline_board">Quadro</string>
+    <string name="dashboard_no_assignments">Nenhuma alocação</string>
+    <string name="dashboard_no_assignments_message">Aloque cortes a uma unidade para vê-los aqui.</string>
+    <string name="dashboard_pipeline_open">Abrir o quadro de corte</string>
+    <plurals name="dashboard_cuts_count">
+        <item quantity="one">%1$s corte</item>
+        <item quantity="many">%1$s cortes</item>
+        <item quantity="other">%1$s cortes</item>
+    </plurals>
+    <plurals name="dashboard_cuts_caption" tools:ignore="ImpliedQuantity">
+        <item quantity="one">corte</item>
+        <item quantity="many">cortes</item>
+        <item quantity="other">cortes</item>
+    </plurals>
+    <string name="dashboard_revenue_title">Receita programada %1$s</string>
+    <string name="dashboard_revenue_subtitle">%1$s por mês de produção, por unidade</string>
+    <string name="dashboard_revenue_empty">Nenhuma receita programada em %1$s</string>
+    <string name="dashboard_revenue_empty_message">As alocações às unidades aparecerão aqui por mês.</string>
+    <string name="dashboard_revenue_a11y">Receita programada por mês em %1$s: %2$s</string>
+    <string name="dashboard_urgent_subtitle">Por data do cliente</string>
+    <plurals name="dashboard_urgent_empty_message">
+        <item quantity="one">Tudo em dia para o próximo %1$d dia.</item>
+        <item quantity="many">Tudo em dia para os próximos %1$d dias.</item>
+        <item quantity="other">Tudo em dia para os próximos %1$d dias.</item>
+    </plurals>
+    <string name="dashboard_urgent_detail">%1$s · %2$s a expedir</string>
+    <string name="dashboard_pending_subtitle">Entregas mais próximas</string>
+    <string name="dashboard_pending_empty">Tudo alocado</string>
+    <string name="dashboard_pending_empty_message">Não há peças pendentes de alocação a uma unidade.</string>
+    <plurals name="dashboard_pending_a11y">
+        <item quantity="one">Corte %1$s, %2$s, %3$s peça a alocar</item>
+        <item quantity="many">Corte %1$s, %2$s, %3$s peças a alocar</item>
+        <item quantity="other">Corte %1$s, %2$s, %3$s peças a alocar</item>
+    </plurals>
+    <string name="dashboard_client_date">Cliente %1$s</string>
+    <string name="dashboard_activity_title">Atividade recente</string>
+    <string name="dashboard_activity_subtitle">Últimos relatórios de produção</string>
+    <string name="dashboard_activity_empty">Nenhum relatório ainda</string>
+    <string name="dashboard_activity_empty_message">Os relatórios de unidade, corte e expedição aparecerão aqui.</string>
+    <string name="dashboard_no_author">Sem autor</string>
+    <string name="dashboard_time_now">agora</string>
+    <string name="dashboard_time_yesterday">ontem</string>
+    <plurals name="dashboard_time_minutes_ago">
+        <item quantity="one">há %1$d minuto</item>
+        <item quantity="many">há %1$d minutos</item>
+        <item quantity="other">há %1$d minutos</item>
+    </plurals>
+    <plurals name="dashboard_time_hours_ago">
+        <item quantity="one">há %1$d hora</item>
+        <item quantity="many">há %1$d horas</item>
+        <item quantity="other">há %1$d horas</item>
+    </plurals>
+    <plurals name="dashboard_time_days_ago">
+        <item quantity="one">há %1$d dia</item>
+        <item quantity="many">há %1$d dias</item>
+        <item quantity="other">há %1$d dias</item>
+    </plurals>
+    <plurals name="dashboard_time_weeks_ago">
+        <item quantity="one">há %1$d semana</item>
+        <item quantity="many">há %1$d semanas</item>
+        <item quantity="other">há %1$d semanas</item>
+    </plurals>
+    <plurals name="dashboard_time_months_ago">
+        <item quantity="one">há %1$d mês</item>
+        <item quantity="many">há %1$d meses</item>
+        <item quantity="other">há %1$d meses</item>
+    </plurals>
+    <plurals name="dashboard_time_years_ago">
+        <item quantity="one">há %1$d ano</item>
+        <item quantity="many">há %1$d anos</item>
+        <item quantity="other">há %1$d anos</item>
+    </plurals>
+
+    <!-- Charts -->
+    <string name="chart_previous_month">Mês anterior</string>
+    <string name="chart_next_month">Próximo mês</string>
+    <string name="chart_selected_month">Mês selecionado: %1$s. Toque duas vezes para voltar ao mês atual</string>
+    <string name="chart_point_used">%1$s: %2$s usado</string>
+    <string name="chart_value_of_max">%1$s de %2$s</string>
+    <string name="chart_select_label">Selecionar %1$s</string>
+
+    <!-- Calculator -->
+    <string name="calculator_cleared">Calculadora limpa</string>
+    <string name="calculator_summary_title">Cálculo de produção</string>
+    <string name="calculator_summary_copied">Resumo copiado</string>
+    <string name="calculator_constants_saved">Constantes salvas</string>
+    <string name="calculator_share_summary">Compartilhar resumo</string>
+    <string name="calculator_copy_summary">Copiar resumo</string>
+    <string name="calculator_constants">Constantes</string>
+    <string name="calculator_clear">Limpar</string>
+    <string name="calculator_unit_garments">peças</string>
+    <string name="calculator_unit_minutes">min</string>
+    <string name="calculator_unit_days">dias</string>
+    <string name="calculator_unit_months">meses</string>
+    <string name="calculator_style_quantity">Quantidade do modelo</string>
+    <string name="calculator_real_minutes">Minutagem real</string>
+    <string name="calculator_client_minutes">Minutagem do cliente</string>
+    <string name="calculator_operators">Operadores</string>
+    <string name="calculator_internal_unit_price">Preço unitário interno</string>
+    <string name="calculator_price_per_style">Preço por modelo</string>
+    <string name="calculator_operating_expenses">Despesas operacionais</string>
+    <string name="calculator_real_production_minute">Minuto real de produção</string>
+    <string name="calculator_line_operators">Operadores de linha</string>
+    <string name="calculator_real_daily_production">Produção real diária</string>
+    <string name="calculator_plant_picker_a11y">Unidade: %1$s. Toque para escolher</string>
+    <string name="calculator_gross_income">Receita bruta</string>
+    <string name="calculator_net_income">Receita líquida</string>
+    <string name="calculator_gross_income_hint">Quantidade × preço por modelo</string>
+    <string name="calculator_net_income_hint">Bruta − despesas operacionais</string>
+    <string name="calculator_price_per_real_minute">Preço por minuto real</string>
+    <string name="calculator_price_per_real_minute_hint">Preço por modelo ÷ minutagem real</string>
+    <string name="calculator_daily_goal">Meta diária</string>
+    <string name="calculator_daily_goal_hint">Operadores × minutos por dia ÷ minutagem</string>
+    <string name="calculator_daily_goal_needs_minutes">Requer minutos por dia</string>
+    <string name="calculator_weekly_production">Produção semanal</string>
+    <string name="calculator_weekly_production_hint">Meta diária × dias por semana</string>
+    <string name="calculator_estimated_days">Dias estimados</string>
+    <string name="calculator_estimated_days_hint">Quantidade ÷ meta diária</string>
+    <string name="calculator_estimated_months">Meses estimados</string>
+    <string name="calculator_estimated_months_hint">Dias ÷ dias por mês</string>
+    <string name="calculator_real_production_minute_hint">Minutos por dia × operadores ÷ produção diária</string>
+    <string name="calculator_no_value">sem valor</string>
+    <string name="calculator_minute_efficiency">Eficiência da minutagem</string>
+    <string name="calculator_minute_efficiency_hint">Minutagem do cliente ÷ real</string>
+    <string name="calculator_constants_banner_title">Configure as constantes da unidade</string>
+    <string name="calculator_constants_banner_message">Minutos por operador e dias úteis são necessários para a meta diária, a produção semanal e os prazos estimados.</string>
+    <string name="calculator_configure">Configurar</string>
+    <string name="calculator_per_operator">Por operador</string>
+    <string name="calculator_minutes_per_day">Minutos por dia</string>
+    <string name="calculator_minutes_per_week">Minutos por semana</string>
+    <string name="calculator_minutes_per_month">Minutos por mês</string>
+    <string name="calculator_calendar">Calendário</string>
+    <string name="calculator_work_days_per_week">Dias úteis por semana</string>
+    <string name="calculator_work_days_per_month">Dias úteis por mês</string>
+    <string name="calculator_constants_note">Ficam salvas neste dispositivo e são usadas em todos os cálculos.</string>
+    <string name="calculator_summary_header">Cálculo de produção · Trama</string>
+    <string name="calculator_summary_line">%1$s: %2$s</string>
+    <string name="calculator_summary_quantity">Quantidade: %1$s peças · Minutagem real %2$s · cliente %3$s</string>
+    <string name="calculator_summary_operators">Operadores: %1$s · Preço por modelo %2$s · Despesas %3$s</string>
+</resources>

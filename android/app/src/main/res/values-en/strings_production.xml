@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Cut orders list -->
+    <string name="orders_kpi_pending_cuts">Pending cuts</string>
+    <string name="orders_kpi_garments_to_assign">Garments to assign</string>
+    <string name="orders_kpi_value_to_assign">Value to assign</string>
+    <string name="orders_filter_assigned">Assigned</string>
+    <string name="orders_search_placeholder">Code, list, client, style…</string>
+    <string name="orders_empty_title">No cuts here</string>
+    <string name="orders_empty_message">Every cut in this filter is up to date.</string>
+    <string name="orders_no_results_message">Try another code, list or client.</string>
+    <string name="orders_new">New cut</string>
+    <string name="orders_edit">Edit cut</string>
+    <string name="orders_delete_title">Delete cut %1$s?</string>
+    <string name="orders_delete_message">Its assignments without reports will be deleted too.</string>
+    <string name="orders_deleted">Cut deleted</string>
+    <string name="orders_open">Open cut</string>
+    <string name="orders_options">Options</string>
+    <string name="orders_options_for">Options for cut %1$s</string>
+    <string name="orders_list_label">List %1$s</string>
+    <string name="orders_remaining_of">%1$s of %2$s to assign</string>
+
+    <!-- Cut order detail -->
+    <string name="orders_assign_to_plant">Assign to plant</string>
+    <string name="orders_client_and_list">%1$s · List %2$s</string>
+    <string name="orders_garment_fallback">Garment</string>
+    <string name="orders_detail">Details</string>
+    <string name="orders_total_revenue">Total revenue</string>
+    <string name="orders_edited_by">Edited by</string>
+    <string name="orders_assigned_ring">assigned</string>
+    <plurals name="orders_garments_to_assign">
+        <item quantity="one">%1$s garment to assign</item>
+        <item quantity="other">%1$s garments to assign</item>
+    </plurals>
+    <string name="orders_of_total">of %1$s</string>
+    <string name="orders_assignments_title">Assignments</string>
+    <string name="orders_assignments_subtitle">Where this cut is being produced</string>
+    <string name="orders_no_assignments">Not assigned</string>
+    <string name="orders_no_assignments_message">Assign garments to a plant based on its monthly capacity.</string>
+    <string name="orders_unassign_title">Remove this assignment?</string>
+    <string name="orders_unassign_message">The garments go back to being unassigned.</string>
+    <string name="orders_unassign">Remove assignment</string>
+    <string name="orders_unassigned">Assignment removed</string>
+    <string name="orders_assignment_options">Assignment options</string>
+    <plurals name="orders_assignment_line">
+        <item quantity="one">%1$s garment · %2$s · %3$s</item>
+        <item quantity="other">%1$s garments · %2$s · %3$s</item>
+    </plurals>
+
+    <!-- Cut order editor -->
+    <string name="orders_section_identification">Identification</string>
+    <string name="orders_field_code">Cut code</string>
+    <string name="orders_field_list">List</string>
+    <string name="orders_field_garment">Garment (e.g. Skirt, Jeans)</string>
+    <string name="orders_section_client_style">Client and style</string>
+    <string name="orders_section_quantity_price">Quantity and price</string>
+    <string name="orders_total_revenue_value">Total revenue: %1$s</string>
+    <string name="orders_section_dates">Dates</string>
+    <string name="orders_field_client_delivery_date">Client delivery date</string>
+    <string name="orders_created">Cut %1$s created</string>
+    <string name="orders_updated">Cut %1$s updated</string>
+
+    <!-- Assign sheet -->
+    <string name="assign_ui_title">Assign %1$s</string>
+    <plurals name="assign_ui_pending_of">
+        <item quantity="one">%1$s garment pending of %2$s</item>
+        <item quantity="other">%1$s garments pending of %2$s</item>
+    </plurals>
+    <plurals name="assign_ui_garments_unit">
+        <item quantity="one">garment</item>
+        <item quantity="other">garments</item>
+    </plurals>
+    <string name="assign_ui_all">All</string>
+    <string name="assign_ui_value">Assignment value</string>
+    <string name="assign_ui_month_title">Production month</string>
+    <string name="assign_ui_month_subtitle">Each plant\'s capacity is monthly</string>
+    <string name="assign_ui_style_distribution">This style is already produced at</string>
+    <string name="assign_ui_capacity_of">Capacity for %1$s</string>
+    <string name="assign_ui_no_plants">No plants</string>
+    <string name="assign_ui_no_plants_message">Create a plant in Catalogs → Plants.</string>
+    <plurals name="assign_ui_summary">
+        <item quantity="one">%1$s garment → %2$s</item>
+        <item quantity="other">%1$s garments → %2$s</item>
+    </plurals>
+    <string name="assign_ui_value_in_month">%1$s in %2$s</string>
+    <string name="assign_ui_pick_plant">Pick a plant</string>
+    <string name="assign_ui_assign">Assign</string>
+    <plurals name="assign_ui_done">
+        <item quantity="one">Assigned %1$s garment to %2$s</item>
+        <item quantity="other">Assigned %1$s garments to %2$s</item>
+    </plurals>
+    <string name="assign_ui_max_per_month">Max. %1$s/month</string>
+    <string name="assign_ui_fits">Fits</string>
+    <string name="assign_ui_exceeds">Exceeds</string>
+    <string name="assign_ui_used">Used %1$s</string>
+    <string name="assign_ui_available">Available %1$s</string>
+
+    <!-- Cutting board -->
+    <string name="board_moved">%1$s → %2$s</string>
+    <string name="board_search_placeholder">Search cut, client, plant…</string>
+    <string name="board_all_plants">All plants</string>
+    <string name="board_hide_shipped">Hide shipped</string>
+    <string name="board_move_not_allowed">Only administrators and cutting managers can move cuts.</string>
+    <plurals name="board_column_summary">
+        <item quantity="one">%1$d cut · %2$s garments</item>
+        <item quantity="other">%1$d cuts · %2$s garments</item>
+    </plurals>
+    <string name="board_drop_here">Drag cuts here</string>
+    <string name="board_no_cuts">No cuts</string>
+    <string name="board_move_to">Move to %1$s</string>
+    <string name="board_move_cut">Move %1$s</string>
+
+    <!-- Shared production components -->
+    <string name="production_clear_search">Clear search</string>
+    <string name="production_stage_planned">Planned</string>
+    <string name="production_stage_cut">Cut</string>
+    <string name="production_stage_produced">Produced</string>
+    <string name="production_stage_ironing">Ironing</string>
+    <string name="production_stage_packing">Packing</string>
+    <string name="production_stage_warehouse">In warehouse</string>
+    <string name="production_stage_shipped">Shipped</string>
+    <plurals name="production_garments_count">
+        <item quantity="one">%1$s garment</item>
+        <item quantity="other">%1$s garments</item>
+    </plurals>
+    <string name="production_to_ship">To ship</string>
+    <string name="production_to_ship_count">%1$s to ship</string>
+    <string name="production_revenue">Revenue</string>
+    <string name="production_sort_client_date">Delivery date</string>
+
+    <!-- Report editor -->
+    <string name="production_report_edit_plant">Edit plant report</string>
+    <string name="production_report_edit_cut">Edit cut report</string>
+    <string name="production_report_edit_shipment">Edit shipment report</string>
+    <string name="production_report_saved_plant">Plant report for %1$s saved</string>
+    <string name="production_report_saved_cut">Cut report for %1$s saved</string>
+    <string name="production_report_saved_shipment">Shipment report for %1$s saved</string>
+    <string name="production_report_updated">Report updated</string>
+    <string name="production_report_submit">Submit</string>
+    <string name="production_cut_title">Cut %1$s</string>
+    <plurals name="production_report_header">
+        <item quantity="one">%1$s · %2$s garment · %3$s</item>
+        <item quantity="other">%1$s · %2$s garments · %3$s</item>
+    </plurals>
+    <string name="production_section_staff">Staff</string>
+    <string name="production_field_operators">Operators</string>
+    <string name="production_field_absences">Absences</string>
+    <string name="production_section_progress">Progress</string>
+    <string name="production_progress_footer">Record the plant\'s current status. The latest report replaces earlier ones in the totals.</string>
+    <string name="production_field_produced">Garments produced</string>
+    <string name="production_section_cut_status">Cut status</string>
+    <plurals name="production_cut_footer">
+        <item quantity="one">There is only one cut report per assignment. If the actual quantity differs from the %1$s planned, shipments are measured against the actual.</item>
+        <item quantity="other">There is only one cut report per assignment. If the actual quantity differs from the %1$s planned, shipments are measured against the actual.</item>
+    </plurals>
+    <string name="production_field_real_cut">Actual quantity cut</string>
+    <string name="production_shipment_pending">Left to ship: %1$s.</string>
+    <string name="production_field_shipment_number">Shipment number</string>
+    <string name="production_field_shipped">Quantity shipped</string>
+
+    <!-- Assignment detail -->
+    <string name="assignment_not_found">Cut not found</string>
+    <string name="assignment_not_found_message">It may have been deleted.</string>
+    <string name="assignment_view_style_image">View style image</string>
+    <string name="assignment_header_subtitle">%1$s · List %2$s · %3$s</string>
+    <string name="assignment_production_date">Production %1$s</string>
+    <string name="assignment_progress_title">Production progress</string>
+    <string name="assignment_progress_subtitle">Latest plant report, actual cut and total shipped</string>
+    <string name="assignment_view_full_order">View full cut</string>
+    <string name="assignment_reports_title">Reports</string>
+    <plurals name="assignment_reports_total">
+        <item quantity="one">%1$d in total</item>
+        <item quantity="other">%1$d in total</item>
+    </plurals>
+    <string name="assignment_no_reports">No reports</string>
+    <string name="assignment_no_reports_message">Managers record plant progress, the actual cut and shipments here.</string>
+    <string name="assignment_delete_report_title">Delete this report?</string>
+    <string name="assignment_report_deleted">Report deleted</string>
+    <string name="assignment_shipped_ring">shipped</string>
+    <string name="assignment_add_report">Add report</string>
+    <string name="assignment_report_options">Report options</string>
+
+    <!-- Calendar events -->
+    <plurals name="production_calendar_event_subtitle">
+        <item quantity="one">%1$s · %2$s garment</item>
+        <item quantity="other">%1$s · %2$s garments</item>
+    </plurals>
+    <string name="production_calendar_delivery_to">Delivery to %1$s</string>
+
+    <!-- CSV export columns -->
+    <string name="production_csv_cut">Cut</string>
+    <string name="production_csv_list">List</string>
+    <string name="production_csv_client">Client</string>
+    <string name="production_csv_style">Style</string>
+    <string name="production_csv_garment">Garment</string>
+    <string name="production_csv_plant">Plant</string>
+    <string name="production_csv_status">Status</string>
+    <string name="production_csv_quantity">Quantity</string>
+    <string name="production_csv_cut_qty">Qty cut</string>
+    <string name="production_csv_produced">Produced</string>
+    <string name="production_csv_ironing">Ironing</string>
+    <string name="production_csv_packing">Packing</string>
+    <string name="production_csv_warehouse">Warehouse</string>
+    <string name="production_csv_shipped">Shipped</string>
+    <string name="production_csv_to_ship">To ship</string>
+    <string name="production_csv_revenue">Revenue</string>
+    <string name="production_csv_internal_date">Internal date</string>
+    <string name="production_csv_client_date">Client date</string>
+</resources>

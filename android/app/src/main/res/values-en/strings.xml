@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Roles -->
+    <string name="role_admin">Administrator</string>
+    <string name="role_plant_manager">Plant Manager</string>
+    <string name="role_cut_manager">Cutting Manager</string>
+    <string name="role_shipping_manager">Shipping Manager</string>
+
+    <!-- Cut status -->
+    <string name="cut_status_waiting">Waiting</string>
+    <string name="cut_status_on_table">On the cutting table</string>
+    <string name="cut_status_ready">Ready for sewing</string>
+
+    <!-- Report kinds -->
+    <string name="report_kind_plant">Plant report</string>
+    <string name="report_kind_cut">Cut report</string>
+    <string name="report_kind_shipment">Shipment report</string>
+    <string name="report_kind_plant_short">Plant</string>
+    <string name="report_kind_cut_short">Cut</string>
+    <string name="report_kind_shipment_short">Shipment</string>
+
+    <!-- Project status -->
+    <string name="project_status_pending">Pending</string>
+    <string name="project_status_accepted">Accepted</string>
+    <string name="project_status_declined">Declined</string>
+
+    <!-- Order assignment state -->
+    <string name="order_state_unassigned">To assign</string>
+    <string name="order_state_partial">Partial</string>
+    <string name="order_state_assigned">Assigned</string>
+
+    <!-- Navigation sections -->
+    <string name="section_dashboard">Dashboard</string>
+    <string name="section_orders">Cuts to assign</string>
+    <string name="section_board">Cutting board</string>
+    <string name="section_production">Production reports</string>
+    <string name="section_shipments">Urgent shipments</string>
+    <string name="section_calendar">Plant calendar</string>
+    <string name="section_plants">Plants</string>
+    <string name="section_clients">Clients</string>
+    <string name="section_suppliers">Suppliers</string>
+    <string name="section_styles">Styles</string>
+    <string name="section_projects">Projects</string>
+    <string name="section_users">Users</string>
+    <string name="section_calculator">Calculator</string>
+    <string name="section_settings">Settings</string>
+    <string name="section_group_operations">Operations</string>
+    <string name="section_group_catalogs">Catalogs</string>
+    <string name="section_group_tools">Tools</string>
+
+    <!-- Relative due dates -->
+    <string name="fmt_no_date">No date</string>
+    <string name="fmt_due_yesterday">Was due yesterday</string>
+    <string name="fmt_due_today">Due today</string>
+    <string name="fmt_due_tomorrow">Due tomorrow</string>
+    <plurals name="fmt_overdue_days">
+        <item quantity="one">Overdue by %1$d day</item>
+        <item quantity="other">Overdue by %1$d days</item>
+    </plurals>
+    <plurals name="fmt_in_days">
+        <item quantity="one">In %1$d day</item>
+        <item quantity="other">In %1$d days</item>
+    </plurals>
+
+    <!-- Fallback names -->
+    <string name="graph_no_client">No client</string>
+    <string name="graph_no_style">No style</string>
+    <string name="graph_no_plant">No plant</string>
+    <string name="graph_cut_fallback">Cut</string>
+    <string name="report_summary_plant">%1$s produced · %2$s operators · %3$s absences</string>
+    <string name="report_summary_cut">%1$s · %2$s cut</string>
+    <string name="report_summary_shipment">Shipment #%1$s · %2$s garments</string>
+
+    <!-- User policy -->
+    <string name="policy_cannot_delete_self">You can\'t delete your own user.</string>
+    <string name="policy_cannot_deactivate_self">You can\'t deactivate your own user.</string>
+    <string name="policy_cannot_change_own_role">You can\'t change your own role.</string>
+    <string name="policy_last_admin">At least one active administrator must remain.</string>
+
+    <!-- Assignment rules -->
+    <string name="assign_error_missing_date">Pick a date on the calendar.</string>
+    <string name="assign_error_invalid_quantity">Enter a quantity greater than zero.</string>
+    <string name="assign_error_exceeds_remaining">The quantity can\'t be more than what is left to assign (%1$s).</string>
+    <string name="assign_error_exceeds_capacity">The plant has reached its maximum capacity for that month. Available: %1$s.</string>
+
+    <!-- Local sign-in -->
+    <string name="auth_error_empty_fields">Fill in every field to sign in.</string>
+    <string name="auth_error_unknown_email">It looks like you don\'t have access to Trama. Contact your administrator.</string>
+    <string name="auth_error_wrong_password">Your email and password don\'t match. Try again.</string>
+    <string name="auth_error_inactive">Your user is deactivated. Contact your administrator.</string>
+    <string name="auth_error_email_taken">A user with that email already exists.</string>
+    <string name="auth_error_weak_password">The password must have at least 6 characters.</string>
+
+    <!-- Production service -->
+    <string name="error_order_code_required">Enter the cut code.</string>
+    <string name="error_quantity_positive">The quantity must be greater than zero.</string>
+    <string name="error_price_negative">The price can\'t be negative.</string>
+    <plurals name="error_quantity_below_assigned">
+        <item quantity="one">%1$s garment is already assigned; the quantity can\'t be lower.</item>
+        <item quantity="other">%1$s garments are already assigned; the quantity can\'t be lower.</item>
+    </plurals>
+    <string name="error_order_has_reports">Can\'t delete: the cut already has production reports.</string>
+    <string name="error_order_missing">The cut no longer exists.</string>
+    <string name="error_plant_missing">The plant no longer exists.</string>
+    <string name="error_assignment_has_reports">Can\'t delete: the cut already has reports.</string>
+    <string name="error_cut_report_exists">This cut already has a cut report. Edit it instead of creating another.</string>
+    <string name="error_shipment_fields">Enter the shipment number and a quantity greater than zero.</string>
+    <string name="error_plant_has_assignments">Can\'t delete: the plant has assigned cuts.</string>
+    <string name="error_client_has_orders">Can\'t delete: the client has cuts.</string>
+    <string name="error_read_only_licence">Your licence has expired or is suspended, so data is read-only. Renew it to save changes.</string>
+    <string name="error_generic">Something went wrong.</string>
+
+    <!-- Catalog service -->
+    <string name="catalog_error_empty_name_plant">Enter the plant name.</string>
+    <string name="catalog_error_empty_name_client">Enter the client name.</string>
+    <string name="catalog_error_empty_name_supplier">Enter the supplier name.</string>
+    <string name="catalog_error_empty_name_style">Enter the style name.</string>
+    <string name="catalog_error_duplicate_plant">A plant with that name already exists.</string>
+    <string name="catalog_error_duplicate_client">A client with that name already exists.</string>
+    <string name="catalog_error_duplicate_supplier">A supplier with that name already exists.</string>
+    <string name="catalog_error_duplicate_style">A style with that name already exists.</string>
+    <string name="catalog_error_invalid_capacity">The maximum monthly capacity must be greater than zero.</string>
+    <string name="catalog_error_invalid_email">The email “%1$s” isn\'t valid.</string>
+    <string name="catalog_error_missing_project_client">Pick a client or type their name.</string>
+    <string name="catalog_error_negative_amount">Quantity, price and minutes can\'t be negative.</string>
+    <string name="catalog_error_empty_user_name">Enter the user\'s name and email.</string>
+    <string name="catalog_error_plant_required">A plant manager must have a plant assigned.</string>
+
+    <!-- Backups -->
+    <string name="backup_error_invalid_file">The file isn\'t a valid Trama backup.</string>
+    <string name="backup_error_unsupported_version">This backup comes from a newer version of Trama (format %1$d). Update the app to restore it.</string>
+    <string name="backup_count_plants">Plants</string>
+    <string name="backup_count_clients">Clients</string>
+    <string name="backup_count_suppliers">Suppliers</string>
+    <string name="backup_count_styles">Styles</string>
+    <string name="backup_count_orders">Cuts</string>
+    <string name="backup_count_assignments">Assignments</string>
+    <string name="backup_count_reports">Reports</string>
+    <string name="backup_count_projects">Projects</string>
+    <string name="backup_count_users">Users</string>
+    <plurals name="backup_count_plants">
+        <item quantity="one">%1$d plant</item>
+        <item quantity="other">%1$d plants</item>
+    </plurals>
+    <plurals name="backup_count_clients">
+        <item quantity="one">%1$d client</item>
+        <item quantity="other">%1$d clients</item>
+    </plurals>
+    <plurals name="backup_count_suppliers">
+        <item quantity="one">%1$d supplier</item>
+        <item quantity="other">%1$d suppliers</item>
+    </plurals>
+    <plurals name="backup_count_styles">
+        <item quantity="one">%1$d style</item>
+        <item quantity="other">%1$d styles</item>
+    </plurals>
+    <plurals name="backup_count_orders">
+        <item quantity="one">%1$d cut</item>
+        <item quantity="other">%1$d cuts</item>
+    </plurals>
+    <plurals name="backup_count_assignments">
+        <item quantity="one">%1$d assignment</item>
+        <item quantity="other">%1$d assignments</item>
+    </plurals>
+    <plurals name="backup_count_reports">
+        <item quantity="one">%1$d report</item>
+        <item quantity="other">%1$d reports</item>
+    </plurals>
+    <plurals name="backup_count_projects">
+        <item quantity="one">%1$d project</item>
+        <item quantity="other">%1$d projects</item>
+    </plurals>
+    <plurals name="backup_count_users">
+        <item quantity="one">%1$d user</item>
+        <item quantity="other">%1$d users</item>
+    </plurals>
+
+    <!-- Cloud API and sync -->
+    <string name="api_error_offline">Can\'t reach the Trama server. Check your internet connection and try again.</string>
+    <string name="api_error_bad_response">Unexpected response from the server. Try again later.</string>
+    <string name="api_error_session_expired">Your session expired. Sign in again.</string>
+    <string name="api_error_too_large">The upload is too large; sync in smaller parts.</string>
+    <string name="api_error_unavailable">The Trama server is unavailable. Try again later.</string>
+    <string name="api_error_generic">The server returned an error (%1$d).</string>
+    <string name="sync_connect_first">Connect your licence to sync.</string>
+    <string name="sync_done">Synced</string>
+    <string name="sync_error_empty_credentials">Enter your email and password.</string>
+    <string name="sync_error_cloud_session_expired">Your cloud session expired. Connect your licence again.</string>
+    <string name="sync_error_licence_blocked">Your licence doesn\'t allow saving changes.</string>
+    <string name="sync_error_record_too_large">A record is too large to sync (check its images).</string>
+
+    <!-- Demo data -->
+    <string name="demo_company">Demo Textiles</string>
+    <string name="demo_plant_north">North Plant</string>
+    <string name="demo_plant_south">South Plant</string>
+    <string name="demo_plant_bajio">Bajío Plant</string>
+    <string name="demo_role_purchasing">Purchasing</string>
+    <string name="demo_role_quality">Quality</string>
+    <string name="demo_role_product_director">Product Director</string>
+    <string name="demo_role_sourcing_manager">Sourcing Manager</string>
+    <string name="demo_role_planning">Planning</string>
+    <string name="demo_role_sales">Sales</string>
+    <string name="demo_role_account_executive">Account Executive</string>
+    <string name="demo_role_commercial_director">Sales Director</string>
+    <string name="demo_style_skirt">Pleated skirt SK-210</string>
+    <string name="demo_style_jeans">Skinny jeans DN-88</string>
+    <string name="demo_style_blouse">Linen blouse BL-14</string>
+    <string name="demo_style_legging">Sport legging LG-301</string>
+    <string name="demo_style_jacket">Denim jacket JK-05</string>
+    <string name="demo_garment_skirt">Skirt</string>
+    <string name="demo_garment_jeans">Jeans</string>
+    <string name="demo_garment_blouse">Blouse</string>
+    <string name="demo_garment_legging">Legging</string>
+    <string name="demo_garment_jacket">Jacket</string>
+    <string name="demo_fabric_poplin" formatted="false">100% cotton poplin</string>
+    <string name="demo_fabric_linen">Washed linen</string>
+    <string name="demo_project_note_pending">Physical sample approved; final price pending.</string>
+    <string name="demo_project_note_accepted">Partial deliveries every 15 days.</string>
+    <string name="demo_project_note_declined">The client found a cheaper supplier.</string>
+</resources>

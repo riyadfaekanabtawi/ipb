@@ -27,15 +27,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.app.rememberActions
 import com.nevutech.trama.app.rememberGraph
 import com.nevutech.trama.core.data.SupplierEntity
 import com.nevutech.trama.core.domain.Fmt
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.Avatar
 import com.nevutech.trama.designsystem.EmptyState
 import com.nevutech.trama.designsystem.Tokens
@@ -55,27 +58,28 @@ fun SupplierDetailScreen(id: String) {
     val supplier = graph.supplier(id)
     TramaScreen {
         if (supplier == null) {
-            DetailScaffold("Proveedor") { EmptyState("Proveedor no encontrado", "Es posible que se haya eliminado.", Icons.Filled.SearchOff) }
+            DetailScaffold(stringResource(R.string.suppliers_title)) { EmptyState(stringResource(R.string.suppliers_not_found), stringResource(R.string.catalog_ui_maybe_deleted), Icons.Filled.SearchOff) }
             return@TramaScreen
         }
         val contacts = graph.contactsOfSupplier(supplier.id)
         DetailScaffold(supplier.name, actions = {
-            IconButton({ editor = PartyEditorTarget(supplier) }) { Icon(Icons.Filled.Edit, "Editar") }
+            IconButton({ editor = PartyEditorTarget(supplier) }) { Icon(Icons.Filled.Edit, stringResource(R.string.common_edit)) }
             OverflowMenu { close ->
-                MenuItem("Eliminar proveedor", Icons.Filled.Delete, destructive = true) { close(); confirmingDelete = true }
+                MenuItem(stringResource(R.string.suppliers_delete_action), Icons.Filled.Delete, destructive = true) { close(); confirmingDelete = true }
             }
         }) {
-            DetailHero(supplier.name, supplier.address ?: "Sin dirección", leading = { Avatar(supplier.name, size = 72.dp, icon = Icons.Filled.LocalShipping) }) {
-                HeroStat(Fmt.int(contacts.size), if (contacts.size == 1) "Contacto" else "Contactos")
+            DetailHero(supplier.name, supplier.address ?: stringResource(R.string.common_no_address), leading = { Avatar(supplier.name, size = 72.dp, icon = Icons.Filled.LocalShipping) }) {
+                HeroStat(Fmt.int(contacts.size), stringResource(if (contacts.size == 1) R.string.common_contact else R.string.common_contacts))
                 mapsLink(supplier.address)?.let { uri ->
+                    val openMaps = stringResource(R.string.catalog_ui_open_address_maps)
                     Row(
                         Modifier.clip(RoundedCornerShape(Tokens.smallRadius)).background(Color.White.copy(alpha = 0.12f))
-                            .clickable { openLink(context, app.toasts, uri) }.semantics(mergeDescendants = true) { contentDescription = "Abrir dirección en Mapas" }
+                            .clickable { openLink(context, app.toasts, uri) }.semantics(mergeDescendants = true) { contentDescription = openMaps }
                             .padding(horizontal = 16.dp, vertical = 18.dp),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         Icon(Icons.Filled.Map, null, tint = Color.White, modifier = Modifier.size(18.dp))
-                        Text("Mapas", color = Color.White, style = MaterialTheme.typography.labelLarge)
+                        Text(stringResource(R.string.catalog_ui_maps), color = Color.White, style = MaterialTheme.typography.labelLarge)
                     }
                 }
             }
@@ -91,8 +95,8 @@ fun SupplierDetailScreen(id: String) {
     }
     if (confirmingDelete && supplier != null) {
         ConfirmDeleteDialog(
-            "¿Eliminar ${supplier.name}?",
-            onConfirm = { actions.run(success = "Proveedor «${supplier.name}» eliminado", onDone = { navigator.back() }) { catalog.deleteSupplier(supplier) } },
+            stringResource(R.string.catalog_ui_delete_title, supplier.name),
+            onConfirm = { actions.run(success = L10n.str(R.string.suppliers_deleted, supplier.name), onDone = { navigator.back() }) { catalog.deleteSupplier(supplier) } },
             onDismiss = { confirmingDelete = false },
         )
     }

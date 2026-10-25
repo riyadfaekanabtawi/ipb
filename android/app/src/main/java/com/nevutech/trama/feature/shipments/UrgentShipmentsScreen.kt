@@ -50,11 +50,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.app.rememberGraph
@@ -97,24 +100,24 @@ fun UrgentShipmentsScreen() {
 
     TramaScreen {
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-            ScreenHeader("Envíos urgentes", showTitle = wide) { WindowMenu(window) }
+            ScreenHeader(stringResource(R.string.section_shipments), showTitle = wide) { WindowMenu(window) }
             Column(Modifier.padding(horizontal = if (wide) 24.dp else 16.dp).padding(bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
                 val tiles: List<@Composable (Modifier) -> Unit> = listOf(
-                    { KpiTile("Envíos urgentes", Fmt.int(groups.all.size), Icons.Filled.Warning, Tokens.colors.warning, modifier = it) },
-                    { KpiTile("Vencidos", Fmt.int(groups.overdue.size), Icons.Filled.Timer, Tokens.colors.danger, modifier = it) },
-                    { KpiTile("Prendas por enviar", Fmt.int(garments), Icons.Filled.Inventory2, Tokens.colors.brand, modifier = it) },
+                    { KpiTile(stringResource(R.string.section_shipments), Fmt.int(groups.all.size), Icons.Filled.Warning, Tokens.colors.warning, modifier = it) },
+                    { KpiTile(stringResource(R.string.shipments_overdue), Fmt.int(groups.overdue.size), Icons.Filled.Timer, Tokens.colors.danger, modifier = it) },
+                    { KpiTile(stringResource(R.string.shipments_garments_to_ship), Fmt.int(garments), Icons.Filled.Inventory2, Tokens.colors.brand, modifier = it) },
                 )
                 if (wide) Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) { tiles.forEach { it(Modifier.weight(1f)) } }
                 else Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(12.dp)) { tiles.forEach { it(Modifier.width(200.dp)) } }
 
                 if (groups.all.isEmpty()) {
                     EmptyState(
-                        "No hay envíos urgentes", "Ningún corte con prendas pendientes vence en los próximos $window días.", Icons.Filled.Verified,
+                        stringResource(R.string.shipments_empty_title), pluralStringResource(R.plurals.shipments_empty_message, window, window), Icons.Filled.Verified,
                         Modifier.padding(top = 40.dp),
                     )
                 }
-                if (groups.overdue.isNotEmpty()) Group("Vencidos", Tokens.colors.danger, groups.overdue, graph, canShip, navigator::openAssignment) { shipping = it }
-                if (groups.upcoming.isNotEmpty()) Group("Próximos $window días", Tokens.colors.warning, groups.upcoming, graph, canShip, navigator::openAssignment) { shipping = it }
+                if (groups.overdue.isNotEmpty()) Group(stringResource(R.string.shipments_overdue), Tokens.colors.danger, groups.overdue, graph, canShip, navigator::openAssignment) { shipping = it }
+                if (groups.upcoming.isNotEmpty()) Group(pluralStringResource(R.plurals.shipments_next_days, window, window), Tokens.colors.warning, groups.upcoming, graph, canShip, navigator::openAssignment) { shipping = it }
             }
         }
     }
@@ -128,26 +131,27 @@ private fun WindowMenu(window: Int) {
     val scope = rememberCoroutineScope()
     var open by remember { mutableStateOf(false) }
     val set: (Int) -> Unit = { days -> scope.launch { app.settings.setUrgencyWindowDays(days) } }
+    val windowDescription = pluralStringResource(R.plurals.shipments_window_description, window, window)
     Box {
         Surface(
             onClick = { open = true }, shape = Tokens.chipShape, color = Tokens.colors.surface, border = BorderStroke(1.dp, Tokens.colors.stroke),
-            modifier = Modifier.semantics { contentDescription = "Ventana: $window días. Entregas dentro de este plazo o vencidas se consideran urgentes" },
+            modifier = Modifier.semantics { contentDescription = windowDescription },
         ) {
             Row(Modifier.padding(horizontal = 14.dp, vertical = 9.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 Icon(Icons.Filled.Timer, null, tint = Tokens.colors.brand, modifier = Modifier.size(18.dp))
-                Text("Ventana: $window días", style = MaterialTheme.typography.labelLarge)
+                Text(pluralStringResource(R.plurals.shipments_window, window, window), style = MaterialTheme.typography.labelLarge)
             }
         }
         DropdownMenu(open, { open = false }) {
             Row(Modifier.padding(horizontal = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-                IconButton({ set(window - 1) }, enabled = window > 1) { Icon(Icons.Filled.Remove, "Menos días") }
-                Text("$window días", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(horizontal = 8.dp))
-                IconButton({ set(window + 1) }, enabled = window < 30) { Icon(Icons.Filled.Add, "Más días") }
+                IconButton({ set(window - 1) }, enabled = window > 1) { Icon(Icons.Filled.Remove, stringResource(R.string.shipments_fewer_days)) }
+                Text(pluralStringResource(R.plurals.shipments_days_count, window, window), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(horizontal = 8.dp))
+                IconButton({ set(window + 1) }, enabled = window < 30) { Icon(Icons.Filled.Add, stringResource(R.string.shipments_more_days)) }
             }
             HorizontalDivider()
             listOf(3, 7, 14, 30).forEach { days ->
                 DropdownMenuItem(
-                    text = { Text("$days días") }, onClick = { set(days); open = false },
+                    text = { Text(pluralStringResource(R.plurals.shipments_days_count, days, days)) }, onClick = { set(days); open = false },
                     trailingIcon = if (days == window) ({ Icon(Icons.Filled.Check, null, tint = Tokens.colors.brand) }) else null,
                 )
             }
@@ -196,21 +200,23 @@ private fun ShipmentCard(graph: Graph, a: AssignmentEntity, canShip: Boolean, mo
                     horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,
                 ) {
                     Text(days?.let { "${abs(it)}" } ?: "—", color = tint, fontSize = 30.sp, fontWeight = FontWeight.Black)
-                    Text(if (late) "días tarde" else "días", color = tint, style = MaterialTheme.typography.labelSmall)
+                    Text(
+                        pluralStringResource(if (late) R.plurals.shipments_days_late_unit else R.plurals.shipments_days_unit, abs(days ?: 0)),
+                        color = tint, style = MaterialTheme.typography.labelSmall)
                 }
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(graph.title(a), style = MaterialTheme.typography.titleLarge)
                     Text(graph.clientName(graph.orderOf(a)), style = MaterialTheme.typography.bodyMedium, color = c.secondary, maxLines = 1)
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         PlantPill(graph.plantName(a))
-                        Pill("Entrega ${Fmt.shortDate(graph.clientDate(a))}", c.secondary, Icons.Filled.CalendarMonth)
+                        Pill(stringResource(R.string.shipments_delivery_on, Fmt.shortDate(graph.clientDate(a))), c.secondary, Icons.Filled.CalendarMonth)
                     }
                 }
             }
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Row {
-                    Text("${Fmt.int(metrics.shipped)} de ${Fmt.int(metrics.shippingBase)} enviadas", style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
-                    Text("${Fmt.int(metrics.toShip)} por enviar", style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.shipments_shipped_of, Fmt.int(metrics.shipped), Fmt.int(metrics.shippingBase)), style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
+                    Text(stringResource(R.string.shipments_to_ship_count, Fmt.int(metrics.toShip)), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold)
                 }
                 Meter(metrics.shippingProgress, c.brand)
             }
@@ -220,7 +226,7 @@ private fun ShipmentCard(graph: Graph, a: AssignmentEntity, canShip: Boolean, mo
                 if (canShip) {
                     Button(onShip, colors = ButtonDefaults.buttonColors(containerColor = c.brand, contentColor = Color.White)) {
                         Icon(Icons.AutoMirrored.Filled.Send, null, Modifier.size(16.dp))
-                        Text("  Registrar envío")
+                        Text("  " + stringResource(R.string.shipments_record_shipment))
                     }
                 }
             }

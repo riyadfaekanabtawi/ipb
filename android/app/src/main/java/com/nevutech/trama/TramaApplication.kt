@@ -16,15 +16,16 @@ import com.nevutech.trama.core.data.sync.KeystoreSecretBox
 import com.nevutech.trama.core.data.sync.SyncEngine
 import com.nevutech.trama.core.data.sync.SyncPrefs
 import com.nevutech.trama.core.data.sync.TramaApi
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.ToastCenter
+import java.io.File
+import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.io.File
-import java.util.UUID
 
 /**
  * Manual dependency container; small enough that a DI framework would only add weight.
@@ -73,12 +74,18 @@ class TramaApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        L10n.init(this)
         container = AppContainer(this)
         val sync = container.sync
         SyncTriggers.watchConnectivity(this, sync)
         container.scope.launch {
             sync.prefs.account.map { it.connected }.distinctUntilChanged().collect { SyncTriggers.schedule(this@TramaApplication, it) }
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
+        super.onConfigurationChanged(newConfig)
+        L10n.refresh()
     }
 }
 

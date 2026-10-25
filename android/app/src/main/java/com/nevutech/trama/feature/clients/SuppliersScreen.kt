@@ -20,6 +20,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.app.rememberActions
@@ -27,6 +29,7 @@ import com.nevutech.trama.app.rememberGraph
 import com.nevutech.trama.core.data.ContactLinks
 import com.nevutech.trama.core.data.SupplierEntity
 import com.nevutech.trama.core.domain.Fmt
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.EmptyState
 import com.nevutech.trama.designsystem.PrimaryButton
 import com.nevutech.trama.designsystem.TramaScreen
@@ -49,11 +52,11 @@ fun SuppliersScreen() {
     }
 
     TramaScreen {
-        CatalogGrid("Proveedores", search, { search = it }, "Buscar proveedor, contacto o correo", "Nuevo proveedor", { editor = PartyEditorTarget(null) }) {
+        CatalogGrid(stringResource(R.string.section_suppliers), search, { search = it }, stringResource(R.string.suppliers_search), stringResource(R.string.suppliers_new), { editor = PartyEditorTarget(null) }) {
             when {
                 suppliers.isEmpty() -> fullSpan {
-                    EmptyState("Sin proveedores", "Guarda a tus proveedores de telas, hilos y avíos con sus contactos.", Icons.Filled.LocalShipping) {
-                        PrimaryButton("Nuevo proveedor", { editor = PartyEditorTarget(null) }, icon = Icons.Filled.Add)
+                    EmptyState(stringResource(R.string.suppliers_empty_title), stringResource(R.string.suppliers_empty_message), Icons.Filled.LocalShipping) {
+                        PrimaryButton(stringResource(R.string.suppliers_new), { editor = PartyEditorTarget(null) }, icon = Icons.Filled.Add)
                     }
                 }
                 filtered.isEmpty() -> fullSpan { NoResults(search) }
@@ -61,22 +64,22 @@ fun SuppliersScreen() {
                     val supplier = filtered[i]
                     val contacts = graph.contactsOfSupplier(supplier.id)
                     WithContextMenu(menu = { close ->
-                        MenuItem("Editar", Icons.Filled.Edit) { close(); editor = PartyEditorTarget(supplier) }
+                        MenuItem(stringResource(R.string.common_edit), Icons.Filled.Edit) { close(); editor = PartyEditorTarget(supplier) }
                         ContactLinks.mailto(contacts.map { it.email })?.let { uri ->
-                            MenuItem("Enviar correo a todos", Icons.Filled.Email) { close(); openLink(context, app.toasts, uri) }
+                            MenuItem(stringResource(R.string.catalog_ui_email_all), Icons.Filled.Email) { close(); openLink(context, app.toasts, uri) }
                         }
                         HorizontalDivider()
-                        MenuItem("Eliminar", Icons.Filled.Delete, destructive = true) { close(); pendingDelete = supplier }
+                        MenuItem(stringResource(R.string.common_delete), Icons.Filled.Delete, destructive = true) { close(); pendingDelete = supplier }
                     }) { open ->
                         PartyCard(supplier.name, supplier.address, contacts, Icons.Filled.LocalShipping, onClick = { navigator.openSupplier(supplier.id) }, onLongClick = open) {
-                            CardStat(Icons.Filled.Groups, Fmt.int(contacts.size), "contactos")
+                            CardStat(Icons.Filled.Groups, Fmt.int(contacts.size), stringResource(R.string.suppliers_stat_contacts))
                             Spacer(Modifier.weight(1f))
                             val first = contacts.firstOrNull()
                             ContactLinks.mailto(listOf(first?.email))?.let { uri ->
-                                FilledTonalIconButton({ openLink(context, app.toasts, uri) }) { Icon(Icons.Filled.Email, "Enviar correo a ${first?.email}") }
+                                FilledTonalIconButton({ openLink(context, app.toasts, uri) }) { Icon(Icons.Filled.Email, stringResource(R.string.catalog_ui_email_to, first?.email.orEmpty())) }
                             }
                             ContactLinks.tel(first?.phone)?.let { uri ->
-                                FilledTonalIconButton({ openLink(context, app.toasts, uri) }) { Icon(Icons.Filled.Phone, "Llamar a ${first?.phone}") }
+                                FilledTonalIconButton({ openLink(context, app.toasts, uri) }) { Icon(Icons.Filled.Phone, stringResource(R.string.catalog_ui_call, first?.phone.orEmpty())) }
                             }
                         }
                     }
@@ -94,8 +97,8 @@ fun SuppliersScreen() {
     }
     pendingDelete?.let { supplier ->
         ConfirmDeleteDialog(
-            "¿Eliminar ${supplier.name}?",
-            onConfirm = { actions.run(success = "Proveedor «${supplier.name}» eliminado") { catalog.deleteSupplier(supplier) } },
+            stringResource(R.string.catalog_ui_delete_title, supplier.name),
+            onConfirm = { actions.run(success = L10n.str(R.string.suppliers_deleted, supplier.name)) { catalog.deleteSupplier(supplier) } },
             onDismiss = { pendingDelete = null },
         )
     }

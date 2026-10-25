@@ -42,12 +42,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.rememberActions
 import com.nevutech.trama.app.rememberGraph
 import com.nevutech.trama.core.data.CutOrderEntity
 import com.nevutech.trama.core.data.toLocalDate
 import com.nevutech.trama.core.domain.Fmt
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.DecimalField
 import com.nevutech.trama.designsystem.IntField
 import com.nevutech.trama.designsystem.PrimaryButton
@@ -55,6 +59,7 @@ import com.nevutech.trama.designsystem.Tokens
 import com.nevutech.trama.designsystem.TramaField
 import com.nevutech.trama.feature.production.TramaDatePickerDialog
 import com.nevutech.trama.feature.production.isWideLayout
+import com.nevutech.trama.feature.production.toPluralCount
 import java.time.LocalDate
 
 /** Create/edit a cut order (port of iOS OrderEditorSheet). [order] null creates a new one. */
@@ -88,43 +93,44 @@ fun OrderEditorSheet(order: CutOrderEntity?, onDismiss: () -> Unit) {
                 .padding(horizontal = 24.dp).padding(bottom = 24.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            Text(if (order == null) "Nuevo corte" else "Editar corte", style = MaterialTheme.typography.headlineSmall)
+            Text(stringResource(if (order == null) R.string.orders_new else R.string.orders_edit), style = MaterialTheme.typography.headlineSmall)
 
-            SectionLabel("Identificación")
-            CapsField(code, { code = it }, "Código de corte")
-            Pair2({ CapsField(list, { list = it }, "Lista", it) }, { TramaField(garment, { garment = it }, "Prenda (ej. Falda, Jeans)", it) })
+            SectionLabel(stringResource(R.string.orders_section_identification))
+            CapsField(code, { code = it }, stringResource(R.string.orders_field_code))
+            Pair2({ CapsField(list, { list = it }, stringResource(R.string.orders_field_list), it) }, { TramaField(garment, { garment = it }, stringResource(R.string.orders_field_garment), it) })
 
-            SectionLabel("Cliente y estilo")
+            SectionLabel(stringResource(R.string.orders_section_client_style))
             Pair2(
-                { PickerField("Cliente", graph.client(clientId)?.name ?: "Sin cliente", listOf<Pair<String, String?>>("Sin cliente" to null) + graph.clients.sortedBy { c -> c.name.lowercase() }.map { c -> c.name to c.id }, { clientId = it }, it) },
-                { PickerField("Estilo", graph.style(styleId)?.name ?: "Sin estilo", listOf<Pair<String, String?>>("Sin estilo" to null) + graph.styles.sortedBy { s -> s.name.lowercase() }.map { s -> s.name to s.id }, { styleId = it }, it) },
+                { PickerField(stringResource(R.string.common_client), graph.client(clientId)?.name ?: stringResource(R.string.graph_no_client), listOf<Pair<String, String?>>(stringResource(R.string.graph_no_client) to null) + graph.clients.sortedBy { c -> c.name.lowercase() }.map { c -> c.name to c.id }, { clientId = it }, it) },
+                { PickerField(stringResource(R.string.common_style), graph.style(styleId)?.name ?: stringResource(R.string.graph_no_style), listOf<Pair<String, String?>>(stringResource(R.string.graph_no_style) to null) + graph.styles.sortedBy { s -> s.name.lowercase() }.map { s -> s.name to s.id }, { styleId = it }, it) },
             )
 
-            SectionLabel("Cantidad y precio")
-            Pair2({ IntField(quantity, { quantity = it }, "Cantidad", it) }, { DecimalField(unitPrice, { unitPrice = it }, "Precio unitario", it) })
-            Text("Ingreso total: ${Fmt.money(quantity * unitPrice)}", color = Tokens.colors.secondary, style = MaterialTheme.typography.bodyMedium)
+            SectionLabel(stringResource(R.string.orders_section_quantity_price))
+            Pair2({ IntField(quantity, { quantity = it }, stringResource(R.string.common_quantity), it) }, { DecimalField(unitPrice, { unitPrice = it }, stringResource(R.string.common_unit_price), it) })
+            Text(stringResource(R.string.orders_total_revenue_value, Fmt.money(quantity * unitPrice)), color = Tokens.colors.secondary, style = MaterialTheme.typography.bodyMedium)
             if (order != null && quantity < assigned) {
                 Text(
-                    "Ya hay ${Fmt.int(assigned)} prendas asignadas; la cantidad no puede ser menor.",
+                    pluralStringResource(R.plurals.error_quantity_below_assigned, assigned.toLong().toPluralCount(), Fmt.int(assigned)),
                     color = Tokens.colors.danger, style = MaterialTheme.typography.bodySmall,
                 )
             }
 
-            SectionLabel("Fechas")
-            DateToggleField("Fecha interna", "Fecha interna", hasInternalDate, { hasInternalDate = it }, internalDate) { internalDate = it }
-            DateToggleField("Fecha cliente", "Fecha de entrega al cliente", hasClientDate, { hasClientDate = it }, clientDate) { clientDate = it }
+            SectionLabel(stringResource(R.string.orders_section_dates))
+            val internalLabel = stringResource(R.string.common_internal_date)
+            DateToggleField(internalLabel, internalLabel, hasInternalDate, { hasInternalDate = it }, internalDate) { internalDate = it }
+            DateToggleField(stringResource(R.string.common_client_date), stringResource(R.string.orders_field_client_delivery_date), hasClientDate, { hasClientDate = it }, clientDate) { clientDate = it }
 
-            SectionLabel("Notas")
-            TramaField(notes, { notes = it }, "Notas", singleLine = false)
+            SectionLabel(stringResource(R.string.common_notes))
+            TramaField(notes, { notes = it }, stringResource(R.string.common_notes), singleLine = false)
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                TextButton(onDismiss) { Text("Cancelar") }
+                TextButton(onDismiss) { Text(stringResource(R.string.common_cancel)) }
                 Spacer(Modifier.weight(1f))
                 PrimaryButton(
-                    "Guardar", enabled = canSave, modifier = Modifier.widthIn(min = 180.dp),
+                    stringResource(R.string.common_save), enabled = canSave, modifier = Modifier.widthIn(min = 180.dp),
                     onClick = {
                         val trimmed = code.trim()
-                        actions.run(success = if (order == null) "Corte $trimmed creado" else "Corte $trimmed actualizado", onDone = onDismiss) {
+                        actions.run(success = L10n.str(if (order == null) R.string.orders_created else R.string.orders_updated, trimmed), onDone = onDismiss) {
                             app.production().saveOrder(
                                 order, code, list, garment, quantity.toLong(), unitPrice, clientId, styleId,
                                 if (hasInternalDate) internalDate else null, if (hasClientDate) clientDate else null, notes.ifBlank { null },

@@ -46,6 +46,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -53,10 +55,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.rememberActions
 import com.nevutech.trama.app.rememberGraph
 import com.nevutech.trama.core.data.ClientEntity
+import com.nevutech.trama.core.data.ImageEdit
 import com.nevutech.trama.core.data.ProjectDraft
 import com.nevutech.trama.core.data.ProjectEntity
 import com.nevutech.trama.core.data.statusValue
@@ -65,6 +69,7 @@ import com.nevutech.trama.core.data.total
 import com.nevutech.trama.core.domain.Fmt
 import com.nevutech.trama.core.domain.ProjectStatus
 import com.nevutech.trama.core.domain.UrgencyPolicy
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.DecimalField
 import com.nevutech.trama.designsystem.EmptyState
 import com.nevutech.trama.designsystem.IntField
@@ -94,7 +99,6 @@ import com.nevutech.trama.feature.clients.icon
 import com.nevutech.trama.feature.clients.rememberCatalog
 import com.nevutech.trama.feature.styles.PhotoField
 import com.nevutech.trama.feature.styles.PhotoPreview
-import com.nevutech.trama.core.data.ImageEdit
 import java.time.LocalDate
 
 private enum class ProjectsLayout { Board, Grid }
@@ -119,18 +123,18 @@ fun ProjectsScreen() {
 
     fun setStatus(project: ProjectEntity, status: ProjectStatus) {
         if (project.statusValue == status) return
-        actions.run(success = "Proyecto de ${project.displayClient}: ${status.title.lowercase()}") { catalog.setProjectStatus(project, status) }
+        actions.run(success = L10n.str(R.string.projects_status_changed, project.displayClient, status.title.lowercase(Fmt.locale))) { catalog.setProjectStatus(project, status) }
     }
 
     @Composable
     fun Card(project: ProjectEntity, compact: Boolean) {
         WithContextMenu(menu = { close ->
-            MenuItem("Editar", Icons.Filled.Edit) { close(); editor = ProjectEditorTarget(project) }
+            MenuItem(stringResource(R.string.common_edit), Icons.Filled.Edit) { close(); editor = ProjectEditorTarget(project) }
             ProjectStatus.entries.forEach { status ->
-                MenuItem("Marcar como ${status.title.lowercase()}", status.icon, enabled = project.statusValue != status) { close(); setStatus(project, status) }
+                MenuItem(stringResource(status.markRes), status.icon, enabled = project.statusValue != status) { close(); setStatus(project, status) }
             }
             HorizontalDivider()
-            MenuItem("Eliminar", Icons.Filled.Delete, destructive = true) { close(); pendingDelete = project }
+            MenuItem(stringResource(R.string.common_delete), Icons.Filled.Delete, destructive = true) { close(); pendingDelete = project }
         }) { open ->
             ProjectCard(project, compact, Modifier.cardClick({ editor = ProjectEditorTarget(project) }, open)) { setStatus(project, it) }
         }
@@ -138,19 +142,19 @@ fun ProjectsScreen() {
 
     TramaScreen {
         CatalogGrid(
-            "Proyectos", search, { search = it }, "Buscar cliente, tela o notas", "Nuevo proyecto", { editor = ProjectEditorTarget(null) },
+            stringResource(R.string.section_projects), search, { search = it }, stringResource(R.string.projects_search_hint), stringResource(R.string.projects_new), { editor = ProjectEditorTarget(null) },
             minCell = 300.dp,
             actions = {
                 IconButton({ layout = if (layout == ProjectsLayout.Board) ProjectsLayout.Grid else ProjectsLayout.Board }) {
-                    if (layout == ProjectsLayout.Board) Icon(Icons.Filled.GridView, "Vista: tablero. Cambiar a cuadrícula")
-                    else Icon(Icons.Filled.ViewWeek, "Vista: cuadrícula. Cambiar a tablero")
+                    if (layout == ProjectsLayout.Board) Icon(Icons.Filled.GridView, stringResource(R.string.projects_layout_board))
+                    else Icon(Icons.Filled.ViewWeek, stringResource(R.string.projects_layout_grid))
                 }
             },
         ) {
             if (projects.isEmpty()) {
                 fullSpan {
-                    EmptyState("Sin proyectos", "Registra cotizaciones y prospectos para darles seguimiento hasta que se acepten.", Icons.Filled.Folder) {
-                        PrimaryButton("Nuevo proyecto", { editor = ProjectEditorTarget(null) }, icon = Icons.Filled.Add)
+                    EmptyState(stringResource(R.string.projects_empty_title), stringResource(R.string.projects_empty_message), Icons.Filled.Folder) {
+                        PrimaryButton(stringResource(R.string.projects_new), { editor = ProjectEditorTarget(null) }, icon = Icons.Filled.Add)
                     }
                 }
                 return@CatalogGrid
@@ -167,7 +171,10 @@ fun ProjectsScreen() {
                 fullSpan {
                     Segmented(
                         listOf<ProjectStatus?>(null) + ProjectStatus.entries, filter,
-                        { s -> if (s == null) "Todos (${matching.size})" else "${s.title} (${matching.count { it.statusValue == s }})" },
+                        { s ->
+                            if (s == null) L10n.str(R.string.projects_filter_all, Fmt.int(matching.size))
+                            else L10n.str(R.string.projects_filter_status, s.title, Fmt.int(matching.count { it.statusValue == s }))
+                        },
                         { filter = it }, Modifier.widthIn(max = 640.dp).fillMaxWidth(),
                     )
                 }
@@ -175,8 +182,8 @@ fun ProjectsScreen() {
                 if (items.isEmpty()) {
                     fullSpan {
                         EmptyState(
-                            if (search.isBlank()) "Nada por aquí" else "Sin resultados",
-                            if (search.isBlank()) "No hay proyectos con este estado." else "Prueba con otra búsqueda.", Icons.Filled.Folder,
+                            stringResource(if (search.isBlank()) R.string.projects_nothing_here else R.string.common_no_results),
+                            stringResource(if (search.isBlank()) R.string.projects_none_with_status else R.string.projects_try_other_search), Icons.Filled.Folder,
                         )
                     }
                 } else {
@@ -189,14 +196,22 @@ fun ProjectsScreen() {
     editor?.let { ProjectEditorSheet(it.project, graph.clients) { editor = null } }
     pendingDelete?.let { project ->
         ConfirmDeleteDialog(
-            "¿Eliminar este proyecto?", project.displayClient,
-            onConfirm = { actions.run(success = "Proyecto eliminado") { catalog.deleteProject(project) } },
+            stringResource(R.string.projects_delete_title), project.displayClient,
+            onConfirm = { actions.run(success = L10n.str(R.string.projects_deleted)) { catalog.deleteProject(project) } },
             onDismiss = { pendingDelete = null },
         )
     }
 }
 
-private val ProjectEntity.displayClient: String get() = clientName?.takeIf { it.isNotBlank() } ?: "Sin cliente"
+private val ProjectEntity.displayClient: String get() = clientName?.takeIf { it.isNotBlank() } ?: L10n.str(R.string.graph_no_client)
+
+/** "Marcar como …" menu label for each status. */
+private val ProjectStatus.markRes: Int
+    get() = when (this) {
+        ProjectStatus.Pending -> R.string.projects_mark_pending
+        ProjectStatus.Accepted -> R.string.projects_mark_accepted
+        ProjectStatus.Declined -> R.string.projects_mark_declined
+    }
 
 @Composable
 private fun Pipeline(projects: List<ProjectEntity>, filter: ProjectStatus?, onTap: (ProjectStatus) -> Unit) {
@@ -207,14 +222,15 @@ private fun Pipeline(projects: List<ProjectEntity>, filter: ProjectStatus?, onTa
         if (status != null) {
             val group = projects.filter { it.statusValue == status }
             KpiTile(
-                status.title, Fmt.money(group.sumOf { it.total }, compact = true), status.icon, status.displayTint(),
-                footnote = (if (group.size == 1) "1 proyecto" else "${group.size} proyectos") + if (filter == status) " · filtrando" else "",
+                stringResource(status.titleRes), Fmt.money(group.sumOf { it.total }, compact = true), status.icon, status.displayTint(),
+                footnote = pluralStringResource(R.plurals.projects_count, group.size, Fmt.int(group.size)) +
+                    if (filter == status) stringResource(R.string.projects_filtering_suffix) else "",
                 onClick = { onTap(status) },
             )
         } else {
             KpiTile(
-                "Tasa de aceptación", if (decided > 0) Fmt.percent(accepted.toDouble() / decided) else "—", Icons.Filled.Percent,
-                Tokens.colors.info, footnote = "De los proyectos ya decididos",
+                stringResource(R.string.projects_acceptance_rate), if (decided > 0) Fmt.percent(accepted.toDouble() / decided) else "—", Icons.Filled.Percent,
+                Tokens.colors.info, footnote = stringResource(R.string.projects_acceptance_rate_footnote),
             )
         }
     }
@@ -240,15 +256,15 @@ private fun ProjectColumn(status: ProjectStatus, projects: List<ProjectEntity>, 
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Row(Modifier.padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Pill(status.title, tint, status.icon)
-            Text("${projects.size}", style = MaterialTheme.typography.labelLarge, color = Tokens.colors.secondary)
+            Pill(stringResource(status.titleRes), tint, status.icon)
+            Text(Fmt.int(projects.size), style = MaterialTheme.typography.labelLarge, color = Tokens.colors.secondary)
             Spacer(Modifier.weight(1f))
             Text(Fmt.money(projects.sumOf { it.total }, compact = true), style = MaterialTheme.typography.labelLarge)
         }
         projects.forEach { card(it, true) }
         if (projects.isEmpty()) {
             Box(Modifier.fillMaxWidth().heightIn(min = 90.dp), contentAlignment = Alignment.Center) {
-                Text("Sin proyectos en este estado", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary.copy(alpha = 0.6f))
+                Text(stringResource(R.string.projects_column_empty), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary.copy(alpha = 0.6f))
             }
         }
     }
@@ -275,12 +291,12 @@ private fun ProjectCard(project: ProjectEntity, compact: Boolean, modifier: Modi
         }
         Column {
             Text(Fmt.money(project.total), fontSize = 24.sp, fontWeight = FontWeight.Bold)
-            Text("${Fmt.int(project.quantity)} prendas × ${Fmt.money(project.price)}", style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary)
+            Text(stringResource(R.string.projects_quantity_times_price, Fmt.int(project.quantity), Fmt.money(project.price)), style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary)
         }
         if (!compact) {
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                CardStat(Icons.Filled.Timer, "${Fmt.number(project.minutes)} min", "minutaje", Tokens.colors.info)
-                CardStat(Icons.Filled.Texture, project.fabric ?: "—", "tela", Tokens.colors.thread)
+                CardStat(Icons.Filled.Timer, stringResource(R.string.projects_minutes_value, Fmt.number(project.minutes)), stringResource(R.string.projects_minutes_caption), Tokens.colors.info)
+                CardStat(Icons.Filled.Texture, project.fabric ?: "—", stringResource(R.string.projects_fabric_caption), Tokens.colors.thread)
             }
             project.notes?.takeIf { it.isNotBlank() }?.let {
                 Text(it, style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary, maxLines = 2, overflow = TextOverflow.Ellipsis)
@@ -299,7 +315,7 @@ private fun ProjectCard(project: ProjectEntity, compact: Boolean, modifier: Modi
 private fun StatusMenu(status: ProjectStatus, iconOnly: Boolean, change: (ProjectStatus) -> Unit) {
     var open by remember { mutableStateOf(false) }
     Box {
-        val label = "Estado: ${status.title}. Cambiar estado"
+        val label = stringResource(R.string.projects_status_menu_label, stringResource(status.titleRes))
         if (iconOnly) {
             IconButton({ open = true }, Modifier.size(36.dp)) { Icon(Icons.Filled.Autorenew, label, tint = Tokens.colors.brand) }
         } else {
@@ -307,14 +323,14 @@ private fun StatusMenu(status: ProjectStatus, iconOnly: Boolean, change: (Projec
                 Modifier.clip(Tokens.chipShape).clickable(role = Role.Button) { open = true }.semantics(mergeDescendants = true) { contentDescription = label },
                 verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                Pill(status.title, status.displayTint(), status.icon)
+                Pill(stringResource(status.titleRes), status.displayTint(), status.icon)
                 Icon(Icons.Filled.KeyboardArrowDown, null, tint = Tokens.colors.secondary.copy(alpha = 0.6f), modifier = Modifier.size(16.dp))
             }
         }
         DropdownMenu(open, { open = false }) {
             ProjectStatus.entries.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option.title) }, onClick = { open = false; change(option) },
+                    text = { Text(stringResource(option.titleRes)) }, onClick = { open = false; change(option) },
                     leadingIcon = { if (option == status) Icon(Icons.Filled.Check, null) else Spacer(Modifier.size(24.dp)) },
                 )
             }
@@ -334,46 +350,48 @@ private fun ProjectEditorSheet(project: ProjectEntity?, clients: List<ClientEnti
     val currentPhoto = app.images.file(project?.photoFile)
 
     FormSheet(
-        if (project == null) "Nuevo proyecto" else "Editar proyecto", onDismiss,
+        stringResource(if (project == null) R.string.projects_new else R.string.projects_edit), onDismiss,
         onSave = {
             val toSave = draft.copy(deliveryDate = if (hasDelivery) delivery else null)
-            actions.run(success = if (project == null) "Proyecto creado" else "Proyecto actualizado", onDone = onDismiss) {
+            actions.run(success = L10n.str(if (project == null) R.string.projects_created else R.string.projects_updated), onDone = onDismiss) {
                 catalog.saveProject(project, toSave)
             }
         },
         canSave = hasClient,
     ) {
-        FormSection("Cliente") {
+        FormSection(stringResource(R.string.common_client)) {
             val selected = clients.firstOrNull { it.id == draft.clientId }
-            PickerField("Cliente", listOf<ClientEntity?>(null) + clients, selected, { it?.name ?: "Otro (escribir nombre)" }, { draft = draft.copy(clientId = it?.id) })
-            if (selected == null) TramaField(draft.clientName, { draft = draft.copy(clientName = it) }, "Nombre del cliente o prospecto")
+            val other = stringResource(R.string.projects_client_other)
+            PickerField(stringResource(R.string.common_client), listOf<ClientEntity?>(null) + clients, selected, { it?.name ?: other }, { draft = draft.copy(clientId = it?.id) })
+            if (selected == null) TramaField(draft.clientName, { draft = draft.copy(clientName = it) }, stringResource(R.string.projects_client_name_hint))
         }
-        FormSection("Cotización") {
-            IntField(draft.quantity.toInt(), { draft = draft.copy(quantity = it.toLong()) }, "Cantidad (prendas)")
-            DecimalField(draft.price, { draft = draft.copy(price = it) }, "Precio por prenda")
+        FormSection(stringResource(R.string.projects_quote)) {
+            IntField(draft.quantity.toInt(), { draft = draft.copy(quantity = it.toLong()) }, stringResource(R.string.projects_quantity_label))
+            DecimalField(draft.price, { draft = draft.copy(price = it) }, stringResource(R.string.projects_price_label))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Total", modifier = Modifier.weight(1f))
+                Text(stringResource(R.string.projects_total), modifier = Modifier.weight(1f))
                 Text(Fmt.money(draft.total), style = MaterialTheme.typography.titleMedium, color = Tokens.colors.brand)
             }
         }
         FormSection(
-            "Producción",
-            footer = if (draft.minutes > 0 && draft.quantity > 0) "Carga estimada: ${Fmt.number(draft.minutes * draft.quantity / 60)} horas de costura." else null,
+            stringResource(R.string.projects_production),
+            footer = if (draft.minutes > 0 && draft.quantity > 0) stringResource(R.string.projects_estimated_load, Fmt.number(draft.minutes * draft.quantity / 60)) else null,
         ) {
-            DecimalField(draft.minutes, { draft = draft.copy(minutes = it) }, "Minutaje (min por prenda)")
-            TramaField(draft.fabric, { draft = draft.copy(fabric = it) }, "Tela")
+            DecimalField(draft.minutes, { draft = draft.copy(minutes = it) }, stringResource(R.string.projects_minutes_label))
+            TramaField(draft.fabric, { draft = draft.copy(fabric = it) }, stringResource(R.string.projects_fabric))
         }
-        FormSection("Seguimiento") {
+        FormSection(stringResource(R.string.projects_follow_up)) {
             Segmented(ProjectStatus.entries, draft.status, { it.title }, { draft = draft.copy(status = it) }, Modifier.fillMaxWidth())
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Fecha de entrega", modifier = Modifier.weight(1f))
+                Text(stringResource(R.string.projects_delivery_date), modifier = Modifier.weight(1f))
                 Switch(hasDelivery, { hasDelivery = it })
             }
-            if (hasDelivery) DateRow("Entrega", delivery) { delivery = it }
-            TramaField(draft.notes, { draft = draft.copy(notes = it) }, "Notas", singleLine = false)
+            if (hasDelivery) DateRow(stringResource(R.string.projects_delivery), delivery) { delivery = it }
+            TramaField(draft.notes, { draft = draft.copy(notes = it) }, stringResource(R.string.common_notes), singleLine = false)
         }
-        FormSection("Foto o muestra") {
-            PhotoField(draft.fabric.ifBlank { "Proyecto" }, currentPhoto, draft.photo) { draft = draft.copy(photo = it) }
+        FormSection(stringResource(R.string.projects_photo_section)) {
+            val fallbackTitle = stringResource(R.string.projects_photo_fallback)
+            PhotoField(draft.fabric.ifBlank { fallbackTitle }, currentPhoto, draft.photo) { draft = draft.copy(photo = it) }
         }
     }
 }

@@ -62,11 +62,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import com.nevutech.trama.BuildConfig
+import com.nevutech.trama.R
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.core.domain.CutStatus
@@ -126,13 +129,14 @@ fun ProductionReportsScreen() {
     val rows = productionRows(graph, graph.visibleAssignments(user), filter, sort, descending)
     val totals = ProductionTotals.of(rows.map { it.metrics })
     val plantName = graph.plant(user?.plantId)?.name
-    val title = if (isPlantManager) "Producción · ${plantName ?: "Sin planta"}" else "Reportes de producción"
+    val title = if (isPlantManager) stringResource(R.string.reports_title_plant, plantName ?: stringResource(R.string.graph_no_plant))
+    else stringResource(R.string.section_production)
 
     TramaScreen {
         if (isPlantManager && plantName == null) {
             Column {
                 ScreenHeader(title, showTitle = wide)
-                EmptyState("Sin planta asignada", "Pide al administrador que te asigne una planta para ver su producción.", Icons.Filled.Apartment)
+                EmptyState(stringResource(R.string.reports_no_plant_title), stringResource(R.string.reports_no_plant_message), Icons.Filled.Apartment)
             }
             return@TramaScreen
         }
@@ -140,47 +144,49 @@ fun ProductionReportsScreen() {
             ScreenHeader(title, showTitle = wide || isPlantManager) {
                 SortMenu(sort, descending, { sort = it }, { descending = it })
                 IconButton({ runCatching { shareCsv(context, rows) }.onFailure(app.toasts::error) }, enabled = rows.isNotEmpty()) {
-                    Icon(Icons.Filled.Share, "Exportar CSV", tint = if (rows.isNotEmpty()) Tokens.colors.brand else Tokens.colors.secondary)
+                    Icon(Icons.Filled.Share, stringResource(R.string.reports_export_csv), tint = if (rows.isNotEmpty()) Tokens.colors.brand else Tokens.colors.secondary)
                 }
             }
             Column(Modifier.padding(horizontal = if (wide) 24.dp else 16.dp)) {
-                SearchBox(query, { query = it }, "Corte, lista, estilo, cliente…")
+                SearchBox(query, { query = it }, stringResource(R.string.reports_search_placeholder))
             }
             // Filters
             Row(
                 Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = if (wide) 24.dp else 16.dp, vertical = 12.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically,
             ) {
+                val allFem = stringResource(R.string.common_all_fem)
+                val allMasc = stringResource(R.string.common_all_masc)
                 if (!isPlantManager) {
                     FilterMenuChip(
-                        graph.plant(plantId)?.name ?: "Planta", Icons.Filled.Apartment, plantId != null,
-                        listOf<Pair<String, () -> Unit>>("Todas" to { plantId = null }) + graph.plants.sortedBy { it.name.lowercase() }.map { p -> p.name to { plantId = p.id } },
+                        graph.plant(plantId)?.name ?: stringResource(R.string.common_plant), Icons.Filled.Apartment, plantId != null,
+                        listOf<Pair<String, () -> Unit>>(allFem to { plantId = null }) + graph.plants.sortedBy { it.name.lowercase() }.map { p -> p.name to { plantId = p.id } },
                     )
                 }
                 FilterMenuChip(
-                    graph.client(clientId)?.name ?: "Cliente", Icons.Filled.Groups, clientId != null,
-                    listOf<Pair<String, () -> Unit>>("Todos" to { clientId = null }) + graph.clients.sortedBy { it.name.lowercase() }.map { c -> c.name to { clientId = c.id } },
+                    graph.client(clientId)?.name ?: stringResource(R.string.common_client), Icons.Filled.Groups, clientId != null,
+                    listOf<Pair<String, () -> Unit>>(allMasc to { clientId = null }) + graph.clients.sortedBy { it.name.lowercase() }.map { c -> c.name to { clientId = c.id } },
                 )
                 FilterMenuChip(
-                    status?.title ?: "Estado", Icons.Filled.ContentCut, status != null,
-                    listOf<Pair<String, () -> Unit>>("Todos" to { status = null }) + CutStatus.entries.map { s -> s.title to { status = s } },
+                    status?.let { stringResource(it.titleRes) } ?: stringResource(R.string.common_status), Icons.Filled.ContentCut, status != null,
+                    listOf<Pair<String, () -> Unit>>(allMasc to { status = null }) + CutStatus.entries.map { s -> s.title to { status = s } },
                 )
                 FilterChipButton(
-                    if (useDateRange) "${Fmt.shortDate(from)} – ${Fmt.shortDate(to)}" else "Fecha cliente",
+                    if (useDateRange) stringResource(R.string.reports_date_range, Fmt.shortDate(from), Fmt.shortDate(to)) else stringResource(R.string.common_client_date),
                     Icons.Filled.CalendarMonth, useDateRange, { showDates = true },
                 )
-                FilterChipButton("Con pendientes por enviar", Icons.Filled.Inventory2, onlyPending, { onlyPending = !onlyPending })
+                FilterChipButton(stringResource(R.string.reports_filter_pending_shipment), Icons.Filled.Inventory2, onlyPending, { onlyPending = !onlyPending })
                 if (filter.isActive) {
                     TextButton({ plantId = null; clientId = null; status = null; onlyPending = false; useDateRange = false; query = "" }) {
                         Icon(Icons.Filled.Cancel, null, tint = Tokens.colors.danger)
-                        Text(" Limpiar", color = Tokens.colors.danger, fontWeight = FontWeight.SemiBold)
+                        Text(" " + stringResource(R.string.reports_clear_filters), color = Tokens.colors.danger, fontWeight = FontWeight.SemiBold)
                     }
                 }
             }
             TotalsStrip(totals, wide)
             if (rows.isEmpty()) {
-                if (filter.isActive) EmptyState("Sin resultados", "Ajusta o limpia los filtros.", Icons.Filled.FilterAltOff)
-                else EmptyState("Aún no hay cortes en producción", "Asigna cortes a plantas para verlos aquí.", Icons.Filled.BarChart)
+                if (filter.isActive) EmptyState(stringResource(R.string.common_no_results), stringResource(R.string.reports_no_results_message), Icons.Filled.FilterAltOff)
+                else EmptyState(stringResource(R.string.reports_empty_title), stringResource(R.string.reports_empty_message), Icons.Filled.BarChart)
             } else {
                 LazyColumn(
                     Modifier.weight(1f),
@@ -196,18 +202,18 @@ fun ProductionReportsScreen() {
     if (showDates) {
         AlertDialog(
             onDismissRequest = { showDates = false },
-            title = { Text("Fecha cliente") },
+            title = { Text(stringResource(R.string.common_client_date)) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Filtrar por fecha cliente", Modifier.weight(1f))
+                        Text(stringResource(R.string.reports_filter_by_client_date), Modifier.weight(1f))
                         Switch(useDateRange, { useDateRange = it })
                     }
-                    DateField("Desde", from) { from = it; if (to.isBefore(it)) to = it }
-                    DateField("Hasta", to) { to = if (it.isBefore(from)) from else it }
+                    DateField(stringResource(R.string.reports_date_from), from) { from = it; if (to.isBefore(it)) to = it }
+                    DateField(stringResource(R.string.reports_date_to), to) { to = if (it.isBefore(from)) from else it }
                 }
             },
-            confirmButton = { TextButton({ showDates = false }) { Text("Listo") } },
+            confirmButton = { TextButton({ showDates = false }) { Text(stringResource(R.string.common_done)) } },
         )
     }
 }
@@ -216,9 +222,9 @@ fun ProductionReportsScreen() {
 private fun SortMenu(sort: ProductionSort, descending: Boolean, onSort: (ProductionSort) -> Unit, onDescending: (Boolean) -> Unit) {
     var open by remember { mutableStateOf(false) }
     Box {
-        IconButton({ open = true }) { Icon(Icons.AutoMirrored.Filled.Sort, "Ordenar", tint = Tokens.colors.brand) }
+        IconButton({ open = true }) { Icon(Icons.AutoMirrored.Filled.Sort, stringResource(R.string.reports_sort), tint = Tokens.colors.brand) }
         DropdownMenu(open, { open = false }) {
-            Text("Ordenar por", style = MaterialTheme.typography.labelMedium, color = Tokens.colors.secondary, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
+            Text(stringResource(R.string.reports_sort_by), style = MaterialTheme.typography.labelMedium, color = Tokens.colors.secondary, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
             ProductionSort.entries.forEach { key ->
                 DropdownMenuItem(
                     text = { Text(key.title) }, onClick = { onSort(key); open = false },
@@ -227,11 +233,11 @@ private fun SortMenu(sort: ProductionSort, descending: Boolean, onSort: (Product
             }
             HorizontalDivider()
             DropdownMenuItem(
-                text = { Text("Ascendente") }, onClick = { onDescending(false); open = false },
+                text = { Text(stringResource(R.string.reports_sort_ascending)) }, onClick = { onDescending(false); open = false },
                 trailingIcon = if (!descending) ({ Icon(Icons.Filled.Check, null, tint = Tokens.colors.brand) }) else null,
             )
             DropdownMenuItem(
-                text = { Text("Descendente") }, onClick = { onDescending(true); open = false },
+                text = { Text(stringResource(R.string.reports_sort_descending)) }, onClick = { onDescending(true); open = false },
                 trailingIcon = if (descending) ({ Icon(Icons.Filled.Check, null, tint = Tokens.colors.brand) }) else null,
             )
         }
@@ -245,14 +251,14 @@ private fun TotalsStrip(t: ProductionTotals, wide: Boolean) {
         Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = if (wide) 24.dp else 16.dp).padding(bottom = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        TotalChip("Cantidad total", Fmt.int(t.quantity), Icons.Filled.Numbers, c.brand)
-        TotalChip("Producidas", Fmt.int(t.produced), Icons.Filled.PrecisionManufacturing, c.info)
-        TotalChip("Plancha", Fmt.int(t.ironing), Icons.Filled.Iron, StageTints.ironing)
-        TotalChip("Empaque", Fmt.int(t.packing), Icons.Filled.Inventory2, StageTints.packing)
-        TotalChip("Bodega", Fmt.int(t.warehouse), Icons.Filled.Warehouse, StageTints.warehouse)
-        TotalChip("Enviadas", Fmt.int(t.shipped), Icons.AutoMirrored.Filled.Send, c.success)
-        TotalChip("A enviar", Fmt.int(t.toShip), Icons.Filled.Schedule, c.warning)
-        TotalChip("Ingresos", Fmt.money(t.revenue, compact = true), Icons.Filled.Payments, c.thread)
+        TotalChip(stringResource(R.string.reports_total_quantity), Fmt.int(t.quantity), Icons.Filled.Numbers, c.brand)
+        TotalChip(stringResource(R.string.reports_produced), Fmt.int(t.produced), Icons.Filled.PrecisionManufacturing, c.info)
+        TotalChip(stringResource(R.string.reports_ironing), Fmt.int(t.ironing), Icons.Filled.Iron, StageTints.ironing)
+        TotalChip(stringResource(R.string.reports_packing), Fmt.int(t.packing), Icons.Filled.Inventory2, StageTints.packing)
+        TotalChip(stringResource(R.string.reports_warehouse), Fmt.int(t.warehouse), Icons.Filled.Warehouse, StageTints.warehouse)
+        TotalChip(stringResource(R.string.reports_shipped), Fmt.int(t.shipped), Icons.AutoMirrored.Filled.Send, c.success)
+        TotalChip(stringResource(R.string.reports_to_ship_total), Fmt.int(t.toShip), Icons.Filled.Schedule, c.warning)
+        TotalChip(stringResource(R.string.reports_revenue_total), Fmt.money(t.revenue, compact = true), Icons.Filled.Payments, c.thread)
     }
 }
 
@@ -288,21 +294,21 @@ private fun ProductionRowView(row: ProductionRow, onClick: () -> Unit) {
                         Text(row.code, style = MaterialTheme.typography.titleMedium)
                         Text(row.plant, style = MaterialTheme.typography.labelMedium, color = Tokens.accent(row.plant), maxLines = 1)
                     }
-                    Text("${row.client} · Lista ${row.list}", style = MaterialTheme.typography.bodySmall, color = c.secondary, maxLines = 1)
+                    Text(stringResource(R.string.reports_row_client_list, row.client, row.list), style = MaterialTheme.typography.bodySmall, color = c.secondary, maxLines = 1)
                     CutStatusPill(row.status)
                 }
             }
             val metrics: @Composable () -> Unit = {
                 Row(horizontalArrangement = Arrangement.spacedBy(if (inline) 18.dp else 10.dp)) {
-                    Metric("Cantidad", Fmt.int(row.quantity))
+                    Metric(stringResource(R.string.common_quantity), Fmt.int(row.quantity))
                     if (full) {
-                        Metric("Cortadas", Fmt.int(row.realCut))
-                        Metric("Producidas", Fmt.int(row.produced))
-                        Metric("Enviadas", Fmt.int(row.shipped))
+                        Metric(stringResource(R.string.reports_cut_done), Fmt.int(row.realCut))
+                        Metric(stringResource(R.string.reports_produced), Fmt.int(row.produced))
+                        Metric(stringResource(R.string.reports_shipped), Fmt.int(row.shipped))
                     }
-                    Metric("Por enviar", Fmt.int(row.toShip), if (row.toShip > 0) c.warning else c.success)
-                    Metric("Entrega", row.clientDate?.let { Fmt.shortDate(it) } ?: "—")
-                    if (full) Metric("Ingreso", Fmt.money(row.revenue, compact = true))
+                    Metric(stringResource(R.string.reports_to_ship), Fmt.int(row.toShip), if (row.toShip > 0) c.warning else c.success)
+                    Metric(stringResource(R.string.reports_delivery), row.clientDate?.let { Fmt.shortDate(it) } ?: "—")
+                    if (full) Metric(stringResource(R.string.reports_revenue), Fmt.money(row.revenue, compact = true))
                 }
             }
             if (inline) {
@@ -338,8 +344,8 @@ private fun shareCsv(context: Context, rows: List<ProductionRow>) {
     val send = Intent(Intent.ACTION_SEND).apply {
         type = "text/csv"
         putExtra(Intent.EXTRA_STREAM, uri)
-        putExtra(Intent.EXTRA_SUBJECT, "Reporte de producción · Trama")
+        putExtra(Intent.EXTRA_SUBJECT, L10n.str(R.string.reports_share_subject))
         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }
-    context.startActivity(Intent.createChooser(send, "Exportar CSV"))
+    context.startActivity(Intent.createChooser(send, L10n.str(R.string.reports_export_csv)))
 }

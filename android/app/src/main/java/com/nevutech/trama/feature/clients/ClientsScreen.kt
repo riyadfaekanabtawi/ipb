@@ -14,11 +14,13 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.app.rememberActions
@@ -26,6 +28,7 @@ import com.nevutech.trama.app.rememberGraph
 import com.nevutech.trama.core.data.ClientEntity
 import com.nevutech.trama.core.data.ContactLinks
 import com.nevutech.trama.core.domain.Fmt
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.EmptyState
 import com.nevutech.trama.designsystem.PrimaryButton
 import com.nevutech.trama.designsystem.Tokens
@@ -48,11 +51,11 @@ fun ClientsScreen() {
     }
 
     TramaScreen {
-        CatalogGrid("Clientes", search, { search = it }, "Buscar cliente, contacto o correo", "Nuevo cliente", { editor = PartyEditorTarget(null) }) {
+        CatalogGrid(stringResource(R.string.section_clients), search, { search = it }, stringResource(R.string.clients_search), stringResource(R.string.clients_new), { editor = PartyEditorTarget(null) }) {
             when {
                 clients.isEmpty() -> fullSpan {
-                    EmptyState("Sin clientes", "Registra a tus clientes para asignarles cortes y proyectos.", Icons.Filled.Groups) {
-                        PrimaryButton("Nuevo cliente", { editor = PartyEditorTarget(null) }, icon = Icons.Filled.Add)
+                    EmptyState(stringResource(R.string.clients_empty_title), stringResource(R.string.clients_empty_message), Icons.Filled.Groups) {
+                        PrimaryButton(stringResource(R.string.clients_new), { editor = PartyEditorTarget(null) }, icon = Icons.Filled.Add)
                     }
                 }
                 filtered.isEmpty() -> fullSpan { NoResults(search) }
@@ -62,19 +65,19 @@ fun ClientsScreen() {
                     val orders = graph.ordersOf(client)
                     val projects = graph.projects.count { it.clientId == client.id }
                     WithContextMenu(menu = { close ->
-                        MenuItem("Editar", Icons.Filled.Edit) { close(); editor = PartyEditorTarget(client) }
+                        MenuItem(stringResource(R.string.common_edit), Icons.Filled.Edit) { close(); editor = PartyEditorTarget(client) }
                         ContactLinks.mailto(contacts.map { it.email })?.let { uri ->
-                            MenuItem("Enviar correo a todos", Icons.Filled.Email) { close(); openLink(context, app.toasts, uri) }
+                            MenuItem(stringResource(R.string.catalog_ui_email_all), Icons.Filled.Email) { close(); openLink(context, app.toasts, uri) }
                         }
                         HorizontalDivider()
-                        MenuItem("Eliminar", Icons.Filled.Delete, destructive = true) { close(); pendingDelete = client }
+                        MenuItem(stringResource(R.string.common_delete), Icons.Filled.Delete, destructive = true) { close(); pendingDelete = client }
                     }) { open ->
                         PartyCard(client.name, client.address, contacts, onClick = { navigator.openClient(client.id) }, onLongClick = open) {
-                            CardStat(Icons.Filled.ContentCut, Fmt.int(orders.size), "cortes")
+                            CardStat(Icons.Filled.ContentCut, Fmt.int(orders.size), stringResource(R.string.clients_stat_cuts))
                             Spacer(Modifier.weight(1f))
-                            CardStat(Icons.Filled.Folder, Fmt.int(projects), "proyectos", Tokens.colors.info)
+                            CardStat(Icons.Filled.Folder, Fmt.int(projects), stringResource(R.string.clients_stat_projects), Tokens.colors.info)
                             Spacer(Modifier.weight(1f))
-                            CardStat(Icons.Filled.Payments, Fmt.money(orders.sumOf { it.quantity * it.unitPrice }, compact = true), "valor", Tokens.colors.success)
+                            CardStat(Icons.Filled.Payments, Fmt.money(orders.sumOf { it.quantity * it.unitPrice }, compact = true), stringResource(R.string.catalog_ui_value_lower), Tokens.colors.success)
                         }
                     }
                 }
@@ -91,8 +94,8 @@ fun ClientsScreen() {
     }
     pendingDelete?.let { client ->
         ConfirmDeleteDialog(
-            "¿Eliminar ${client.name}?", "Solo se pueden eliminar clientes sin cortes. Sus proyectos conservarán el nombre.",
-            onConfirm = { actions.run(success = "Cliente «${client.name}» eliminado") { app.production().deleteClient(client) } },
+            stringResource(R.string.catalog_ui_delete_title, client.name), stringResource(R.string.clients_delete_message_list),
+            onConfirm = { actions.run(success = L10n.str(R.string.clients_deleted, client.name)) { app.production().deleteClient(client) } },
             onDismiss = { pendingDelete = null },
         )
     }

@@ -1,5 +1,7 @@
 package com.nevutech.trama.feature.production
 
+import androidx.annotation.StringRes
+import com.nevutech.trama.R
 import com.nevutech.trama.core.data.AssignmentEntity
 import com.nevutech.trama.core.data.CutOrderEntity
 import com.nevutech.trama.core.data.Graph
@@ -9,6 +11,7 @@ import com.nevutech.trama.core.domain.AssignmentMetrics
 import com.nevutech.trama.core.domain.CutStatus
 import com.nevutech.trama.core.domain.Fmt
 import com.nevutech.trama.core.domain.UrgencyPolicy
+import com.nevutech.trama.core.l10n.L10n
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -96,14 +99,16 @@ data class ProductionFilter(
     }
 }
 
-enum class ProductionSort(val title: String) {
-    ClientDate("Fecha de entrega"),
-    Code("Corte"),
-    Plant("Planta"),
-    Status("Estado"),
-    Quantity("Cantidad"),
-    ToShip("Por enviar"),
-    Revenue("Ingreso");
+enum class ProductionSort(@StringRes val titleRes: Int) {
+    ClientDate(R.string.production_sort_client_date),
+    Code(R.string.common_cut),
+    Plant(R.string.common_plant),
+    Status(R.string.common_status),
+    Quantity(R.string.common_quantity),
+    ToShip(R.string.production_to_ship),
+    Revenue(R.string.production_revenue);
+
+    val title: String get() = L10n.str(titleRes)
 
     fun comparator(descending: Boolean): Comparator<ProductionRow> {
         val base: Comparator<ProductionRow> = when (this) {
@@ -126,15 +131,20 @@ fun productionRows(graph: Graph, assignments: List<AssignmentEntity>, filter: Pr
         .map { it.second }
         .sortedWith(sort.comparator(descending))
 
-/** CSV export with the same columns as iOS ProductionCSV. */
+/** CSV export with the same columns as iOS ProductionCSV; headers follow the app's language. */
 object ProductionCsv {
     const val FILE_NAME = "Trama-produccion.csv"
-    const val BOM = "﻿"
+    const val BOM = "\uFEFF"
 
-    val header = listOf(
-        "Corte", "Lista", "Cliente", "Estilo", "Prenda", "Planta", "Estado", "Cantidad", "Cortadas", "Producidas",
-        "Plancha", "Empaque", "Bodega", "Enviadas", "Por enviar", "Ingreso", "Fecha interna", "Fecha cliente",
+    private val headerRes = listOf(
+        R.string.production_csv_cut, R.string.production_csv_list, R.string.production_csv_client, R.string.production_csv_style,
+        R.string.production_csv_garment, R.string.production_csv_plant, R.string.production_csv_status, R.string.production_csv_quantity,
+        R.string.production_csv_cut_qty, R.string.production_csv_produced, R.string.production_csv_ironing, R.string.production_csv_packing,
+        R.string.production_csv_warehouse, R.string.production_csv_shipped, R.string.production_csv_to_ship, R.string.production_csv_revenue,
+        R.string.production_csv_internal_date, R.string.production_csv_client_date,
     )
+
+    val header: List<String> get() = headerRes.map { L10n.str(it) }
 
     fun escape(s: String): String =
         if (s.any { it == ',' || it == '"' || it == '\n' }) "\"" + s.replace("\"", "\"\"") + "\"" else s
@@ -167,8 +177,10 @@ object CalendarMath {
         (0 until 7).map { firstDay.plus(it.toLong()).getDisplayName(TextStyle.SHORT, locale).trimEnd('.') }
 }
 
-enum class OrderFilter(val title: String) {
-    Pending("Por asignar"), All("Todos"), Assigned("Asignados");
+enum class OrderFilter(@StringRes val titleRes: Int) {
+    Pending(R.string.order_state_unassigned), All(R.string.common_all_masc), Assigned(R.string.orders_filter_assigned);
+
+    val title: String get() = L10n.str(titleRes)
 
     fun matches(graph: Graph, order: CutOrderEntity): Boolean = when (this) {
         Pending -> graph.remaining(order) > 0
@@ -221,12 +233,15 @@ data class CalendarEvent(
                 val date = a.scheduledDate?.toLocalDate() ?: return@mapNotNull null
                 if (plantId != null && a.plantId != plantId) return@mapNotNull null
                 val plant = graph.plantName(a)
-                CalendarEvent("p-${a.id}", Kind.Production, date, graph.title(a), "$plant · ${Fmt.int(a.quantity)} prendas", a.id, plant)
+                val subtitle = L10n.plural(
+                    R.plurals.production_calendar_event_subtitle, a.quantity.coerceAtMost(Int.MAX_VALUE.toLong()).toInt(), plant, Fmt.int(a.quantity),
+                )
+                CalendarEvent("p-${a.id}", Kind.Production, date, graph.title(a), subtitle, a.id, plant)
             }
             val deliveries = graph.orders.mapNotNull { o ->
                 val date = o.clientDate?.toLocalDate() ?: return@mapNotNull null
                 if (plantId != null && graph.assignmentsOf(o).none { it.plantId == plantId }) return@mapNotNull null
-                CalendarEvent("d-${o.id}", Kind.Delivery, date, o.code, "Entrega a ${graph.clientName(o)}", o.id, null)
+                CalendarEvent("d-${o.id}", Kind.Delivery, date, o.code, L10n.str(R.string.production_calendar_delivery_to, graph.clientName(o)), o.id, null)
             }
             return (production + deliveries).filter { YearMonth.from(it.date) == month }
         }

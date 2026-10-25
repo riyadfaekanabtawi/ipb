@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -55,6 +56,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.gestures.detectTapGestures
+import com.nevutech.trama.R
 import com.nevutech.trama.core.domain.Fmt
 import com.nevutech.trama.designsystem.SectionHeader
 import com.nevutech.trama.designsystem.TramaCard
@@ -63,23 +65,22 @@ import com.nevutech.trama.designsystem.capacityTint
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 // Shared chart building blocks (port of ios/Trama/DesignSystem/Components/ChartKit.swift).
 // Drawn with Compose Canvas only; no chart library.
 
+/** Month and day labels in the app's current locale (formatters are built per call, so a language change applies at once). */
 object MonthLabel {
-    private val wide = DateTimeFormatter.ofPattern("MMMM yyyy", Fmt.locale)
-    private val abbreviated = DateTimeFormatter.ofPattern("MMM", Fmt.locale)
-    private val fullDay = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' yyyy", Fmt.locale)
+    /** "Octubre 2026" / "October 2026" / "Outubro de 2026" */
+    fun long(month: YearMonth): String = Fmt.monthYear(month.atDay(1))
 
-    /** "Octubre 2026" */
-    fun long(month: YearMonth): String = month.atDay(1).format(wide).replace(" de ", " ").capitalizedFirst()
+    /** "oct" / "Oct" / "out" */
+    fun short(month: YearMonth): String = month.atDay(1).format(DateTimeFormatter.ofPattern("MMM", Fmt.locale)).replace(".", "")
 
-    /** "oct" */
-    fun short(month: YearMonth): String = month.atDay(1).format(abbreviated).replace(".", "")
-
-    /** "Sábado, 24 de octubre de 2026" */
-    fun fullDay(date: LocalDate): String = date.format(fullDay).capitalizedFirst()
+    /** "Sábado, 24 de octubre de 2026" / "Saturday, October 24, 2026" */
+    fun fullDay(date: LocalDate): String =
+        date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(Fmt.locale)).capitalizedFirst()
 }
 
 fun String.capitalizedFirst(): String = replaceFirstChar { it.titlecase(Fmt.locale) }
@@ -108,11 +109,12 @@ fun MonthStepper(month: YearMonth, onChange: (YearMonth) -> Unit, modifier: Modi
         onChange(value)
         haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
     }
+    val monthDescription = stringResource(R.string.chart_selected_month, MonthLabel.long(month))
     Row(
         modifier.clip(CircleShape).background(Tokens.colors.ink.copy(alpha = 0.05f)).padding(2.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        StepButton(Icons.AutoMirrored.Filled.KeyboardArrowLeft, "Mes anterior") { set(month.minusMonths(1)) }
+        StepButton(Icons.AutoMirrored.Filled.KeyboardArrowLeft, stringResource(R.string.chart_previous_month)) { set(month.minusMonths(1)) }
         Text(
             MonthLabel.long(month),
             style = MaterialTheme.typography.labelLarge,
@@ -120,9 +122,9 @@ fun MonthStepper(month: YearMonth, onChange: (YearMonth) -> Unit, modifier: Modi
             modifier = Modifier
                 .widthIn(min = 132.dp)
                 .pointerInput(month) { detectTapGestures(onDoubleTap = { set(YearMonth.now()) }) }
-                .semantics { contentDescription = "Mes seleccionado: ${MonthLabel.long(month)}. Toca dos veces para volver al mes actual" },
+                .semantics { contentDescription = monthDescription },
         )
-        StepButton(Icons.AutoMirrored.Filled.KeyboardArrowRight, "Mes siguiente") { set(month.plusMonths(1)) }
+        StepButton(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.chart_next_month)) { set(month.plusMonths(1)) }
     }
 }
 
@@ -181,9 +183,10 @@ data class BarPoint(val label: String, val value: Double, val max: Double) {
 /** One horizontal capsule per point: track = max, fill = value, tinted by utilization, % inside. */
 @Composable
 fun CapacityBarChart(points: List<BarPoint>, modifier: Modifier = Modifier) {
+    val usedTemplate = stringResource(R.string.chart_point_used)
     Column(
         modifier.fillMaxWidth().semantics(mergeDescendants = true) {
-            contentDescription = points.joinToString(", ") { "${it.label}: ${Fmt.percent(it.ratio)} usado" }
+            contentDescription = points.joinToString(", ") { usedTemplate.format(it.label, Fmt.percent(it.ratio)) }
         },
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
@@ -196,7 +199,7 @@ fun CapacityBarChart(points: List<BarPoint>, modifier: Modifier = Modifier) {
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     CapsuleBar(point.ratio, capacityTint(point.ratio.toFloat()))
                     Text(
-                        "${Fmt.money(point.value, compact = true)} de ${Fmt.money(point.max, compact = true)}",
+                        stringResource(R.string.chart_value_of_max, Fmt.money(point.value, compact = true), Fmt.money(point.max, compact = true)),
                         style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary,
                     )
                 }
@@ -301,12 +304,13 @@ fun StackedBarChart(
         }
         Row(Modifier.fillMaxWidth().padding(start = gutter, top = 6.dp)) {
             labels.forEachIndexed { i, label ->
+                val selectLabel = stringResource(R.string.chart_select_label, label)
                 Text(
                     label, style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Center, maxLines = 1,
                     color = if (i == selected) Tokens.colors.brand else Tokens.colors.secondary,
                     fontWeight = if (i == selected) FontWeight.Bold else FontWeight.Medium,
                     modifier = Modifier.weight(1f)
-                        .clickable(role = Role.Button, onClickLabel = "Seleccionar $label") { onSelect(i) },
+                        .clickable(role = Role.Button, onClickLabel = selectLabel) { onSelect(i) },
                 )
             }
         }

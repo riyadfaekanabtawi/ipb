@@ -23,14 +23,14 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.MarkEmailUnread
 import androidx.compose.material.icons.filled.MoreHoriz
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material.icons.outlined.WorkOutline
-import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -40,6 +40,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,26 +50,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.core.data.ContactDraft
 import com.nevutech.trama.core.data.ContactEntity
 import com.nevutech.trama.core.data.ContactLinks
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.Avatar
 import com.nevutech.trama.designsystem.Pill
 import com.nevutech.trama.designsystem.Tokens
 import com.nevutech.trama.designsystem.TramaCard
 import com.nevutech.trama.designsystem.TramaField
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.unit.Dp
 
 /**
  * Form section that edits any number of contacts (legacy had three fixed slots). Rows can be
@@ -77,8 +81,8 @@ import androidx.compose.ui.unit.Dp
 @Composable
 fun ContactsEditorSection(contacts: List<ContactDraft>, onChange: (List<ContactDraft>) -> Unit, focusId: String? = null) {
     FormSection(
-        "Contactos",
-        footer = if (contacts.size > 1) "Usa el menú de cada contacto para reordenarlo. El primero es el contacto principal." else null,
+        stringResource(R.string.common_contacts),
+        footer = if (contacts.size > 1) stringResource(R.string.contact_reorder_footer) else null,
     ) {
         contacts.forEachIndexed { index, contact ->
             if (index > 0) HorizontalDivider(color = Tokens.colors.stroke)
@@ -96,7 +100,7 @@ fun ContactsEditorSection(contacts: List<ContactDraft>, onChange: (List<ContactD
         }
         TextButton({ onChange(contacts + ContactDraft()) }) {
             Icon(Icons.Filled.PersonAdd, null, Modifier.size(18.dp))
-            Text("  Agregar contacto")
+            Text("  " + stringResource(R.string.contact_add))
         }
     }
 }
@@ -117,22 +121,22 @@ private fun ContactEditorRow(
     Column(Modifier.animateContentSize(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Avatar(contact.name.ifBlank { "$position" }, size = 34.dp)
-            TramaField(contact.name, { onChange(contact.copy(name = it)) }, "Nombre", Modifier.weight(1f).focusRequester(focus))
+            TramaField(contact.name, { onChange(contact.copy(name = it)) }, stringResource(R.string.common_name), Modifier.weight(1f).focusRequester(focus))
             var open by remember { mutableStateOf(false) }
             Box {
-                IconButton({ open = true }) { Icon(Icons.Filled.MoreHoriz, "Opciones del contacto $position", tint = Tokens.colors.secondary) }
+                IconButton({ open = true }) { Icon(Icons.Filled.MoreHoriz, stringResource(R.string.contact_options, position), tint = Tokens.colors.secondary) }
                 DropdownMenu(open, { open = false }) {
-                    MenuItem("Subir", Icons.Filled.ArrowUpward, enabled = canMoveUp) { open = false; move(-1) }
-                    MenuItem("Bajar", Icons.Filled.ArrowDownward, enabled = canMoveDown) { open = false; move(1) }
+                    MenuItem(stringResource(R.string.contact_move_up), Icons.Filled.ArrowUpward, enabled = canMoveUp) { open = false; move(-1) }
+                    MenuItem(stringResource(R.string.contact_move_down), Icons.Filled.ArrowDownward, enabled = canMoveDown) { open = false; move(1) }
                     HorizontalDivider()
-                    MenuItem("Quitar contacto", Icons.Filled.Delete, destructive = true) { open = false; remove() }
+                    MenuItem(stringResource(R.string.contact_remove), Icons.Filled.Delete, destructive = true) { open = false; remove() }
                 }
             }
         }
-        TramaField(contact.role, { onChange(contact.copy(role = it)) }, "Puesto", leading = Icons.Outlined.WorkOutline)
+        TramaField(contact.role, { onChange(contact.copy(role = it)) }, stringResource(R.string.common_role), leading = Icons.Outlined.WorkOutline)
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            TramaField(contact.email, { onChange(contact.copy(email = it)) }, "Correo", Modifier.weight(1f), keyboard = KeyboardType.Email, leading = Icons.Outlined.Email)
-            TramaField(contact.phone, { onChange(contact.copy(phone = it)) }, "Teléfono", Modifier.weight(1f), keyboard = KeyboardType.Phone, leading = Icons.Outlined.Phone)
+            TramaField(contact.email, { onChange(contact.copy(email = it)) }, stringResource(R.string.contact_email_short), Modifier.weight(1f), keyboard = KeyboardType.Email, leading = Icons.Outlined.Email)
+            TramaField(contact.phone, { onChange(contact.copy(phone = it)) }, stringResource(R.string.common_phone), Modifier.weight(1f), keyboard = KeyboardType.Phone, leading = Icons.Outlined.Phone)
         }
     }
 }
@@ -146,30 +150,30 @@ fun ContactCard(contact: ContactEntity, isPrimary: Boolean) {
     var menu by remember { mutableStateOf(false) }
     Box {
         TramaCard(
-            Modifier.fillMaxWidth().clip(Tokens.cardShape).combinedClickable(onClick = {}, onLongClick = { menu = true }, onLongClickLabel = "Copiar datos"),
+            Modifier.fillMaxWidth().clip(Tokens.cardShape).combinedClickable(onClick = {}, onLongClick = { menu = true }, onLongClickLabel = stringResource(R.string.contact_copy_data)),
             padding = 18.dp,
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Avatar(contact.name ?: "?", size = 46.dp)
                 Column(Modifier.weight(1f)) {
-                    Text(contact.name ?: "Sin nombre", style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    Text(contact.role ?: "Sin puesto", style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary, maxLines = 1)
+                    Text(contact.name ?: stringResource(R.string.contact_no_name), style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(contact.role ?: stringResource(R.string.contact_no_role), style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary, maxLines = 1)
                 }
-                if (isPrimary) Pill("Principal", Tokens.colors.thread, Icons.Filled.Star)
+                if (isPrimary) Pill(stringResource(R.string.contact_primary), Tokens.colors.thread, Icons.Filled.Star)
             }
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 val email = contact.email
                 val phone = contact.phone
-                ContactLinks.mailto(listOf(email))?.let { ContactLinkRow(Icons.Filled.Email, email!!, it, "Enviar correo a $email") }
-                ContactLinks.tel(phone)?.let { ContactLinkRow(Icons.Filled.Phone, phone!!, it, "Llamar a $phone") }
+                ContactLinks.mailto(listOf(email))?.let { ContactLinkRow(Icons.Filled.Email, email!!, it, stringResource(R.string.catalog_ui_email_to, email)) }
+                ContactLinks.tel(phone)?.let { ContactLinkRow(Icons.Filled.Phone, phone!!, it, stringResource(R.string.catalog_ui_call, phone)) }
                 if (email == null && phone == null) {
-                    Text("Sin datos de contacto", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary.copy(alpha = 0.6f))
+                    Text(stringResource(R.string.contact_no_details), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary.copy(alpha = 0.6f))
                 }
             }
         }
         DropdownMenu(menu, { menu = false }) {
-            contact.email?.let { e -> MenuItem("Copiar correo", Icons.Filled.ContentCopy) { menu = false; clipboard.setText(AnnotatedString(e)); toasts.show("Correo copiado") } }
-            contact.phone?.let { p -> MenuItem("Copiar teléfono", Icons.Filled.ContentCopy) { menu = false; clipboard.setText(AnnotatedString(p)); toasts.show("Teléfono copiado") } }
+            contact.email?.let { e -> MenuItem(stringResource(R.string.contact_copy_email), Icons.Filled.ContentCopy) { menu = false; clipboard.setText(AnnotatedString(e)); toasts.show(L10n.str(R.string.contact_email_copied)) } }
+            contact.phone?.let { p -> MenuItem(stringResource(R.string.contact_copy_phone), Icons.Filled.ContentCopy) { menu = false; clipboard.setText(AnnotatedString(p)); toasts.show(L10n.str(R.string.contact_phone_copied)) } }
         }
     }
 }
@@ -197,23 +201,23 @@ fun ContactsSection(contacts: List<ContactEntity>, onAdd: (() -> Unit)?) {
     val context = LocalContext.current
     val toasts = LocalApp.current.toasts
     Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-        val subtitle = when (contacts.size) { 0 -> "Sin contactos"; 1 -> "1 contacto"; else -> "${contacts.size} contactos" }
-        SectionTitle("Contactos", subtitle) {
+        val subtitle = if (contacts.isEmpty()) stringResource(R.string.contact_none) else pluralStringResource(R.plurals.contact_count, contacts.size, contacts.size)
+        SectionTitle(stringResource(R.string.common_contacts), subtitle) {
             val all = ContactLinks.mailto(contacts.map { it.email })
             if (all != null && contacts.size > 1) {
                 OutlinedButton({ openLink(context, toasts, all) }) {
                     Icon(Icons.Filled.MarkEmailUnread, null, Modifier.size(18.dp))
-                    Text("  Enviar correo a todos")
+                    Text("  " + stringResource(R.string.catalog_ui_email_all))
                 }
             }
         }
         if (contacts.isEmpty()) {
             TramaCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text("Aún no hay contactos.", color = Tokens.colors.secondary)
+                    Text(stringResource(R.string.contact_empty), color = Tokens.colors.secondary)
                     if (onAdd != null) OutlinedButton(onAdd) {
                         Icon(Icons.Filled.PersonAdd, null, Modifier.size(18.dp))
-                        Text("  Agregar contacto")
+                        Text("  " + stringResource(R.string.contact_add))
                     }
                 }
             }
@@ -248,11 +252,11 @@ fun PrimaryContactLine(contacts: List<ContactEntity>) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         if (first != null) {
             Icon(Icons.Outlined.AccountCircle, null, tint = Tokens.colors.brand, modifier = Modifier.size(18.dp))
-            Text(first.name ?: first.email ?: "Contacto", style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(first.name ?: first.email ?: stringResource(R.string.common_contact), style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
             if (contacts.size > 1) Text("+${contacts.size - 1}", style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary)
         } else {
             Icon(Icons.Outlined.HelpOutline, null, tint = Tokens.colors.secondary.copy(alpha = 0.6f), modifier = Modifier.size(18.dp))
-            Text("Sin contactos", style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary.copy(alpha = 0.6f))
+            Text(stringResource(R.string.contact_none), style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary.copy(alpha = 0.6f))
         }
     }
 }

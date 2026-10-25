@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Shell -->
+    <string name="shell_menu">Menu</string>
+    <string name="shell_sign_out_title">Sign out?</string>
+    <string name="shell_sign_out_message">Your data stays saved on this device.</string>
+    <string name="shell_read_only_expired">Your licence has expired, so data is read-only. Renew it to keep recording changes.</string>
+    <string name="shell_read_only_suspended">Your company\'s licence is suspended, so data is read-only.</string>
+    <string name="shell_rail_dashboard">Dashboard</string>
+    <string name="shell_rail_orders">Cuts</string>
+    <string name="shell_rail_board">Board</string>
+    <string name="shell_rail_production">Reports</string>
+    <string name="shell_rail_shipments">Shipments</string>
+    <string name="shell_rail_calendar">Calendar</string>
+    <string name="shell_rail_plants">Plants</string>
+    <string name="shell_rail_clients">Clients</string>
+    <string name="shell_rail_suppliers">Suppliers</string>
+    <string name="shell_rail_styles">Styles</string>
+    <string name="shell_rail_projects">Projects</string>
+    <string name="shell_rail_users">Users</string>
+    <string name="shell_rail_calculator">Calculator</string>
+    <string name="shell_rail_settings">Settings</string>
+
+    <!-- Components -->
+    <string name="ui_capacity_used">Capacity used %1$s</string>
+
+    <!-- Sign-in and onboarding -->
+    <string name="auth_ui_welcome_back">Welcome back</string>
+    <string name="auth_ui_sign_in_subtitle">Sign in with your work email to continue.</string>
+    <string name="auth_ui_sign_in">Sign in</string>
+    <string name="auth_ui_demo_accounts">Demo accounts</string>
+    <string name="auth_ui_setup_title">Set up Trama</string>
+    <string name="auth_ui_setup_subtitle">Register your company and this device\'s administrator account. You can add your managers later.</string>
+    <string name="auth_ui_company_name">Company name</string>
+    <string name="auth_ui_first_name">First name</string>
+    <string name="auth_ui_last_name">Last name</string>
+    <string name="auth_ui_password_min">Password (min. 6 characters)</string>
+    <string name="auth_ui_create_admin">Create administrator</string>
+    <string name="auth_ui_setup_done">All set, %1$s! Trama is ready.</string>
+    <string name="auth_ui_has_licence">Does your company already have a Trama licence? Connect this device to download its data.</string>
+    <string name="auth_ui_demo_loaded">Sample data loaded. Signed in as administrator.</string>
+    <string name="auth_ui_explore_demo">Explore with sample data</string>
+    <string name="auth_ui_explore_demo_detail">Fictional plants, clients, cuts and reports. You can erase them in Settings.</string>
+    <string name="auth_ui_tagline">Apparel production control</string>
+    <string name="auth_ui_tagline_company">Apparel production control · %1$s</string>
+    <string name="auth_ui_brand_pitch">Cuts, plants and shipments on one board.\nWorks offline: your data lives on this device.</string>
+    <string name="auth_ui_show_password">Show password</string>
+    <string name="auth_ui_hide_password">Hide password</string>
+
+    <!-- Cloud link -->
+    <string name="cloud_connect_licence">Connect my licence</string>
+    <string name="cloud_connect">Connect</string>
+    <string name="cloud_connected_to">Device connected to the %1$s licence.</string>
+    <string name="cloud_connected">Device connected to your company\'s licence.</string>
+    <string name="cloud_connect_failed">Couldn\'t connect. Try again.</string>
+    <string name="cloud_connect_explainer">Use the email and password of your Trama account. Your data will sync with your company\'s cloud and you can keep working offline.</string>
+    <string name="cloud_connecting">Connecting and syncing…</string>
+
+    <!-- Settings -->
+    <string name="settings_backup_saved">Backup saved</string>
+    <string name="settings_file_write_failed">Couldn\'t write the file.</string>
+    <string name="settings_file_read_failed">Couldn\'t read the file.</string>
+    <string name="settings_demo_blocked_cloud">This device is connected to your company\'s cloud, so sample data can\'t be loaded.</string>
+    <string name="settings_demo_blocked_data">This device already has data. Erase it first to load the sample data.</string>
+    <string name="settings_demo_loaded">Sample data loaded. Demo accounts use the password %1$s.</string>
+    <string name="settings_restore_title">Restore backup?</string>
+    <plurals name="settings_restore_done">
+        <item quantity="one">Backup restored: %1$s record</item>
+        <item quantity="other">Backup restored: %1$s records</item>
+    </plurals>
+    <string name="settings_restore_done_sign_in">Backup restored. Sign in with an account from the backup.</string>
+    <string name="settings_restore_confirm">Replace all data</string>
+    <string name="settings_restore_message">Backup from %1$s (Trama %2$s): %3$s. All current data on this device will be erased.</string>
+    <string name="settings_unknown_date">unknown date</string>
+    <string name="settings_no_records">no records</string>
+    <string name="settings_erase_title">Erase all data?</string>
+    <string name="settings_erase_message">Plants, cuts, reports, catalogs and users will be deleted from this device. Export a backup first if you need one.</string>
+    <string name="settings_continue">Continue</string>
+    <string name="settings_erased">All data was erased</string>
+    <string name="settings_erase_final_title">Final confirmation</string>
+    <string name="settings_erase_word">DELETE</string>
+    <string name="settings_erase_final_message">Type %1$s to delete all data. This can\'t be undone.</string>
+    <string name="settings_erase_all">Erase everything</string>
+
+    <string name="settings_cloud">Cloud</string>
+    <string name="settings_cloud_footer_connected">Trama keeps working offline; changes are sent when the connection comes back.</string>
+    <string name="settings_cloud_footer_offline">Optional: connect your licence to back up your data and share it with your company\'s other devices.</string>
+    <string name="settings_company">Company</string>
+    <string name="settings_licence">Licence</string>
+    <string name="settings_licence_expired">Expired</string>
+    <string name="settings_licence_suspended">Suspended</string>
+    <string name="settings_licence_active">Active</string>
+    <string name="settings_account_line">Account</string>
+    <string name="settings_last_sync">Last sync</string>
+    <string name="settings_never">Never</string>
+    <string name="settings_pending_changes">Changes to send</string>
+    <string name="settings_syncing">Syncing…</string>
+    <string name="settings_sync_detail">Sends this device\'s changes and downloads your company\'s</string>
+    <string name="settings_disconnect_device">Disconnect this device</string>
+    <string name="settings_disconnect_device_detail">Frees its seat on the licence; the data stays here</string>
+    <string name="settings_disconnected_from">This device was disconnected from the %1$s cloud.</string>
+    <string name="settings_disconnected">This device was disconnected from your company\'s cloud.</string>
+    <string name="settings_connect_detail">Sign in with your Trama account</string>
+    <string name="settings_disconnect_title">Disconnect from the cloud?</string>
+    <plurals name="settings_disconnect_pending">
+        <item quantity="one">%1$s change hasn\'t been sent; it will be sent if you reconnect this device. The data stays saved here.</item>
+        <item quantity="other">%1$s changes haven\'t been sent; they will be sent if you reconnect this device. The data stays saved here.</item>
+    </plurals>
+    <string name="settings_disconnect_message">The data stays saved on this device and will stop syncing.</string>
+    <string name="settings_disconnected_toast">Device disconnected from the cloud</string>
+    <string name="settings_disconnect">Disconnect</string>
+    <string name="settings_plan_web">Web plan</string>
+    <string name="settings_plan_plant">Plant plan</string>
+    <string name="settings_plan_multiplant">Multi-plant plan</string>
+    <string name="settings_plan_enterprise">Enterprise plan</string>
+    <string name="settings_plan">Plan</string>
+    <string name="settings_today_at">Today, %1$s</string>
+    <string name="settings_day_at">%1$s, %2$s</string>
+
+    <string name="settings_language">Language</string>
+    <string name="settings_language_footer">Changes Trama\'s language on this device. The data you record isn\'t translated.</string>
+    <string name="settings_language_system">Use system language</string>
+
+    <string name="settings_account">Account</string>
+    <string name="settings_change_password">Change password</string>
+    <string name="settings_preferences">Preferences</string>
+    <string name="settings_urgency_footer">A shipment is urgent when it has garments left to ship and the client date falls within this window or has already passed.</string>
+    <string name="settings_company_name">Company name</string>
+    <string name="settings_urgency_window">Urgency window</string>
+    <string name="settings_urgency_window_value">Urgency window: %1$s</string>
+    <plurals name="settings_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <string name="settings_urgency_decrease">Shorten window</string>
+    <string name="settings_urgency_increase">Extend window</string>
+
+    <string name="settings_data">Data</string>
+    <string name="settings_data_footer">Backups include users\' encrypted passwords. Keep them somewhere safe.</string>
+    <string name="settings_export">Export backup</string>
+    <string name="settings_export_detail">JSON file with all data and images</string>
+    <string name="settings_restore">Restore backup</string>
+    <string name="settings_restore_detail">Replaces the data on this device</string>
+    <string name="settings_demo">Load sample data</string>
+    <string name="settings_demo_detail_loaded">Already loaded on this device</string>
+    <string name="settings_demo_detail">Only when there is no operational data</string>
+    <string name="settings_erase">Erase all data</string>
+    <string name="settings_erase_detail">Returns Trama to its initial setup</string>
+    <string name="settings_data_admin_only">Only the administrator can back up, restore or erase data.</string>
+
+    <string name="settings_about">About</string>
+    <string name="settings_storage_in_memory">In memory (demo)</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_connection">Connection</string>
+    <string name="settings_online">Online</string>
+    <string name="settings_offline">Offline</string>
+    <string name="settings_works_offline">Works offline</string>
+    <string name="settings_works_offline_detail">All data lives on this device. You can record cuts, assignments and reports without internet; Trama never needs a connection to work.</string>
+    <string name="settings_storage">Storage</string>
+
+    <string name="settings_password_wrong_current">The current password is incorrect.</string>
+    <string name="settings_password_mismatch">The new passwords don\'t match.</string>
+    <string name="settings_password_same">The new password must be different from the current one.</string>
+    <string name="settings_password_updated">Password updated</string>
+    <string name="settings_password_current">Current password</string>
+    <string name="settings_password_new">New password (min. 6 characters)</string>
+    <string name="settings_password_confirm">Confirm new password</string>
+</resources>

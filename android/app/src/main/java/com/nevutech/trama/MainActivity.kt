@@ -13,6 +13,7 @@ import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.RootScreen
 import com.nevutech.trama.core.data.DemoSeeder
 import com.nevutech.trama.core.data.TramaDatabase
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.TramaTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -22,6 +23,11 @@ private const val TAG = "Trama"
 class MainActivity : ComponentActivity() {
     private var activeContainer: AppContainer? = null
 
+    // Android 12 and older: apply the language picked in Ajustes (13+ does it natively).
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(L10n.wrap(newBase))
+    }
+
     override fun onStart() {
         super.onStart()
         // App start / resume: catch up with the cloud (no-op when not linked).
@@ -30,6 +36,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        L10n.refresh()
         enableEdgeToEdge()
         // While visible, pull other devices' changes every 30 s (no-op when not linked; same as iOS and web).
         lifecycleScope.launch {

@@ -39,6 +39,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -46,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.app.rememberActions
@@ -55,6 +58,7 @@ import com.nevutech.trama.core.data.Graph
 import com.nevutech.trama.core.data.StyleEntity
 import com.nevutech.trama.core.data.toLocalDate
 import com.nevutech.trama.core.domain.Fmt
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.EmptyState
 import com.nevutech.trama.designsystem.KpiTile
 import com.nevutech.trama.designsystem.Pill
@@ -86,13 +90,13 @@ fun StyleDetailScreen(id: String) {
     val style = graph.style(id)
     TramaScreen {
         if (style == null) {
-            DetailScaffold("Estilo") { EmptyState("Estilo no encontrado", "Es posible que se haya eliminado.", Icons.Filled.SearchOff) }
+            DetailScaffold(stringResource(R.string.common_style)) { EmptyState(stringResource(R.string.styles_not_found), stringResource(R.string.styles_not_found_message), Icons.Filled.SearchOff) }
             return@TramaScreen
         }
         val orders = graph.ordersOf(style)
         DetailScaffold(style.name, actions = {
-            IconButton({ editing = true }) { Icon(Icons.Filled.Edit, "Editar") }
-            OverflowMenu { close -> MenuItem("Eliminar estilo", Icons.Filled.Delete, destructive = true) { close(); confirmingDelete = true } }
+            IconButton({ editing = true }) { Icon(Icons.Filled.Edit, stringResource(R.string.common_edit)) }
+            OverflowMenu { close -> MenuItem(stringResource(R.string.styles_delete), Icons.Filled.Delete, destructive = true) { close(); confirmingDelete = true } }
         }) {
             BoxWithConstraints(Modifier.fillMaxWidth()) {
                 val image: @Composable (Modifier) -> Unit = { m -> StyleImage(style, app.images.file(style.imageFile), m) { zooming = true } }
@@ -113,10 +117,13 @@ fun StyleDetailScreen(id: String) {
             }
 
             Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                SectionTitle("Cortes con este estilo", if (orders.isEmpty()) "Sin cortes" else "${orders.size} cortes")
+                SectionTitle(
+                    stringResource(R.string.styles_orders_title),
+                    if (orders.isEmpty()) stringResource(R.string.styles_no_orders) else pluralStringResource(R.plurals.styles_cut_count, orders.size, Fmt.int(orders.size)),
+                )
                 if (orders.isEmpty()) {
                     TramaCard(Modifier.fillMaxWidth()) {
-                        Text("Ningún corte usa este estilo todavía.", color = Tokens.colors.secondary, modifier = Modifier.align(Alignment.CenterHorizontally))
+                        Text(stringResource(R.string.styles_orders_empty), color = Tokens.colors.secondary, modifier = Modifier.align(Alignment.CenterHorizontally))
                     }
                 } else {
                     orders.forEach { order -> StyleOrderRow(graph, order) { navigator.openOrder(order.id) } }
@@ -130,8 +137,8 @@ fun StyleDetailScreen(id: String) {
         if (zooming) ZoomableImageViewer(app.images.file(style.imageFile), style.name) { zooming = false }
         if (confirmingDelete) {
             ConfirmDeleteDialog(
-                "¿Eliminar ${style.name}?", "Los cortes que lo usan quedarán sin estilo.",
-                onConfirm = { actions.run(success = "Estilo «${style.name}» eliminado", onDone = { navigator.back() }) { catalog.deleteStyle(style) } },
+                stringResource(R.string.styles_delete_title, style.name), stringResource(R.string.styles_delete_message),
+                onConfirm = { actions.run(success = L10n.str(R.string.styles_deleted, style.name), onDone = { navigator.back() }) { catalog.deleteStyle(style) } },
                 onDismiss = { confirmingDelete = false },
             )
         }
@@ -140,9 +147,10 @@ fun StyleDetailScreen(id: String) {
 
 @Composable
 private fun StyleImage(style: StyleEntity, file: java.io.File?, modifier: Modifier, zoom: () -> Unit) {
+    val description = stringResource(R.string.styles_view_fullscreen)
     Box(
         modifier.aspectRatio(4f / 5f).clip(Tokens.cardShape).clickable(role = Role.Button, onClick = zoom)
-            .semantics { contentDescription = "Ver imagen en pantalla completa" },
+            .semantics { contentDescription = description },
     ) {
         Swatch(style.name, file, Modifier.fillMaxSize(), corner = 0.dp)
         Box(
@@ -160,23 +168,23 @@ private fun Summary(graph: Graph, style: StyleEntity, orders: List<CutOrderEntit
     Column(modifier, verticalArrangement = Arrangement.spacedBy(20.dp)) {
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(style.name, fontSize = 32.sp, fontWeight = FontWeight.Bold)
-            Text("Registrado el ${Fmt.date(style.createdAt.toLocalDate())}", color = Tokens.colors.secondary)
+            Text(stringResource(R.string.styles_registered_on, Fmt.date(style.createdAt.toLocalDate())), color = Tokens.colors.secondary)
         }
         val tiles: List<@Composable () -> Unit> = listOf(
-            { KpiTile("Cortes", Fmt.int(orders.size), Icons.Filled.ContentCut) },
-            { KpiTile("Prendas", Fmt.int(orders.sumOf { it.quantity }), Icons.Filled.Checkroom, Tokens.colors.thread) },
-            { KpiTile("Valor", Fmt.money(orders.sumOf { it.quantity * it.unitPrice }, compact = true), Icons.Filled.Payments, Tokens.colors.success) },
+            { KpiTile(stringResource(R.string.common_cuts), Fmt.int(orders.size), Icons.Filled.ContentCut) },
+            { KpiTile(stringResource(R.string.common_garments), Fmt.int(orders.sumOf { it.quantity }), Icons.Filled.Checkroom, Tokens.colors.thread) },
+            { KpiTile(stringResource(R.string.common_value), Fmt.money(orders.sumOf { it.quantity * it.unitPrice }, compact = true), Icons.Filled.Payments, Tokens.colors.success) },
         )
         AdaptiveRows(tiles, minWidth = 150.dp) { it() }
         TramaCard(Modifier.fillMaxWidth()) {
-            Text("Asignado a plantas", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.styles_assigned_plants), style = MaterialTheme.typography.titleMedium)
             if (distribution.isEmpty()) {
-                Text("Aún no se asigna a ninguna planta.", style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary)
+                Text(stringResource(R.string.styles_assigned_plants_empty), style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary)
             } else {
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     distribution.forEach { (plant, count) ->
                         Pill(
-                            "${plant.name}: $count ${if (count == 1) "asignación" else "asignaciones"}", Tokens.accent(plant.name), Icons.Filled.Apartment,
+                            pluralStringResource(R.plurals.styles_plant_assignments, count, plant.name, Fmt.int(count)), Tokens.accent(plant.name), Icons.Filled.Apartment,
                             Modifier.clip(Tokens.chipShape).clickable(role = Role.Button) { navigator.openPlant(plant.id) },
                         )
                     }
@@ -194,7 +202,7 @@ private fun StyleOrderRow(graph: Graph, order: CutOrderEntity, onClick: () -> Un
             Text(order.code, style = MaterialTheme.typography.titleMedium)
             Text(graph.clientName(order), style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
-        Text("${Fmt.int(order.quantity)} prendas", style = MaterialTheme.typography.labelLarge)
+        Text(pluralStringResource(R.plurals.styles_garment_count, order.quantity.coerceAtMost(Int.MAX_VALUE.toLong()).toInt(), Fmt.int(order.quantity)), style = MaterialTheme.typography.labelLarge)
         Pill(state.title, state.tint())
     }
 }

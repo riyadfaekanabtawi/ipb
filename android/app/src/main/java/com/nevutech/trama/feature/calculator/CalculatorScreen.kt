@@ -1,5 +1,9 @@
 package com.nevutech.trama.feature.calculator
 
+import androidx.compose.ui.res.stringResource
+import com.nevutech.trama.R
+import com.nevutech.trama.core.l10n.L10n
+
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -139,7 +143,7 @@ fun CalculatorScreen() {
         plantId = null
         input = CalculatorInput()
         resetKey++
-        app.toasts.show("Calculadora limpia", ToastCenter.Style.Info)
+        app.toasts.show(L10n.str(R.string.calculator_cleared), ToastCenter.Style.Info)
     }
 
     TramaScreen {
@@ -155,8 +159,8 @@ fun CalculatorScreen() {
                         onConstants = { showConstants = true },
                         onCopy = {
                             (context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager)
-                                ?.setPrimaryClip(ClipData.newPlainText("Cálculo de producción", summary))
-                            app.toasts.show("Resumen copiado")
+                                ?.setPrimaryClip(ClipData.newPlainText(L10n.str(R.string.calculator_summary_title), summary))
+                            app.toasts.show(L10n.str(R.string.calculator_summary_copied))
                         },
                         onShare = { share(context, summary) },
                         onClear = ::clear,
@@ -189,7 +193,7 @@ fun CalculatorScreen() {
     if (showConstants) {
         ConstantsDialog(constants, onDismiss = { showConstants = false }) { updated ->
             showConstants = false
-            actions.run(success = "Constantes guardadas") { app.settings.setCalculatorConstants(updated) }
+            actions.run(success = L10n.str(R.string.calculator_constants_saved)) { app.settings.setCalculatorConstants(updated) }
         }
     }
 }
@@ -197,24 +201,24 @@ fun CalculatorScreen() {
 private fun share(context: Context, text: String) {
     val send = Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"
-        putExtra(Intent.EXTRA_SUBJECT, "Cálculo de producción")
+        putExtra(Intent.EXTRA_SUBJECT, L10n.str(R.string.calculator_summary_title))
         putExtra(Intent.EXTRA_TEXT, text)
     }
-    context.startActivity(Intent.createChooser(send, "Compartir resumen").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+    context.startActivity(Intent.createChooser(send, L10n.str(R.string.calculator_share_summary)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
 }
 
 @Composable
 private fun Header(canShare: Boolean, onConstants: () -> Unit, onCopy: () -> Unit, onShare: () -> Unit, onClear: () -> Unit) {
     val showTitle = LocalConfiguration.current.screenWidthDp >= 600
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        if (showTitle) Text("Calculadora", style = MaterialTheme.typography.headlineMedium)
+        if (showTitle) Text(stringResource(R.string.section_calculator), style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.weight(1f))
-        IconButton(onConstants) { Icon(Icons.Filled.Tune, "Constantes", tint = Tokens.colors.brand) }
-        IconButton(onCopy, enabled = canShare) { Icon(Icons.Filled.ContentCopy, "Copiar resumen", tint = if (canShare) Tokens.colors.brand else Tokens.colors.secondary.copy(alpha = 0.4f)) }
-        IconButton(onShare, enabled = canShare) { Icon(Icons.Filled.Share, "Compartir resumen", tint = if (canShare) Tokens.colors.brand else Tokens.colors.secondary.copy(alpha = 0.4f)) }
+        IconButton(onConstants) { Icon(Icons.Filled.Tune, stringResource(R.string.calculator_constants), tint = Tokens.colors.brand) }
+        IconButton(onCopy, enabled = canShare) { Icon(Icons.Filled.ContentCopy, stringResource(R.string.calculator_copy_summary), tint = if (canShare) Tokens.colors.brand else Tokens.colors.secondary.copy(alpha = 0.4f)) }
+        IconButton(onShare, enabled = canShare) { Icon(Icons.Filled.Share, stringResource(R.string.calculator_share_summary), tint = if (canShare) Tokens.colors.brand else Tokens.colors.secondary.copy(alpha = 0.4f)) }
         TextButton(onClear) {
             Icon(Icons.Filled.CleaningServices, null, tint = Tokens.colors.danger, modifier = Modifier.size(18.dp))
-            Text("Limpiar", color = Tokens.colors.danger, modifier = Modifier.padding(start = 6.dp))
+            Text(stringResource(R.string.calculator_clear), color = Tokens.colors.danger, modifier = Modifier.padding(start = 6.dp))
         }
     }
 }
@@ -230,21 +234,23 @@ private fun Inputs(
 ) {
     Column(modifier, verticalArrangement = Arrangement.spacedBy(20.dp)) {
         TramaCard(padding = 18.dp) {
-            SectionTitle("Estilo", Icons.Filled.Checkroom)
-            TramaField(client, onClient, "Cliente", leading = Icons.Filled.Groups)
+            SectionTitle(stringResource(R.string.common_style), Icons.Filled.Checkroom)
+            TramaField(client, onClient, stringResource(R.string.common_client), leading = Icons.Filled.Groups)
             PlantPicker(plantId, plants, onPlant)
-            NumberRow("Cantidad del estilo", Icons.Filled.Numbers, input.quantity, "prendas") { onInput(input.copy(quantity = it)) }
-            NumberRow("Minutaje real", Icons.Filled.Timer, input.realMinutes, "min") { onInput(input.copy(realMinutes = it)) }
-            NumberRow("Minutaje cliente", Icons.Filled.WatchLater, input.clientMinutes, "min") { onInput(input.copy(clientMinutes = it)) }
-            NumberRow("Operarios", Icons.Filled.People, input.operators) { onInput(input.copy(operators = it)) }
-            NumberRow("Precio unitario interno", Icons.Filled.LocalOffer, input.internalUnitPrice, "MXN") { onInput(input.copy(internalUnitPrice = it)) }
-            NumberRow("Precio por estilo", Icons.Filled.MonetizationOn, input.pricePerStyle, "MXN") { onInput(input.copy(pricePerStyle = it)) }
-            NumberRow("Gastos operativos", Icons.Filled.CreditCard, input.operatingExpenses, "MXN") { onInput(input.copy(operatingExpenses = it)) }
+            val garments = stringResource(R.string.calculator_unit_garments)
+            val minutes = stringResource(R.string.calculator_unit_minutes)
+            NumberRow(stringResource(R.string.calculator_style_quantity), Icons.Filled.Numbers, input.quantity, garments) { onInput(input.copy(quantity = it)) }
+            NumberRow(stringResource(R.string.calculator_real_minutes), Icons.Filled.Timer, input.realMinutes, minutes) { onInput(input.copy(realMinutes = it)) }
+            NumberRow(stringResource(R.string.calculator_client_minutes), Icons.Filled.WatchLater, input.clientMinutes, minutes) { onInput(input.copy(clientMinutes = it)) }
+            NumberRow(stringResource(R.string.calculator_operators), Icons.Filled.People, input.operators) { onInput(input.copy(operators = it)) }
+            NumberRow(stringResource(R.string.calculator_internal_unit_price), Icons.Filled.LocalOffer, input.internalUnitPrice, "MXN") { onInput(input.copy(internalUnitPrice = it)) }
+            NumberRow(stringResource(R.string.calculator_price_per_style), Icons.Filled.MonetizationOn, input.pricePerStyle, "MXN") { onInput(input.copy(pricePerStyle = it)) }
+            NumberRow(stringResource(R.string.calculator_operating_expenses), Icons.Filled.CreditCard, input.operatingExpenses, "MXN") { onInput(input.copy(operatingExpenses = it)) }
         }
         TramaCard(padding = 18.dp) {
-            SectionTitle("Minuto real de producción", Icons.Filled.Speed)
-            NumberRow("Operarios de línea", Icons.Filled.Person, input.lineOperators) { onInput(input.copy(lineOperators = it)) }
-            NumberRow("Producción real diaria", Icons.AutoMirrored.Filled.ShowChart, input.realDailyProduction, "prendas") { onInput(input.copy(realDailyProduction = it)) }
+            SectionTitle(stringResource(R.string.calculator_real_production_minute), Icons.Filled.Speed)
+            NumberRow(stringResource(R.string.calculator_line_operators), Icons.Filled.Person, input.lineOperators) { onInput(input.copy(lineOperators = it)) }
+            NumberRow(stringResource(R.string.calculator_real_daily_production), Icons.AutoMirrored.Filled.ShowChart, input.realDailyProduction, stringResource(R.string.calculator_unit_garments)) { onInput(input.copy(realDailyProduction = it)) }
         }
     }
 }
@@ -260,7 +266,10 @@ private fun SectionTitle(title: String, icon: ImageVector) {
 /** Decimal input that updates the results on every keystroke; empty means "no value". */
 @Composable
 private fun NumberRow(title: String, icon: ImageVector, value: Double, unit: String? = null, onChange: (Double) -> Unit) {
-    var text by remember { mutableStateOf(if (value == 0.0) "" else Fmt.number(value, 4).replace(",", "")) }
+    // Machine format (dot decimal, no grouping) whatever the locale; the field accepts ',' or '.' as input.
+    var text by remember {
+        mutableStateOf(if (value == 0.0) "" else java.math.BigDecimal.valueOf(value).setScale(4, java.math.RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())
+    }
     OutlinedTextField(
         value = text,
         onValueChange = { raw ->
@@ -287,16 +296,18 @@ private fun NumberRow(title: String, icon: ImageVector, value: Double, unit: Str
 @Composable
 private fun PlantPicker(selected: String?, plants: List<Pair<String, String>>, onSelect: (String?) -> Unit) {
     var open by remember { mutableStateOf(false) }
-    val name = plants.firstOrNull { it.first == selected }?.second ?: "Sin planta"
+    val noPlant = stringResource(R.string.graph_no_plant)
+    val name = plants.firstOrNull { it.first == selected }?.second ?: noPlant
+    val pickDescription = stringResource(R.string.calculator_plant_picker_a11y, name)
     Box {
-        TramaField(name, {}, "Planta", leading = Icons.Filled.Apartment)
+        TramaField(name, {}, stringResource(R.string.common_plant), leading = Icons.Filled.Apartment)
         Box(
             Modifier.matchParentSize().clip(RoundedCornerShape(14.dp)).clickable { open = true }
-                .semantics { contentDescription = "Planta: $name. Toca para elegir" },
+                .semantics { contentDescription = pickDescription },
             contentAlignment = Alignment.CenterEnd,
         ) { Icon(Icons.Filled.ArrowDropDown, null, tint = Tokens.colors.secondary, modifier = Modifier.padding(end = 12.dp)) }
         DropdownMenu(open, { open = false }) {
-            DropdownMenuItem({ Text("Sin planta") }, { onSelect(null); open = false })
+            DropdownMenuItem({ Text(noPlant) }, { onSelect(null); open = false })
             plants.forEach { (id, plant) -> DropdownMenuItem({ Text(plant) }, { onSelect(id); open = false }) }
         }
     }
@@ -309,19 +320,20 @@ private fun Results(result: CalculatorResult, constants: CalculatorConstants, mo
     val c = Tokens.colors
     Column(modifier, verticalArrangement = Arrangement.spacedBy(14.dp)) {
         Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            IncomeCard("Ingreso bruto", result.grossIncome, Icons.Filled.Payments, emphasized = false, Modifier.weight(1f))
-            IncomeCard("Ingreso neto", result.netIncome, Icons.AutoMirrored.Filled.TrendingUp, emphasized = true, Modifier.weight(1f))
+            IncomeCard(stringResource(R.string.calculator_gross_income), result.grossIncome, Icons.Filled.Payments, emphasized = false, Modifier.weight(1f))
+            IncomeCard(stringResource(R.string.calculator_net_income), result.netIncome, Icons.AutoMirrored.Filled.TrendingUp, emphasized = true, Modifier.weight(1f))
         }
         data class Item(val title: String, val value: String?, val unit: String?, val icon: ImageVector, val tint: Color, val hint: String)
+        val garments = stringResource(R.string.calculator_unit_garments)
         val items = listOf(
-            Item("Precio por minuto real", result.pricePerRealMinute?.let { Fmt.money(it) }, null, Icons.Filled.Timer, c.brand, "Precio por estilo ÷ minutaje real"),
-            Item("Meta diaria", result.dailyGoal?.let { Fmt.number(it) }, "prendas", Icons.Filled.TrackChanges, c.info,
-                if (constants.minutesPerDay <= 0) "Requiere minutos por día" else "Operarios × minutos día ÷ minutaje"),
-            Item("Producción semanal", result.weeklyProduction?.let { Fmt.number(it) }, "prendas", Icons.Filled.DateRange, c.info, "Meta diaria × días por semana"),
-            Item("Días estimados", result.estimatedDays?.let { Fmt.number(it) }, "días", Icons.Filled.Event, c.warning, "Cantidad ÷ meta diaria"),
-            Item("Meses estimados", result.estimatedMonths?.let { Fmt.number(it, 2) }, "meses", Icons.Filled.CalendarMonth, c.warning, "Días ÷ días por mes"),
+            Item(stringResource(R.string.calculator_price_per_real_minute), result.pricePerRealMinute?.let { Fmt.money(it) }, null, Icons.Filled.Timer, c.brand, stringResource(R.string.calculator_price_per_real_minute_hint)),
+            Item(stringResource(R.string.calculator_daily_goal), result.dailyGoal?.let { Fmt.number(it) }, garments, Icons.Filled.TrackChanges, c.info,
+                stringResource(if (constants.minutesPerDay <= 0) R.string.calculator_daily_goal_needs_minutes else R.string.calculator_daily_goal_hint)),
+            Item(stringResource(R.string.calculator_weekly_production), result.weeklyProduction?.let { Fmt.number(it) }, garments, Icons.Filled.DateRange, c.info, stringResource(R.string.calculator_weekly_production_hint)),
+            Item(stringResource(R.string.calculator_estimated_days), result.estimatedDays?.let { Fmt.number(it) }, stringResource(R.string.calculator_unit_days), Icons.Filled.Event, c.warning, stringResource(R.string.calculator_estimated_days_hint)),
+            Item(stringResource(R.string.calculator_estimated_months), result.estimatedMonths?.let { Fmt.number(it, 2) }, stringResource(R.string.calculator_unit_months), Icons.Filled.CalendarMonth, c.warning, stringResource(R.string.calculator_estimated_months_hint)),
             null, // efficiency
-            Item("Minuto real de producción", result.realProductionMinute?.let { Fmt.number(it, 2) }, "min", Icons.Filled.Speed, c.success, "Minutos día × operarios ÷ producción diaria"),
+            Item(stringResource(R.string.calculator_real_production_minute), result.realProductionMinute?.let { Fmt.number(it, 2) }, stringResource(R.string.calculator_unit_minutes), Icons.Filled.Speed, c.success, stringResource(R.string.calculator_real_production_minute_hint)),
         )
         AdaptiveGrid(items.size, minWidth = 210.dp, spacing = 14.dp) { i, m ->
             val item = items[i]
@@ -351,13 +363,14 @@ private fun IncomeCard(title: String, value: Double?, icon: ImageVector, emphasi
             Text(title, style = MaterialTheme.typography.labelLarge, color = content.copy(alpha = 0.85f))
         }
         Text(text, fontSize = 32.sp, fontWeight = FontWeight.Bold, color = valueColor, maxLines = 1, overflow = TextOverflow.Ellipsis)
-        Text(if (emphasized) "Bruto − gastos operativos" else "Cantidad × precio por estilo", style = MaterialTheme.typography.bodySmall, color = content.copy(alpha = 0.7f))
+        Text(stringResource(if (emphasized) R.string.calculator_net_income_hint else R.string.calculator_gross_income_hint), style = MaterialTheme.typography.bodySmall, color = content.copy(alpha = 0.7f))
     }
 }
 
 @Composable
 private fun ResultCard(title: String, value: String?, unit: String?, icon: ImageVector, tint: Color, hint: String, modifier: Modifier) {
-    TramaCard(modifier.semantics(mergeDescendants = true) { contentDescription = "$title: ${value?.let { v -> "$v ${unit.orEmpty()}" } ?: "sin valor"}" }, padding = 16.dp) {
+    val noValue = stringResource(R.string.calculator_no_value)
+    TramaCard(modifier.semantics(mergeDescendants = true) { contentDescription = "$title: ${value?.let { v -> "$v ${unit.orEmpty()}" } ?: noValue}" }, padding = 16.dp) {
         Box(Modifier.size(36.dp).clip(RoundedCornerShape(11.dp)).background(tint.copy(alpha = 0.14f)), contentAlignment = Alignment.Center) {
             Icon(icon, null, tint = tint, modifier = Modifier.size(20.dp))
         }
@@ -386,7 +399,8 @@ private fun EfficiencyCard(efficiency: Double?, modifier: Modifier) {
         else -> c.danger
     }
     val text = efficiency?.let(Fmt::percent) ?: "—"
-    TramaCard(modifier.heightIn(min = 112.dp).semantics(mergeDescendants = true) { contentDescription = "Eficiencia de minutaje: $text" }, padding = 16.dp) {
+    val title = stringResource(R.string.calculator_minute_efficiency)
+    TramaCard(modifier.heightIn(min = 112.dp).semantics(mergeDescendants = true) { contentDescription = "$title: $text" }, padding = 16.dp) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
             Box(Modifier.size(54.dp), contentAlignment = Alignment.Center) {
                 ProgressRing(efficiency ?: 0.0, Modifier.size(54.dp), tint, stroke = 7.dp)
@@ -394,8 +408,8 @@ private fun EfficiencyCard(efficiency: Double?, modifier: Modifier) {
             }
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(text, fontSize = 26.sp, fontWeight = FontWeight.Bold, color = if (efficiency == null) c.secondary.copy(alpha = 0.5f) else c.ink)
-                Text("Eficiencia de minutaje", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = c.secondary)
-                Text("Minutaje cliente ÷ real", style = MaterialTheme.typography.labelSmall, color = c.secondary.copy(alpha = 0.6f))
+                Text(title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = c.secondary)
+                Text(stringResource(R.string.calculator_minute_efficiency_hint), style = MaterialTheme.typography.labelSmall, color = c.secondary.copy(alpha = 0.6f))
             }
         }
     }
@@ -412,13 +426,13 @@ private fun ConstantsBanner(onConfigure: () -> Unit) {
                 Icon(Icons.Filled.Tune, null, tint = warning)
             }
             Column(Modifier.weight(1f)) {
-                Text("Configura las constantes de planta", style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(R.string.calculator_constants_banner_title), style = MaterialTheme.typography.titleMedium)
                 Text(
-                    "Minutos por operario y días de trabajo son necesarios para la meta diaria, la producción semanal y los tiempos estimados.",
+                    stringResource(R.string.calculator_constants_banner_message),
                     style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary,
                 )
             }
-            Button(onConfigure, colors = ButtonDefaults.buttonColors(containerColor = warning, contentColor = Color.White)) { Text("Configurar") }
+            Button(onConfigure, colors = ButtonDefaults.buttonColors(containerColor = warning, contentColor = Color.White)) { Text(stringResource(R.string.calculator_configure)) }
         }
     }
 }
@@ -428,45 +442,52 @@ private fun ConstantsDialog(initial: CalculatorConstants, onDismiss: () -> Unit,
     var c by remember { mutableStateOf(initial) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Constantes") },
+        title = { Text(stringResource(R.string.calculator_constants)) },
         text = {
             Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text("Por operario", style = MaterialTheme.typography.labelLarge, color = Tokens.colors.secondary)
-                DecimalField(c.minutesPerDay, { c = c.copy(minutesPerDay = it) }, "Minutos por día")
-                DecimalField(c.minutesPerWeek, { c = c.copy(minutesPerWeek = it) }, "Minutos por semana")
-                DecimalField(c.minutesPerMonth, { c = c.copy(minutesPerMonth = it) }, "Minutos por mes")
+                Text(stringResource(R.string.calculator_per_operator), style = MaterialTheme.typography.labelLarge, color = Tokens.colors.secondary)
+                DecimalField(c.minutesPerDay, { c = c.copy(minutesPerDay = it) }, stringResource(R.string.calculator_minutes_per_day))
+                DecimalField(c.minutesPerWeek, { c = c.copy(minutesPerWeek = it) }, stringResource(R.string.calculator_minutes_per_week))
+                DecimalField(c.minutesPerMonth, { c = c.copy(minutesPerMonth = it) }, stringResource(R.string.calculator_minutes_per_month))
                 HorizontalDivider(color = Tokens.colors.stroke)
-                Text("Calendario", style = MaterialTheme.typography.labelLarge, color = Tokens.colors.secondary)
-                DecimalField(c.workDaysPerWeek, { c = c.copy(workDaysPerWeek = it) }, "Días de trabajo por semana")
-                DecimalField(c.workDaysPerMonth, { c = c.copy(workDaysPerMonth = it) }, "Días de trabajo por mes")
-                Text("Se guardan en este dispositivo y se usan en todos los cálculos.", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+                Text(stringResource(R.string.calculator_calendar), style = MaterialTheme.typography.labelLarge, color = Tokens.colors.secondary)
+                DecimalField(c.workDaysPerWeek, { c = c.copy(workDaysPerWeek = it) }, stringResource(R.string.calculator_work_days_per_week))
+                DecimalField(c.workDaysPerMonth, { c = c.copy(workDaysPerMonth = it) }, stringResource(R.string.calculator_work_days_per_month))
+                Text(stringResource(R.string.calculator_constants_note), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
             }
         },
-        confirmButton = { TextButton({ onSave(c) }) { Text("Guardar") } },
-        dismissButton = { TextButton(onDismiss) { Text("Cancelar") } },
+        confirmButton = { TextButton({ onSave(c) }) { Text(stringResource(R.string.common_save)) } },
+        dismissButton = { TextButton(onDismiss) { Text(stringResource(R.string.common_cancel)) } },
     )
 }
 
-/** Plain-text summary for the clipboard / share sheet (same lines as iOS). */
+/** Plain-text summary for the clipboard / share sheet (same lines as iOS), in the app's language. */
 fun calculatorSummary(client: String, plant: String?, input: CalculatorInput, result: CalculatorResult): String {
     fun money(v: Double?) = v?.let { Fmt.money(it) } ?: "—"
-    fun num(v: Double?, unit: String) = v?.let { "${Fmt.number(it)} $unit" } ?: "—"
-    val lines = mutableListOf("Cálculo de producción · Trama")
-    if (client.isNotEmpty()) lines += "Cliente: $client"
-    if (plant != null) lines += "Planta: $plant"
+    fun num(v: Double?, unit: Int) = v?.let { "${Fmt.number(it)} ${L10n.str(unit)}" } ?: "—"
+    fun line(label: Int, value: String) = L10n.str(R.string.calculator_summary_line, L10n.str(label), value)
+    val lines = mutableListOf(L10n.str(R.string.calculator_summary_header))
+    if (client.isNotEmpty()) lines += line(R.string.common_client, client)
+    if (plant != null) lines += line(R.string.common_plant, plant)
     lines += listOf(
-        "Cantidad: ${Fmt.int(input.quantity.toInt())} prendas · Minutaje real ${Fmt.number(input.realMinutes, 2)} · cliente ${Fmt.number(input.clientMinutes, 2)}",
-        "Operarios: ${Fmt.int(input.operators.toInt())} · Precio por estilo ${Fmt.money(input.pricePerStyle)} · Gastos ${Fmt.money(input.operatingExpenses)}",
+        L10n.str(
+            R.string.calculator_summary_quantity, Fmt.int(input.quantity.toInt()),
+            Fmt.number(input.realMinutes, 2), Fmt.number(input.clientMinutes, 2),
+        ),
+        L10n.str(
+            R.string.calculator_summary_operators, Fmt.int(input.operators.toInt()),
+            Fmt.money(input.pricePerStyle), Fmt.money(input.operatingExpenses),
+        ),
         "",
-        "Ingreso bruto: ${money(result.grossIncome)}",
-        "Ingreso neto: ${money(result.netIncome)}",
-        "Precio por minuto real: ${money(result.pricePerRealMinute)}",
-        "Meta diaria: ${num(result.dailyGoal, "prendas")}",
-        "Producción semanal: ${num(result.weeklyProduction, "prendas")}",
-        "Días estimados: ${num(result.estimatedDays, "días")}",
-        "Meses estimados: ${num(result.estimatedMonths, "meses")}",
-        "Eficiencia de minutaje: ${result.minuteEfficiency?.let(Fmt::percent) ?: "—"}",
-        "Minuto real de producción: ${num(result.realProductionMinute, "min")}",
+        line(R.string.calculator_gross_income, money(result.grossIncome)),
+        line(R.string.calculator_net_income, money(result.netIncome)),
+        line(R.string.calculator_price_per_real_minute, money(result.pricePerRealMinute)),
+        line(R.string.calculator_daily_goal, num(result.dailyGoal, R.string.calculator_unit_garments)),
+        line(R.string.calculator_weekly_production, num(result.weeklyProduction, R.string.calculator_unit_garments)),
+        line(R.string.calculator_estimated_days, num(result.estimatedDays, R.string.calculator_unit_days)),
+        line(R.string.calculator_estimated_months, num(result.estimatedMonths, R.string.calculator_unit_months)),
+        line(R.string.calculator_minute_efficiency, result.minuteEfficiency?.let(Fmt::percent) ?: "—"),
+        line(R.string.calculator_real_production_minute, num(result.realProductionMinute, R.string.calculator_unit_minutes)),
     )
     return lines.joinToString("\n")
 }

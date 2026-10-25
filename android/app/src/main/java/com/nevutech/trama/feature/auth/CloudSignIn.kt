@@ -26,10 +26,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.Tokens
 import kotlinx.coroutines.launch
 
@@ -39,7 +42,7 @@ fun CloudSignInButton(modifier: Modifier = Modifier.fillMaxWidth()) {
     var open by remember { mutableStateOf(false) }
     OutlinedButton({ open = true }, modifier, shape = RoundedCornerShape(16.dp)) {
         Icon(Icons.Filled.Cloud, null, tint = Tokens.colors.brand, modifier = Modifier.size(18.dp))
-        Text("Conectar con mi licencia", color = Tokens.colors.brand, modifier = Modifier.padding(start = 8.dp))
+        Text(stringResource(R.string.cloud_connect_licence), color = Tokens.colors.brand, modifier = Modifier.padding(start = 8.dp))
     }
     if (open) CloudSignInDialog(onDismiss = { open = false })
 }
@@ -65,10 +68,11 @@ fun CloudSignInDialog(onDismiss: () -> Unit, presetEmail: String = "") {
             runCatching { app.sync.signIn(email, password) }
                 .onSuccess { user ->
                     app.session.adopt(user)
-                    app.toasts.show("Dispositivo conectado a la licencia de ${app.sync.status.value.account.tenantName ?: "tu empresa"}.")
+                    val tenant = app.sync.status.value.account.tenantName
+                    app.toasts.show(if (tenant != null) L10n.str(R.string.cloud_connected_to, tenant) else L10n.str(R.string.cloud_connected))
                     onDismiss()
                 }
-                .onFailure { error = it.message ?: "No se pudo conectar. Intenta de nuevo." }
+                .onFailure { error = it.message ?: L10n.str(R.string.cloud_connect_failed) }
             busy = false
         }
     }
@@ -76,19 +80,19 @@ fun CloudSignInDialog(onDismiss: () -> Unit, presetEmail: String = "") {
     AlertDialog(
         onDismissRequest = { if (!busy) onDismiss() },
         icon = { Icon(Icons.Filled.CloudSync, null, tint = Tokens.colors.brand) },
-        title = { Text("Conectar con mi licencia") },
+        title = { Text(stringResource(R.string.cloud_connect_licence)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(
-                    "Usa el correo y la contraseña de tu cuenta de Trama. Tus datos se sincronizarán con la nube de tu empresa y seguirás trabajando sin conexión.",
+                    stringResource(R.string.cloud_connect_explainer),
                     style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary,
                 )
                 OutlinedTextField(
-                    email, { email = it; error = null }, Modifier.fillMaxWidth(), label = { Text("Correo electrónico") }, singleLine = true,
+                    email, { email = it; error = null }, Modifier.fillMaxWidth(), label = { Text(stringResource(R.string.common_email)) }, singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), shape = RoundedCornerShape(14.dp), enabled = !busy,
                 )
                 OutlinedTextField(
-                    password, { password = it; error = null }, Modifier.fillMaxWidth(), label = { Text("Contraseña") }, singleLine = true,
+                    password, { password = it; error = null }, Modifier.fillMaxWidth(), label = { Text(stringResource(R.string.common_password)) }, singleLine = true,
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), shape = RoundedCornerShape(14.dp), enabled = !busy,
                 )
@@ -96,12 +100,12 @@ fun CloudSignInDialog(onDismiss: () -> Unit, presetEmail: String = "") {
                 if (busy) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
-                        Text("Conectando y sincronizando…", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+                        Text(stringResource(R.string.cloud_connecting), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
                     }
                 }
             }
         },
-        confirmButton = { TextButton(::connect, enabled = !busy && email.isNotBlank() && password.isNotEmpty()) { Text("Conectar") } },
-        dismissButton = { TextButton(onDismiss, enabled = !busy) { Text("Cancelar") } },
+        confirmButton = { TextButton(::connect, enabled = !busy && email.isNotBlank() && password.isNotEmpty()) { Text(stringResource(R.string.cloud_connect)) } },
+        dismissButton = { TextButton(onDismiss, enabled = !busy) { Text(stringResource(R.string.common_cancel)) } },
     )
 }

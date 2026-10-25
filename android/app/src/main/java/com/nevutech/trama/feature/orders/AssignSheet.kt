@@ -58,6 +58,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.rememberActions
 import com.nevutech.trama.app.rememberGraph
@@ -65,6 +68,7 @@ import com.nevutech.trama.core.data.Graph
 import com.nevutech.trama.core.data.PlantEntity
 import com.nevutech.trama.core.domain.AssignmentRules
 import com.nevutech.trama.core.domain.Fmt
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.Avatar
 import com.nevutech.trama.designsystem.CapacityBar
 import com.nevutech.trama.designsystem.EmptyState
@@ -84,7 +88,7 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
-private val monthFormat = DateTimeFormatter.ofPattern("MMMM", Fmt.locale)
+private fun monthFormat() = DateTimeFormatter.ofPattern("MMMM", Fmt.locale)
 
 /**
  * Assign part of a cut order to a plant for a month. Every plant shows its capacity for the chosen
@@ -113,14 +117,17 @@ fun AssignSheet(orderId: String, onDismiss: () -> Unit) {
         TramaScreen(Modifier.statusBarsPadding().navigationBarsPadding().imePadding()) {
             Column(Modifier.fillMaxSize()) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onDismiss) { Icon(Icons.Filled.Close, "Cancelar") }
-                    Text("Asignar ${order.code}", style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+                    IconButton(onDismiss) { Icon(Icons.Filled.Close, stringResource(R.string.common_cancel)) }
+                    Text(stringResource(R.string.assign_ui_title, order.code), style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
                 }
                 Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(if (wide) 24.dp else 16.dp)) {
                     val controls: @Composable (Modifier) -> Unit = { m ->
                         Column(m, verticalArrangement = Arrangement.spacedBy(20.dp)) {
                             TramaCard {
-                                SectionHeader("Cantidad", "${Fmt.int(remaining)} prendas pendientes de ${Fmt.int(order.quantity)}")
+                                SectionHeader(
+                                    stringResource(R.string.common_quantity),
+                                    pluralStringResource(R.plurals.assign_ui_pending_of, remaining, Fmt.int(remaining), Fmt.int(order.quantity)),
+                                )
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     var text by remember(quantity) { mutableStateOf(if (quantity == 0) "" else quantity.toString()) }
                                     TextField(
@@ -134,7 +141,7 @@ fun AssignSheet(orderId: String, onDismiss: () -> Unit) {
                                             unfocusedIndicatorColor = Tokens.colors.stroke,
                                         ),
                                     )
-                                    Text("prendas", color = Tokens.colors.secondary, modifier = Modifier.padding(start = 8.dp))
+                                    Text(pluralStringResource(R.plurals.assign_ui_garments_unit, quantity), color = Tokens.colors.secondary, modifier = Modifier.padding(start = 8.dp))
                                 }
                                 Slider(
                                     quantity.coerceIn(0, maxOf(remaining, 1)).toFloat(), { quantity = it.roundToInt() },
@@ -142,19 +149,19 @@ fun AssignSheet(orderId: String, onDismiss: () -> Unit) {
                                 )
                                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                                     listOf(0.25, 0.5, 1.0).forEach { f ->
-                                        OutlinedButton({ quantity = (remaining * f).roundToInt() }) { Text(if (f == 1.0) "Todo" else Fmt.percent(f)) }
+                                        OutlinedButton({ quantity = (remaining * f).roundToInt() }) { Text(if (f == 1.0) stringResource(R.string.assign_ui_all) else Fmt.percent(f)) }
                                     }
                                 }
-                                InfoRow("Valor de la asignación", Fmt.money(value), Icons.Filled.Payments)
+                                InfoRow(stringResource(R.string.assign_ui_value), Fmt.money(value), Icons.Filled.Payments)
                             }
                             TramaCard(padding = 12.dp) {
-                                SectionHeader("Mes de producción", "La capacidad de cada planta es mensual")
+                                SectionHeader(stringResource(R.string.assign_ui_month_title), stringResource(R.string.assign_ui_month_subtitle))
                                 DatePicker(dateState, showModeToggle = false, title = null, headline = null, colors = DatePickerDefaults.colors(containerColor = Color.Transparent))
                             }
                             val distribution = graph.style(order.styleId)?.let(graph::plantDistribution).orEmpty()
                             if (distribution.isNotEmpty()) {
                                 TramaCard {
-                                    SectionHeader("Este estilo ya se produce en")
+                                    SectionHeader(stringResource(R.string.assign_ui_style_distribution))
                                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                         distribution.forEach { (plant, count) -> Pill("${plant.name} · $count", Tokens.accent(plant.name), Icons.Filled.Apartment) }
                                     }
@@ -165,8 +172,8 @@ fun AssignSheet(orderId: String, onDismiss: () -> Unit) {
                     val picker: @Composable (Modifier) -> Unit = { m ->
                         Column(m, verticalArrangement = Arrangement.spacedBy(14.dp)) {
                             val monthTitle = date?.let { Fmt.monthYear(it) } ?: "—"
-                            SectionHeader("Plantas", "Capacidad de $monthTitle")
-                            if (plants.isEmpty()) EmptyState("No hay plantas", "Crea una planta en Catálogos → Plantas.", Icons.Filled.Apartment)
+                            SectionHeader(stringResource(R.string.section_plants), stringResource(R.string.assign_ui_capacity_of, monthTitle))
+                            if (plants.isEmpty()) EmptyState(stringResource(R.string.assign_ui_no_plants), stringResource(R.string.assign_ui_no_plants_message), Icons.Filled.Apartment)
                             plants.forEach { plant ->
                                 PlantCapacityOption(graph, plant, date ?: LocalDate.now(), value, plant.id == selectedId) { selectedId = plant.id }
                             }
@@ -183,19 +190,19 @@ fun AssignSheet(orderId: String, onDismiss: () -> Unit) {
                     Row(Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                         Column(Modifier.weight(1f)) {
                             if (selected != null) {
-                                Text("${Fmt.int(quantity)} prendas → ${selected.name}", style = MaterialTheme.typography.titleMedium)
+                                Text(pluralStringResource(R.plurals.assign_ui_summary, quantity, Fmt.int(quantity), selected.name), style = MaterialTheme.typography.titleMedium)
                                 val error = validation?.exceptionOrNull()
                                 if (error != null) Text(error.message.orEmpty(), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.danger)
-                                else Text("${Fmt.money(value)} en ${date?.format(monthFormat).orEmpty()}", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+                                else Text(stringResource(R.string.assign_ui_value_in_month, Fmt.money(value), date?.format(monthFormat()).orEmpty()), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
                             } else {
-                                Text("Elige una planta", style = MaterialTheme.typography.titleMedium)
+                                Text(stringResource(R.string.assign_ui_pick_plant), style = MaterialTheme.typography.titleMedium)
                             }
                         }
                         PrimaryButton(
-                            "Asignar", icon = Icons.Filled.Check, enabled = validation?.isSuccess == true, modifier = Modifier.widthIn(min = if (wide) 200.dp else 130.dp),
+                            stringResource(R.string.assign_ui_assign), icon = Icons.Filled.Check, enabled = validation?.isSuccess == true, modifier = Modifier.widthIn(min = if (wide) 200.dp else 130.dp),
                             onClick = {
                                 val plant = selected ?: return@PrimaryButton
-                                actions.run(success = "Asignaste ${Fmt.int(quantity)} prendas a ${plant.name}", onDone = onDismiss) {
+                                actions.run(success = L10n.plural(R.plurals.assign_ui_done, quantity, Fmt.int(quantity), plant.name), onDone = onDismiss) {
                                     app.production().assign(order.id, plant.id, quantity, date)
                                 }
                             },
@@ -225,9 +232,9 @@ private fun PlantCapacityOption(graph: Graph, plant: PlantEntity, date: LocalDat
                 Avatar(plant.name, size = 40.dp, icon = Icons.Filled.Apartment)
                 Column(Modifier.weight(1f)) {
                     Text(plant.name, style = MaterialTheme.typography.titleMedium)
-                    Text("Máx. ${Fmt.money(plant.maxCapacity)}/mes", style = MaterialTheme.typography.bodySmall, color = c.secondary)
+                    Text(stringResource(R.string.assign_ui_max_per_month, Fmt.money(plant.maxCapacity)), style = MaterialTheme.typography.bodySmall, color = c.secondary)
                 }
-                Pill(if (fits) "Cabe" else "Excede", if (fits) c.success else c.danger, if (fits) Icons.Filled.Check else Icons.Filled.Warning)
+                Pill(stringResource(if (fits) R.string.assign_ui_fits else R.string.assign_ui_exceeds), if (fits) c.success else c.danger, if (fits) Icons.Filled.Check else Icons.Filled.Warning)
                 Icon(
                     if (selected) Icons.Filled.CheckCircle else Icons.Filled.RadioButtonUnchecked, null,
                     tint = if (selected) c.brand else c.secondary.copy(alpha = 0.4f), modifier = Modifier.size(26.dp),
@@ -235,9 +242,9 @@ private fun PlantCapacityOption(graph: Graph, plant: PlantEntity, date: LocalDat
             }
             CapacityBar(used, plant.maxCapacity, preview = if (selected) preview else 0.0, height = 14.dp)
             Row {
-                Text("Usado ${Fmt.money(used, compact = true)}", style = MaterialTheme.typography.labelMedium, color = c.secondary, modifier = Modifier.weight(1f))
+                Text(stringResource(R.string.assign_ui_used, Fmt.money(used, compact = true)), style = MaterialTheme.typography.labelMedium, color = c.secondary, modifier = Modifier.weight(1f))
                 Text(
-                    "Disponible ${Fmt.money(maxOf(0.0, available), compact = true)}", style = MaterialTheme.typography.labelMedium,
+                    stringResource(R.string.assign_ui_available, Fmt.money(maxOf(0.0, available), compact = true)), style = MaterialTheme.typography.labelMedium,
                     color = if (available > 0) c.success else c.danger,
                 )
             }

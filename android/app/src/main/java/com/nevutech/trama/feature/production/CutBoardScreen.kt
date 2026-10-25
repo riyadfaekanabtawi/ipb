@@ -66,6 +66,9 @@ import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.app.rememberActions
@@ -75,6 +78,7 @@ import com.nevutech.trama.core.data.Graph
 import com.nevutech.trama.core.domain.CutStatus
 import com.nevutech.trama.core.domain.Fmt
 import com.nevutech.trama.core.domain.ReportKind
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.Swatch
 import com.nevutech.trama.designsystem.ToastCenter
 import com.nevutech.trama.designsystem.Tokens
@@ -112,22 +116,22 @@ fun CutBoardScreen() {
 
     val move: (AssignmentEntity, CutStatus) -> Unit = { a, status ->
         if (graph.cutStatus(a) != status) {
-            actions.run(success = "${graph.title(a)} → ${status.title}") { app.production().move(a.id, status) }
+            actions.run(success = L10n.str(R.string.board_moved, graph.title(a), status.title)) { app.production().move(a.id, status) }
         }
     }
 
     TramaScreen {
         Column(Modifier.fillMaxSize()) {
-            ScreenHeader("Tablero de corte", showTitle = wide)
+            ScreenHeader(stringResource(R.string.section_board), showTitle = wide)
             Column(Modifier.padding(horizontal = if (wide) 24.dp else 16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                SearchBox(query, { query = it }, "Buscar corte, cliente, planta…")
+                SearchBox(query, { query = it }, stringResource(R.string.board_search_placeholder))
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     val plants = graph.plants.sortedBy { it.name.lowercase() }
                     FilterMenuChip(
-                        graph.plant(plantId)?.name ?: "Todas las plantas", Icons.Filled.Apartment, plantId != null,
-                        listOf<Pair<String, () -> Unit>>("Todas las plantas" to { plantId = null }) + plants.map { p -> p.name to { plantId = p.id } },
+                        graph.plant(plantId)?.name ?: stringResource(R.string.board_all_plants), Icons.Filled.Apartment, plantId != null,
+                        listOf<Pair<String, () -> Unit>>(stringResource(R.string.board_all_plants) to { plantId = null }) + plants.map { p -> p.name to { plantId = p.id } },
                     )
-                    FilterChipButton("Ocultar enviados", Icons.Filled.VisibilityOff, hideShipped, { hideShipped = !hideShipped })
+                    FilterChipButton(stringResource(R.string.board_hide_shipped), Icons.Filled.VisibilityOff, hideShipped, { hideShipped = !hideShipped })
                 }
             }
             BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
@@ -145,7 +149,7 @@ fun CutBoardScreen() {
                             onTargeted = { on -> targeted = if (on) status else if (targeted == status) null else targeted },
                             onDropId = { id ->
                                 if (!canMove) {
-                                    app.toasts.show("Solo administradores y gerentes de cortes pueden mover cortes.", ToastCenter.Style.Info)
+                                    app.toasts.show(L10n.str(R.string.board_move_not_allowed), ToastCenter.Style.Info)
                                 } else {
                                     graph.assignment(id)?.let { move(it, status) }
                                 }
@@ -207,9 +211,9 @@ private fun BoardColumn(
                 contentAlignment = Alignment.Center,
             ) { Icon(status.icon, null, tint = Color.White, modifier = Modifier.size(18.dp)) }
             Column {
-                Text(status.title, style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(status.titleRes), style = MaterialTheme.typography.titleMedium)
                 Text(
-                    "${items.size} ${if (items.size == 1) "corte" else "cortes"} · ${Fmt.int(garments)} prendas",
+                    pluralStringResource(R.plurals.board_column_summary, items.size, items.size, Fmt.int(garments)),
                     style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary,
                 )
             }
@@ -224,7 +228,7 @@ private fun BoardColumn(
                         )
                     },
                     contentAlignment = Alignment.Center,
-                ) { Text(if (canMove) "Arrastra cortes aquí" else "Sin cortes", color = Tokens.colors.secondary) }
+                ) { Text(stringResource(if (canMove) R.string.board_drop_here else R.string.board_no_cuts), color = Tokens.colors.secondary) }
             }
             items.forEach { a ->
                 BoardCard(graph, a, status, canMove, onOpen = { onOpen(a) }, onMove = { onMove(a, it) })
@@ -248,10 +252,11 @@ private fun BoardCard(graph: Graph, a: AssignmentEntity, status: CutStatus, canM
         }
     } else Modifier
 
+    val moveLabels = targets.associateWith { stringResource(R.string.board_move_to, stringResource(it.titleRes)) }
     Surface(
         onClick = onOpen,
         modifier = Modifier.fillMaxWidth().then(dragModifier).semantics {
-            if (canMove) customActions = targets.map { t -> CustomAccessibilityAction("Mover a ${t.title}") { onMove(t); true } }
+            if (canMove) customActions = targets.map { t -> CustomAccessibilityAction(moveLabels.getValue(t)) { onMove(t); true } }
         },
         shape = RoundedCornerShape(16.dp), color = c.surface, border = BorderStroke(1.dp, c.stroke), shadowElevation = 2.dp,
     ) {
@@ -264,11 +269,11 @@ private fun BoardCard(graph: Graph, a: AssignmentEntity, status: CutStatus, canM
                 Swatch(graph.styleName(order), app.images.file(graph.style(order?.styleId)?.imageFile), Modifier.size(40.dp), corner = 10.dp)
                 if (canMove) {
                     Box {
-                        IconButton({ menu = true }, Modifier.size(36.dp)) { Icon(Icons.Filled.MoreVert, "Mover ${graph.title(a)}", tint = c.secondary) }
+                        IconButton({ menu = true }, Modifier.size(36.dp)) { Icon(Icons.Filled.MoreVert, stringResource(R.string.board_move_cut, graph.title(a)), tint = c.secondary) }
                         DropdownMenu(menu, { menu = false }) {
                             targets.forEach { t ->
                                 DropdownMenuItem(
-                                    text = { Text("Mover a ${t.title}") }, leadingIcon = { Icon(t.icon, null, tint = t.tint()) },
+                                    text = { Text(moveLabels.getValue(t)) }, leadingIcon = { Icon(t.icon, null, tint = t.tint()) },
                                     onClick = { menu = false; onMove(t) },
                                 )
                             }

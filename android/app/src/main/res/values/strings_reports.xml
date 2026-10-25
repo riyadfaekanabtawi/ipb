@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Production reports, urgent shipments, dashboard, charts and calculator (Spanish, Mexico). -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
+    <!-- Production reports -->
+    <string name="reports_title_plant">Producción · %1$s</string>
+    <string name="reports_no_plant_title">Sin planta asignada</string>
+    <string name="reports_no_plant_message">Pide al administrador que te asigne una planta para ver su producción.</string>
+    <string name="reports_export_csv">Exportar CSV</string>
+    <string name="reports_search_placeholder">Corte, lista, estilo, cliente…</string>
+    <string name="reports_date_range">%1$s – %2$s</string>
+    <string name="reports_filter_pending_shipment">Con pendientes por enviar</string>
+    <string name="reports_clear_filters">Limpiar</string>
+    <string name="reports_no_results_message">Ajusta o limpia los filtros.</string>
+    <string name="reports_empty_title">Aún no hay cortes en producción</string>
+    <string name="reports_empty_message">Asigna cortes a plantas para verlos aquí.</string>
+    <string name="reports_filter_by_client_date">Filtrar por fecha cliente</string>
+    <string name="reports_date_from">Desde</string>
+    <string name="reports_date_to">Hasta</string>
+    <string name="reports_sort">Ordenar</string>
+    <string name="reports_sort_by">Ordenar por</string>
+    <string name="reports_sort_ascending">Ascendente</string>
+    <string name="reports_sort_descending">Descendente</string>
+    <string name="reports_total_quantity">Cantidad total</string>
+    <string name="reports_produced">Producidas</string>
+    <string name="reports_ironing">Plancha</string>
+    <string name="reports_packing">Empaque</string>
+    <string name="reports_warehouse">Bodega</string>
+    <string name="reports_shipped">Enviadas</string>
+    <string name="reports_to_ship_total">A enviar</string>
+    <string name="reports_revenue_total">Ingresos</string>
+    <string name="reports_row_client_list">%1$s · Lista %2$s</string>
+    <string name="reports_cut_done">Cortadas</string>
+    <string name="reports_to_ship">Por enviar</string>
+    <string name="reports_delivery">Entrega</string>
+    <string name="reports_revenue">Ingreso</string>
+    <string name="reports_share_subject">Reporte de producción · Trama</string>
+
+    <!-- Urgent shipments -->
+    <string name="shipments_overdue">Vencidos</string>
+    <string name="shipments_garments_to_ship">Prendas por enviar</string>
+    <string name="shipments_empty_title">No hay envíos urgentes</string>
+    <plurals name="shipments_empty_message">
+        <item quantity="one">Ningún corte con prendas pendientes vence en el próximo %1$d día.</item>
+        <item quantity="many">Ningún corte con prendas pendientes vence en los próximos %1$d días.</item>
+        <item quantity="other">Ningún corte con prendas pendientes vence en los próximos %1$d días.</item>
+    </plurals>
+    <plurals name="shipments_next_days">
+        <item quantity="one">Próximo %1$d día</item>
+        <item quantity="many">Próximos %1$d días</item>
+        <item quantity="other">Próximos %1$d días</item>
+    </plurals>
+    <plurals name="shipments_window_description">
+        <item quantity="one">Ventana: %1$d día. Entregas dentro de este plazo o vencidas se consideran urgentes</item>
+        <item quantity="many">Ventana: %1$d días. Entregas dentro de este plazo o vencidas se consideran urgentes</item>
+        <item quantity="other">Ventana: %1$d días. Entregas dentro de este plazo o vencidas se consideran urgentes</item>
+    </plurals>
+    <plurals name="shipments_window">
+        <item quantity="one">Ventana: %1$d día</item>
+        <item quantity="many">Ventana: %1$d días</item>
+        <item quantity="other">Ventana: %1$d días</item>
+    </plurals>
+    <plurals name="shipments_days_count">
+        <item quantity="one">%1$d día</item>
+        <item quantity="many">%1$d días</item>
+        <item quantity="other">%1$d días</item>
+    </plurals>
+    <plurals name="shipments_days_unit">
+        <item quantity="one">día</item>
+        <item quantity="many">días</item>
+        <item quantity="other">días</item>
+    </plurals>
+    <plurals name="shipments_days_late_unit">
+        <item quantity="one">día tarde</item>
+        <item quantity="many">días tarde</item>
+        <item quantity="other">días tarde</item>
+    </plurals>
+    <string name="shipments_fewer_days">Menos días</string>
+    <string name="shipments_more_days">Más días</string>
+    <string name="shipments_delivery_on">Entrega %1$s</string>
+    <string name="shipments_shipped_of">%1$s de %2$s enviadas</string>
+    <string name="shipments_to_ship_count">%1$s por enviar</string>
+    <string name="shipments_record_shipment">Registrar envío</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_good_morning">Buenos días</string>
+    <string name="dashboard_good_afternoon">Buenas tardes</string>
+    <string name="dashboard_good_evening">Buenas noches</string>
+    <string name="dashboard_greeting_name">%1$s, %2$s</string>
+    <string name="dashboard_no_urgent">Sin envíos urgentes</string>
+    <plurals name="dashboard_urgent_count">
+        <item quantity="one">%1$s envío urgente</item>
+        <item quantity="many">%1$s envíos urgentes</item>
+        <item quantity="other">%1$s envíos urgentes</item>
+    </plurals>
+    <string name="dashboard_all_assigned">todo asignado</string>
+    <plurals name="dashboard_garments_to_assign">
+        <item quantity="one">%1$s prenda por asignar</item>
+        <item quantity="many">%1$s prendas por asignar</item>
+        <item quantity="other">%1$s prendas por asignar</item>
+    </plurals>
+    <string name="dashboard_online">En línea</string>
+    <string name="dashboard_offline">Sin conexión · modo local</string>
+    <string name="dashboard_updated_at">Actualizado %1$s</string>
+    <string name="dashboard_kpi_revenue">Ingresos en producción</string>
+    <plurals name="dashboard_kpi_assignments">
+        <item quantity="one">%1$s asignación</item>
+        <item quantity="many">%1$s asignaciones</item>
+        <item quantity="other">%1$s asignaciones</item>
+    </plurals>
+    <string name="dashboard_kpi_to_assign">Prendas por asignar</string>
+    <plurals name="dashboard_kpi_pending_cuts">
+        <item quantity="one">%1$s corte pendiente</item>
+        <item quantity="many">%1$s cortes pendientes</item>
+        <item quantity="other">%1$s cortes pendientes</item>
+    </plurals>
+    <string name="dashboard_kpi_in_production">En producción</string>
+    <string name="dashboard_kpi_unfinished_cuts">Cortes sin terminar</string>
+    <plurals name="dashboard_next_days">
+        <item quantity="one">Próximo %1$d día</item>
+        <item quantity="many">Próximos %1$d días</item>
+        <item quantity="other">Próximos %1$d días</item>
+    </plurals>
+    <string name="dashboard_kpi_to_ship">Por enviar</string>
+    <string name="dashboard_kpi_a11y">%1$s: %2$s. %3$s</string>
+    <string name="dashboard_capacity_title">Capacidad de plantas</string>
+    <string name="dashboard_capacity_used">%1$s de %2$s · %3$s</string>
+    <string name="dashboard_capacity_subtitle">Usado vs. capacidad mensual</string>
+    <string name="dashboard_no_plants">Sin plantas</string>
+    <string name="dashboard_no_plants_message">Da de alta plantas para ver su capacidad.</string>
+    <string name="dashboard_pipeline_title">Mesa de corte</string>
+    <string name="dashboard_pipeline_subtitle">Asignaciones por estado</string>
+    <string name="dashboard_pipeline_board">Tablero</string>
+    <string name="dashboard_no_assignments">Sin asignaciones</string>
+    <string name="dashboard_no_assignments_message">Asigna cortes a una planta para verlos aquí.</string>
+    <string name="dashboard_pipeline_open">Abre el tablero de corte</string>
+    <plurals name="dashboard_cuts_count">
+        <item quantity="one">%1$s corte</item>
+        <item quantity="many">%1$s cortes</item>
+        <item quantity="other">%1$s cortes</item>
+    </plurals>
+    <plurals name="dashboard_cuts_caption">
+        <item quantity="one">corte</item>
+        <item quantity="many">cortes</item>
+        <item quantity="other">cortes</item>
+    </plurals>
+    <string name="dashboard_revenue_title">Ingresos agendados %1$s</string>
+    <string name="dashboard_revenue_subtitle">%1$s por mes de producción, por planta</string>
+    <string name="dashboard_revenue_empty">Sin ingresos agendados en %1$s</string>
+    <string name="dashboard_revenue_empty_message">Las asignaciones a planta aparecerán aquí por mes.</string>
+    <string name="dashboard_revenue_a11y">Ingresos agendados por mes en %1$s: %2$s</string>
+    <string name="dashboard_urgent_subtitle">Por fecha de cliente</string>
+    <plurals name="dashboard_urgent_empty_message">
+        <item quantity="one">Todo va a tiempo en el próximo %1$d día.</item>
+        <item quantity="many">Todo va a tiempo en los próximos %1$d días.</item>
+        <item quantity="other">Todo va a tiempo en los próximos %1$d días.</item>
+    </plurals>
+    <string name="dashboard_urgent_detail">%1$s · %2$s por enviar</string>
+    <string name="dashboard_pending_subtitle">Más próximos a entregar</string>
+    <string name="dashboard_pending_empty">Todo asignado</string>
+    <string name="dashboard_pending_empty_message">No hay prendas pendientes de asignar a planta.</string>
+    <plurals name="dashboard_pending_a11y">
+        <item quantity="one">Corte %1$s, %2$s, %3$s prenda por asignar</item>
+        <item quantity="many">Corte %1$s, %2$s, %3$s prendas por asignar</item>
+        <item quantity="other">Corte %1$s, %2$s, %3$s prendas por asignar</item>
+    </plurals>
+    <string name="dashboard_client_date">Cliente %1$s</string>
+    <string name="dashboard_activity_title">Actividad reciente</string>
+    <string name="dashboard_activity_subtitle">Últimos reportes de producción</string>
+    <string name="dashboard_activity_empty">Sin reportes todavía</string>
+    <string name="dashboard_activity_empty_message">Los reportes de planta, corte y envío aparecerán aquí.</string>
+    <string name="dashboard_no_author">Sin autor</string>
+    <string name="dashboard_time_now">ahora</string>
+    <string name="dashboard_time_yesterday">ayer</string>
+    <plurals name="dashboard_time_minutes_ago">
+        <item quantity="one">hace %1$d minuto</item>
+        <item quantity="many">hace %1$d minutos</item>
+        <item quantity="other">hace %1$d minutos</item>
+    </plurals>
+    <plurals name="dashboard_time_hours_ago">
+        <item quantity="one">hace %1$d hora</item>
+        <item quantity="many">hace %1$d horas</item>
+        <item quantity="other">hace %1$d horas</item>
+    </plurals>
+    <plurals name="dashboard_time_days_ago">
+        <item quantity="one">hace %1$d día</item>
+        <item quantity="many">hace %1$d días</item>
+        <item quantity="other">hace %1$d días</item>
+    </plurals>
+    <plurals name="dashboard_time_weeks_ago">
+        <item quantity="one">hace %1$d semana</item>
+        <item quantity="many">hace %1$d semanas</item>
+        <item quantity="other">hace %1$d semanas</item>
+    </plurals>
+    <plurals name="dashboard_time_months_ago">
+        <item quantity="one">hace %1$d mes</item>
+        <item quantity="many">hace %1$d meses</item>
+        <item quantity="other">hace %1$d meses</item>
+    </plurals>
+    <plurals name="dashboard_time_years_ago">
+        <item quantity="one">hace %1$d año</item>
+        <item quantity="many">hace %1$d años</item>
+        <item quantity="other">hace %1$d años</item>
+    </plurals>
+
+    <!-- Charts -->
+    <string name="chart_previous_month">Mes anterior</string>
+    <string name="chart_next_month">Mes siguiente</string>
+    <string name="chart_selected_month">Mes seleccionado: %1$s. Toca dos veces para volver al mes actual</string>
+    <string name="chart_point_used">%1$s: %2$s usado</string>
+    <string name="chart_value_of_max">%1$s de %2$s</string>
+    <string name="chart_select_label">Seleccionar %1$s</string>
+
+    <!-- Calculator -->
+    <string name="calculator_cleared">Calculadora limpia</string>
+    <string name="calculator_summary_title">Cálculo de producción</string>
+    <string name="calculator_summary_copied">Resumen copiado</string>
+    <string name="calculator_constants_saved">Constantes guardadas</string>
+    <string name="calculator_share_summary">Compartir resumen</string>
+    <string name="calculator_copy_summary">Copiar resumen</string>
+    <string name="calculator_constants">Constantes</string>
+    <string name="calculator_clear">Limpiar</string>
+    <string name="calculator_unit_garments">prendas</string>
+    <string name="calculator_unit_minutes">min</string>
+    <string name="calculator_unit_days">días</string>
+    <string name="calculator_unit_months">meses</string>
+    <string name="calculator_style_quantity">Cantidad del estilo</string>
+    <string name="calculator_real_minutes">Minutaje real</string>
+    <string name="calculator_client_minutes">Minutaje cliente</string>
+    <string name="calculator_operators">Operarios</string>
+    <string name="calculator_internal_unit_price">Precio unitario interno</string>
+    <string name="calculator_price_per_style">Precio por estilo</string>
+    <string name="calculator_operating_expenses">Gastos operativos</string>
+    <string name="calculator_real_production_minute">Minuto real de producción</string>
+    <string name="calculator_line_operators">Operarios de línea</string>
+    <string name="calculator_real_daily_production">Producción real diaria</string>
+    <string name="calculator_plant_picker_a11y">Planta: %1$s. Toca para elegir</string>
+    <string name="calculator_gross_income">Ingreso bruto</string>
+    <string name="calculator_net_income">Ingreso neto</string>
+    <string name="calculator_gross_income_hint">Cantidad × precio por estilo</string>
+    <string name="calculator_net_income_hint">Bruto − gastos operativos</string>
+    <string name="calculator_price_per_real_minute">Precio por minuto real</string>
+    <string name="calculator_price_per_real_minute_hint">Precio por estilo ÷ minutaje real</string>
+    <string name="calculator_daily_goal">Meta diaria</string>
+    <string name="calculator_daily_goal_hint">Operarios × minutos día ÷ minutaje</string>
+    <string name="calculator_daily_goal_needs_minutes">Requiere minutos por día</string>
+    <string name="calculator_weekly_production">Producción semanal</string>
+    <string name="calculator_weekly_production_hint">Meta diaria × días por semana</string>
+    <string name="calculator_estimated_days">Días estimados</string>
+    <string name="calculator_estimated_days_hint">Cantidad ÷ meta diaria</string>
+    <string name="calculator_estimated_months">Meses estimados</string>
+    <string name="calculator_estimated_months_hint">Días ÷ días por mes</string>
+    <string name="calculator_real_production_minute_hint">Minutos día × operarios ÷ producción diaria</string>
+    <string name="calculator_no_value">sin valor</string>
+    <string name="calculator_minute_efficiency">Eficiencia de minutaje</string>
+    <string name="calculator_minute_efficiency_hint">Minutaje cliente ÷ real</string>
+    <string name="calculator_constants_banner_title">Configura las constantes de planta</string>
+    <string name="calculator_constants_banner_message">Minutos por operario y días de trabajo son necesarios para la meta diaria, la producción semanal y los tiempos estimados.</string>
+    <string name="calculator_configure">Configurar</string>
+    <string name="calculator_per_operator">Por operario</string>
+    <string name="calculator_minutes_per_day">Minutos por día</string>
+    <string name="calculator_minutes_per_week">Minutos por semana</string>
+    <string name="calculator_minutes_per_month">Minutos por mes</string>
+    <string name="calculator_calendar">Calendario</string>
+    <string name="calculator_work_days_per_week">Días de trabajo por semana</string>
+    <string name="calculator_work_days_per_month">Días de trabajo por mes</string>
+    <string name="calculator_constants_note">Se guardan en este dispositivo y se usan en todos los cálculos.</string>
+    <string name="calculator_summary_header">Cálculo de producción · Trama</string>
+    <string name="calculator_summary_line">%1$s: %2$s</string>
+    <string name="calculator_summary_quantity">Cantidad: %1$s prendas · Minutaje real %2$s · cliente %3$s</string>
+    <string name="calculator_summary_operators">Operarios: %1$s · Precio por estilo %2$s · Gastos %3$s</string>
+</resources>

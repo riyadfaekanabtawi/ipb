@@ -1,18 +1,15 @@
 package com.nevutech.trama.core.data
 
+import androidx.annotation.PluralsRes
+import androidx.annotation.StringRes
 import androidx.room.withTransaction
 import com.nevutech.trama.BuildConfig
+import com.nevutech.trama.R
 import com.nevutech.trama.core.domain.CutStatus
 import com.nevutech.trama.core.domain.ProjectStatus
 import com.nevutech.trama.core.domain.ReportKind
 import com.nevutech.trama.core.domain.Role
-import kotlinx.coroutines.flow.first
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.encodeToJsonElement
+import com.nevutech.trama.core.l10n.L10n
 import java.time.Instant
 import java.time.LocalDate
 import java.time.OffsetDateTime
@@ -20,6 +17,13 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Base64
 import java.util.UUID
+import kotlinx.coroutines.flow.first
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.encodeToJsonElement
 
 /**
  * Versioned JSON backup of the whole database, byte-compatible with
@@ -30,15 +34,23 @@ import java.util.UUID
 object BackupService {
     const val FORMAT_VERSION = 1
 
-    sealed class BackupError(message: String) : Exception(message) {
-        data object InvalidFile : BackupError("El archivo no es un respaldo válido de Trama.")
-        data class UnsupportedVersion(val version: Int) :
-            BackupError("Este respaldo es de una versión más nueva de Trama (formato $version). Actualiza la app para restaurarlo.")
+    sealed class BackupError : Exception() {
+        data object InvalidFile : BackupError() {
+            override val message: String get() = L10n.str(R.string.backup_error_invalid_file)
+        }
+        data class UnsupportedVersion(val version: Int) : BackupError() {
+            override val message: String get() = L10n.str(R.string.backup_error_unsupported_version, version)
+        }
     }
 
+    /** One row count of a backup: [plural] words it with its number ("3 plantas"). */
+    data class Count(@StringRes val label: Int, @PluralsRes val plural: Int, val value: Int)
+
     /** Lightweight description shown before a destructive restore. */
-    data class Summary(val exportedAt: Instant?, val appVersion: String?, val counts: List<Pair<String, Int>>) {
-        val total: Int get() = counts.sumOf { it.second }
+    data class Summary(val exportedAt: Instant?, val appVersion: String?, val items: List<Count>) {
+        /** (label, count) in the app's language, e.g. "Plantas" to 3. */
+        val counts: List<Pair<String, Int>> get() = items.map { L10n.str(it.label) to it.value }
+        val total: Int get() = items.sumOf { it.value }
     }
 
     val appVersion: String get() = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
@@ -126,10 +138,16 @@ object BackupService {
         return Summary(
             exportedAt = file.exportedAt?.let { Instant.ofEpochMilli(parseDate(it)) },
             appVersion = file.appVersion,
-            counts = listOf(
-                "Plantas" to file.plants.size(), "Clientes" to file.clients.size(), "Proveedores" to file.suppliers.size(),
-                "Estilos" to file.styles.size(), "Cortes" to file.orders.size(), "Asignaciones" to file.assignments.size(),
-                "Reportes" to file.reports.size(), "Proyectos" to file.projects.size(), "Usuarios" to file.users.size(),
+            items = listOf(
+                Count(R.string.backup_count_plants, R.plurals.backup_count_plants, file.plants.size()),
+                Count(R.string.backup_count_clients, R.plurals.backup_count_clients, file.clients.size()),
+                Count(R.string.backup_count_suppliers, R.plurals.backup_count_suppliers, file.suppliers.size()),
+                Count(R.string.backup_count_styles, R.plurals.backup_count_styles, file.styles.size()),
+                Count(R.string.backup_count_orders, R.plurals.backup_count_orders, file.orders.size()),
+                Count(R.string.backup_count_assignments, R.plurals.backup_count_assignments, file.assignments.size()),
+                Count(R.string.backup_count_reports, R.plurals.backup_count_reports, file.reports.size()),
+                Count(R.string.backup_count_projects, R.plurals.backup_count_projects, file.projects.size()),
+                Count(R.string.backup_count_users, R.plurals.backup_count_users, file.users.size()),
             ),
         )
     }

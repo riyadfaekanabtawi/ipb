@@ -33,12 +33,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.app.rememberActions
@@ -48,6 +51,7 @@ import com.nevutech.trama.core.data.PlantEntity
 import com.nevutech.trama.core.data.UserEntity
 import com.nevutech.trama.core.data.fullName
 import com.nevutech.trama.core.domain.Fmt
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.Avatar
 import com.nevutech.trama.designsystem.CapacityBar
 import com.nevutech.trama.designsystem.DecimalField
@@ -94,20 +98,20 @@ fun PlantsScreen() {
     val filtered = plants.filter { p -> catalogMatches(search, listOf(p.name) + graph.managersOf(p).map { it.fullName }) }
 
     TramaScreen {
-        CatalogGrid("Plantas", search, { search = it }, "Buscar planta o gerente", "Nueva planta", { editor = PlantEditorTarget(null) }, minCell = 330.dp) {
+        CatalogGrid(stringResource(R.string.section_plants), search, { search = it }, stringResource(R.string.plants_search), stringResource(R.string.plants_new), { editor = PlantEditorTarget(null) }, minCell = 330.dp) {
             if (plants.isNotEmpty()) fullSpan { PlantsSummary(graph) }
             when {
                 plants.isEmpty() -> fullSpan {
-                    EmptyState("Sin plantas", "Agrega tus plantas con su capacidad mensual para empezar a asignar cortes.", Icons.Filled.Apartment) {
-                        PrimaryButton("Nueva planta", { editor = PlantEditorTarget(null) }, icon = Icons.Filled.Add)
+                    EmptyState(stringResource(R.string.plants_empty_title), stringResource(R.string.plants_empty_message), Icons.Filled.Apartment) {
+                        PrimaryButton(stringResource(R.string.plants_new), { editor = PlantEditorTarget(null) }, icon = Icons.Filled.Add)
                     }
                 }
                 filtered.isEmpty() -> fullSpan { NoResults(search) }
                 else -> items(filtered.size, key = { filtered[it].id }) { i ->
                     val plant = filtered[i]
                     WithContextMenu(menu = { close ->
-                        MenuItem("Editar", Icons.Filled.Edit) { close(); editor = PlantEditorTarget(plant) }
-                        MenuItem("Eliminar", Icons.Filled.Delete, destructive = true) { close(); pendingDelete = plant }
+                        MenuItem(stringResource(R.string.common_edit), Icons.Filled.Edit) { close(); editor = PlantEditorTarget(plant) }
+                        MenuItem(stringResource(R.string.common_delete), Icons.Filled.Delete, destructive = true) { close(); pendingDelete = plant }
                     }) { open ->
                         PlantCard(graph, plant, Modifier.cardClick({ navigator.openPlant(plant.id) }, open))
                     }
@@ -119,8 +123,8 @@ fun PlantsScreen() {
     editor?.let { PlantEditorSheet(it.plant, graph) { editor = null } }
     pendingDelete?.let { plant ->
         ConfirmDeleteDialog(
-            "¿Eliminar ${plant.name}?", "Solo se pueden eliminar plantas sin cortes asignados.",
-            onConfirm = { actions.run(success = "Planta «${plant.name}» eliminada") { app.production().deletePlant(plant) } },
+            stringResource(R.string.catalog_ui_delete_title, plant.name), stringResource(R.string.plants_delete_message),
+            onConfirm = { actions.run(success = L10n.str(R.string.plants_deleted, plant.name)) { app.production().deletePlant(plant) } },
             onDismiss = { pendingDelete = null },
         )
     }
@@ -137,15 +141,15 @@ private fun PlantsSummary(graph: Graph) {
     val active = graph.plants.sumOf { graph.openAssignmentCount(it) }
     val ratio = if (capacity > 0) used / capacity else 0.0
     val tiles: List<@Composable () -> Unit> = listOf(
-        { KpiTile("Plantas", Fmt.int(graph.plants.size), Icons.Filled.Apartment) },
-        { KpiTile("Capacidad mensual total", Fmt.money(capacity, compact = true), Icons.Filled.Speed, Tokens.colors.info) },
+        { KpiTile(stringResource(R.string.section_plants), Fmt.int(graph.plants.size), Icons.Filled.Apartment) },
+        { KpiTile(stringResource(R.string.plants_kpi_total_capacity), Fmt.money(capacity, compact = true), Icons.Filled.Speed, Tokens.colors.info) },
         {
             KpiTile(
-                "Usado este mes", Fmt.money(used, compact = true), Icons.Filled.BarChart, capacityTint(ratio.toFloat()),
-                footnote = if (capacity > 0) "${Fmt.percent(ratio)} de la capacidad" else null,
+                stringResource(R.string.plants_kpi_used_month), Fmt.money(used, compact = true), Icons.Filled.BarChart, capacityTint(ratio.toFloat()),
+                footnote = if (capacity > 0) stringResource(R.string.plants_kpi_of_capacity, Fmt.percent(ratio)) else null,
             )
         },
-        { KpiTile("Asignaciones activas", Fmt.int(active), Icons.Filled.ContentCut, Tokens.colors.thread) },
+        { KpiTile(stringResource(R.string.plants_kpi_active), Fmt.int(active), Icons.Filled.ContentCut, Tokens.colors.thread) },
     )
     AdaptiveRows(tiles, minWidth = 150.dp, spacing = 18.dp) { it() }
 }
@@ -161,21 +165,21 @@ private fun PlantCard(graph: Graph, plant: PlantEntity, modifier: Modifier) {
             Avatar(plant.name, size = 50.dp, icon = Icons.Filled.Apartment)
             Column(Modifier.weight(1f)) {
                 Text(plant.name, style = MaterialTheme.typography.titleLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text("Capacidad ${Fmt.money(plant.maxCapacity, compact = true)} al mes", style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary, maxLines = 1)
+                Text(stringResource(R.string.plants_card_capacity, Fmt.money(plant.maxCapacity, compact = true)), style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary, maxLines = 1)
             }
             Text(Fmt.percent(ratio), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = capacityTint(ratio.toFloat()))
         }
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row {
                 Text(monthName(LocalDate.now()), style = MaterialTheme.typography.labelMedium, modifier = Modifier.weight(1f))
-                Text("Disponible ${Fmt.money(maxOf(0.0, ledger.available(month)), compact = true)}", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+                Text(stringResource(R.string.plants_available, Fmt.money(maxOf(0.0, ledger.available(month)), compact = true)), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
             }
             CapacityBar(used, plant.maxCapacity)
-            Text("Usado ${Fmt.money(used, compact = true)}", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+            Text(stringResource(R.string.plants_used, Fmt.money(used, compact = true)), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
         }
         HorizontalDivider(color = Tokens.colors.stroke)
         Row(verticalAlignment = Alignment.CenterVertically) {
-            CardStat(Icons.Filled.ContentCut, Fmt.int(graph.openAssignmentCount(plant)), "activas", Tokens.colors.thread)
+            CardStat(Icons.Filled.ContentCut, Fmt.int(graph.openAssignmentCount(plant)), stringResource(R.string.plants_active_lower), Tokens.colors.thread)
             Spacer(Modifier.weight(1f))
             ManagersStack(graph.managersOf(plant).sortedBy { it.fullName })
         }
@@ -192,7 +196,7 @@ fun ManagersStack(managers: List<UserEntity>) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         if (managers.isEmpty()) {
             Icon(Icons.Outlined.PersonSearch, null, tint = Tokens.colors.secondary.copy(alpha = 0.6f), modifier = Modifier.size(16.dp))
-            Text("Sin gerente", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary.copy(alpha = 0.6f))
+            Text(stringResource(R.string.plants_no_manager), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary.copy(alpha = 0.6f))
         } else {
             Box {
                 managers.take(3).forEachIndexed { i, user ->
@@ -203,7 +207,7 @@ fun ManagersStack(managers: List<UserEntity>) {
                 Spacer(Modifier.size(width = (30 + 20 * (minOf(3, managers.size) - 1)).dp, height = 30.dp))
             }
             Text(
-                if (managers.size == 1) managers[0].fullName else "${managers.size} gerentes",
+                if (managers.size == 1) managers[0].fullName else pluralStringResource(R.plurals.plants_managers, managers.size, managers.size),
                 style = MaterialTheme.typography.labelMedium, color = Tokens.colors.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis,
             )
         }
@@ -219,31 +223,32 @@ fun PlantEditorSheet(plant: PlantEntity?, graph: Graph, onDismiss: () -> Unit) {
     var capacity by remember { mutableDoubleStateOf(plant?.maxCapacity ?: 0.0) }
 
     FormSheet(
-        if (plant == null) "Nueva planta" else "Editar planta", onDismiss,
+        stringResource(if (plant == null) R.string.plants_new else R.string.plants_edit), onDismiss,
         onSave = {
             actions.run(onDone = onDismiss) {
                 val saved = catalog.savePlant(plant, name, capacity)
-                toasts.show(if (plant == null) "Planta «${saved.name}» creada" else "Planta actualizada")
+                toasts.show(if (plant == null) L10n.str(R.string.plants_created, saved.name) else L10n.str(R.string.plants_updated))
             }
         },
         canSave = name.isNotBlank() && capacity > 0,
     ) {
-        FormSection("Planta", footer = "La capacidad se mide en pesos por mes: cada asignación consume cantidad × precio unitario.") {
-            TramaField(name, { name = it }, "Nombre")
-            DecimalField(capacity, { capacity = it }, "Capacidad máxima mensual")
+        FormSection(stringResource(R.string.common_plant), footer = stringResource(R.string.plants_capacity_footer)) {
+            TramaField(name, { name = it }, stringResource(R.string.common_name))
+            DecimalField(capacity, { capacity = it }, stringResource(R.string.plants_max_capacity))
         }
         if (plant != null && plant.maxCapacity > 0) {
             val used = graph.ledger(plant).used(YearMonth.now())
-            FormSection("Este mes") {
+            FormSection(stringResource(R.string.plants_this_month)) {
                 CapacityBar(used, capacity)
                 Row {
-                    Text("Usado ${Fmt.money(used)}", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary, modifier = Modifier.weight(1f))
-                    Text("Disponible ${Fmt.money(maxOf(0.0, capacity - used))}", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+                    Text(stringResource(R.string.plants_used, Fmt.money(used)), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary, modifier = Modifier.weight(1f))
+                    Text(stringResource(R.string.plants_available, Fmt.money(maxOf(0.0, capacity - used))), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
                 }
                 if (used > capacity) {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.semantics(mergeDescendants = true) { contentDescription = "Advertencia" }) {
+                    val warning = stringResource(R.string.plants_warning)
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.semantics(mergeDescendants = true) { contentDescription = warning }) {
                         Icon(Icons.Filled.Warning, null, tint = Tokens.colors.warning, modifier = Modifier.size(16.dp))
-                        Text("La nueva capacidad es menor a lo ya asignado este mes.", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.warning)
+                        Text(stringResource(R.string.plants_capacity_below_used), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.warning)
                     }
                 }
             }

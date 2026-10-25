@@ -1,16 +1,19 @@
 package com.nevutech.trama.core.data
 
+import androidx.annotation.StringRes
+import com.nevutech.trama.R
 import com.nevutech.trama.core.domain.Role
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.nevutech.trama.core.l10n.L10n
 import java.security.MessageDigest
 import java.security.SecureRandom
 import java.util.Base64
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.withContext
 
 /**
  * Salted PBKDF2-HMAC-SHA256, identical parameters to iOS (120k iterations, 16-byte salt,
@@ -39,16 +42,20 @@ object PasswordHasher {
     }
 }
 
-enum class AuthError(val message: String) {
-    EmptyFields("Completa todos los campos para ingresar."),
-    UnknownEmail("Parece que no tienes acceso a Trama. Comunícate con el administrador."),
-    WrongPassword("Tu correo no coincide con tu contraseña. Intenta nuevamente."),
-    Inactive("Tu usuario está desactivado. Comunícate con el administrador."),
-    EmailTaken("Ya existe un usuario con ese correo."),
-    WeakPassword("La contraseña debe tener al menos 6 caracteres."),
+enum class AuthError(@StringRes val messageRes: Int) {
+    EmptyFields(R.string.auth_error_empty_fields),
+    UnknownEmail(R.string.auth_error_unknown_email),
+    WrongPassword(R.string.auth_error_wrong_password),
+    Inactive(R.string.auth_error_inactive),
+    EmailTaken(R.string.auth_error_email_taken),
+    WeakPassword(R.string.auth_error_weak_password);
+
+    val message: String get() = L10n.str(messageRes)
 }
 
-class AuthException(val error: AuthError) : Exception(error.message)
+class AuthException(val error: AuthError) : Exception() {
+    override val message: String get() = error.message
+}
 
 /** Current signed-in user. The session id is persisted so the tablet reopens straight into the app. */
 class Session(private val dao: TramaDao, private val settings: SettingsStore) {

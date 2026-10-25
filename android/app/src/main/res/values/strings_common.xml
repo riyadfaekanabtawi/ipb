@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Words shared by many screens (Spanish, Mexico). -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
+    <string name="common_cancel">Cancelar</string>
+    <string name="common_save">Guardar</string>
+    <string name="common_edit">Editar</string>
+    <string name="common_delete">Eliminar</string>
+    <string name="common_close">Cerrar</string>
+    <string name="common_done">Listo</string>
+    <string name="common_ok">Aceptar</string>
+    <string name="common_back">Volver</string>
+    <string name="common_more_options">Más opciones</string>
+    <string name="common_see_all">Ver todos</string>
+    <string name="common_all_masc">Todos</string>
+    <string name="common_all_fem">Todas</string>
+    <string name="common_no_results">Sin resultados</string>
+    <string name="common_name">Nombre</string>
+    <string name="common_quantity">Cantidad</string>
+    <string name="common_client">Cliente</string>
+    <string name="common_plant">Planta</string>
+    <string name="common_style">Estilo</string>
+    <string name="common_cut">Corte</string>
+    <string name="common_cuts">Cortes</string>
+    <string name="common_garments">Prendas</string>
+    <string name="common_notes">Notas</string>
+    <string name="common_status">Estado</string>
+    <string name="common_role">Puesto</string>
+    <string name="common_email">Correo electrónico</string>
+    <string name="common_password">Contraseña</string>
+    <string name="common_phone">Teléfono</string>
+    <string name="common_contact">Contacto</string>
+    <string name="common_contacts">Contactos</string>
+    <string name="common_unit_price">Precio unitario</string>
+    <string name="common_internal_date">Fecha interna</string>
+    <string name="common_client_date">Fecha cliente</string>
+    <string name="common_value">Valor</string>
+    <string name="common_sign_out">Cerrar sesión</string>
+    <string name="common_sync_now">Sincronizar</string>
+    <string name="common_no_address">Sin dirección</string>
+</resources>

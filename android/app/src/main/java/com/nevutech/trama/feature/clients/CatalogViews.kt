@@ -20,10 +20,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -40,17 +40,17 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Apartment
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ContentCut
 import androidx.compose.material.icons.filled.HourglassTop
 import androidx.compose.material.icons.filled.Inventory2
-import androidx.compose.material.icons.filled.Schedule
-import androidx.compose.material.icons.filled.Verified
-import androidx.compose.material.icons.filled.WorkspacePremium
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -85,6 +85,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -97,9 +98,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.core.domain.Fmt
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.ToastCenter
 import com.nevutech.trama.designsystem.Tokens
 import com.nevutech.trama.designsystem.WeaveTexture
@@ -132,7 +135,7 @@ fun openLink(context: Context, toasts: ToastCenter, uri: String) {
     try {
         context.startActivity(intent)
     } catch (_: ActivityNotFoundException) {
-        toasts.show("No hay una app para abrir este enlace.", ToastCenter.Style.Info)
+        toasts.show(L10n.str(R.string.catalog_ui_no_app_for_link), ToastCenter.Style.Info)
     }
 }
 
@@ -218,7 +221,7 @@ fun SearchField(value: String, onChange: (String) -> Unit, prompt: String, modif
     OutlinedTextField(
         value, onChange, modifier, singleLine = true, placeholder = { Text(prompt, maxLines = 1, overflow = TextOverflow.Ellipsis) },
         leadingIcon = { Icon(Icons.Filled.Search, null, tint = Tokens.colors.secondary) },
-        trailingIcon = if (value.isNotEmpty()) { { IconButton({ onChange("") }) { Icon(Icons.Filled.Close, "Borrar búsqueda") } } } else null,
+        trailingIcon = if (value.isNotEmpty()) { { IconButton({ onChange("") }) { Icon(Icons.Filled.Close, stringResource(R.string.catalog_ui_clear_search)) } } } else null,
         shape = Tokens.chipShape,
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedBorderColor = Tokens.colors.stroke, focusedContainerColor = Tokens.colors.surface, unfocusedContainerColor = Tokens.colors.surface,
@@ -230,7 +233,7 @@ fun SearchField(value: String, onChange: (String) -> Unit, prompt: String, modif
 @Composable
 fun NoResults(search: String) {
     com.nevutech.trama.designsystem.EmptyState(
-        "Sin resultados para «${search.trim()}»", "Revisa la ortografía o prueba con otra búsqueda.", Icons.Filled.Search,
+        stringResource(R.string.catalog_ui_no_results_for, search.trim()), stringResource(R.string.catalog_ui_no_results_hint), Icons.Filled.Search,
     )
 }
 
@@ -247,7 +250,7 @@ fun DetailScaffold(
             Modifier.fillMaxWidth().sectionTopInset().padding(horizontal = 8.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            IconButton({ navigator.back() }) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Atrás") }
+            IconButton({ navigator.back() }) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.common_back)) }
             Text(title, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
             actions()
         }
@@ -266,7 +269,7 @@ fun DetailScaffold(
 fun OverflowMenu(items: @Composable ColumnScope.(close: () -> Unit) -> Unit) {
     var open by remember { mutableStateOf(false) }
     Box {
-        IconButton({ open = true }) { Icon(Icons.Filled.MoreVert, "Más opciones") }
+        IconButton({ open = true }) { Icon(Icons.Filled.MoreVert, stringResource(R.string.common_more_options)) }
         DropdownMenu(open, { open = false }) { items { open = false } }
     }
 }
@@ -391,8 +394,8 @@ fun ConfirmDeleteDialog(title: String, message: String? = null, onConfirm: () ->
         onDismissRequest = onDismiss,
         title = { Text(title) },
         text = message?.let { { Text(it) } },
-        confirmButton = { TextButton({ onDismiss(); onConfirm() }) { Text("Eliminar", color = Tokens.colors.danger) } },
-        dismissButton = { TextButton(onDismiss) { Text("Cancelar") } },
+        confirmButton = { TextButton({ onDismiss(); onConfirm() }) { Text(stringResource(R.string.common_delete), color = Tokens.colors.danger) } },
+        dismissButton = { TextButton(onDismiss) { Text(stringResource(R.string.common_cancel)) } },
     )
 }
 
@@ -403,7 +406,7 @@ fun FormSheet(
     onDismiss: () -> Unit,
     onSave: () -> Unit,
     canSave: Boolean,
-    saveTitle: String = "Guardar",
+    saveTitle: String = stringResource(R.string.common_save),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Dialog(onDismiss, DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
@@ -416,7 +419,7 @@ fun FormSheet(
             ) {
                 Column(if (compact) Modifier.statusBarsPadding().navigationBarsPadding() else Modifier) {
                     Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-                        TextButton(onDismiss) { Text("Cancelar") }
+                        TextButton(onDismiss) { Text(stringResource(R.string.common_cancel)) }
                         Text(title, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                         TextButton(onSave, enabled = canSave) { Text(saveTitle, fontWeight = FontWeight.Bold) }
                     }
@@ -497,7 +500,7 @@ fun SecureField(value: String, onChange: (String) -> Unit, label: String, isErro
         value, onChange, Modifier.fillMaxWidth(), label = { Text(label) }, singleLine = true, isError = isError,
         visualTransformation = if (reveal) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        trailingIcon = { IconButton({ reveal = !reveal }) { Icon(if (reveal) Icons.Filled.VisibilityOff else Icons.Filled.Visibility, if (reveal) "Ocultar contraseña" else "Mostrar contraseña") } },
+        trailingIcon = { IconButton({ reveal = !reveal }) { Icon(if (reveal) Icons.Filled.VisibilityOff else Icons.Filled.Visibility, stringResource(if (reveal) R.string.catalog_ui_hide_password else R.string.catalog_ui_show_password)) } },
         shape = RoundedCornerShape(14.dp),
         colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = Tokens.colors.stroke, focusedContainerColor = Tokens.colors.surface, unfocusedContainerColor = Tokens.colors.surface),
     )
@@ -525,9 +528,9 @@ fun DateRow(label: String, date: LocalDate, onChange: (LocalDate) -> Unit) {
                 TextButton({
                     state.selectedDateMillis?.let { onChange(Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate()) }
                     open = false
-                }) { Text("Listo") }
+                }) { Text(stringResource(R.string.common_done)) }
             },
-            dismissButton = { TextButton({ open = false }) { Text("Cancelar") } },
+            dismissButton = { TextButton({ open = false }) { Text(stringResource(R.string.common_cancel)) } },
         ) { DatePicker(state) }
     }
 }
@@ -535,7 +538,7 @@ fun DateRow(label: String, date: LocalDate, onChange: (LocalDate) -> Unit) {
 /** Card tap plus optional long press (context menu), with the ripple clipped to the card. */
 @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 fun Modifier.cardClick(onClick: () -> Unit, onLongClick: (() -> Unit)? = null, shape: androidx.compose.ui.graphics.Shape = Tokens.cardShape): Modifier =
-    clip(shape).combinedClickable(onClick = onClick, onLongClick = onLongClick, onLongClickLabel = onLongClick?.let { "Más opciones" })
+    clip(shape).combinedClickable(onClick = onClick, onLongClick = onLongClick, onLongClickLabel = onLongClick?.let { L10n.str(R.string.common_more_options) })
 
 /** Wraps [content] with a dropdown that [content] opens through the callback (long press menus). */
 @Composable

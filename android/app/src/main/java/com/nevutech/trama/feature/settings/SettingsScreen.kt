@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -33,8 +35,6 @@ import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.CloudDone
 import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.CloudUpload
-import androidx.compose.material.icons.filled.Sync
-import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.FileUpload
@@ -44,9 +44,11 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material.icons.filled.WifiOff
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -55,6 +57,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -73,6 +76,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -83,9 +88,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.rememberActions
 import com.nevutech.trama.app.rememberGraph
+import com.nevutech.trama.app.rememberIsOnline
 import com.nevutech.trama.core.data.AuthError
 import com.nevutech.trama.core.data.BackupService
 import com.nevutech.trama.core.data.DemoSeeder
@@ -97,6 +104,8 @@ import com.nevutech.trama.core.data.fullName
 import com.nevutech.trama.core.data.roleValue
 import com.nevutech.trama.core.domain.Fmt
 import com.nevutech.trama.core.domain.Role as UserRole
+import com.nevutech.trama.core.l10n.AppLanguage
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.Avatar
 import com.nevutech.trama.designsystem.Pill
 import com.nevutech.trama.designsystem.ToastCenter
@@ -105,11 +114,10 @@ import com.nevutech.trama.designsystem.TramaCard
 import com.nevutech.trama.designsystem.TramaField
 import com.nevutech.trama.designsystem.TramaScreen
 import com.nevutech.trama.feature.auth.CloudSignInDialog
-import com.nevutech.trama.app.rememberIsOnline
+import java.time.ZoneId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.ZoneId
 
 /** Port of ios SettingsView: account, preferences, data (backup / restore / demo / erase) and about. */
 @Composable
@@ -129,10 +137,10 @@ fun SettingsScreen() {
 
     val exporter = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri: Uri? ->
         uri ?: return@rememberLauncherForActivityResult
-        actions.run(success = "Respaldo guardado") {
+        actions.run(success = L10n.str(R.string.settings_backup_saved)) {
             val bytes = BackupService.export(app.db, app.images)
             withContext(Dispatchers.IO) {
-                context.contentResolver.openOutputStream(uri, "wt")?.use { it.write(bytes) } ?: error("No se pudo escribir el archivo.")
+                context.contentResolver.openOutputStream(uri, "wt")?.use { it.write(bytes) } ?: error(L10n.str(R.string.settings_file_write_failed))
             }
         }
     }
@@ -140,7 +148,7 @@ fun SettingsScreen() {
         uri ?: return@rememberLauncherForActivityResult
         actions.run {
             val bytes = withContext(Dispatchers.IO) {
-                context.contentResolver.openInputStream(uri)?.use { it.readBytes() } ?: error("No se pudo leer el archivo.")
+                context.contentResolver.openInputStream(uri)?.use { it.readBytes() } ?: error(L10n.str(R.string.settings_file_read_failed))
             }
             val summary = withContext(Dispatchers.Default) { BackupService.inspect(bytes) }
             pendingRestore = PendingRestore(bytes, summary)
@@ -153,9 +161,10 @@ fun SettingsScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Column(Modifier.widthIn(max = 760.dp).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(22.dp)) {
-                if (LocalConfiguration.current.screenWidthDp >= 600) Text("Ajustes", style = MaterialTheme.typography.headlineMedium)
+                if (LocalConfiguration.current.screenWidthDp >= 600) Text(stringResource(R.string.section_settings), style = MaterialTheme.typography.headlineMedium)
                 AccountSection(user, graph.plant(user?.plantId)?.name) { showPassword = true }
                 PreferencesSection(isAdmin)
+                LanguageSection()
                 CloudSection(isAdmin)
                 DataSection(
                     isAdmin = isAdmin,
@@ -164,11 +173,11 @@ fun SettingsScreen() {
                     onDemo = {
                         val operational = graph.plants.size + graph.orders.size + graph.clients.size + graph.styles.size
                         if (app.sync.status.value.connected) {
-                            app.toasts.show("Este dispositivo está conectado a la nube de tu empresa; los datos de ejemplo no se pueden cargar.", ToastCenter.Style.Info)
+                            app.toasts.show(L10n.str(R.string.settings_demo_blocked_cloud), ToastCenter.Style.Info)
                         } else if (operational > 0) {
-                            app.toasts.show("Ya hay datos en este dispositivo. Bórralos primero para cargar los datos de ejemplo.", ToastCenter.Style.Info)
+                            app.toasts.show(L10n.str(R.string.settings_demo_blocked_data), ToastCenter.Style.Info)
                         } else {
-                            actions.run(success = "Datos de ejemplo cargados. Cuentas demo con contraseña ${DemoSeeder.DEMO_PASSWORD}.") {
+                            actions.run(success = L10n.str(R.string.settings_demo_loaded, DemoSeeder.DEMO_PASSWORD)) {
                                 DemoSeeder.seed(app.db)
                                 app.settings.setDemoSeeded(true)
                                 app.settings.setCompanyName(DemoSeeder.DEMO_COMPANY)
@@ -182,7 +191,7 @@ fun SettingsScreen() {
                     { confirmSignOut = true }, Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp),
                 ) {
                     Icon(Icons.AutoMirrored.Filled.Logout, null, tint = Tokens.colors.danger, modifier = Modifier.size(18.dp))
-                    Text("Cerrar sesión", color = Tokens.colors.danger, modifier = Modifier.padding(start = 8.dp))
+                    Text(stringResource(R.string.common_sign_out), color = Tokens.colors.danger, modifier = Modifier.padding(start = 8.dp))
                 }
             }
         }
@@ -193,12 +202,12 @@ fun SettingsScreen() {
     if (confirmSignOut) {
         AlertDialog(
             onDismissRequest = { confirmSignOut = false },
-            title = { Text("¿Cerrar sesión?") },
-            text = { Text("Tus datos se quedan guardados en este dispositivo.") },
+            title = { Text(stringResource(R.string.shell_sign_out_title)) },
+            text = { Text(stringResource(R.string.shell_sign_out_message)) },
             confirmButton = {
-                TextButton({ confirmSignOut = false; actions.run { app.session.signOut() } }) { Text("Cerrar sesión", color = Tokens.colors.danger) }
+                TextButton({ confirmSignOut = false; actions.run { app.session.signOut() } }) { Text(stringResource(R.string.common_sign_out), color = Tokens.colors.danger) }
             },
-            dismissButton = { TextButton({ confirmSignOut = false }) { Text("Cancelar") } },
+            dismissButton = { TextButton({ confirmSignOut = false }) { Text(stringResource(R.string.common_cancel)) } },
         )
     }
 
@@ -206,8 +215,8 @@ fun SettingsScreen() {
         AlertDialog(
             onDismissRequest = { pendingRestore = null },
             icon = { Icon(Icons.Filled.Warning, null, tint = Tokens.colors.warning) },
-            title = { Text("¿Restaurar respaldo?") },
-            text = { Text(pending.message) },
+            title = { Text(stringResource(R.string.settings_restore_title)) },
+            text = { Text(pending.message()) },
             confirmButton = {
                 TextButton({
                     pendingRestore = null
@@ -215,15 +224,15 @@ fun SettingsScreen() {
                         withContext(Dispatchers.Default) { BackupService.restore(pending.bytes, app.db, app.images) }
                         app.session.restore()
                         if (app.session.user.value != null) {
-                            app.toasts.show("Respaldo restaurado: ${Fmt.int(pending.summary.total)} registros")
+                            app.toasts.show(L10n.plural(R.plurals.settings_restore_done, pending.summary.total, Fmt.int(pending.summary.total)))
                         } else {
                             // The current user is not in the backup (or is inactive there): back to sign in.
-                            app.toasts.show("Respaldo restaurado. Inicia sesión con una cuenta del respaldo.", ToastCenter.Style.Info)
+                            app.toasts.show(L10n.str(R.string.settings_restore_done_sign_in), ToastCenter.Style.Info)
                         }
                     }
-                }) { Text("Reemplazar todos los datos", color = Tokens.colors.danger) }
+                }) { Text(stringResource(R.string.settings_restore_confirm), color = Tokens.colors.danger) }
             },
-            dismissButton = { TextButton({ pendingRestore = null }) { Text("Cancelar") } },
+            dismissButton = { TextButton({ pendingRestore = null }) { Text(stringResource(R.string.common_cancel)) } },
         )
     }
 
@@ -231,10 +240,10 @@ fun SettingsScreen() {
         AlertDialog(
             onDismissRequest = { confirmErase = false },
             icon = { Icon(Icons.Filled.Delete, null, tint = Tokens.colors.danger) },
-            title = { Text("¿Borrar todos los datos?") },
-            text = { Text("Se eliminarán plantas, cortes, reportes, catálogos y usuarios de este dispositivo. Exporta un respaldo antes si lo necesitas.") },
-            confirmButton = { TextButton({ confirmErase = false; confirmEraseFinal = true }) { Text("Continuar", color = Tokens.colors.danger) } },
-            dismissButton = { TextButton({ confirmErase = false }) { Text("Cancelar") } },
+            title = { Text(stringResource(R.string.settings_erase_title)) },
+            text = { Text(stringResource(R.string.settings_erase_message)) },
+            confirmButton = { TextButton({ confirmErase = false; confirmEraseFinal = true }) { Text(stringResource(R.string.settings_continue), color = Tokens.colors.danger) } },
+            dismissButton = { TextButton({ confirmErase = false }) { Text(stringResource(R.string.common_cancel)) } },
         )
     }
 
@@ -247,7 +256,7 @@ fun SettingsScreen() {
                 eraseAllData(app.db, app.images)
                 app.settings.setDemoSeeded(false)
                 // Toast first: signing out disposes this screen (and its scope) on the way to onboarding.
-                app.toasts.show("Se borraron todos los datos", ToastCenter.Style.Info)
+                app.toasts.show(L10n.str(R.string.settings_erased), ToastCenter.Style.Info)
                 app.session.signOut()
             }
         }
@@ -255,13 +264,11 @@ fun SettingsScreen() {
 }
 
 private class PendingRestore(val bytes: ByteArray, val summary: BackupService.Summary) {
-    val message: String
-        get() {
-            val date = summary.exportedAt?.let { Fmt.date(it.atZone(ZoneId.systemDefault()).toLocalDate()) } ?: "fecha desconocida"
-            val counts = summary.counts.filter { it.second > 0 }.joinToString(", ") { "${it.second} ${it.first.lowercase()}" }
-            return "Respaldo del $date (Trama ${summary.appVersion ?: "?"}): ${counts.ifEmpty { "sin registros" }}. " +
-                "Se borrarán todos los datos actuales de este dispositivo."
-        }
+    fun message(): String {
+        val date = summary.exportedAt?.let { Fmt.date(it.atZone(ZoneId.systemDefault()).toLocalDate()) } ?: L10n.str(R.string.settings_unknown_date)
+        val counts = summary.items.filter { it.value > 0 }.joinToString(", ") { L10n.plural(it.plural, it.value, it.value) }
+        return L10n.str(R.string.settings_restore_message, date, summary.appVersion ?: "?", counts.ifEmpty { L10n.str(R.string.settings_no_records) })
+    }
 }
 
 // Sections
@@ -277,48 +284,47 @@ private fun CloudSection(isAdmin: Boolean) {
     var confirmDisconnect by remember { mutableStateOf(false) }
 
     SettingsSection(
-        "Nube",
-        if (status.connected) "Trama sigue funcionando sin conexión; los cambios se envían al recuperar internet." else
-            "Opcional: conecta tu licencia para respaldar y compartir los datos con los demás dispositivos de tu empresa.",
+        stringResource(R.string.settings_cloud),
+        stringResource(if (status.connected) R.string.settings_cloud_footer_connected else R.string.settings_cloud_footer_offline),
     ) {
         if (status.connected) {
-            InfoLine("Empresa", Icons.Filled.Apartment) { Text(account.tenantName ?: "—", color = c.secondary) }
-            InfoLine("Licencia", Icons.Filled.WorkspacePremium) {
+            InfoLine(stringResource(R.string.settings_company), Icons.Filled.Apartment) { Text(account.tenantName ?: "—", color = c.secondary) }
+            InfoLine(stringResource(R.string.settings_licence), Icons.Filled.WorkspacePremium) {
                 val (label, tint) = when (account.licenceStatus) {
-                    "expired" -> "Vencida" to c.danger
-                    "suspended" -> "Suspendida" to c.danger
-                    else -> "Activa" to c.success
+                    "expired" -> R.string.settings_licence_expired to c.danger
+                    "suspended" -> R.string.settings_licence_suspended to c.danger
+                    else -> R.string.settings_licence_active to c.success
                 }
-                Pill("${planTitle(account.plan)} · $label", tint)
+                Pill("${stringResource(planTitle(account.plan))} · ${stringResource(label)}", tint)
             }
-            account.email?.let { email -> InfoLine("Cuenta", Icons.Filled.Badge) { Text(email, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis) } }
-            InfoLine("Última sincronización", Icons.Filled.CloudDone) {
-                Text(account.lastSyncAt?.let(::formatSyncTime) ?: "Nunca", color = c.secondary)
+            account.email?.let { email -> InfoLine(stringResource(R.string.settings_account_line), Icons.Filled.Badge) { Text(email, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis) } }
+            InfoLine(stringResource(R.string.settings_last_sync), Icons.Filled.CloudDone) {
+                Text(account.lastSyncAt?.let(::formatSyncTime) ?: stringResource(R.string.settings_never), color = c.secondary)
             }
             if (status.pending > 0) {
-                InfoLine("Cambios por enviar", Icons.Filled.CloudUpload) { Text(Fmt.int(status.pending), color = c.warning) }
+                InfoLine(stringResource(R.string.settings_pending_changes), Icons.Filled.CloudUpload) { Text(Fmt.int(status.pending), color = c.warning) }
             }
             account.lastError?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = c.danger) }
             HorizontalDivider(color = c.stroke)
             ActionRow(
-                if (status.running) "Sincronizando…" else "Sincronizar",
-                "Envía los cambios de este dispositivo y descarga los de tu empresa",
+                stringResource(if (status.running) R.string.settings_syncing else R.string.common_sync_now),
+                stringResource(R.string.settings_sync_detail),
                 Icons.Filled.Sync, c.brand,
             ) { if (!status.running) app.scope.launch { app.sync.syncNow(manual = true) } }
             if (isAdmin) {
                 HorizontalDivider(color = c.stroke)
-                ActionRow("Desconectar este dispositivo", "Libera su lugar en la licencia; los datos se quedan aquí", Icons.Filled.CloudOff, c.danger) {
+                ActionRow(stringResource(R.string.settings_disconnect_device), stringResource(R.string.settings_disconnect_device_detail), Icons.Filled.CloudOff, c.danger) {
                     confirmDisconnect = true
                 }
             }
         } else {
             if (account.tenantId != null) {
                 Text(
-                    account.lastError ?: "Este dispositivo se desconectó de la nube de ${account.tenantName ?: "tu empresa"}.",
+                    account.lastError ?: account.tenantName?.let { stringResource(R.string.settings_disconnected_from, it) } ?: stringResource(R.string.settings_disconnected),
                     style = MaterialTheme.typography.bodyMedium, color = c.secondary,
                 )
             }
-            ActionRow("Conectar con mi licencia", "Inicia sesión con tu cuenta de Trama", Icons.Filled.Cloud, c.brand) { connect = true }
+            ActionRow(stringResource(R.string.cloud_connect_licence), stringResource(R.string.settings_connect_detail), Icons.Filled.Cloud, c.brand) { connect = true }
         }
     }
 
@@ -326,36 +332,74 @@ private fun CloudSection(isAdmin: Boolean) {
     if (confirmDisconnect) {
         AlertDialog(
             onDismissRequest = { confirmDisconnect = false },
-            title = { Text("¿Desconectar de la nube?") },
+            title = { Text(stringResource(R.string.settings_disconnect_title)) },
             text = {
                 Text(
-                    if (status.pending > 0) "Hay ${status.pending} cambios sin enviar; se enviarán si vuelves a conectar este dispositivo. Los datos se quedan guardados aquí."
-                    else "Los datos se quedan guardados en este dispositivo y dejará de sincronizarse.",
+                    if (status.pending > 0) pluralStringResource(R.plurals.settings_disconnect_pending, status.pending, Fmt.int(status.pending))
+                    else stringResource(R.string.settings_disconnect_message),
                 )
             },
             confirmButton = {
                 TextButton({
                     confirmDisconnect = false
-                    app.scope.launch { app.sync.signOutCloud(); app.toasts.show("Dispositivo desconectado de la nube", ToastCenter.Style.Info) }
-                }) { Text("Desconectar", color = c.danger) }
+                    app.scope.launch { app.sync.signOutCloud(); app.toasts.show(L10n.str(R.string.settings_disconnected_toast), ToastCenter.Style.Info) }
+                }) { Text(stringResource(R.string.settings_disconnect), color = c.danger) }
             },
-            dismissButton = { TextButton({ confirmDisconnect = false }) { Text("Cancelar") } },
+            dismissButton = { TextButton({ confirmDisconnect = false }) { Text(stringResource(R.string.common_cancel)) } },
         )
     }
 }
 
+// Plan ids are the server's raw values; only their display name is localized.
 private fun planTitle(plan: String?) = when (plan) {
-    "web" -> "Plan Web"
-    "planta" -> "Plan Planta"
-    "multiplanta" -> "Plan Multiplanta"
-    "empresa" -> "Plan Empresa"
-    else -> "Plan"
+    "web" -> R.string.settings_plan_web
+    "planta" -> R.string.settings_plan_plant
+    "multiplanta" -> R.string.settings_plan_multiplant
+    "empresa" -> R.string.settings_plan_enterprise
+    else -> R.string.settings_plan
 }
 
 private fun formatSyncTime(epochMillis: Long): String {
     val time = java.time.Instant.ofEpochMilli(epochMillis).atZone(ZoneId.systemDefault())
-    val clock = time.toLocalTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))
-    return if (time.toLocalDate() == java.time.LocalDate.now()) "Hoy, $clock" else "${Fmt.shortDate(time.toLocalDate())}, $clock"
+    val clock = time.toLocalTime().format(java.time.format.DateTimeFormatter.ofLocalizedTime(java.time.format.FormatStyle.SHORT).withLocale(Fmt.locale))
+    return if (time.toLocalDate() == java.time.LocalDate.now()) L10n.str(R.string.settings_today_at, clock)
+    else L10n.str(R.string.settings_day_at, Fmt.shortDate(time.toLocalDate()), clock)
+}
+
+/** In-app language picker; Android 13+ also offers it in the system's per-app language setting. */
+@Composable
+private fun LanguageSection() {
+    val context = LocalContext.current
+    val current = remember { L10n.language(context) }
+    val options = listOf(
+        AppLanguage.System to stringResource(R.string.settings_language_system),
+        AppLanguage.Spanish to stringResource(R.string.settings_language_es),
+        AppLanguage.English to stringResource(R.string.settings_language_en),
+        AppLanguage.Portuguese to stringResource(R.string.settings_language_pt),
+    )
+    SettingsSection(stringResource(R.string.settings_language), stringResource(R.string.settings_language_footer)) {
+        Column(Modifier.selectableGroup()) {
+            options.forEach { (language, label) ->
+                Row(
+                    Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp))
+                        .selectable(selected = language == current, role = Role.RadioButton) {
+                            context.findActivity()?.let { L10n.apply(it, language) }
+                        }
+                        .padding(vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    RadioButton(selected = language == current, onClick = null)
+                    Text(label, style = MaterialTheme.typography.bodyLarge)
+                }
+            }
+        }
+    }
+}
+
+private tailrec fun android.content.Context.findActivity(): android.app.Activity? = when (this) {
+    is android.app.Activity -> this
+    is android.content.ContextWrapper -> baseContext.findActivity()
+    else -> null
 }
 
 @Composable
@@ -371,7 +415,7 @@ private fun SettingsSection(title: String, footer: String? = null, content: @Com
 @Composable
 private fun AccountSection(user: UserEntity?, plantName: String?, onChangePassword: () -> Unit) {
     val app = LocalApp.current
-    SettingsSection("Cuenta") {
+    SettingsSection(stringResource(R.string.settings_account)) {
         if (user != null) {
             Row(
                 Modifier.semantics(mergeDescendants = true) {},
@@ -382,14 +426,14 @@ private fun AccountSection(user: UserEntity?, plantName: String?, onChangePasswo
                     Text(user.fullName, style = MaterialTheme.typography.titleLarge)
                     Text(user.email, style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary)
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Pill(user.roleValue.title, Tokens.colors.brand, Icons.Filled.Badge)
+                        Pill(stringResource(user.roleValue.titleRes), Tokens.colors.brand, Icons.Filled.Badge)
                         if (plantName != null) Pill(plantName, Tokens.colors.info, Icons.Filled.Apartment)
                     }
                 }
             }
             HorizontalDivider(color = Tokens.colors.stroke)
         }
-        ActionRow("Cambiar contraseña", null, Icons.Filled.Key, Tokens.colors.brand, onChangePassword)
+        ActionRow(stringResource(R.string.settings_change_password), null, Icons.Filled.Key, Tokens.colors.brand, onChangePassword)
     }
 }
 
@@ -403,30 +447,32 @@ private fun PreferencesSection(isAdmin: Boolean) {
     LaunchedEffect(company) { if (companyText == null && company != null) companyText = company }
 
     SettingsSection(
-        "Preferencias",
-        "Un envío es urgente si tiene prendas por enviar y la fecha del cliente cae dentro de esta ventana, o ya venció.",
+        stringResource(R.string.settings_preferences),
+        stringResource(R.string.settings_urgency_footer),
     ) {
         if (isAdmin) {
             TramaField(
                 companyText.orEmpty(),
                 { text -> companyText = text; actions.run { app.settings.setCompanyName(text) } },
-                "Nombre de la empresa", leading = Icons.Filled.Apartment,
+                stringResource(R.string.settings_company_name), leading = Icons.Filled.Apartment,
             )
         }
         val days = urgency ?: 7
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             Icon(Icons.Filled.Warning, null, tint = Tokens.colors.brand, modifier = Modifier.size(20.dp))
-            Text("Ventana de urgencia", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.settings_urgency_window), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+            val daysLabel = pluralStringResource(R.plurals.settings_days, days, days)
+            val daysDescription = stringResource(R.string.settings_urgency_window_value, daysLabel)
             Text(
-                "$days ${if (days == 1) "día" else "días"}", color = Tokens.colors.secondary,
-                modifier = Modifier.semantics { contentDescription = "Ventana de urgencia: $days días" },
+                daysLabel, color = Tokens.colors.secondary,
+                modifier = Modifier.semantics { contentDescription = daysDescription },
             )
             Row(Modifier.clip(Tokens.chipShape).background(Tokens.colors.ink.copy(alpha = 0.05f))) {
                 IconButton({ actions.run { app.settings.setUrgencyWindowDays(days - 1) } }, enabled = days > 1) {
-                    Icon(Icons.Filled.Remove, "Reducir ventana", tint = Tokens.colors.brand)
+                    Icon(Icons.Filled.Remove, stringResource(R.string.settings_urgency_decrease), tint = Tokens.colors.brand)
                 }
                 IconButton({ actions.run { app.settings.setUrgencyWindowDays(days + 1) } }, enabled = days < 30) {
-                    Icon(Icons.Filled.Add, "Ampliar ventana", tint = Tokens.colors.brand)
+                    Icon(Icons.Filled.Add, stringResource(R.string.settings_urgency_increase), tint = Tokens.colors.brand)
                 }
             }
         }
@@ -439,25 +485,25 @@ private fun DataSection(isAdmin: Boolean, onExport: () -> Unit, onRestore: () ->
     val demoSeeded by app.settings.demoSeeded.collectAsState(initial = false)
     val c = Tokens.colors
     SettingsSection(
-        "Datos",
-        if (isAdmin) "Los respaldos incluyen las contraseñas cifradas de los usuarios. Guárdalos en un lugar seguro." else null,
+        stringResource(R.string.settings_data),
+        if (isAdmin) stringResource(R.string.settings_data_footer) else null,
     ) {
         if (isAdmin) {
-            ActionRow("Exportar respaldo", "Archivo JSON con todos los datos e imágenes", Icons.Filled.FileUpload, c.brand, onExport)
+            ActionRow(stringResource(R.string.settings_export), stringResource(R.string.settings_export_detail), Icons.Filled.FileUpload, c.brand, onExport)
             HorizontalDivider(color = c.stroke)
-            ActionRow("Restaurar respaldo", "Reemplaza los datos de este dispositivo", Icons.Filled.Restore, c.warning, onRestore)
+            ActionRow(stringResource(R.string.settings_restore), stringResource(R.string.settings_restore_detail), Icons.Filled.Restore, c.warning, onRestore)
             HorizontalDivider(color = c.stroke)
             ActionRow(
-                "Cargar datos de ejemplo",
-                if (demoSeeded) "Ya cargados en este dispositivo" else "Solo si no hay datos operativos",
+                stringResource(R.string.settings_demo),
+                stringResource(if (demoSeeded) R.string.settings_demo_detail_loaded else R.string.settings_demo_detail),
                 Icons.Filled.AutoAwesome, c.thread, onDemo,
             )
             HorizontalDivider(color = c.stroke)
-            ActionRow("Borrar todos los datos", "Regresa Trama a su configuración inicial", Icons.Filled.Delete, c.danger, onErase)
+            ActionRow(stringResource(R.string.settings_erase), stringResource(R.string.settings_erase_detail), Icons.Filled.Delete, c.danger, onErase)
         } else {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 Icon(Icons.Filled.Lock, null, tint = c.secondary, modifier = Modifier.size(18.dp))
-                Text("Solo el administrador puede respaldar, restaurar o borrar los datos.", style = MaterialTheme.typography.bodyMedium, color = c.secondary)
+                Text(stringResource(R.string.settings_data_admin_only), style = MaterialTheme.typography.bodyMedium, color = c.secondary)
             }
         }
     }
@@ -469,25 +515,26 @@ private fun AboutSection() {
     val context = LocalContext.current
     val online = rememberIsOnline()
     val c = Tokens.colors
-    val storage = remember {
-        app.db.openHelper.databaseName?.let { context.getDatabasePath(it).path } ?: "En memoria (demostración)"
+    val inMemory = stringResource(R.string.settings_storage_in_memory)
+    val storage = remember(inMemory) {
+        app.db.openHelper.databaseName?.let { context.getDatabasePath(it).path } ?: inMemory
     }
-    SettingsSection("Acerca de") {
-        InfoLine("Versión", Icons.Filled.Info) { Text(BackupService.appVersion, color = c.secondary) }
-        InfoLine("Conexión", if (online) Icons.Filled.Wifi else Icons.Filled.WifiOff) {
-            Text(if (online) "En línea" else "Sin conexión", color = if (online) c.success else c.warning)
+    SettingsSection(stringResource(R.string.settings_about)) {
+        InfoLine(stringResource(R.string.settings_version), Icons.Filled.Info) { Text(BackupService.appVersion, color = c.secondary) }
+        InfoLine(stringResource(R.string.settings_connection), if (online) Icons.Filled.Wifi else Icons.Filled.WifiOff) {
+            Text(stringResource(if (online) R.string.settings_online else R.string.settings_offline), color = if (online) c.success else c.warning)
         }
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 Icon(Icons.Filled.CloudOff, null, tint = c.brand, modifier = Modifier.size(20.dp))
-                Text("Funciona sin conexión", style = MaterialTheme.typography.titleSmall)
+                Text(stringResource(R.string.settings_works_offline), style = MaterialTheme.typography.titleSmall)
             }
             Text(
-                "Todos los datos viven en este dispositivo. Puedes registrar cortes, asignaciones y reportes sin internet; Trama nunca necesita conexión para operar.",
+                stringResource(R.string.settings_works_offline_detail),
                 style = MaterialTheme.typography.bodySmall, color = c.secondary,
             )
         }
-        InfoLine("Almacenamiento", Icons.Filled.Storage) {
+        InfoLine(stringResource(R.string.settings_storage), Icons.Filled.Storage) {
             Text(
                 storage, style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = c.secondary,
                 maxLines = 2, overflow = TextOverflow.StartEllipsis,
@@ -548,15 +595,15 @@ private fun ChangePasswordDialog(user: UserEntity, onDismiss: () -> Unit) {
             // PBKDF2 with 120k iterations: keep it off the main thread.
             val validCurrent = withContext(Dispatchers.Default) { PasswordHasher.verify(current, user.passwordHash, user.passwordSalt) }
             error = when {
-                !validCurrent -> "La contraseña actual no es correcta."
+                !validCurrent -> L10n.str(R.string.settings_password_wrong_current)
                 new.length < 6 -> AuthError.WeakPassword.message
-                new != confirm -> "Las contraseñas nuevas no coinciden."
-                new == current -> "La nueva contraseña debe ser distinta a la actual."
+                new != confirm -> L10n.str(R.string.settings_password_mismatch)
+                new == current -> L10n.str(R.string.settings_password_same)
                 else -> null
             }
             if (error != null) { busy = false; return@launch }
             val updated = withContext(Dispatchers.Default) { Session.withPassword(user, new) }
-            actions.run(success = "Contraseña actualizada", onDone = onDismiss) {
+            actions.run(success = L10n.str(R.string.settings_password_updated), onDone = onDismiss) {
                 app.db.dao().upsert(updated)
                 app.session.adopt(updated)
             }
@@ -565,12 +612,12 @@ private fun ChangePasswordDialog(user: UserEntity, onDismiss: () -> Unit) {
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Cambiar contraseña") },
+        title = { Text(stringResource(R.string.settings_change_password)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                PasswordField(current, { current = it; error = null }, "Contraseña actual")
-                PasswordField(new, { new = it; error = null }, "Nueva contraseña (mín. 6 caracteres)")
-                PasswordField(confirm, { confirm = it; error = null }, "Confirmar nueva contraseña")
+                PasswordField(current, { current = it; error = null }, stringResource(R.string.settings_password_current))
+                PasswordField(new, { new = it; error = null }, stringResource(R.string.settings_password_new))
+                PasswordField(confirm, { confirm = it; error = null }, stringResource(R.string.settings_password_confirm))
                 error?.let {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         Icon(Icons.Filled.Error, null, tint = Tokens.colors.danger, modifier = Modifier.size(16.dp))
@@ -579,8 +626,8 @@ private fun ChangePasswordDialog(user: UserEntity, onDismiss: () -> Unit) {
                 }
             }
         },
-        confirmButton = { TextButton(::save, enabled = canSave) { Text("Guardar") } },
-        dismissButton = { TextButton(onDismiss) { Text("Cancelar") } },
+        confirmButton = { TextButton(::save, enabled = canSave) { Text(stringResource(R.string.common_save)) } },
+        dismissButton = { TextButton(onDismiss) { Text(stringResource(R.string.common_cancel)) } },
     )
 }
 
@@ -598,21 +645,23 @@ private fun PasswordField(value: String, onChange: (String) -> Unit, label: Stri
 @Composable
 private fun EraseFinalDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
     var text by remember { mutableStateOf("") }
-    val armed = text.trim().uppercase() == "BORRAR"
+    // The confirmation word is localized ("BORRAR", "DELETE", "APAGAR").
+    val word = stringResource(R.string.settings_erase_word)
+    val armed = text.trim().uppercase(Fmt.locale) == word.uppercase(Fmt.locale)
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Confirmación final") },
+        title = { Text(stringResource(R.string.settings_erase_final_title)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("Escribe BORRAR para eliminar todos los datos. Esta acción no se puede deshacer.")
+                Text(stringResource(R.string.settings_erase_final_message, word))
                 OutlinedTextField(
-                    text, { text = it }, Modifier.fillMaxWidth(), placeholder = { Text("BORRAR") }, singleLine = true,
+                    text, { text = it }, Modifier.fillMaxWidth(), placeholder = { Text(word) }, singleLine = true,
                     keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters),
                     shape = RoundedCornerShape(14.dp),
                 )
             }
         },
-        confirmButton = { TextButton(onConfirm, enabled = armed) { Text("Borrar todo", color = if (armed) Tokens.colors.danger else Tokens.colors.secondary) } },
-        dismissButton = { TextButton(onDismiss) { Text("Cancelar") } },
+        confirmButton = { TextButton(onConfirm, enabled = armed) { Text(stringResource(R.string.settings_erase_all), color = if (armed) Tokens.colors.danger else Tokens.colors.secondary) } },
+        dismissButton = { TextButton(onDismiss) { Text(stringResource(R.string.common_cancel)) } },
     )
 }

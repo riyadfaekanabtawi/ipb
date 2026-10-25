@@ -22,28 +22,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import coil3.compose.AsyncImage
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.core.data.ImageEdit
 import com.nevutech.trama.core.data.newId
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.Swatch
 import com.nevutech.trama.designsystem.ToastCenter
 import com.nevutech.trama.designsystem.Tokens
+import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 
 /** True when the slot will show a picture after saving. */
 fun ImageEdit.hasImage(currentFile: File?) = when (this) {
@@ -78,7 +81,7 @@ fun PhotoField(title: String, currentFile: File?, edit: ImageEdit, onChange: (Im
     fun load(read: suspend () -> ByteArray?) = scope.launch {
         val bytes = withContext(Dispatchers.IO) { runCatching { read() }.getOrNull() }
         if (bytes != null && bytes.isNotEmpty()) onChange(ImageEdit.Replace(bytes))
-        else toasts.show("No se pudo leer la imagen.", ToastCenter.Style.Error)
+        else toasts.show(L10n.str(R.string.photo_read_failed), ToastCenter.Style.Error)
     }
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
@@ -96,22 +99,22 @@ fun PhotoField(title: String, currentFile: File?, edit: ImageEdit, onChange: (Im
             val has = edit.hasImage(currentFile)
             TextButton({ picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }) {
                 Icon(Icons.Filled.PhotoLibrary, null, Modifier.size(18.dp))
-                Text(if (has) "  Cambiar foto" else "  Elegir de fotos")
+                Text("  " + stringResource(if (has) R.string.photo_change else R.string.photo_pick))
             }
             if (hasCamera) {
                 TextButton({
                     runCatching { captureTarget(context) }
                         .onSuccess { (file, uri) -> pendingCapture = file.absolutePath; camera.launch(uri) }
-                        .onFailure { toasts.show("No se pudo abrir la cámara.", ToastCenter.Style.Error) }
+                        .onFailure { toasts.show(L10n.str(R.string.photo_camera_failed), ToastCenter.Style.Error) }
                 }) {
                     Icon(Icons.Filled.PhotoCamera, null, Modifier.size(18.dp))
-                    Text("  Tomar foto")
+                    Text("  " + stringResource(R.string.photo_take))
                 }
             }
             if (has) {
                 TextButton({ onChange(ImageEdit.Remove) }) {
                     Icon(Icons.Filled.Delete, null, Modifier.size(18.dp), tint = Tokens.colors.danger)
-                    Text("  Quitar", color = Tokens.colors.danger)
+                    Text("  " + stringResource(R.string.photo_remove), color = Tokens.colors.danger)
                 }
             }
         }

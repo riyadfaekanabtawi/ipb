@@ -85,8 +85,10 @@ contract in `platform/src/sync.ts` and `platform/src/routes/auth.ts`. Tests: `io
     no network). "Conectar con mi licencia" (login, onboarding, Ajustes) links the device to a company:
     `POST /api/auth/login {email, password, device: {id, platform, name}}`. The device id is a UUID
     generated once and kept in the Keychain; the refresh token is Keychain-only (never preferences);
-    the access token lives in memory. Server errors are shown with the server's Spanish message
+    the access token lives in memory. Server errors are shown with the server's message as is
     (`bad_credentials`, `plan_web_only`, `device_limit`, `licence_suspended`, `user_inactive`, …).
+    Clients send `Accept-Language` with the app's language (`es-MX`, `en`, `pt-BR`; Android today)
+    so the server can localize it; Spanish is the default when the header is missing or unsupported.
 14. **Offline login.** The login response and pulled users carry `passwordHash`/`passwordSalt`
     (same PBKDF2 scheme as rule 10), so a synced user signs in with no internet. The login screen
     checks local credentials first; when linked, it re-binds the device session to that user in the

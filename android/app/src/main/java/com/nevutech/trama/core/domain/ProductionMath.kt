@@ -1,5 +1,8 @@
 package com.nevutech.trama.core.domain
 
+import com.nevutech.trama.R
+import com.nevutech.trama.core.l10n.L10n
+
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.temporal.ChronoUnit
@@ -110,13 +113,20 @@ data class CapacityLedger(val maxCapacity: Double, val bookings: List<Booking>) 
     }
 }
 
-sealed class AssignmentError(message: String) : Exception(message) {
-    data object MissingDate : AssignmentError("Elige una fecha en el calendario.")
-    data object InvalidQuantity : AssignmentError("Ingresa una cantidad mayor a cero.")
-    data class ExceedsRemaining(val remaining: Int) :
-        AssignmentError("La cantidad no puede ser mayor a lo que falta por asignar (${Fmt.int(remaining)}).")
-    data class ExceedsCapacity(val available: Double) :
-        AssignmentError("La planta ha llegado a su capacidad máxima para ese mes. Disponible: ${Fmt.money(available)}.")
+/** Messages resolve lazily in the current language, so pure JVM tests never touch resources. */
+sealed class AssignmentError : Exception() {
+    data object MissingDate : AssignmentError() {
+        override val message: String get() = L10n.str(R.string.assign_error_missing_date)
+    }
+    data object InvalidQuantity : AssignmentError() {
+        override val message: String get() = L10n.str(R.string.assign_error_invalid_quantity)
+    }
+    data class ExceedsRemaining(val remaining: Int) : AssignmentError() {
+        override val message: String get() = L10n.str(R.string.assign_error_exceeds_remaining, Fmt.int(remaining))
+    }
+    data class ExceedsCapacity(val available: Double) : AssignmentError() {
+        override val message: String get() = L10n.str(R.string.assign_error_exceeds_capacity, Fmt.money(available))
+    }
 }
 
 object AssignmentRules {

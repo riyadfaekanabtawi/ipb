@@ -51,6 +51,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -60,6 +61,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.nevutech.trama.R
 import com.nevutech.trama.core.domain.Fmt
 import java.io.File
 
@@ -169,8 +171,9 @@ fun CapacityBar(used: Double, max: Double, modifier: Modifier = Modifier, previe
     val track = Tokens.colors.ink.copy(alpha = 0.08f)
     val main = capacityTint(ratio)
     val ghost = capacityTint(previewRatio).copy(alpha = 0.35f)
+    val usedLabel = stringResource(R.string.ui_capacity_used, Fmt.percent(ratio.toDouble()))
     Canvas(
-        modifier.fillMaxWidth().height(height).semantics { contentDescription = "Capacidad usada ${Fmt.percent(ratio.toDouble())}" },
+        modifier.fillMaxWidth().height(height).semantics { contentDescription = usedLabel },
     ) {
         val r = size.height / 2
         drawRoundRect(track, cornerRadius = androidx.compose.ui.geometry.CornerRadius(r))
@@ -279,11 +282,22 @@ fun IntField(value: Int, onValueChange: (Int) -> Unit, label: String, modifier: 
 
 @Composable
 fun DecimalField(value: Double, onValueChange: (Double) -> Unit, label: String, modifier: Modifier = Modifier) {
-    var text by remember { mutableStateOf(if (value == 0.0) "" else Fmt.number(value, 2).replace(",", "")) }
+    // The buffer uses the locale's decimal separator ("12.5" / "12,5") and no grouping.
+    val separator = remember(Fmt.locale) { java.text.DecimalFormatSymbols.getInstance(Fmt.locale).decimalSeparator }
+    var text by remember {
+        mutableStateOf(
+            if (value == 0.0) ""
+            else java.math.BigDecimal.valueOf(value).setScale(2, java.math.RoundingMode.HALF_UP).stripTrailingZeros().toPlainString().replace('.', separator),
+        )
+    }
     TramaField(text, { raw ->
-        val cleaned = raw.filter { it.isDigit() || it == '.' }.let { s -> val i = s.indexOf('.'); if (i >= 0) s.substring(0, i + 1) + s.substring(i + 1).replace(".", "") else s }
+        val normalized = raw.map { if (it == '.' || it == ',') separator else it }.joinToString("")
+        val cleaned = normalized.filter { it.isDigit() || it == separator }.let { s ->
+            val i = s.indexOf(separator)
+            if (i >= 0) s.substring(0, i + 1) + s.substring(i + 1).replace(separator.toString(), "") else s
+        }
         text = cleaned
-        onValueChange(cleaned.toDoubleOrNull() ?: 0.0)
+        onValueChange(cleaned.replace(separator, '.').toDoubleOrNull() ?: 0.0)
     }, label, modifier, keyboard = KeyboardType.Decimal)
 }
 
