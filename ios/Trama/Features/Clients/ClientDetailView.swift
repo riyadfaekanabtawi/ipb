@@ -16,7 +16,7 @@ struct ClientDetailView: View {
         let projects = client.sortedProjects
 
         VStack(alignment: .leading, spacing: 28) {
-            DetailHero(client.displayName, subtitle: client.address ?? "Sin dirección") {
+            DetailHero(client.displayName, subtitle: client.address ?? String(localized: "Sin dirección")) {
                 AvatarView(name: client.displayName, size: 72)
             } trailing: {
                 HStack(spacing: 10) {
@@ -29,7 +29,7 @@ struct ClientDetailView: View {
             ContactsSection(contacts: client.contactList) { editor = .edit(client, addingContact: true) }
 
             VStack(alignment: .leading, spacing: 14) {
-                SectionHeader("Cortes", subtitle: orders.isEmpty ? "Sin cortes" : "\(Fmt.int(orders.count)) cortes")
+                SectionHeader("Cortes", subtitle: orders.isEmpty ? "Sin cortes" : "\(orders.count) cortes")
                 if orders.isEmpty {
                     Text("Este cliente aún no tiene cortes.")
                         .foregroundStyle(.secondary)
@@ -109,7 +109,7 @@ private struct ClientOrderRow: View {
                 .frame(width: 44, height: 44)
             VStack(alignment: .leading, spacing: 3) {
                 Text(order.displayCode).font(.headline)
-                Text([order.list.map { "Lista \($0)" }, order.garment].compactMap { $0 }.joined(separator: " · "))
+                Text([order.list.map { String(localized: "Lista \($0)") }, order.garment].compactMap { $0 }.joined(separator: " · "))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
@@ -126,7 +126,7 @@ private struct ClientOrderRow: View {
         }
     }
 
-    private func figure(_ value: String, _ label: String) -> some View {
+    private func figure(_ value: String, _ label: LocalizedStringKey) -> some View {
         VStack(alignment: .trailing, spacing: 0) {
             Text(value).font(.subheadline.weight(.semibold)).monospacedDigit()
             Text(label).font(.caption2).foregroundStyle(.secondary)
@@ -143,7 +143,7 @@ private struct ClientProjectTile: View {
                 .frame(width: 56, height: 56)
             VStack(alignment: .leading, spacing: 4) {
                 Text(Fmt.money(project.total)).font(.headline).monospacedDigit()
-                Text("\(Fmt.int(Int(project.quantity))) prendas · \(project.fabric ?? "Sin tela")")
+                Text("\(Int(project.quantity)) prendas · \(project.fabric ?? String(localized: "Sin tela"))")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)

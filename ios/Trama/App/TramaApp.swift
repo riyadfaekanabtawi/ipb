@@ -16,7 +16,7 @@ struct TramaApp: App {
         if isUITest {
             DemoSeeder.seed(into: persistence.viewContext)
             UserDefaults.standard.set(true, forKey: "demo.seeded")
-            UserDefaults.standard.set("Textiles Demo", forKey: Brand.companyKey)
+            UserDefaults.standard.set(DemoSeeder.companyName(), forKey: Brand.companyKey)
         }
         self.persistence = persistence
         let session = Session(context: persistence.viewContext)

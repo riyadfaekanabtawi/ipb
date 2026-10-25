@@ -25,7 +25,7 @@ struct ReportEditorSheet: View {
 
     var body: some View {
         FormSheet(
-            title: (report == nil ? "" : "Editar ") + kind.title.lowercased().capitalizedFirst,
+            title: title,
             saveTitle: report == nil ? "Cargar" : "Guardar", canSave: canSave, onSave: save
         ) {
             Section {
@@ -38,7 +38,7 @@ struct ReportEditorSheet: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Corte \(assignment.title)").font(.headline)
                         Text(
-                            "\(assignment.plantName) · \(Fmt.int(Int(assignment.quantity))) prendas · \(Date.now.formatted(.dateTime.day().month().hour().minute()))"
+                            "\(assignment.plantName) · \(Int(assignment.quantity)) prendas · \(Date.now.formatted(.dateTime.day().month().hour().minute()))"
                         )
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
@@ -87,7 +87,7 @@ struct ReportEditorSheet: View {
             IntField(title: "Cantidad real cortada", value: $realQuantity)
         } footer: {
             Text(
-                "Solo hay un reporte de corte por asignación. Si la cantidad real difiere de las \(Fmt.int(Int(assignment.quantity))) planeadas, los envíos se miden contra la real."
+                "Solo hay un reporte de corte por asignación. Si la cantidad real difiere de las \(Int(assignment.quantity)) planeadas, los envíos se miden contra la real."
             )
         }
     }
@@ -107,6 +107,27 @@ struct ReportEditorSheet: View {
     }
 
     // MARK: Logic
+
+    private var title: LocalizedStringKey {
+        switch (kind, report == nil) {
+        case (.plant, true): "Reporte de planta"
+        case (.plant, false): "Editar reporte de planta"
+        case (.cut, true): "Reporte de corte"
+        case (.cut, false): "Editar reporte de corte"
+        case (.shipment, true): "Reporte de envío"
+        case (.shipment, false): "Editar reporte de envío"
+        }
+    }
+
+    private func showSavedToast() {
+        guard report == nil else { return toasts.show("Reporte actualizado") }
+        let code = assignment.title
+        switch kind {
+        case .plant: toasts.show("Cargaste el reporte de planta de \(code)")
+        case .cut: toasts.show("Cargaste el reporte de corte de \(code)")
+        case .shipment: toasts.show("Cargaste el reporte de envío de \(code)")
+        }
+    }
 
     private var canSave: Bool {
         switch kind {
@@ -150,7 +171,7 @@ struct ReportEditorSheet: View {
             case .shipment:
                 try service.addShipmentReport(number: shipmentNumber, quantity: shippedQuantity, to: assignment, editing: report)
             }
-            toasts.show(report == nil ? "Cargaste el \(kind.title.lowercased()) de \(assignment.title)" : "Reporte actualizado")
+            showSavedToast()
             dismiss()
         } catch {
             toasts.error(error)

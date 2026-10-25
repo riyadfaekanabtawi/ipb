@@ -12,8 +12,8 @@ enum APIError: LocalizedError, Equatable {
         switch self {
         case .server(_, _, let message): message
         case .sessionExpired(let message): message
-        case .offline: "No hay conexión con el servidor de Trama. Revisa tu internet e intenta de nuevo."
-        case .invalidResponse: "El servidor respondió algo inesperado. Intenta más tarde."
+        case .offline: String(localized: "No hay conexión con el servidor de Trama. Revisa tu internet e intenta de nuevo.")
+        case .invalidResponse: String(localized: "El servidor respondió algo inesperado. Intenta más tarde.")
         }
     }
 
@@ -76,7 +76,7 @@ final class APIClient {
         let task = Task { @MainActor in
             defer { self.refreshing = nil }
             guard let token = secrets.string(for: Self.refreshTokenKey) else {
-                throw APIError.sessionExpired("Vuelve a conectar tu licencia para sincronizar.")
+                throw APIError.sessionExpired(String(localized: "Vuelve a conectar tu licencia para sincronizar."))
             }
             struct Body: Encodable { var refreshToken: String }
             do {
@@ -158,7 +158,9 @@ final class APIClient {
         if let detail = try? JSONDecoder().decode(ErrorBody.self, from: data).error {
             throw APIError.server(status: http.statusCode, code: detail.code, message: detail.message)
         }
-        throw APIError.server(status: http.statusCode, code: "http_\(http.statusCode)", message: "El servidor no está disponible (\(http.statusCode)). Intenta más tarde.")
+        throw APIError.server(
+            status: http.statusCode, code: "http_\(http.statusCode)",
+            message: String(localized: "El servidor no está disponible (\(http.statusCode)). Intenta más tarde."))
     }
 
     private func encode<T: Encodable>(_ value: T) throws -> Data { try BackupService.encoder.encode(value) }

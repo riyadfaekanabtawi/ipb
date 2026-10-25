@@ -92,11 +92,11 @@ struct DashboardView: View {
         LazyVGrid(columns: AdaptiveGrid.adaptive(min: 180, spacing: 16), spacing: 16) {
             KPITile(
                 title: "Ingresos en producción", value: Fmt.money(s.revenue, compact: true), symbol: "banknote.fill",
-                tint: Theme.brand, footnote: "\(Fmt.int(s.assignmentCount)) asignaciones"
+                tint: Theme.brand, footnote: "\(s.assignmentCount) asignaciones"
             ) { router.open(.production) }
             KPITile(
                 title: "Prendas por asignar", value: Fmt.int(s.unassignedGarments), symbol: "scissors",
-                tint: Theme.thread, footnote: "\(Fmt.int(s.pendingOrders.count)) cortes pendientes"
+                tint: Theme.thread, footnote: "\(s.pendingOrders.count) cortes pendientes"
             ) { router.open(.orders) }
             KPITile(
                 title: "En producción", value: Fmt.int(s.inProduction), symbol: "gearshape.2.fill",
@@ -260,20 +260,25 @@ private struct DashboardHero: View {
 
     private var greeting: String {
         let hour = Calendar.current.component(.hour, from: .now)
-        let salute =
+        // Whole sentences per time of day so each language can place the name naturally.
+        if let name, !name.isEmpty {
             switch hour {
-            case 5..<12: "Buenos días"
-            case 12..<19: "Buenas tardes"
-            default: "Buenas noches"
+            case 5..<12: return String(localized: "Buenos días, \(name)")
+            case 12..<19: return String(localized: "Buenas tardes, \(name)")
+            default: return String(localized: "Buenas noches, \(name)")
             }
-        guard let name, !name.isEmpty else { return salute }
-        return "\(salute), \(name)"
+        }
+        switch hour {
+        case 5..<12: return String(localized: "Buenos días")
+        case 12..<19: return String(localized: "Buenas tardes")
+        default: return String(localized: "Buenas noches")
+        }
     }
 
     private var summary: String {
         var parts: [String] = []
-        parts.append(urgentCount == 0 ? "Sin envíos urgentes" : "\(urgentCount) \(urgentCount == 1 ? "envío urgente" : "envíos urgentes")")
-        parts.append(unassigned == 0 ? "todo asignado" : "\(Fmt.int(unassigned)) prendas por asignar")
+        parts.append(urgentCount == 0 ? String(localized: "Sin envíos urgentes") : String(localized: "\(urgentCount) envíos urgentes"))
+        parts.append(unassigned == 0 ? String(localized: "todo asignado") : String(localized: "\(unassigned) prendas por asignar"))
         return parts.joined(separator: " · ")
     }
 
@@ -379,7 +384,7 @@ private struct CapacityChartCard: View {
                 .animation(.spring(duration: 0.5), value: month)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(
-                    points.map { "\($0.plant): \(Fmt.percent($0.ratio)) usado" }.joined(separator: ", "))
+                    points.map { String(localized: "\($0.plant): \(Fmt.percent($0.ratio)) usado") }.joined(separator: ", "))
             }
         }
     }
@@ -526,7 +531,7 @@ private struct UrgentRow: View {
                 .frame(width: 40, height: 40)
                 .background(tint.opacity(0.14), in: .rect(cornerRadius: 12, style: .continuous))
             VStack(alignment: .leading, spacing: 3) {
-                Text("\(row.assignment.title) · \(row.assignment.order?.clientName ?? "Sin cliente")")
+                Text("\(row.assignment.title) · \(row.assignment.order?.clientName ?? String(localized: "Sin cliente"))")
                     .font(.subheadline.weight(.semibold)).lineLimit(1)
                 Text("\(row.assignment.plantName) · \(Fmt.int(row.toShip)) por enviar")
                     .font(.caption).foregroundStyle(.secondary).lineLimit(1)
@@ -567,7 +572,7 @@ private struct PendingOrderRow: View {
         .padding(.vertical, 10)
         .contentShape(.rect)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Corte \(order.displayCode), \(order.clientName), \(Fmt.int(remaining)) prendas por asignar")
+        .accessibilityLabel("Corte \(order.displayCode), \(order.clientName), \(remaining) prendas por asignar")
     }
 }
 
@@ -612,12 +617,12 @@ private struct ReportFeedRow: View {
             VStack(alignment: .leading, spacing: 3) {
                 HStack(spacing: 6) {
                     Text(kind.shortTitle).font(.caption.weight(.bold)).foregroundStyle(kind.tint)
-                    Text("\(report.assignment?.title ?? "Corte") · \(report.assignment?.plantName ?? "")")
+                    Text("\(report.assignment?.title ?? String(localized: "Corte")) · \(report.assignment?.plantName ?? "")")
                         .font(.caption.weight(.semibold)).lineLimit(1)
                 }
                 Text(report.summary).font(.subheadline).lineLimit(1)
                 Text(
-                    "\(report.authorName ?? "Sin autor") · \((report.createdAt ?? .now).formatted(.relative(presentation: .named).locale(.esMX)))"
+                    "\(report.authorName ?? String(localized: "Sin autor")) · \((report.createdAt ?? .now).formatted(.relative(presentation: .named)))"
                 )
                 .font(.caption).foregroundStyle(.secondary).lineLimit(1)
             }

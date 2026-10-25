@@ -14,9 +14,9 @@ struct ProductionService {
 
         var errorDescription: String? {
             switch self {
-            case .cutReportExists: "Este corte ya tiene un reporte de corte. Edítalo en lugar de crear otro."
-            case .notAllowed: "Tu puesto no permite esta acción."
-            case .inUse(let what): "No se puede eliminar: \(what)."
+            case .cutReportExists: String(localized: "Este corte ya tiene un reporte de corte. Edítalo en lugar de crear otro.")
+            case .notAllowed: String(localized: "Tu puesto no permite esta acción.")
+            case .inUse(let what): String(localized: "No se puede eliminar: \(what).")
             }
         }
     }
@@ -93,7 +93,7 @@ struct ProductionService {
 
     func unassign(_ assignment: Assignment) throws {
         if !(assignment.reports as? Set<ProductionReport> ?? []).isEmpty {
-            throw ServiceError.inUse("el corte ya tiene reportes")
+            throw ServiceError.inUse(String(localized: "el corte ya tiene reportes"))
         }
         context.delete(assignment)
         try context.saveTracked()
@@ -174,20 +174,22 @@ struct ProductionService {
     // MARK: Guarded deletes
 
     func delete(_ plant: Plant) throws {
-        if !(plant.assignments as? Set<Assignment> ?? []).isEmpty { throw ServiceError.inUse("la planta tiene cortes asignados") }
+        if !(plant.assignments as? Set<Assignment> ?? []).isEmpty {
+            throw ServiceError.inUse(String(localized: "la planta tiene cortes asignados"))
+        }
         context.delete(plant)
         try context.saveTracked()
     }
 
     func delete(_ client: Client) throws {
-        if !(client.orders as? Set<CutOrder> ?? []).isEmpty { throw ServiceError.inUse("el cliente tiene cortes") }
+        if !(client.orders as? Set<CutOrder> ?? []).isEmpty { throw ServiceError.inUse(String(localized: "el cliente tiene cortes")) }
         context.delete(client)
         try context.saveTracked()
     }
 
     func delete(_ order: CutOrder) throws {
         if order.assignmentList.contains(where: { !($0.reports as? Set<ProductionReport> ?? []).isEmpty }) {
-            throw ServiceError.inUse("el corte ya tiene reportes de producción")
+            throw ServiceError.inUse(String(localized: "el corte ya tiene reportes de producción"))
         }
         context.delete(order)
         try context.saveTracked()

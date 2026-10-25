@@ -58,7 +58,7 @@ struct UrgentShipmentsView: View {
         .sheet(item: $shipping) { ReportEditorSheet(assignment: $0, kind: .shipment, report: nil) }
     }
 
-    private func group(_ title: String, tint: Color, items: [Assignment]) -> some View {
+    private func group(_ title: LocalizedStringKey, tint: Color, items: [Assignment]) -> some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(spacing: 8) {
                 Circle().fill(tint).frame(width: 10, height: 10)
@@ -110,9 +110,9 @@ private struct ShipmentCard: View {
                 }
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
-                        Text("\(Fmt.int(metrics.shipped)) de \(Fmt.int(metrics.shippingBase)) enviadas")
+                        Text("\(metrics.shipped) de \(metrics.shippingBase) enviadas")
                         Spacer()
-                        Text("\(Fmt.int(metrics.toShip)) por enviar").fontWeight(.semibold)
+                        Text("\(metrics.toShip) por enviar").fontWeight(.semibold)
                     }
                     .font(.caption)
                     ProgressView(value: metrics.shippingProgress).tint(Theme.brand)

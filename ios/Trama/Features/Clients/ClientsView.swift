@@ -53,7 +53,7 @@ struct ClientsView: View {
             PartyEditorSheet(client: target.object, startWithNewContact: target.addingContact)
         }
         .confirmDelete(
-            "¿Eliminar \(pendingDelete?.displayName ?? "cliente")?", item: $pendingDelete,
+            "¿Eliminar \(pendingDelete?.displayName ?? String(localized: "cliente"))?", item: $pendingDelete,
             message: "Solo se pueden eliminar clientes sin cortes. Sus proyectos conservarán el nombre."
         ) { client in
             delete(client)

@@ -13,9 +13,9 @@ enum BackupService {
 
         var errorDescription: String? {
             switch self {
-            case .invalidFile: "El archivo no es un respaldo válido de Trama."
+            case .invalidFile: String(localized: "El archivo no es un respaldo válido de Trama.")
             case .unsupportedVersion(let v):
-                "Este respaldo es de una versión más nueva de Trama (formato \(v)). Actualiza la app para restaurarlo."
+                String(localized: "Este respaldo es de una versión más nueva de Trama (formato \(v)). Actualiza la app para restaurarlo.")
             }
         }
     }
@@ -65,11 +65,11 @@ enum BackupService {
         return Summary(
             exportedAt: file.exportedAt, appVersion: file.appVersion,
             counts: [
-                ("Plantas", file.plants?.count ?? 0), ("Clientes", file.clients?.count ?? 0),
-                ("Proveedores", file.suppliers?.count ?? 0), ("Estilos", file.styles?.count ?? 0),
-                ("Cortes", file.orders?.count ?? 0), ("Asignaciones", file.assignments?.count ?? 0),
-                ("Reportes", file.reports?.count ?? 0), ("Proyectos", file.projects?.count ?? 0),
-                ("Usuarios", file.users?.count ?? 0),
+                (String(localized: "Plantas"), file.plants?.count ?? 0), (String(localized: "Clientes"), file.clients?.count ?? 0),
+                (String(localized: "Proveedores"), file.suppliers?.count ?? 0), (String(localized: "Estilos"), file.styles?.count ?? 0),
+                (String(localized: "Cortes"), file.orders?.count ?? 0), (String(localized: "Asignaciones"), file.assignments?.count ?? 0),
+                (String(localized: "Reportes"), file.reports?.count ?? 0), (String(localized: "Proyectos"), file.projects?.count ?? 0),
+                (String(localized: "Usuarios"), file.users?.count ?? 0),
             ])
     }
 

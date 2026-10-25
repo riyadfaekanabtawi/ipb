@@ -44,12 +44,12 @@ enum AuthError: LocalizedError, Equatable {
 
     var errorDescription: String? {
         switch self {
-        case .emptyFields: "Completa todos los campos para ingresar."
-        case .unknownEmail: "Parece que no tienes acceso a Trama. Comunícate con el administrador."
-        case .wrongPassword: "Tu correo no coincide con tu contraseña. Intenta nuevamente."
-        case .inactive: "Tu usuario está desactivado. Comunícate con el administrador."
-        case .emailTaken: "Ya existe un usuario con ese correo."
-        case .weakPassword: "La contraseña debe tener al menos 6 caracteres."
+        case .emptyFields: String(localized: "Completa todos los campos para ingresar.")
+        case .unknownEmail: String(localized: "Parece que no tienes acceso a Trama. Comunícate con el administrador.")
+        case .wrongPassword: String(localized: "Tu correo no coincide con tu contraseña. Intenta nuevamente.")
+        case .inactive: String(localized: "Tu usuario está desactivado. Comunícate con el administrador.")
+        case .emailTaken: String(localized: "Ya existe un usuario con ese correo.")
+        case .weakPassword: String(localized: "La contraseña debe tener al menos 6 caracteres.")
         }
     }
 }

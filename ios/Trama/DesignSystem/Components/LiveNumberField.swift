@@ -4,10 +4,10 @@ import SwiftUI
 /// `TextField(value:format:)` only commits on return/focus loss, which made the legacy
 /// calculator feel broken; this parses the raw text instead. Empty input maps to 0.
 struct LiveNumberField: View {
-    var title: String
+    var title: LocalizedStringKey
     var symbol: String?
     @Binding var value: Double
-    var unit: String?
+    var unit: LocalizedStringKey?
     var prompt: String = "0"
 
     @State private var text = ""
@@ -45,7 +45,7 @@ struct LiveNumberField: View {
             if !isFocused { text = Self.display(value) }
         }
         .accessibilityLabel(title)
-        .accessibilityValue(text.isEmpty ? "vacío" : text)
+        .accessibilityValue(text.isEmpty ? String(localized: "vacío") : text)
     }
 
     /// Accepts "1,234.5", "1234,5" (single comma as decimal), "$ 12" and whitespace.

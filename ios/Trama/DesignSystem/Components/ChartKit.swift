@@ -3,7 +3,7 @@ import SwiftUI
 // Shared building blocks for chart cards (dashboard, reports, plants).
 
 extension Locale {
-    /// UI copy is Spanish (Mexico) regardless of the device language, so dates in headings match it.
+    /// Spanish (Mexico), the source language. Headings use the app locale (`MonthLabel`).
     static let esMX = Locale(identifier: "es_MX")
 }
 
@@ -15,30 +15,30 @@ extension Calendar {
 
 enum MonthLabel {
     /// "Octubre 2026"
-    static func long(_ date: Date) -> String {
-        date.formatted(.dateTime.month(.wide).year().locale(.esMX)).replacingOccurrences(of: " de ", with: " ").capitalizedFirst
+    static func long(_ date: Date, locale: Locale = .autoupdatingCurrent) -> String {
+        date.formatted(.dateTime.month(.wide).year().locale(locale)).replacingOccurrences(of: " de ", with: " ").capitalizedFirst
     }
 
     /// "oct"
-    static func short(_ date: Date) -> String {
-        date.formatted(.dateTime.month(.abbreviated).locale(.esMX)).replacingOccurrences(of: ".", with: "")
+    static func short(_ date: Date, locale: Locale = .autoupdatingCurrent) -> String {
+        date.formatted(.dateTime.month(.abbreviated).locale(locale)).replacingOccurrences(of: ".", with: "")
     }
 
     /// "Sábado, 24 de octubre de 2026"
-    static func fullDay(_ date: Date) -> String {
-        date.formatted(.dateTime.weekday(.wide).day().month(.wide).year().locale(.esMX)).capitalizedFirst
+    static func fullDay(_ date: Date, locale: Locale = .autoupdatingCurrent) -> String {
+        date.formatted(.dateTime.weekday(.wide).day().month(.wide).year().locale(locale)).capitalizedFirst
     }
 }
 
 /// Card with a section header and arbitrary chart content.
 struct ChartCard<Content: View, Trailing: View>: View {
-    var title: String
-    var subtitle: String?
+    var title: LocalizedStringKey
+    var subtitle: LocalizedStringKey?
     @ViewBuilder var trailing: Trailing
     @ViewBuilder var content: Content
 
     init(
-        _ title: String, subtitle: String? = nil, @ViewBuilder trailing: () -> Trailing = { EmptyView() },
+        _ title: LocalizedStringKey, subtitle: LocalizedStringKey? = nil, @ViewBuilder trailing: () -> Trailing = { EmptyView() },
         @ViewBuilder content: () -> Content
     ) {
         self.title = title
@@ -79,7 +79,7 @@ struct MonthStepper: View {
         .background(Color.primary.opacity(0.05), in: .capsule)
     }
 
-    private func stepButton(_ delta: Int, symbol: String, label: String) -> some View {
+    private func stepButton(_ delta: Int, symbol: String, label: LocalizedStringKey) -> some View {
         Button {
             if let next = calendar.date(byAdding: .month, value: delta, to: month) { set(next) }
         } label: {
@@ -102,13 +102,29 @@ struct MonthStepper: View {
 /// Colored dot + title + value, for chart legends.
 struct LegendRow: View {
     var color: Color
-    var title: String
+    var title: Text
     var value: String
+
+    init(color: Color, title: LocalizedStringKey, value: String) {
+        self.init(color: color, title: Text(title), value: value)
+    }
+
+    /// Already-localized or user-provided title, shown as-is.
+    @_disfavoredOverload
+    init(color: Color, title: String, value: String) {
+        self.init(color: color, title: Text(verbatim: title), value: value)
+    }
+
+    init(color: Color, title: Text, value: String) {
+        self.color = color
+        self.title = title
+        self.value = value
+    }
 
     var body: some View {
         HStack(spacing: 10) {
             Circle().fill(color.gradient).frame(width: 10, height: 10)
-            Text(title).font(.subheadline).foregroundStyle(.secondary)
+            title.font(.subheadline).foregroundStyle(.secondary)
             Spacer(minLength: 8)
             Text(value).font(.subheadline.weight(.semibold)).monospacedDigit().contentTransition(.numericText())
         }
@@ -118,9 +134,9 @@ struct LegendRow: View {
 
 /// Compact empty state for cards (ContentUnavailableView is too tall inside a card).
 struct CardEmptyState: View {
-    var title: String
+    var title: LocalizedStringKey
     var symbol: String
-    var message: String?
+    var message: LocalizedStringKey?
 
     var body: some View {
         VStack(spacing: 8) {

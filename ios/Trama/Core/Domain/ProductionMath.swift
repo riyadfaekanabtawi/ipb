@@ -143,12 +143,12 @@ enum AssignmentError: LocalizedError, Equatable {
 
     var errorDescription: String? {
         switch self {
-        case .missingDate: "Elige una fecha en el calendario."
-        case .invalidQuantity: "Ingresa una cantidad mayor a cero."
+        case .missingDate: String(localized: "Elige una fecha en el calendario.")
+        case .invalidQuantity: String(localized: "Ingresa una cantidad mayor a cero.")
         case .exceedsRemaining(let remaining):
-            "La cantidad no puede ser mayor a lo que falta por asignar (\(remaining.formatted()))."
+            String(localized: "La cantidad no puede ser mayor a lo que falta por asignar (\(remaining)).")
         case .exceedsCapacity(let available):
-            "La planta ha llegado a su capacidad máxima para ese mes. Disponible: \(available.formatted(.currency(code: "MXN")))."
+            String(localized: "La planta ha llegado a su capacidad máxima para ese mes. Disponible: \(Fmt.money(available)).")
         }
     }
 }

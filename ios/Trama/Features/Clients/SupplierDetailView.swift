@@ -14,7 +14,7 @@ struct SupplierDetailView: View {
         let contacts = supplier.contactList
 
         VStack(alignment: .leading, spacing: 28) {
-            DetailHero(supplier.displayName, subtitle: supplier.address ?? "Sin dirección") {
+            DetailHero(supplier.displayName, subtitle: supplier.address ?? String(localized: "Sin dirección")) {
                 AvatarView(name: supplier.displayName, size: 72, symbol: "truck.box.fill")
             } trailing: {
                 HStack(spacing: 10) {

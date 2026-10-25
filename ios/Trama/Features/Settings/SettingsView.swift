@@ -35,6 +35,9 @@ struct SettingsView: View {
 
     private var isAdmin: Bool { session.role == .admin }
 
+    /// Word typed to confirm erasing everything (localized, e.g. "DELETE" in English).
+    private static var eraseWord: String { String(localized: "BORRAR", comment: "Word the user types to confirm erasing all data") }
+
     var body: some View {
         Form {
             accountSection
@@ -88,7 +91,9 @@ struct SettingsView: View {
         .confirmationDialog("¿Subir todos los datos de este iPad?", isPresented: $confirmUpload, titleVisibility: .visible) {
             Button("Subir datos") { uploadAll() }
         } message: {
-            Text("Envía a tu empresa todos los registros de este iPad (por ejemplo, después de importar del sistema anterior). Si un registro cambió en otro dispositivo después, se conserva la versión más reciente.")
+            Text(
+                "Envía a tu empresa todos los registros de este iPad (por ejemplo, después de importar del sistema anterior). Si un registro cambió en otro dispositivo después, se conserva la versión más reciente."
+            )
         }
         .fileExporter(
             isPresented: $showExporter, document: exportDocument, contentType: .json,
@@ -123,13 +128,13 @@ struct SettingsView: View {
             Text("Se eliminarán plantas, cortes, reportes, catálogos y usuarios de este iPad. Exporta un respaldo antes si lo necesitas.")
         }
         .alert("Confirmación final", isPresented: $confirmEraseFinal) {
-            TextField("BORRAR", text: $eraseConfirmation)
+            TextField(Self.eraseWord, text: $eraseConfirmation)
                 .textInputAutocapitalization(.characters)
             Button("Borrar todo", role: .destructive, action: eraseAll)
-                .disabled(eraseConfirmation.trimmingCharacters(in: .whitespaces).uppercased() != "BORRAR")
+                .disabled(eraseConfirmation.trimmingCharacters(in: .whitespaces).uppercased() != Self.eraseWord.uppercased())
             Button("Cancelar", role: .cancel) {}
         } message: {
-            Text("Escribe BORRAR para eliminar todos los datos. Esta acción no se puede deshacer.")
+            Text("Escribe \(Self.eraseWord) para eliminar todos los datos. Esta acción no se puede deshacer.")
         }
     }
 
@@ -172,7 +177,8 @@ struct SettingsView: View {
                     Task { await sync.sync() }
                 } label: {
                     SettingsActionRow(
-                        title: sync.isSyncing ? "Sincronizando…" : "Sincronizar", subtitle: "Envía tus cambios y descarga los de tu empresa",
+                        title: sync.isSyncing ? "Sincronizando…" : "Sincronizar",
+                        subtitle: "Envía tus cambios y descarga los de tu empresa",
                         symbol: "arrow.triangle.2.circlepath", tint: Theme.brand)
                 }
                 .disabled(sync.isSyncing || sync.needsReconnect)
@@ -198,7 +204,8 @@ struct SettingsView: View {
                         confirmDisconnect = true
                     } label: {
                         SettingsActionRow(
-                            title: "Desconectar licencia", subtitle: "Deja de sincronizar este iPad", symbol: "icloud.slash", tint: Theme.danger)
+                            title: "Desconectar licencia", subtitle: "Deja de sincronizar este iPad", symbol: "icloud.slash",
+                            tint: Theme.danger)
                     }
                 }
             } else {
@@ -236,7 +243,7 @@ struct SettingsView: View {
                 HStack {
                     Label("Ventana de urgencia", systemImage: "exclamationmark.triangle")
                     Spacer()
-                    Text("\(urgencyWindow) \(urgencyWindow == 1 ? "día" : "días")")
+                    Text("\(urgencyWindow) días")
                         .monospacedDigit()
                         .foregroundStyle(.secondary)
                         .contentTransition(.numericText())
@@ -331,7 +338,7 @@ struct SettingsView: View {
 
     private var storeLocation: String {
         guard let url = persistence.container.persistentStoreDescriptions.first?.url, url.path != "/dev/null" else {
-            return "En memoria (demostración)"
+            return String(localized: "En memoria (demostración)")
         }
         return url.path.replacingOccurrences(of: NSHomeDirectory(), with: "~")
     }
@@ -364,7 +371,7 @@ struct SettingsView: View {
             try BackupService.restore(pending.data, into: persistence)
             session.restore()
             if session.isSignedIn {
-                toasts.show("Respaldo restaurado: \(Fmt.int(pending.summary.total)) registros")
+                toasts.show("Respaldo restaurado: \(pending.summary.total) registros")
             } else {
                 // The current user is not in the backup (or is inactive there): back to the login screen.
                 toasts.show("Respaldo restaurado. Inicia sesión con una cuenta del respaldo.", style: .info)
@@ -422,10 +429,14 @@ private struct PendingRestore: Identifiable {
     var summary: BackupService.Summary
 
     var message: String {
-        let date = summary.exportedAt.map { Fmt.date($0) } ?? "fecha desconocida"
-        let counts = summary.counts.filter { $0.1 > 0 }.map { "\($0.1) \($0.0.lowercased())" }.joined(separator: ", ")
-        return
-            "Respaldo del \(date) (Trama \(summary.appVersion ?? "?")): \(counts.isEmpty ? "sin registros" : counts). Se borrarán todos los datos actuales de este iPad."
+        let date = summary.exportedAt.map { Fmt.date($0) } ?? String(localized: "fecha desconocida")
+        // Labels come from BackupService (already localized); "Plantas: 3, Cortes: 12".
+        let counts = summary.counts.filter { $0.1 > 0 }.map { "\($0.0): \(Fmt.int($0.1))" }.joined(separator: ", ")
+        let version = summary.appVersion ?? "?"
+        return counts.isEmpty
+            ? String(
+                localized: "Respaldo del \(date) (Trama \(version)), sin registros. Se borrarán todos los datos actuales de este iPad.")
+            : String(localized: "Respaldo del \(date) (Trama \(version)): \(counts). Se borrarán todos los datos actuales de este iPad.")
     }
 }
 
@@ -446,8 +457,8 @@ struct BackupDocument: FileDocument {
 }
 
 struct SettingsActionRow: View {
-    var title: String
-    var subtitle: String
+    var title: LocalizedStringKey
+    var subtitle: LocalizedStringKey
     var symbol: String
     var tint: Color
 
@@ -506,11 +517,11 @@ private struct ChangePasswordSheet: View {
     private func save() {
         guard let user = session.user else { return }
         guard PasswordHasher.verify(current, hash: user.passwordHash, salt: user.passwordSalt) else {
-            return fail("La contraseña actual no es correcta.")
+            return fail(String(localized: "La contraseña actual no es correcta."))
         }
         guard new.count >= 6 else { return fail(AuthError.weakPassword.localizedDescription) }
-        guard new == confirm else { return fail("Las contraseñas nuevas no coinciden.") }
-        guard new != current else { return fail("La nueva contraseña debe ser distinta a la actual.") }
+        guard new == confirm else { return fail(String(localized: "Las contraseñas nuevas no coinciden.")) }
+        guard new != current else { return fail(String(localized: "La nueva contraseña debe ser distinta a la actual.")) }
         Session.setPassword(new, for: user)
         user.touch()
         do {

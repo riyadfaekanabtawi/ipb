@@ -11,7 +11,8 @@ enum SyncWriteError: LocalizedError, Equatable {
 
     var errorDescription: String? {
         switch self {
-        case .readOnly: "Tu licencia está vencida o suspendida: los datos son de solo lectura. Contacta a soporte para renovarla."
+        case .readOnly:
+            String(localized: "Tu licencia está vencida o suspendida: los datos son de solo lectura. Contacta a soporte para renovarla.")
         }
     }
 }

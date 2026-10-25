@@ -10,21 +10,22 @@ struct CatalogService {
     enum Kind {
         case plant, client, supplier, style
 
-        fileprivate var genitive: String {
+        /// Whole sentences per kind: gender and articles differ across languages.
+        fileprivate var emptyNameMessage: String {
             switch self {
-            case .plant: "de la planta"
-            case .client: "del cliente"
-            case .supplier: "del proveedor"
-            case .style: "del estilo"
+            case .plant: String(localized: "Escribe el nombre de la planta.")
+            case .client: String(localized: "Escribe el nombre del cliente.")
+            case .supplier: String(localized: "Escribe el nombre del proveedor.")
+            case .style: String(localized: "Escribe el nombre del estilo.")
             }
         }
 
-        fileprivate var indefinite: String {
+        fileprivate var duplicateNameMessage: String {
             switch self {
-            case .plant: "una planta"
-            case .client: "un cliente"
-            case .supplier: "un proveedor"
-            case .style: "un estilo"
+            case .plant: String(localized: "Ya existe una planta con ese nombre.")
+            case .client: String(localized: "Ya existe un cliente con ese nombre.")
+            case .supplier: String(localized: "Ya existe un proveedor con ese nombre.")
+            case .style: String(localized: "Ya existe un estilo con ese nombre.")
             }
         }
     }
@@ -41,14 +42,14 @@ struct CatalogService {
 
         var errorDescription: String? {
             switch self {
-            case .emptyName(let kind): "Escribe el nombre \(kind.genitive)."
-            case .duplicateName(let kind): "Ya existe \(kind.indefinite) con ese nombre."
-            case .invalidCapacity: "La capacidad máxima mensual debe ser mayor a cero."
-            case .invalidEmail(let email): "El correo «\(email)» no es válido."
-            case .missingProjectClient: "Elige un cliente o escribe su nombre."
-            case .negativeAmount: "Cantidad, precio y minutaje no pueden ser negativos."
-            case .emptyUserName: "Escribe el nombre y el correo del usuario."
-            case .plantRequired: "Un gerente de planta debe tener una planta asignada."
+            case .emptyName(let kind): kind.emptyNameMessage
+            case .duplicateName(let kind): kind.duplicateNameMessage
+            case .invalidCapacity: String(localized: "La capacidad máxima mensual debe ser mayor a cero.")
+            case .invalidEmail(let email): String(localized: "El correo «\(email)» no es válido.")
+            case .missingProjectClient: String(localized: "Elige un cliente o escribe su nombre.")
+            case .negativeAmount: String(localized: "Cantidad, precio y minutaje no pueden ser negativos.")
+            case .emptyUserName: String(localized: "Escribe el nombre y el correo del usuario.")
+            case .plantRequired: String(localized: "Un gerente de planta debe tener una planta asignada.")
             }
         }
     }
