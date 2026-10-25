@@ -228,7 +228,7 @@ def build_context(site, langs, dicts, code, legal):
             "form_notice": legal[code]["ui"]["form_notice"].replace("{privacy_href}", lang["legal"]["privacy"]),
         },
     })
-    ctx["jsonld_graph"] = script_json(jsonld_graph(site, d, url, plans))
+    ctx["jsonld_graph"] = script_json(jsonld_graph(site, d, url, plans, lang["shots"]))
     ctx["jsonld_faq"] = script_json(jsonld_faq(d, url))
     return ctx
 
@@ -312,7 +312,7 @@ def check_legal(name, page):
     return errors
 
 
-def jsonld_graph(site, d, url, plans):
+def jsonld_graph(site, d, url, plans, shots):
     b = site["base_url"]
     lang = d["meta"]["lang"]
     offers = []
@@ -342,7 +342,7 @@ def jsonld_graph(site, d, url, plans):
              "applicationCategory": "BusinessApplication", "applicationSubCategory": d["meta"]["app_category"],
              "operatingSystem": "iPadOS 17+, Android 8.0+, Web", "inLanguage": lang, "url": url,
              "image": f"{b}/assets/og.jpg",
-             "screenshot": [f"{b}/assets/shots/{s}.webp" for s in ("dash", "board", "detail", "cal")],
+             "screenshot": [f"{b}/{shots}{s}.webp" for s in ("dash", "board", "detail", "cal")],
              "description": d["meta"]["app_description"], "featureList": d["meta"]["feature_list"],
              "offers": offers, "publisher": {"@id": f"{b}/#org"}},
         ],
@@ -376,7 +376,7 @@ def sitemap(site, langs, dicts):
     <changefreq>monthly</changefreq>
     <priority>{'1.0' if l.get('default') else '0.9'}</priority>{links}
     <image:image><image:loc>{b}/assets/og.jpg</image:loc><image:title>{html.escape(m['og_title'])}</image:title></image:image>
-    <image:image><image:loc>{b}/assets/shots/board.webp</image:loc><image:title>{board_alt}</image:title></image:image>
+    <image:image><image:loc>{b}/{l['shots']}board.webp</image:loc><image:title>{board_alt}</image:title></image:image>
   </url>""")
     for doc in LEGAL_DOCS:
         doc_links = "".join(
@@ -461,6 +461,15 @@ def check_page(code, page, d):
     return errors
 
 
+SHOTS = ("dash", "dashdark", "board", "cal", "detail", "detaildark")
+
+
+def check_shots(lang):
+    """Every language needs the full set of app screenshots in its own `shots` folder."""
+    folder = PUBLIC / lang["shots"]
+    return [f"{lang['code']}: missing {lang['shots']}{s}.webp" for s in SHOTS if not (folder / f"{s}.webp").exists()]
+
+
 def check_phone_rules(site):
     """contact-api/lib/lead.js keeps its own copy of the phone table; they must agree."""
     if not LEAD_JS.exists():
@@ -505,6 +514,7 @@ def main():
     for l in langs:
         page = render(template, build_context(site, langs, dicts, l["code"], legal))
         errors += check_page(l["code"], page, dicts[l["code"]])
+        errors += check_shots(l)
         outputs[f"{l['dir']}index.html"] = page
         for doc in LEGAL_DOCS:
             name = f"{l['dir']}{l['legal'][doc]}"

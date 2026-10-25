@@ -44,7 +44,7 @@
   <link rel="apple-touch-icon" href="{{base}}assets/apple-touch-icon.png">
   <link rel="manifest" href="{{base}}site.webmanifest">
 
-  <link rel="preload" as="image" href="{{base}}assets/shots/dashdark.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="{{base}}{{lang.shots}}dashdark.webp" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -128,7 +128,7 @@
         </div>
         <div class="hero__device" role="img" aria-label="{{hero.device_aria|e}}">
           <div class="ipad ipad--tilt">
-            <img src="{{base}}assets/shots/dashdark.webp" fetchpriority="high" decoding="async" alt="{{hero.img_alt|e}}" width="1100" height="1467">
+            <img src="{{base}}{{lang.shots}}dashdark.webp" fetchpriority="high" decoding="async" alt="{{hero.img_alt|e}}" width="1100" height="1467">
           </div>
           <div class="float float--a" aria-hidden="true">
             <span class="float__icon"><svg class="ico"><use href="#i-scissors"/></svg></span>
@@ -209,14 +209,14 @@
             <span class="tag">{{product.board.tag}}</span>
             <h3>{{product.board.h}}</h3>
             <p>{{product.board.p}}</p>
-            <img loading="lazy" src="{{base}}assets/shots/board.webp" alt="{{product.board.alt|e}}" class="feature__shot" width="1100" height="1467" decoding="async">
+            <img loading="lazy" src="{{base}}{{lang.shots}}board.webp" alt="{{product.board.alt|e}}" class="feature__shot" width="1100" height="1467" decoding="async">
           </article>
 
           <article class="feature">
             <span class="tag">{{product.reports.tag}}</span>
             <h3>{{product.reports.h}}</h3>
             <p>{{product.reports.p}}</p>
-            <img loading="lazy" src="{{base}}assets/shots/detail.webp" alt="{{product.reports.alt|e}}" class="feature__shot" width="1100" height="1467" decoding="async">
+            <img loading="lazy" src="{{base}}{{lang.shots}}detail.webp" alt="{{product.reports.alt|e}}" class="feature__shot" width="1100" height="1467" decoding="async">
           </article>
 
 {{#product.minis}}
@@ -243,7 +243,7 @@
 {{/showcase_tabs}}
         </div>
         <div class="ipad ipad--flat" id="shot" role="tabpanel" aria-labelledby="tab-dash">
-          <img src="{{base}}assets/shots/dash.webp" alt="{{showcase_first_alt|e}}" width="1100" height="1467" loading="lazy" decoding="async">
+          <img src="{{base}}{{lang.shots}}dash.webp" alt="{{showcase_first_alt|e}}" width="1100" height="1467" loading="lazy" decoding="async">
         </div>
       </div>
     </section>
