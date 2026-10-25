@@ -180,20 +180,24 @@ fun <T> PickerField(label: String, value: String, options: List<Pair<String, T>>
 /** Switch + date field; the date opens a Material date picker. */
 @Composable
 fun DateToggleField(toggleLabel: String, dateLabel: String, enabled: Boolean, onEnabled: (Boolean) -> Unit, date: LocalDate, onDate: (LocalDate) -> Unit) {
-    var picking by remember { mutableStateOf(false) }
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(toggleLabel, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
         Switch(enabled, onEnabled)
     }
-    if (enabled) {
-        Box {
-            OutlinedTextField(
-                Fmt.date(date), {}, Modifier.fillMaxWidth(), readOnly = true, label = { Text(dateLabel) }, singleLine = true,
-                leadingIcon = { Icon(Icons.Filled.CalendarMonth, null, tint = Tokens.colors.brand) }, shape = RoundedCornerShape(14.dp),
-                colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = Tokens.colors.stroke, focusedContainerColor = Tokens.colors.surface, unfocusedContainerColor = Tokens.colors.surface),
-            )
-            Box(Modifier.matchParentSize().clickable(role = Role.Button, onClickLabel = dateLabel) { picking = true })
-        }
+    if (enabled) DateField(dateLabel, date, onDate)
+}
+
+/** Read-only date field that opens a Material date picker. */
+@Composable
+fun DateField(dateLabel: String, date: LocalDate, onDate: (LocalDate) -> Unit) {
+    var picking by remember { mutableStateOf(false) }
+    Box {
+        OutlinedTextField(
+            Fmt.date(date), {}, Modifier.fillMaxWidth(), readOnly = true, label = { Text(dateLabel) }, singleLine = true,
+            leadingIcon = { Icon(Icons.Filled.CalendarMonth, null, tint = Tokens.colors.brand) }, shape = RoundedCornerShape(14.dp),
+            colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = Tokens.colors.stroke, focusedContainerColor = Tokens.colors.surface, unfocusedContainerColor = Tokens.colors.surface),
+        )
+        Box(Modifier.matchParentSize().clickable(role = Role.Button, onClickLabel = dateLabel) { picking = true })
     }
     if (picking) TramaDatePickerDialog(date, onDate) { picking = false }
 }
