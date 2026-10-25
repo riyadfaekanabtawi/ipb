@@ -44,7 +44,7 @@ struct LegacyImportPanel: View {
 
     var body: some View {
         LabeledContent {
-            TextField("https://servidor-anterior/", text: $baseURL)
+            TextField("servidor-anterior.com", text: $baseURL)
                 .keyboardType(.URL)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()

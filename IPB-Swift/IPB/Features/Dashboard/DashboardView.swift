@@ -89,7 +89,7 @@ struct DashboardView: View {
     // MARK: KPIs
 
     private func kpis(_ s: DashboardSnapshot) -> some View {
-        LazyVGrid(columns: AdaptiveGrid.adaptive(min: 200, spacing: 16), spacing: 16) {
+        LazyVGrid(columns: AdaptiveGrid.adaptive(min: 180, spacing: 16), spacing: 16) {
             KPITile(
                 title: "Ingresos en producción", value: Fmt.money(s.revenue, compact: true), symbol: "banknote.fill",
                 tint: Theme.brand, footnote: "\(Fmt.int(s.assignmentCount)) asignaciones"

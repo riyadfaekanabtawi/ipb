@@ -138,13 +138,14 @@ struct SettingsView: View {
     private var preferencesSection: some View {
         Section {
             Stepper(value: $urgencyWindow, in: 1...30) {
-                LabeledContent {
+                HStack {
+                    Label("Ventana de urgencia", systemImage: "exclamationmark.triangle")
+                    Spacer()
                     Text("\(urgencyWindow) \(urgencyWindow == 1 ? "día" : "días")")
                         .monospacedDigit()
+                        .foregroundStyle(.secondary)
                         .contentTransition(.numericText())
                         .animation(.snappy, value: urgencyWindow)
-                } label: {
-                    Label("Ventana de urgencia", systemImage: "exclamationmark.triangle")
                 }
             }
         } header: {
