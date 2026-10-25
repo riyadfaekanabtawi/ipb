@@ -36,4 +36,3 @@ web/dist/
 .claude/settings.local.json
 .claude/worktrees/
 android/build/
-android/app/schemas/
