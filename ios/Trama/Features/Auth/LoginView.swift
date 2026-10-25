@@ -2,12 +2,15 @@ import SwiftUI
 
 struct LoginView: View {
     @Environment(Session.self) private var session
+    @Environment(SyncEngine.self) private var sync
     @AppStorage("demo.seeded") private var demoSeeded = false
 
     @State private var email = ""
     @State private var password = ""
     @State private var error: String?
     @State private var shake = 0
+    @State private var signingIn = false
+    @State private var showConnect = false
     @FocusState private var focus: Field?
 
     enum Field { case email, password }
@@ -47,11 +50,18 @@ struct LoginView: View {
                 }
 
                 Button(action: signIn) {
-                    Label("Entrar", systemImage: "arrow.right")
-                        .labelStyle(TrailingIconLabelStyle())
+                    if signingIn {
+                        ProgressView().tint(.white)
+                    } else {
+                        Label("Entrar", systemImage: "arrow.right")
+                            .labelStyle(TrailingIconLabelStyle())
+                    }
                 }
                 .buttonStyle(.tramaPrimary)
                 .keyboardShortcut(.defaultAction)
+                .disabled(signingIn)
+
+                LicenceConnectButton(linkedCompany: sync.account?.tenantName) { showConnect = true }
 
                 if demoSeeded {
                     DemoAccountsHint { account in
@@ -63,16 +73,58 @@ struct LoginView: View {
             }
         }
         .animation(.spring(duration: 0.35), value: error)
+        .sheet(isPresented: $showConnect) { LicenceConnectSheet(prefilledEmail: email) }
     }
 
     private func signIn() {
-        do {
-            try session.signIn(email: email, password: password)
-        } catch {
-            self.error = error.localizedDescription
-            withAnimation(.default) { shake += 1 }
-            UINotificationFeedbackGenerator().notificationOccurred(.error)
+        guard !signingIn else { return }
+        signingIn = true
+        Task {
+            defer { signingIn = false }
+            do {
+                // Local first (offline); falls back to the platform when this iPad has a licence.
+                try await sync.signIn(email: email, password: password)
+            } catch {
+                self.error = error.localizedDescription
+                withAnimation(.default) { shake += 1 }
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+            }
         }
+    }
+}
+
+/// Secondary entry to licence activation, shared by login and onboarding.
+struct LicenceConnectButton: View {
+    var linkedCompany: String?
+    var action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 14) {
+                Image(systemName: linkedCompany == nil ? "key.icloud.fill" : "checkmark.icloud.fill")
+                    .font(.title3)
+                    .foregroundStyle(Theme.brand)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(linkedCompany == nil ? "Conectar con mi licencia" : "Conectado a \(linkedCompany!)")
+                        .font(.headline)
+                    Text(
+                        linkedCompany == nil
+                            ? "Entra con tu cuenta de Trama para sincronizar los datos de tu empresa."
+                            : "Entra con tu correo y contraseña de siempre, aunque no haya internet."
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").font(.caption.weight(.bold)).foregroundStyle(.tertiary)
+            }
+            .padding(16)
+            .background(Theme.brand.opacity(0.08), in: .rect(cornerRadius: 16, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Theme.brand.opacity(0.25)))
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(.primary)
     }
 }
 

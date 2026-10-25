@@ -140,8 +140,11 @@ struct BackupTests {
             "Assignment": fields(AssignmentDTO()), "ProductionReport": fields(ProductionReportDTO()),
             "Project": fields(ProjectDTO()), "AppUser": fields(AppUserDTO()),
         ]
-        for entity in PersistenceController.model.entities {
+        // Device-local sync bookkeeping (the outbox) is deliberately not part of backups.
+        let localOnly: Set<String> = ["SyncOutboxEntry"]
+        for entity in PersistenceController.model.entities where !localOnly.contains(entity.name!) {
             let name = entity.name!
+            #expect(SyncEntity(entityName: name) != nil, "\(name) is neither synced nor marked local-only")
             let expected = Set(entity.attributesByName.keys)
                 .union(entity.relationshipsByName.values.filter { !$0.isToMany }.map { "\($0.name)ID" })
             let covered = dtoFields[name] ?? []

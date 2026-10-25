@@ -127,7 +127,7 @@ final class Session {
         user.avatarData = avatar
         user.isActive = true
         setPassword(password, for: user)
-        try context.saveIfNeeded()
+        try context.saveTracked()
         return user
     }
 

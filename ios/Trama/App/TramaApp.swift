@@ -6,8 +6,9 @@ struct TramaApp: App {
     private let persistence: PersistenceController
     @State private var session: Session
     @State private var connectivity = ConnectivityMonitor()
-    @State private var toasts = ToastCenter()
+    @State private var toasts: ToastCenter
     @State private var router: AppRouter
+    @State private var sync: SyncEngine
 
     init() {
         let isUITest = ProcessInfo.processInfo.arguments.contains("-uiTestDemo")
@@ -20,11 +21,28 @@ struct TramaApp: App {
         self.persistence = persistence
         let session = Session(context: persistence.viewContext)
         let router = AppRouter()
+        let toasts = ToastCenter()
+        // The demo store never talks to the platform and keeps its state out of the real install.
+        let sync =
+            isUITest
+            ? SyncEngine(
+                persistence: persistence, session: session, toasts: toasts, secrets: MemorySecretStore(),
+                defaults: Self.volatileDefaults(), enabled: false)
+            : SyncEngine(persistence: persistence, session: session, toasts: toasts)
         #if DEBUG
             if isUITest { Self.applyDebugLaunchArguments(session: session, router: router, context: persistence.viewContext) }
         #endif
         _session = State(initialValue: session)
         _router = State(initialValue: router)
+        _toasts = State(initialValue: toasts)
+        _sync = State(initialValue: sync)
+    }
+
+    private static func volatileDefaults() -> UserDefaults {
+        let name = "trama.demo.sync"
+        let defaults = UserDefaults(suiteName: name) ?? .standard
+        defaults.removePersistentDomain(forName: name)
+        return defaults
     }
 
     #if DEBUG
@@ -60,6 +78,7 @@ struct TramaApp: App {
                 .environment(connectivity)
                 .environment(toasts)
                 .environment(router)
+                .environment(sync)
                 .environment(\.persistence, persistence)
                 .tint(Theme.brand)
         }

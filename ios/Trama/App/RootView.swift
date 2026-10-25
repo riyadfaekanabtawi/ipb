@@ -4,6 +4,9 @@ import SwiftUI
 struct RootView: View {
     @Environment(Session.self) private var session
     @Environment(ToastCenter.self) private var toasts
+    @Environment(SyncEngine.self) private var sync
+    @Environment(ConnectivityMonitor.self) private var connectivity
+    @Environment(\.scenePhase) private var scenePhase
     @State private var onboardingRefresh = 0
 
     var body: some View {
@@ -22,6 +25,13 @@ struct RootView: View {
         .id(onboardingRefresh)
         .animation(.smooth(duration: 0.45), value: session.isSignedIn)
         .overlay(alignment: .bottom) { ToastOverlay() }
+        // Sync triggers (no-ops without a licence): launch/foreground and network reconnect.
+        .onChange(of: scenePhase, initial: true) { _, phase in
+            if phase == .active { sync.requestSync() }
+        }
+        .onChange(of: connectivity.isOnline) { wasOnline, isOnline in
+            if isOnline, !wasOnline { sync.requestSync(after: .seconds(1)) }
+        }
     }
 }
 
