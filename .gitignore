@@ -35,3 +35,7 @@ web/dist/
 !.claude/
 .claude/settings.local.json
 .claude/worktrees/
+
+# Contact API
+contact-api/node_modules/
+contact-api/.vercel/

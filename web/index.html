@@ -31,6 +31,8 @@
   <meta name="twitter:image" content="https://ranabtawi-trama.static.hf.space/assets/og.jpg">
 
   <meta name="theme-color" content="#0B3440">
+  <!-- Licence form endpoint (contact-api/ on Vercel). Empty = fall back to a prefilled email. -->
+  <meta name="trama-contact-endpoint" content="">
   <meta name="application-name" content="Trama">
   <meta name="apple-mobile-web-app-title" content="Trama">
   <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
@@ -376,6 +378,8 @@
           <p class="contact__direct">¿Prefieres escribir directo? <a href="mailto:riyad.faek@gmail.com?subject=Trama%20%C2%B7%20Solicitud%20de%20licencia">riyad.faek@gmail.com</a></p>
         </div>
         <form class="form" id="lead-form" novalidate>
+          <!-- Honeypot: invisible to people, bots fill it. -->
+          <label class="hp" aria-hidden="true">Sitio web<input name="website" tabindex="-1" autocomplete="off"></label>
           <div class="form__row">
             <label>Nombre<input name="nombre" autocomplete="name" required></label>
             <label>Empresa<input name="empresa" autocomplete="organization" required></label>
@@ -390,7 +394,7 @@
           </div>
           <label>¿Qué quieres resolver?<textarea name="mensaje" rows="4" placeholder="Ej. Hoy controlamos los cortes en Excel y no sabemos qué planta tiene capacidad…"></textarea></label>
           <button class="btn btn--block" type="submit">Enviar solicitud</button>
-          <p class="form__hint" role="status" aria-live="polite">Se abrirá tu app de correo con la solicitud lista para enviar.</p>
+          <p class="form__hint" role="status" aria-live="polite">Te respondemos en menos de un día hábil. No compartimos tus datos.</p>
         </form>
       </div>
     </section>

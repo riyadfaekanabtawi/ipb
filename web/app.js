@@ -109,38 +109,71 @@ document.querySelectorAll("[data-plan]").forEach((link) => {
   });
 });
 
-// Licence request form → prefilled email.
+// Licence request form: POSTs to the contact API (Gmail SMTP on Vercel) and shows the result
+// inline. Falls back to a prefilled email only when no endpoint is configured or it is down.
 (function form() {
   const form = document.getElementById("lead-form");
   if (!form) return;
   const hint = form.querySelector(".form__hint");
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
+  const button = form.querySelector("button[type=submit]");
+  const endpoint = document.querySelector('meta[name="trama-contact-endpoint"]')?.content.trim();
+  const startedAt = Date.now();
+
+  function validate() {
     let firstInvalid = null;
     form.querySelectorAll("[required]").forEach((field) => {
-      const valid = field.value.trim() !== "" && (field.type !== "email" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim()));
+      const value = field.value.trim();
+      const valid = value !== "" && (field.type !== "email" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
       field.setAttribute("aria-invalid", String(!valid));
       if (!valid && !firstInvalid) firstInvalid = field;
     });
-    if (firstInvalid) {
+    return firstInvalid;
+  }
+
+  function mailtoFallback(data) {
+    const subject = `Trama · Solicitud de licencia · ${data.empresa}`;
+    const body = [`Nombre: ${data.nombre}`, `Empresa: ${data.empresa}`, `Correo: ${data.correo}`, `Teléfono: ${data.telefono || "—"}`,
+      `Plantas: ${data.plantas}`, `Plan de interés: ${data.plan}`, "", data.mensaje || ""].join("\n");
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+
+  function showSent(name) {
+    form.innerHTML = `<div class="form__done" role="status" tabindex="-1">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+      <h3>¡Gracias, ${name.replace(/[<>&"]/g, "")}!</h3>
+      <p>Recibimos tu solicitud y te enviamos una confirmación por correo. Te contactaremos en menos de un día hábil para agendar tu demo.</p></div>`;
+    form.querySelector(".form__done").focus();
+  }
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const invalid = validate();
+    if (invalid) {
       hint.textContent = "Completa nombre, empresa y un correo válido.";
-      firstInvalid.focus();
+      invalid.focus();
       return;
     }
     const data = Object.fromEntries(new FormData(form));
-    const subject = `Trama · Solicitud de licencia · ${data.empresa}`;
-    const body = [
-      `Nombre: ${data.nombre}`,
-      `Empresa: ${data.empresa}`,
-      `Correo: ${data.correo}`,
-      `Teléfono: ${data.telefono || "—"}`,
-      `Plantas: ${data.plantas}`,
-      `Plan de interés: ${data.plan}`,
-      "",
-      data.mensaje || "",
-    ].join("\n");
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    hint.textContent = "¡Gracias! Abrimos tu app de correo con la solicitud lista para enviar.";
+    if (!endpoint) return mailtoFallback(data);
+
+    button.disabled = true;
+    button.textContent = "Enviando…";
+    hint.textContent = "";
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, startedAt }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (response.ok) return showSent(data.nombre.split(" ")[0]);
+      hint.textContent = result.error || "No pudimos enviar tu solicitud. Intenta de nuevo.";
+    } catch {
+      hint.innerHTML = `No hay conexión con el servidor. <a href="#" id="mail-fallback">Envíala por correo</a>.`;
+      document.getElementById("mail-fallback").addEventListener("click", (e) => { e.preventDefault(); mailtoFallback(data); });
+    }
+    button.disabled = false;
+    button.textContent = "Enviar solicitud";
   });
 })();
 

@@ -315,3 +315,10 @@ details p { color: var(--ink-soft); padding-bottom: 18px; }
 .audience p { color: var(--ink-soft); font-size: 0.95rem; }
 @media (max-width: 1020px) { .define { grid-template-columns: 1fr; gap: 20px; } .audience { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 760px) { .audience { grid-template-columns: 1fr; } .define__facts div { grid-template-columns: 1fr; gap: 2px; } }
+
+/* Licence form: honeypot + sent state */
+.hp { position: absolute !important; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.form__done { text-align: center; display: grid; gap: 12px; justify-items: center; padding: 28px 8px; outline: none; }
+.form__done .ico { width: 56px; height: 56px; padding: 12px; border-radius: 50%; color: #fff; background: var(--success); }
+.form__done p { color: var(--ink-soft); }
+.btn:disabled { opacity: 0.6; cursor: progress; transform: none; }

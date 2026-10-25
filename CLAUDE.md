@@ -11,6 +11,7 @@ catalogs (plants, clients, suppliers, styles, users, projects) and a production 
 |---|---|
 | `ios/` | iPad app: SwiftUI + Core Data, XcodeGen (`ios/project.yml`) |
 | `web/` | Static sales landing page, deployed to a Hugging Face Space by GitHub Actions |
+| `contact-api/` | Vercel serverless endpoint for the licence form (Gmail SMTP via nodemailer); see its README |
 | `android/` | Planned Kotlin/Compose port (see `android/README.md`) |
 | `docs/DOMAIN.md` | **The behavior contract shared by all platforms.** Update it with any rule change |
 
