@@ -32,6 +32,8 @@ class FakePlatform : AutoCloseable {
     var loginError: Pair<Int, Pair<String, String>>? = null
     var forbidEntities = setOf<String>()
     val requests = mutableListOf<String>()
+    /** `Accept-Language` of every request, in order. */
+    val languages = mutableListOf<String?>()
     val pushes = mutableListOf<JsonArray>()
     val userId = "7a1b2c3d-0000-4000-8000-000000000001"
     val userEmail = "admin@empresa.mx"
@@ -75,6 +77,7 @@ class FakePlatform : AutoCloseable {
         val query = exchange.requestURI.query.orEmpty().split("&").filter { it.contains("=") }.associate { it.substringBefore("=") to it.substringAfter("=") }
         val body = exchange.requestBody.readBytes().toString(Charsets.UTF_8).takeIf { it.isNotBlank() }?.let { Json.parseToJsonElement(it).jsonObject }
         requests += "${exchange.requestMethod} $path"
+        languages += exchange.requestHeaders.getFirst("Accept-Language")
         val authorized = exchange.requestHeaders.getFirst("Authorization") == "Bearer $accessToken"
         when (path) {
             "/auth/login" -> {
