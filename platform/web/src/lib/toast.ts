@@ -8,9 +8,9 @@ let toasts: Toast[] = [];
 const listeners = new Set<() => void>();
 const emit = () => listeners.forEach((fn) => fn());
 
-export function toast(message: string, kind: ToastKind = "success", ms = kind === "error" ? 6000 : 3200) {
+export function toast(message: string, kind: ToastKind = "success", ms = kind === "error" ? 6000 : 2600) {
   const t = { id: ++seq, kind, message };
-  toasts = [...toasts.slice(-3), t];
+  toasts = [...toasts.slice(-2), t];
   emit();
   setTimeout(() => dismiss(t.id), ms);
 }

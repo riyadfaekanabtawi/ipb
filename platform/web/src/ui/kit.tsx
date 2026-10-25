@@ -305,7 +305,7 @@ export function NumberField({ label, value, onChange, hint, integer, prefix, pla
   }, [value]);
   return (
     <Field label={label} hint={hint}>
-      <div className="input-affix">
+      <div className={prefix ? "input-affix" : undefined}>
         {prefix && <span style={{ position: "absolute", left: 12, color: "var(--text-3)", fontWeight: 600 }}>{prefix}</span>}
         <input
           className="input num"

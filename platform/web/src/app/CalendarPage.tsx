@@ -93,7 +93,7 @@ export function CalendarPage() {
             {dayEvents.length === 0 ? (
               <EmptyState icon={CalendarDays} title="Día libre" message="Sin producción ni entregas este día." />
             ) : (
-              <div className="list" style={{ marginTop: -14 }}>
+              <div className="list">
                 {dayEvents.map((e) => (
                   <button key={e.id} className="list-row" onClick={() => navigate(e.to)}>
                     {e.kind === "delivery" ? <Truck size={18} color="var(--danger)" /> : <span style={{ width: 12, height: 12, borderRadius: 4, background: e.color, flex: "none" }} />}
