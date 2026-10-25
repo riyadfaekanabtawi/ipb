@@ -1,0 +1,44 @@
+{
+  "_comment": "Shared, language-neutral site config. The ONE place for URLs, prices and phone rules. Edit, then run: python3 web/build.py",
+  "base_url": "https://ranabtawi-trama.static.hf.space",
+  "login_url": "https://trama-app.vercel.app/",
+  "contact_endpoint": "https://trama-contact-api.vercel.app/api/contact",
+  "lastmod": "2026-10-25",
+  "languages": [
+    { "code": "es", "dir": "", "hreflang": ["es-MX", "es"], "label": "ES", "flag": "🇲🇽", "name": "Español", "default": true },
+    { "code": "en", "dir": "en/", "hreflang": ["en"], "label": "EN", "flag": "🇺🇸", "name": "English" },
+    { "code": "pt", "dir": "pt/", "hreflang": ["pt-BR", "pt"], "label": "PT", "flag": "🇧🇷", "name": "Português" }
+  ],
+  "plans": [
+    { "id": "web", "value": "Web", "monthly": 49 },
+    { "id": "planta", "value": "Planta", "monthly": 99 },
+    { "id": "multiplanta", "value": "Multiplanta", "monthly": 249, "featured": true },
+    { "id": "empresa", "value": "Empresa", "monthly": 590, "from": true }
+  ],
+  "_phone_comment": "National-number lengths per country. Duplicated in contact-api/lib/lead.js (PHONE_RULES); build.py fails if they drift.",
+  "countries": [
+    { "iso": "MX", "dial": "52", "flag": "🇲🇽", "lengths": [10] },
+    { "iso": "US", "dial": "1", "flag": "🇺🇸", "lengths": [10] },
+    { "iso": "CA", "dial": "1", "flag": "🇨🇦", "lengths": [10] },
+    { "iso": "GT", "dial": "502", "flag": "🇬🇹", "lengths": [8] },
+    { "iso": "SV", "dial": "503", "flag": "🇸🇻", "lengths": [8] },
+    { "iso": "HN", "dial": "504", "flag": "🇭🇳", "lengths": [8] },
+    { "iso": "NI", "dial": "505", "flag": "🇳🇮", "lengths": [8] },
+    { "iso": "CR", "dial": "506", "flag": "🇨🇷", "lengths": [8] },
+    { "iso": "PA", "dial": "507", "flag": "🇵🇦", "lengths": [7, 8] },
+    { "iso": "DO", "dial": "1", "flag": "🇩🇴", "lengths": [10] },
+    { "iso": "CO", "dial": "57", "flag": "🇨🇴", "lengths": [10] },
+    { "iso": "VE", "dial": "58", "flag": "🇻🇪", "lengths": [10] },
+    { "iso": "EC", "dial": "593", "flag": "🇪🇨", "lengths": [8, 9] },
+    { "iso": "PE", "dial": "51", "flag": "🇵🇪", "lengths": [8, 9] },
+    { "iso": "BO", "dial": "591", "flag": "🇧🇴", "lengths": [8] },
+    { "iso": "CL", "dial": "56", "flag": "🇨🇱", "lengths": [9] },
+    { "iso": "AR", "dial": "54", "flag": "🇦🇷", "lengths": [10] },
+    { "iso": "UY", "dial": "598", "flag": "🇺🇾", "lengths": [8] },
+    { "iso": "PY", "dial": "595", "flag": "🇵🇾", "lengths": [8, 9] },
+    { "iso": "BR", "dial": "55", "flag": "🇧🇷", "lengths": [10, 11] },
+    { "iso": "ES", "dial": "34", "flag": "🇪🇸", "lengths": [9] },
+    { "iso": "PT", "dial": "351", "flag": "🇵🇹", "lengths": [9] }
+  ],
+  "default_country": { "es": "MX", "en": "US", "pt": "BR" }
+}

@@ -1,0 +1,242 @@
+{
+  "meta": {
+    "lang": "en",
+    "og_locale": "en_US",
+    "title": "Trama | Garment manufacturing software that works offline",
+    "description": "Trama is garment manufacturing software for apparel factories and contract sewing plants: cut order management, capacity-based plant scheduling, production tracking and urgent shipments. Offline iPad and Android app plus a web version. From $49/month.",
+    "keywords": "garment manufacturing software, apparel production tracking, cut order management, offline factory app, apparel manufacturing software, sewing factory software, textile production software, production control for garment factories",
+    "og_title": "Trama | Garment manufacturing software for the factory floor",
+    "og_description": "Cut orders, plants and shipments in one board. An offline app for iPad and Android, plus a web version for the office. From $49/month.",
+    "og_image_alt": "Trama: apparel production tracking on a tablet, showing the production dashboard",
+    "app_category": "Garment production control",
+    "app_alt_name": "Trama · Garment production control",
+    "app_description": "Production control software for garment factories and contract manufacturers: cut order management, assigning cuts to plants by monthly capacity, production reports and urgent shipments. Native iPad and Android app that works offline, plus a web version.",
+    "feature_list": ["Cut order management and capacity-based assignment to plants", "Cutting board (waiting, on the cutting table, ready to sew)", "Plant, cutting and shipping reports", "Urgent shipments by delivery date", "Plant calendar", "Production and SAM calculator", "Roles: admin, cutting, plant and shipping managers", "App works with no internet connection", "Web version for the office", "Backups and data migration"],
+    "md_title": "Trama for AI assistants"
+  },
+  "ui": {
+    "skip": "Skip to content",
+    "home_aria": "Trama, home",
+    "nav_aria": "Main",
+    "nav": { "what": "What it is", "product": "Product", "compare": "App vs Web", "pricing": "Pricing", "faq": "FAQ" },
+    "login": "Log in",
+    "cta": "Request a licence",
+    "menu_open": "Open menu",
+    "lang_aria": "Language",
+    "lang_current": "current language"
+  },
+  "hero": {
+    "eyebrow": "For garment factories and sewing plants · iPad, Android and Web",
+    "h1": "Your garment production, <em>under control</em>. Even when the internet drops.",
+    "lead": "Trama connects cut orders, plants and shipments in a single board. Assign work by capacity, track every garment from the cutting table to the warehouse, and spot what's urgent before it becomes a problem.",
+    "cta_primary": "Book a demo",
+    "cta_secondary": "See pricing →",
+    "facts": [
+      { "n": "100%", "label": "offline in the app" },
+      { "n": "4", "label": "roles with permissions" },
+      { "n": "$49", "label": "per month, starting at" }
+    ],
+    "device_aria": "Trama running on a tablet",
+    "img_alt": "Trama dashboard with revenue in production, plant capacity and cutting table status",
+    "float_a_title": "C-1042 → North Plant",
+    "float_a_sub": "4,000 pieces · fits in October",
+    "float_b_title": "2 urgent shipments",
+    "float_b_sub": "Due in 2 and 4 days"
+  },
+  "origin": "Born on the production floor of <strong>Industrial Peña Balles</strong>, a multi-plant garment manufacturer in Mexico: years of real cut orders, plants and deliveries turned into a tool any factory can use.",
+  "what": {
+    "eyebrow": "What Trama is",
+    "h2": "Garment manufacturing software, built for the tablet.",
+    "body": "<strong>Trama is production control software for apparel factories and contract manufacturers.</strong> It records cut orders (list, garment, style, customer, quantity and price), assigns them to your plants based on monthly capacity, tracks each cut through cutting, sewing, pressing, packing, warehouse and shipping, and flags urgent deliveries. The iPad and Android app works offline; the web version brings Trama to any office computer.",
+    "facts": [
+      { "dt": "Type", "dd": "Lightweight MES for the textile and apparel industry" },
+      { "dt": "Platforms", "dd": "iPad (iPadOS 17+), Android 8.0+ and Web (browser)" },
+      { "dt": "Connectivity", "dd": "App: 100% offline, with an on-device database. Web: online" },
+      { "dt": "Language", "dd": "Interface in Spanish (Mexico); talk to us about other languages" },
+      { "dt": "Price", "dd": "From $49/month per company, plus taxes" }
+    ]
+  },
+  "audience": {
+    "eyebrow": "Who it's for",
+    "h2": "For the people who cut, sew and ship on time.",
+    "items": [
+      { "h": "Contract manufacturers", "p": "Split each customer's cut orders across your plants without going over capacity, and deliver on time." },
+      { "h": "Apparel factories", "p": "Track production by plant: operators, absences, pieces sewn, pressing, packing and warehouse." },
+      { "h": "Cutting rooms", "p": "Follow every cut order on the table and compare the actual quantity cut with the plan." },
+      { "h": "Brands with their own production", "p": "See on one board what's in production, what's left to ship and which delivery is at risk." }
+    ]
+  },
+  "product": {
+    "eyebrow": "Product",
+    "h2": "Your whole factory flow, from order to shipment.",
+    "lead": "Designed for tablets: quick to use one-handed on the shop floor, with every detail available in the office.",
+    "cap": {
+      "tag": "Capacity-based assignment",
+      "h": "Split every cut order across your plants without exceeding capacity.",
+      "p": "Each plant has a monthly capacity. When you assign work, Trama shows live how much of that month each cut takes up in every plant: whether it fits, whether it overflows and which plant has the most room.",
+      "plants": ["North Plant", "South Plant", "Central Plant"],
+      "fits": "Fits",
+      "exceeds": "Over"
+    },
+    "board": { "tag": "Cutting board", "h": "Drag each cut order to its status.", "p": "Waiting, on the cutting table, ready to sew. A visual board your cutting manager updates with a finger.", "alt": "Kanban-style cutting board" },
+    "reports": { "tag": "Production reports", "h": "Every garment, from table to warehouse.", "p": "Plant, cutting and shipping reports feed a funnel for each cut: cut, sewn, pressed, packed, in warehouse and shipped.", "alt": "Cut order detail with its production progress" },
+    "minis": [
+      { "icon": "alert", "h": "Urgent shipments", "p": "What's due soon or overdue, with pieces left to ship and one-tap shipment logging." },
+      { "icon": "calendar", "h": "Plant calendar", "p": "This month's production starts and customer deliveries, with each plant's capacity." },
+      { "icon": "calc", "h": "Production calculator", "p": "Daily target, estimated days and months, price per minute and net income as you type." },
+      { "icon": "book", "h": "Complete catalogs", "p": "Customers and suppliers with unlimited contacts, a style gallery with photos, projects and quotes." }
+    ]
+  },
+  "showcase": {
+    "eyebrow": "Tour",
+    "h2": "Native on iPad and Android. It feels fast because it is.",
+    "tablist_aria": "Trama screens",
+    "default_alt": "Trama screen",
+    "tabs": [
+      { "key": "dash", "label": "Dashboard", "alt": "Dashboard with KPIs, plant capacity and cutting table status" },
+      { "key": "board", "label": "Board", "alt": "Kanban cutting board by status" },
+      { "key": "detail", "label": "Production", "alt": "Production detail of a cut order with its funnel and reports" },
+      { "key": "cal", "label": "Calendar", "alt": "Plant calendar with production, deliveries and capacity" },
+      { "key": "detaildark", "label": "Dark mode", "alt": "Production detail in dark mode" }
+    ]
+  },
+  "offline": {
+    "eyebrow": "Offline",
+    "h2": "Your plant's Wi-Fi doesn't decide when you work.",
+    "lead": "With the app, your data lives on the iPad or Android tablet, in a local database. No servers going down, no loading screens, no hunting for signal on the shop floor.",
+    "items": [
+      { "b": "On-device database", "p": "Cut orders, reports, catalogs and images are stored on the tablet." },
+      { "b": "Offline sign-in", "p": "Passwords are hashed (PBKDF2) on the device itself." },
+      { "b": "Backup and sync", "p": "Automatic backup, and everything syncs as soon as the connection is back." },
+      { "b": "Migration from your current system", "p": "We import your plants, customers, styles and cut orders during setup." }
+    ]
+  },
+  "compare": {
+    "eyebrow": "App vs Web",
+    "h2": "Web for the office, app for the floor.",
+    "lead": "The native iPad and Android app keeps working even when there's no signal on the shop floor. The web version puts Trama on any computer, with nothing to install. Plant, Multi-plant and Enterprise include both.",
+    "table_caption": "Comparison between the Trama app and the web version",
+    "col_feature": "Feature",
+    "app": { "name": "App", "sub": "iPad and Android · for the shop floor" },
+    "web": { "name": "Web", "sub": "Browser · for the office and management" },
+    "sr": { "yes": "Yes", "no": "No", "part": "Partly" },
+    "rows": [
+      { "label": "Works without internet", "app": ["yes", "On-device database"], "web": ["no", "Needs a connection"] },
+      { "label": "When the network goes down", "app": ["yes", "Nobody stops working"], "web": ["no", "Paused until you reconnect"] },
+      { "label": "Sync", "app": ["yes", "Automatic once you're back online"], "web": ["yes", "Always online"] },
+      { "label": "Speed", "app": ["yes", "Instant, no loading screens"], "web": ["part", "Depends on your connection"] },
+      { "label": "Camera for style photos", "app": ["yes", "Snap the photo with the tablet"], "web": ["part", "Upload files from your computer"] },
+      { "label": "No installation", "app": ["no", "Privately distributed to your devices"], "web": ["yes", "Open the browser and sign in"] },
+      { "label": "Any computer", "app": ["no", "iPad, Android tablets and phones"], "web": ["yes", "Windows, Mac or Linux"] },
+      { "label": "Best for", "app": ["", "Cutting, plant and shipping managers"], "web": ["", "Admin, sales and management"] },
+      { "label": "Price", "app": ["", "From $99/month, Web included"], "web": ["", "From $49/month"] }
+    ],
+    "motto": "The best part? You don't have to choose.",
+    "motto_sub": "The Plant, Multi-plant and Enterprise plans include both the app and the web version, on the same data."
+  },
+  "roles": {
+    "eyebrow": "Roles",
+    "h2": "Everyone sees what's theirs.",
+    "items": [
+      { "icon": "crown", "h": "Admin", "p": "Everything: dashboard, assignment, catalogs, users and finances." },
+      { "icon": "scissors", "h": "Cutting manager", "p": "Assigns cut orders, moves the board and reports the actual cut." },
+      { "icon": "factory", "h": "Plant manager", "p": "Only their plant: operators, absences, pieces sewn, pressing, packing and warehouse." },
+      { "icon": "truck", "h": "Shipping manager", "p": "Urgent shipments and logging each shipment with its number." }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "h2": "Simple pricing. No endless quotes.",
+    "lead": "Pick the plan that fits your factory. Prices in US dollars per month, plus applicable taxes.",
+    "toggle_aria": "Billing period",
+    "monthly": "Monthly",
+    "annual": "Yearly",
+    "annual_badge": "2 months free",
+    "currency": "$",
+    "thousands": ",",
+    "per_month": "/month",
+    "from": "From",
+    "tax": "+ taxes",
+    "billed_monthly": "Billed monthly",
+    "billed_annual": "{total} billed yearly",
+    "per_company": "<strong>One price per company, not per user.</strong> Every plan already covers your team, so adding a manager never costs extra.",
+    "plans": {
+      "web": { "name": "Web", "for": "To get started from the office", "features": ["Browser access, nothing to install", "1 plant", "Up to 5 users", "All core modules: cut orders, assignment, reports and shipments", "Email support"], "caveat": "Requires an internet connection", "cta": "Start with Web" },
+      "planta": { "name": "Plant", "for": "For one plant and its office", "features": ["iPad and Android apps that work 100% offline", "Web access included", "1 plant", "Up to 10 users or devices", "Automatic backup and sync", "Email support"], "cta": "Choose Plant" },
+      "multiplanta": { "name": "Multi-plant", "badge": "Most popular", "for": "For factories with several plants", "features": ["Everything in Plant", "Up to 5 plants with monthly capacity", "Up to 30 users or devices", "Data migration from your current system", "Role-based training", "Priority support"], "cta": "Choose Multi-plant" },
+      "empresa": { "name": "Enterprise", "for": "For groups and large operations", "features": ["Unlimited plants and users", "Custom reports and workflows", "iPad, Android and Web", "Service level agreement (SLA)", "Dedicated onboarding"], "cta": "Let's talk" }
+    }
+  },
+  "licensing": {
+    "eyebrow": "Licensing",
+    "h2": "Not a download. Set up for your company.",
+    "lead": "Trama's apps aren't in the public app stores. Each company gets a private licence, a managed installation on its devices and real, hands-on support.",
+    "steps": [
+      { "h": "Get in touch", "p": "Pick a plan or tell us how many plants and users you have." },
+      { "h": "Live demo", "p": "We show you Trama with data that looks like your factory's." },
+      { "h": "Confirm your plan", "p": "Published pricing and everything in writing, no hidden costs." },
+      { "h": "Private access", "p": "Apps: private distribution to your iPads and Android devices, no public download. Web plan: sign in with a username and password." },
+      { "h": "Go-live and support", "p": "Data migration, role-based training and ongoing support, depending on your plan." }
+    ]
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "h2": "Questions we often get.",
+    "items": [
+      { "q": "How much does Trama cost?", "a": "Web is $49 per month, Plant $99, Multi-plant $249 and Enterprise starts at $590, plus taxes. Pay yearly and you get 2 months free. Pricing is per company, not per user." },
+      { "q": "What's the difference between the app and the web version?", "a": "The iPad and Android app keeps your data on the device, so it works offline, it's faster and it uses the camera for style photos. The web version needs no installation and runs on any computer, but it requires a connection. Plant, Multi-plant and Enterprise include both." },
+      { "q": "Can I download Trama from the App Store or Google Play?", "a": "No. The apps are distributed privately to licensed companies, so you control which devices have them and nobody outside your company can install them. The web version is accessed with a username and password." },
+      { "q": "Do I need internet to use it?", "a": "Not with the app: sign-in, cut orders, reports, catalogs and charts all work offline, and everything syncs when the connection comes back. The web version does need a connection." },
+      { "q": "Does it work on Android?", "a": "Yes. There's a native app for Android 8.0+ tablets and phones, with the same rules and the same backup format as the iPad app." },
+      { "q": "Where is my data stored?", "a": "With the app, in a local database on each device, with automatic backup. You can also export full backups at any time and restore them on another iPad or Android device." },
+      { "q": "Can you migrate data from my current system?", "a": "Yes. Migration is included in Multi-plant and Enterprise: we import plants, customers, suppliers, styles, cut orders and reports. We review your case during the demo." },
+      { "q": "What is garment manufacturing software?", "a": "It's a system to plan and track apparel production: which cut orders exist, which plant is making them, how far along each one is and when it ships. Trama does it on a tablet, offline, with a role for each manager." },
+      { "q": "Does it work for contract manufacturers?", "a": "Yes. Trama was born at a multi-plant contract manufacturer: it assigns cut orders based on each plant's monthly capacity, logs daily production and prioritizes urgent shipments by the customer's delivery date." }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "h2": "Request your licence.",
+    "lead": "Leave your details and we'll reach out to book a demo with data that looks like your factory's.",
+    "honeypot": "Website",
+    "name": "Name",
+    "company": "Company",
+    "email": "Email",
+    "phone": "Phone",
+    "country_aria": "Country and dialing code",
+    "phone_placeholder": "Number without country code",
+    "plants": "Plants",
+    "plants_options": [
+      { "value": "1", "label": "1" },
+      { "value": "2–3", "label": "2–3" },
+      { "value": "4–10", "label": "4–10" },
+      { "value": "Más de 10", "label": "More than 10" }
+    ],
+    "plan": "Plan you're interested in",
+    "plan_unsure": "Not sure yet",
+    "message": "What do you want to solve?",
+    "message_placeholder": "E.g. We track cut orders in spreadsheets and never know which plant has capacity…",
+    "submit": "Send request",
+    "hint": "We reply within one business day. We never share your data."
+  },
+  "countries": { "MX": "Mexico", "US": "United States", "CA": "Canada", "GT": "Guatemala", "SV": "El Salvador", "HN": "Honduras", "NI": "Nicaragua", "CR": "Costa Rica", "PA": "Panama", "DO": "Dominican Republic", "CO": "Colombia", "VE": "Venezuela", "EC": "Ecuador", "PE": "Peru", "BO": "Bolivia", "CL": "Chile", "AR": "Argentina", "UY": "Uruguay", "PY": "Paraguay", "BR": "Brazil", "ES": "Spain", "PT": "Portugal" },
+  "js": {
+    "required": "Please fill in your name, company, a valid email and your phone.",
+    "phone": "Enter {digits} digits for {country}, without the country code.",
+    "or": "or",
+    "or_alt": { "8": "or", "11": "or" },
+    "sending": "Sending…",
+    "submit": "Send request",
+    "generic_error": "We couldn't send your request. Please try again.",
+    "network_error": "We can't reach the server right now.",
+    "network_link": "Send it by email",
+    "sent_title": "Thank you, {name}!",
+    "sent_body": "We've received your request and sent you a confirmation email. We'll get in touch within one business day to schedule your demo.",
+    "mail_subject": "Trama · Licence request · {company}",
+    "mail_labels": { "name": "Name", "company": "Company", "email": "Email", "phone": "Phone", "country": "Country", "plants": "Plants", "plan": "Plan" }
+  },
+  "suggest": { "text": "This page is also available in English.", "cta": "View in English", "close": "Close" },
+  "footer": {
+    "tagline": "Garment production control for iPad, Android and Web · Proprietary software, distributed under licence."
+  }
+}

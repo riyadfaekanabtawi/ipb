@@ -1,0 +1,268 @@
+{
+  "meta": {
+    "lang": "es-MX",
+    "og_locale": "es_MX",
+    "title": "Trama | Software de producción textil para maquiladoras y confección",
+    "description": "Trama es el software de control de producción para maquiladoras y fábricas de confección: control de cortes, asignación a plantas por capacidad y envíos urgentes. App para iPad y Android sin internet, y versión Web. Desde $49 USD al mes.",
+    "keywords": "software de producción textil, control de producción textil, sistema para maquiladoras, software para confección, control de cortes, software para fábricas de confección, gestión de plantas de confección, MES textil, app para iPad y Android textil",
+    "og_title": "Trama | Software de producción textil para maquiladoras",
+    "og_description": "Cortes, plantas y envíos de tu fábrica de confección en un solo tablero. App sin internet para iPad y Android, y versión Web. Desde $49 USD al mes.",
+    "og_image_alt": "Trama: control de producción textil en tableta, con el dashboard de producción",
+    "app_category": "Control de producción textil",
+    "app_alt_name": "Trama · Control de producción textil",
+    "app_description": "Software de control de producción para fábricas de confección y maquiladoras: control de cortes, asignación a plantas por capacidad mensual, reportes de producción y envíos urgentes. App para iPad y Android que funciona sin internet, y versión Web.",
+    "feature_list": ["Control de cortes y asignación a plantas por capacidad mensual", "Tablero de corte (en espera, en mesa de corte, listo para confeccionar)", "Reportes de planta, corte y envío", "Envíos urgentes por fecha de entrega", "Calendario de plantas", "Calculadora de producción y minutaje", "Roles: administrador, gerente de cortes, planta y envíos", "App que funciona sin conexión a internet", "Versión Web para la oficina", "Respaldos y migración de datos"],
+    "md_title": "Trama para asistentes de IA"
+  },
+  "ui": {
+    "skip": "Saltar al contenido",
+    "home_aria": "Trama, inicio",
+    "nav_aria": "Principal",
+    "nav": { "what": "Qué es", "product": "Producto", "compare": "App o Web", "pricing": "Precios", "faq": "Preguntas" },
+    "login": "Iniciar sesión",
+    "cta": "Solicitar licencia",
+    "menu_open": "Abrir menú",
+    "lang_aria": "Idioma",
+    "lang_current": "idioma actual"
+  },
+  "hero": {
+    "eyebrow": "Para maquiladoras y fábricas de confección · iPad, Android y Web",
+    "h1": "Tu producción textil, <em>bajo control</em>. Aunque se caiga el internet.",
+    "lead": "Trama es el sistema para maquiladoras que conecta cortes, plantas y envíos en un solo tablero. Asigna por capacidad, sigue cada prenda de la mesa de corte a la bodega y entérate de lo urgente antes de que lo sea.",
+    "cta_primary": "Agenda una demo",
+    "cta_secondary": "Ver precios →",
+    "facts": [
+      { "n": "100%", "label": "sin conexión en la app" },
+      { "n": "4", "label": "roles con permisos" },
+      { "n": "$49", "label": "USD al mes, desde" }
+    ],
+    "device_aria": "Captura de Trama en tableta",
+    "img_alt": "Dashboard de Trama con ingresos en producción, capacidad de plantas y estado de la mesa de corte",
+    "float_a_title": "C-1042 → Planta Norte",
+    "float_a_sub": "4,000 prendas · cabe en octubre",
+    "float_b_title": "2 envíos urgentes",
+    "float_b_sub": "Vencen en 2 y 4 días"
+  },
+  "origin": "Nacido en el piso de producción de <strong>Industrial Peña Balles</strong>: años de cortes, plantas y entregas reales convertidos en una herramienta que cualquier fábrica puede usar.",
+  "what": {
+    "eyebrow": "Qué es Trama",
+    "h2": "Software de control de producción textil, hecho para la tableta.",
+    "body": "<strong>Trama es un software de producción textil para fábricas de confección y maquiladoras.</strong> Registra los cortes (lista, prenda, estilo, cliente, cantidad y precio), los asigna a tus plantas según su capacidad mensual, sigue cada corte por la mesa de corte, producción, plancha, empaque, bodega y envío, y avisa de las entregas urgentes. La app para iPad y Android funciona sin internet; la versión Web lleva Trama a cualquier computadora de la oficina.",
+    "facts": [
+      { "dt": "Tipo", "dd": "Software de gestión de producción (MES ligero) para la industria textil y de la confección" },
+      { "dt": "Plataformas", "dd": "iPad (iPadOS 17+), Android 8.0+ y Web (navegador)" },
+      { "dt": "Conexión", "dd": "App: 100% sin internet, con base de datos en el dispositivo. Web: en línea" },
+      { "dt": "Idioma", "dd": "Interfaz en español (México)" },
+      { "dt": "Precio", "dd": "Desde $49 USD al mes por empresa, más IVA" }
+    ]
+  },
+  "audience": {
+    "eyebrow": "Para quién es",
+    "h2": "Para quien corta, cose y entrega a tiempo.",
+    "items": [
+      { "h": "Maquiladoras de ropa", "p": "Reparte los cortes de cada cliente entre tus plantas sin pasarte de su capacidad y entrega a tiempo." },
+      { "h": "Fábricas de confección", "p": "Controla la producción por planta: operarios, faltas, prendas producidas, plancha, empaque y bodega." },
+      { "h": "Talleres de corte", "p": "Lleva el control de cortes en la mesa y la cantidad real cortada contra la planeada." },
+      { "h": "Marcas con producción propia", "p": "Ve en un tablero qué está en producción, qué falta por enviar y qué entrega está en riesgo." }
+    ]
+  },
+  "product": {
+    "eyebrow": "Producto",
+    "h2": "Todo el flujo de tu fábrica, de la orden al envío.",
+    "lead": "Diseñado para tableta, para usarse con una mano en el piso de producción y con todo el detalle en la oficina.",
+    "cap": {
+      "tag": "Asignación por capacidad",
+      "h": "Reparte cada corte entre tus plantas sin pasarte de su capacidad.",
+      "p": "Cada planta tiene una capacidad mensual. Al asignar, Trama te muestra en vivo cuánto ocupa el corte en cada planta para ese mes: si cabe, si se excede y cuál tiene más espacio.",
+      "plants": ["Planta Norte", "Planta Sur", "Planta Bajío"],
+      "fits": "Cabe",
+      "exceeds": "Excede"
+    },
+    "board": { "tag": "Tablero de corte", "h": "Arrastra cada corte por su estado.", "p": "En espera, en mesa de corte, listo para confeccionar. Un tablero visual que tu gerente de cortes actualiza con el dedo.", "alt": "Tablero de corte tipo kanban" },
+    "reports": { "tag": "Reportes de producción", "h": "Cada prenda, de la mesa a la bodega.", "p": "Reportes de planta, de corte y de envío alimentan un embudo por corte: cortadas, producidas, plancha, empaque, bodega y enviadas.", "alt": "Detalle de un corte con su avance de producción" },
+    "minis": [
+      { "icon": "alert", "h": "Envíos urgentes", "p": "Lo que vence pronto o ya venció, con prendas por enviar y registro de envío en un toque." },
+      { "icon": "calendar", "h": "Calendario de plantas", "p": "Inicios de producción y entregas al cliente del mes, con la capacidad de cada planta." },
+      { "icon": "calc", "h": "Calculadora de producción", "p": "Meta diaria, días y meses estimados, precio por minuto e ingreso neto mientras escribes." },
+      { "icon": "book", "h": "Catálogos completos", "p": "Clientes y proveedores con contactos ilimitados, galería de estilos con foto, proyectos y cotizaciones." }
+    ]
+  },
+  "showcase": {
+    "eyebrow": "Recorrido",
+    "h2": "Nativo en iPad y Android. Se siente rápido porque lo es.",
+    "tablist_aria": "Pantallas de Trama",
+    "default_alt": "Pantalla de Trama",
+    "tabs": [
+      { "key": "dash", "label": "Dashboard", "alt": "Dashboard con KPIs, capacidad de plantas y estado de la mesa de corte" },
+      { "key": "board", "label": "Tablero", "alt": "Tablero de corte tipo kanban por estado" },
+      { "key": "detail", "label": "Producción", "alt": "Detalle de producción de un corte con su embudo y reportes" },
+      { "key": "cal", "label": "Calendario", "alt": "Calendario de plantas con producción, entregas y capacidad" },
+      { "key": "detaildark", "label": "Modo oscuro", "alt": "Detalle de producción en modo oscuro" }
+    ]
+  },
+  "offline": {
+    "eyebrow": "Sin conexión",
+    "h2": "El internet de la planta no decide cuándo trabajas.",
+    "lead": "Con la app, tus datos viven en el iPad o la tableta Android, en una base de datos local. Sin servidores que se caen, sin pantallas de carga y sin depender de la señal en la nave.",
+    "items": [
+      { "b": "Base de datos en el dispositivo", "p": "Cortes, reportes, catálogos e imágenes se guardan en la tableta." },
+      { "b": "Inicio de sesión sin internet", "p": "Contraseñas cifradas (PBKDF2) en el propio dispositivo." },
+      { "b": "Respaldo y sincronización", "p": "Respaldo automático y sincronización en cuanto vuelve la conexión." },
+      { "b": "Migración desde tu sistema actual", "p": "Importamos tus plantas, clientes, estilos y cortes durante la instalación." }
+    ]
+  },
+  "compare": {
+    "eyebrow": "App o Web",
+    "h2": "Web para la oficina, app para el piso.",
+    "lead": "La app nativa en iPad o Android sigue trabajando aunque no haya señal en la nave. La versión Web pone Trama en cualquier computadora, sin instalar nada. Planta, Multiplanta y Empresa incluyen las dos.",
+    "table_caption": "Comparación entre la app de Trama y la versión Web",
+    "col_feature": "Característica",
+    "app": { "name": "App", "sub": "iPad y Android · para el piso de producción" },
+    "web": { "name": "Web", "sub": "Navegador · para la oficina y la dirección" },
+    "sr": { "yes": "Sí", "no": "No", "part": "Parcial" },
+    "rows": [
+      { "label": "Funciona sin internet", "app": ["yes", "Base de datos en el dispositivo"], "web": ["no", "Necesita conexión"] },
+      { "label": "Si se cae la red", "app": ["yes", "Nadie se detiene"], "web": ["no", "Se pausa hasta reconectar"] },
+      { "label": "Sincronización", "app": ["yes", "Automática al volver la conexión"], "web": ["yes", "Siempre en línea"] },
+      { "label": "Velocidad", "app": ["yes", "Instantánea, sin pantallas de carga"], "web": ["part", "Depende de tu conexión"] },
+      { "label": "Cámara para fotos de estilos", "app": ["yes", "Toma la foto desde la tableta"], "web": ["part", "Sube archivos desde la computadora"] },
+      { "label": "Sin instalación", "app": ["no", "Distribución privada a tus dispositivos"], "web": ["yes", "Abre el navegador y entra"] },
+      { "label": "En cualquier computadora", "app": ["no", "iPad, tabletas y teléfonos Android"], "web": ["yes", "Windows, Mac o Linux"] },
+      { "label": "Ideal para", "app": ["", "Gerentes de corte, planta y envíos"], "web": ["", "Administración, ventas y dirección"] },
+      { "label": "Precio", "app": ["", "Desde $99 USD/mes, incluye Web"], "web": ["", "Desde $49 USD/mes"] }
+    ],
+    "motto": "¿Lo mejor? No tienes que elegir.",
+    "motto_sub": "Los planes Planta, Multiplanta y Empresa incluyen la app y la versión Web con los mismos datos."
+  },
+  "roles": {
+    "eyebrow": "Roles",
+    "h2": "Cada quien ve lo suyo.",
+    "items": [
+      { "icon": "crown", "h": "Administrador", "p": "Todo: dashboard, asignación, catálogos, usuarios y finanzas." },
+      { "icon": "scissors", "h": "Gerente de cortes", "p": "Asigna cortes, mueve el tablero y reporta el corte real." },
+      { "icon": "factory", "h": "Gerente de planta", "p": "Solo su planta: operarios, faltas, producidas, plancha, empaque y bodega." },
+      { "icon": "truck", "h": "Gerente de envíos", "p": "Envíos urgentes y registro de cada envío con su número." }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "Precios",
+    "h2": "Precios claros, sin cotizaciones eternas.",
+    "lead": "Elige el plan que se ajusta a tu fábrica. Precios en dólares estadounidenses (USD) por mes, más IVA.",
+    "toggle_aria": "Periodo de facturación",
+    "monthly": "Mensual",
+    "annual": "Anual",
+    "annual_badge": "2 meses gratis",
+    "currency": "$",
+    "thousands": ",",
+    "per_month": "USD/mes",
+    "from": "Desde",
+    "tax": "+ IVA",
+    "billed_monthly": "Facturación mensual",
+    "billed_annual": "{total} USD al año",
+    "per_company": "<strong>Un precio por empresa, no por usuario.</strong> Cada plan ya incluye a tu equipo, así que sumar un gerente no te cuesta más.",
+    "plans": {
+      "web": { "name": "Web", "for": "Para empezar desde la oficina", "features": ["Acceso desde el navegador, sin instalar nada", "1 planta", "Hasta 5 usuarios", "Todos los módulos: cortes, asignación, reportes y envíos", "Soporte por correo"], "caveat": "Requiere conexión a internet", "cta": "Empezar con Web" },
+      "planta": { "name": "Planta", "for": "Para una planta y su oficina", "features": ["Apps para iPad y Android, 100% sin internet", "Acceso Web incluido", "1 planta", "Hasta 10 usuarios o dispositivos", "Respaldo y sincronización automáticos", "Soporte por correo"], "cta": "Elegir Planta" },
+      "multiplanta": { "name": "Multiplanta", "badge": "Más elegido", "for": "Para fábricas con varias plantas", "features": ["Todo lo de Planta", "Hasta 5 plantas con capacidad por mes", "Hasta 30 usuarios o dispositivos", "Migración de datos de tu sistema actual", "Capacitación por rol", "Soporte prioritario"], "cta": "Elegir Multiplanta" },
+      "empresa": { "name": "Empresa", "for": "Para grupos y operaciones grandes", "features": ["Plantas y usuarios ilimitados", "Reportes y flujos a la medida", "iPad, Android y Web", "Acuerdo de nivel de servicio (SLA)", "Onboarding dedicado"], "cta": "Hablemos" }
+    }
+  },
+  "licensing": {
+    "eyebrow": "Licencias",
+    "h2": "No se descarga. Se instala para tu empresa.",
+    "lead": "Las apps de Trama no están en las tiendas públicas. Cada empresa recibe una licencia privada, una instalación administrada en sus dispositivos y acompañamiento real.",
+    "steps": [
+      { "h": "Escríbenos", "p": "Elige un plan o cuéntanos cuántas plantas y usuarios tienes." },
+      { "h": "Demo en vivo", "p": "Te mostramos Trama con datos parecidos a los de tu fábrica." },
+      { "h": "Confirmamos tu plan", "p": "Precio publicado y todo por escrito, sin costos ocultos." },
+      { "h": "Acceso privado", "p": "Apps: distribución privada a tus iPads y Android, sin descarga pública. Plan Web: acceso con usuario y contraseña." },
+      { "h": "Arranque y soporte", "p": "Migración de datos, capacitación por rol y soporte continuo según tu plan." }
+    ]
+  },
+  "faq": {
+    "eyebrow": "Preguntas",
+    "h2": "Lo que nos suelen preguntar.",
+    "items": [
+      { "q": "¿Cuánto cuesta Trama?", "a": "Web cuesta $49 USD al mes, Planta $99, Multiplanta $249 y Empresa desde $590, más IVA. Si pagas anual, tienes 2 meses gratis. El precio es por empresa, no por usuario." },
+      { "q": "¿Cuál es la diferencia entre la app y la versión Web?", "a": "La app para iPad y Android guarda los datos en el dispositivo, así que funciona sin internet, es más rápida y usa la cámara para las fotos de estilos. La versión Web no requiere instalación y se usa desde cualquier computadora, pero necesita conexión. Planta, Multiplanta y Empresa incluyen ambas." },
+      { "q": "¿Puedo descargar Trama de la App Store o Google Play?", "a": "No. Las apps se distribuyen de forma privada a las empresas con licencia, así controlas qué dispositivos las tienen y nadie fuera de tu empresa puede instalarlas. La versión Web se usa con usuario y contraseña." },
+      { "q": "¿Necesito internet para usarla?", "a": "Con la app, no: inicio de sesión, cortes, reportes, catálogos y gráficas funcionan sin conexión, y todo se sincroniza cuando vuelve el internet. La versión Web sí necesita conexión." },
+      { "q": "¿Funciona en Android?", "a": "Sí. Hay app nativa para tabletas y teléfonos Android 8.0 o superior, con las mismas reglas y el mismo formato de respaldo que la de iPad." },
+      { "q": "¿Dónde quedan mis datos?", "a": "En la app, en una base de datos local en cada dispositivo, con respaldo automático. Además puedes exportar respaldos completos cuando quieras y restaurarlos en otro iPad o Android." },
+      { "q": "¿Pueden migrar la información de mi sistema actual?", "a": "Sí. La migración está incluida en Multiplanta y Empresa: importamos plantas, clientes, proveedores, estilos, cortes y reportes. Revisamos cada caso en la demo." },
+      { "q": "¿Qué es un software de control de producción textil?", "a": "Es un sistema para planear y seguir la fabricación de prendas: qué cortes hay, en qué planta se producen, cuánto lleva cada uno y cuándo se envía. Trama lo hace en tableta, sin internet y con roles para cada gerente." },
+      { "q": "¿Sirve para maquiladoras?", "a": "Sí. Trama nació en una maquiladora con varias plantas: asigna cortes por capacidad mensual de cada planta, registra la producción diaria y prioriza los envíos urgentes por fecha de entrega al cliente." }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Contacto",
+    "h2": "Solicita tu licencia.",
+    "lead": "Déjanos tus datos y te contactamos para agendar una demo con información parecida a la de tu fábrica.",
+    "honeypot": "Sitio web",
+    "name": "Nombre",
+    "company": "Empresa",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "country_aria": "País y código de marcación",
+    "phone_placeholder": "Número sin código de país",
+    "plants": "Plantas",
+    "plants_options": [
+      { "value": "1", "label": "1" },
+      { "value": "2–3", "label": "2–3" },
+      { "value": "4–10", "label": "4–10" },
+      { "value": "Más de 10", "label": "Más de 10" }
+    ],
+    "plan": "Plan de interés",
+    "plan_unsure": "Aún no sé",
+    "message": "¿Qué quieres resolver?",
+    "message_placeholder": "Ej. Hoy controlamos los cortes en Excel y no sabemos qué planta tiene capacidad…",
+    "submit": "Enviar solicitud",
+    "hint": "Te respondemos en menos de un día hábil. No compartimos tus datos."
+  },
+  "countries": { "MX": "México", "US": "Estados Unidos", "CA": "Canadá", "GT": "Guatemala", "SV": "El Salvador", "HN": "Honduras", "NI": "Nicaragua", "CR": "Costa Rica", "PA": "Panamá", "DO": "República Dominicana", "CO": "Colombia", "VE": "Venezuela", "EC": "Ecuador", "PE": "Perú", "BO": "Bolivia", "CL": "Chile", "AR": "Argentina", "UY": "Uruguay", "PY": "Paraguay", "BR": "Brasil", "ES": "España", "PT": "Portugal" },
+  "js": {
+    "required": "Completa nombre, empresa, un correo válido y tu teléfono.",
+    "phone": "Escribe {digits} dígitos para {country}, sin el código de país.",
+    "or": "o",
+    "or_alt": { "8": "u", "11": "u" },
+    "sending": "Enviando…",
+    "submit": "Enviar solicitud",
+    "generic_error": "No pudimos enviar tu solicitud. Intenta de nuevo.",
+    "network_error": "No hay conexión con el servidor.",
+    "network_link": "Envíala por correo",
+    "sent_title": "¡Gracias, {name}!",
+    "sent_body": "Recibimos tu solicitud y te enviamos una confirmación por correo. Te contactaremos en menos de un día hábil para agendar tu demo.",
+    "mail_subject": "Trama · Solicitud de licencia · {company}",
+    "mail_labels": { "name": "Nombre", "company": "Empresa", "email": "Correo", "phone": "Teléfono", "country": "País", "plants": "Plantas", "plan": "Plan de interés" }
+  },
+  "suggest": { "text": "Esta página también está disponible en español.", "cta": "Ver en español", "close": "Cerrar" },
+  "footer": {
+    "tagline": "Control de producción textil para iPad, Android y Web · Software propietario, distribuido bajo licencia."
+  },
+  "llms": {
+    "summary": "Trama es un software de control de producción textil para fábricas de confección y maquiladoras. Tiene app nativa para iPad y Android que funciona 100% sin internet y una versión Web para la oficina. Se vende por suscripción mensual o anual con licencia privada por empresa (las apps no tienen descarga pública).",
+    "origin": "Trama nació en el piso de producción de Industrial Peña Balles, una maquiladora mexicana con varias plantas, y hoy se licencia a otras empresas textiles. La interfaz está en español (México); el sitio está en español, inglés y portugués.",
+    "h_does": "Qué hace",
+    "does": [
+      "Control de cortes: registra cada corte (código, lista, prenda, estilo, cliente, cantidad, precio unitario, fecha interna y fecha de entrega al cliente).",
+      "Asignación por capacidad: reparte un corte entre plantas; cada planta tiene una capacidad mensual y Trama muestra en vivo si el corte cabe.",
+      "Tablero de corte: estados en espera, en mesa de corte y listo para confeccionar.",
+      "Reportes de producción: de planta (operarios, faltas, producidas, plancha, empaque, bodega), de corte (cantidad real cortada) y de envío, con totales y exportación CSV.",
+      "Envíos urgentes: cortes con prendas por enviar cuya fecha de entrega vence pronto o ya venció.",
+      "Calendario de plantas, dashboard con KPIs y gráficas, calculadora de producción (meta diaria, días estimados, precio por minuto), catálogos de plantas, clientes, proveedores, estilos con foto, proyectos y usuarios.",
+      "Roles: administrador, gerente de cortes, gerente de planta (solo ve su planta) y gerente de envíos.",
+      "App sin conexión: base de datos en el dispositivo, inicio de sesión offline, respaldo y sincronización al volver la conexión. La versión Web requiere internet."
+    ],
+    "h_pricing": "Precios (USD por mes, impuestos no incluidos)",
+    "annual_note": "Pago anual: 2 meses gratis (se paga el equivalente a 10 meses). El precio es por empresa, no por usuario.",
+    "h_buy": "Cómo se contrata",
+    "h_contact": "Contacto",
+    "contact": "Usa el formulario de solicitud de licencia del sitio: {url}#contacto",
+    "h_langs": "Idiomas",
+    "h_faq": "Preguntas frecuentes",
+    "h_compare": "App o Web",
+    "h_links": "Enlaces",
+    "link_site": "producto, precios y preguntas frecuentes",
+    "link_full": "Descripción completa para IA"
+  }
+}
