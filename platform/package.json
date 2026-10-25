@@ -12,7 +12,7 @@
     "migrate": "tsx scripts/migrate.ts",
     "create-admin": "tsx scripts/create-admin.ts",
     "dev:api": "tsx scripts/dev-server.ts",
-    "build": "vite build",
+    "build": "vite build && node scripts/merge-landing.mjs",
     "dev:web": "vite",
     "preview": "vite preview"
   },

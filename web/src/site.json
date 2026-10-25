@@ -1,7 +1,7 @@
 {
   "_comment": "Shared, language-neutral site config. The ONE place for URLs, prices and phone rules. Edit, then run: python3 web/build.py",
-  "base_url": "https://ranabtawi-trama.static.hf.space",
-  "login_url": "https://trama-platform.vercel.app/",
+  "base_url": "https://trama-platform.vercel.app",
+  "login_url": "https://trama-platform.vercel.app/login",
   "contact_endpoint": "https://trama-contact-api.vercel.app/api/contact",
   "lastmod": "2026-10-25",
   "languages": [

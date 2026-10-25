@@ -3,11 +3,61 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api" },
-    { "source": "/((?!api(?:/|$)).*)", "destination": "/index.html" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/api"
+    },
+    {
+      "source": "/login",
+      "destination": "/app.html"
+    },
+    {
+      "source": "/activar",
+      "destination": "/app.html"
+    },
+    {
+      "source": "/restablecer",
+      "destination": "/app.html"
+    },
+    {
+      "source": "/olvide",
+      "destination": "/app.html"
+    },
+    {
+      "source": "/app",
+      "destination": "/app.html"
+    },
+    {
+      "source": "/app/(.*)",
+      "destination": "/app.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/app.html"
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/app.html"
+    }
   ],
   "headers": [
-    { "source": "/api/(.*)", "headers": [{ "key": "Cache-Control", "value": "no-store" }] },
-    { "source": "/assets/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] }
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)\\.(js|css)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
   ]
 }

@@ -1,118 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://ranabtawi-trama.static.hf.space/index.html</loc>
+    <loc>https://trama-platform.vercel.app/index.html</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/index.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/index.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/index.html"/>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/index.html"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/index.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/index.html"/>
-    <image:image><image:loc>https://ranabtawi-trama.static.hf.space/assets/og.jpg</image:loc><image:title>Trama | Software de producción textil para maquiladoras</image:title></image:image>
-    <image:image><image:loc>https://ranabtawi-trama.static.hf.space/assets/shots/board.webp</image:loc><image:title>Tablero de corte tipo kanban</image:title></image:image>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://trama-platform.vercel.app/index.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trama-platform.vercel.app/index.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trama-platform.vercel.app/en/index.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trama-platform.vercel.app/pt/index.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://trama-platform.vercel.app/pt/index.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trama-platform.vercel.app/index.html"/>
+    <image:image><image:loc>https://trama-platform.vercel.app/assets/og.jpg</image:loc><image:title>Trama | Software de producción textil para maquiladoras</image:title></image:image>
+    <image:image><image:loc>https://trama-platform.vercel.app/assets/shots/board.webp</image:loc><image:title>Tablero de corte tipo kanban</image:title></image:image>
   </url>
   <url>
-    <loc>https://ranabtawi-trama.static.hf.space/en/index.html</loc>
+    <loc>https://trama-platform.vercel.app/en/index.html</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/index.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/index.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/index.html"/>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/index.html"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/index.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/index.html"/>
-    <image:image><image:loc>https://ranabtawi-trama.static.hf.space/assets/og.jpg</image:loc><image:title>Trama | Garment manufacturing software for the factory floor</image:title></image:image>
-    <image:image><image:loc>https://ranabtawi-trama.static.hf.space/assets/shots/board.webp</image:loc><image:title>Kanban-style cutting board</image:title></image:image>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://trama-platform.vercel.app/index.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trama-platform.vercel.app/index.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trama-platform.vercel.app/en/index.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trama-platform.vercel.app/pt/index.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://trama-platform.vercel.app/pt/index.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trama-platform.vercel.app/index.html"/>
+    <image:image><image:loc>https://trama-platform.vercel.app/assets/og.jpg</image:loc><image:title>Trama | Garment manufacturing software for the factory floor</image:title></image:image>
+    <image:image><image:loc>https://trama-platform.vercel.app/assets/shots/board.webp</image:loc><image:title>Kanban-style cutting board</image:title></image:image>
   </url>
   <url>
-    <loc>https://ranabtawi-trama.static.hf.space/pt/index.html</loc>
+    <loc>https://trama-platform.vercel.app/pt/index.html</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/index.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/index.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/index.html"/>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/index.html"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/index.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/index.html"/>
-    <image:image><image:loc>https://ranabtawi-trama.static.hf.space/assets/og.jpg</image:loc><image:title>Trama | Software de produção têxtil para confecções</image:title></image:image>
-    <image:image><image:loc>https://ranabtawi-trama.static.hf.space/assets/shots/board.webp</image:loc><image:title>Quadro de corte estilo kanban</image:title></image:image>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://trama-platform.vercel.app/index.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trama-platform.vercel.app/index.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trama-platform.vercel.app/en/index.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trama-platform.vercel.app/pt/index.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://trama-platform.vercel.app/pt/index.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trama-platform.vercel.app/index.html"/>
+    <image:image><image:loc>https://trama-platform.vercel.app/assets/og.jpg</image:loc><image:title>Trama | Software de produção têxtil para confecções</image:title></image:image>
+    <image:image><image:loc>https://trama-platform.vercel.app/assets/shots/board.webp</image:loc><image:title>Quadro de corte estilo kanban</image:title></image:image>
   </url>
   <url>
-    <loc>https://ranabtawi-trama.static.hf.space/privacidad.html</loc>
+    <loc>https://trama-platform.vercel.app/privacidad.html</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/privacidade.html"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/privacidade.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://trama-platform.vercel.app/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trama-platform.vercel.app/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trama-platform.vercel.app/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trama-platform.vercel.app/pt/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://trama-platform.vercel.app/pt/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trama-platform.vercel.app/privacidad.html"/>
   </url>
   <url>
-    <loc>https://ranabtawi-trama.static.hf.space/en/privacy.html</loc>
+    <loc>https://trama-platform.vercel.app/en/privacy.html</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/privacidade.html"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/privacidade.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://trama-platform.vercel.app/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trama-platform.vercel.app/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trama-platform.vercel.app/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trama-platform.vercel.app/pt/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://trama-platform.vercel.app/pt/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trama-platform.vercel.app/privacidad.html"/>
   </url>
   <url>
-    <loc>https://ranabtawi-trama.static.hf.space/pt/privacidade.html</loc>
+    <loc>https://trama-platform.vercel.app/pt/privacidade.html</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/privacidade.html"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/privacidade.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://trama-platform.vercel.app/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trama-platform.vercel.app/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trama-platform.vercel.app/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trama-platform.vercel.app/pt/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://trama-platform.vercel.app/pt/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trama-platform.vercel.app/privacidad.html"/>
   </url>
   <url>
-    <loc>https://ranabtawi-trama.static.hf.space/terminos.html</loc>
+    <loc>https://trama-platform.vercel.app/terminos.html</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/termos.html"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/termos.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://trama-platform.vercel.app/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trama-platform.vercel.app/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trama-platform.vercel.app/en/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trama-platform.vercel.app/pt/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://trama-platform.vercel.app/pt/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trama-platform.vercel.app/terminos.html"/>
   </url>
   <url>
-    <loc>https://ranabtawi-trama.static.hf.space/en/terms.html</loc>
+    <loc>https://trama-platform.vercel.app/en/terms.html</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/termos.html"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/termos.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://trama-platform.vercel.app/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trama-platform.vercel.app/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trama-platform.vercel.app/en/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trama-platform.vercel.app/pt/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://trama-platform.vercel.app/pt/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trama-platform.vercel.app/terminos.html"/>
   </url>
   <url>
-    <loc>https://ranabtawi-trama.static.hf.space/pt/termos.html</loc>
+    <loc>https://trama-platform.vercel.app/pt/termos.html</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/termos.html"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/termos.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://trama-platform.vercel.app/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trama-platform.vercel.app/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trama-platform.vercel.app/en/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trama-platform.vercel.app/pt/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://trama-platform.vercel.app/pt/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trama-platform.vercel.app/terminos.html"/>
   </url>
-  <url><loc>https://ranabtawi-trama.static.hf.space/llms.txt</loc><lastmod>2026-10-25</lastmod><priority>0.3</priority></url>
+  <url><loc>https://trama-platform.vercel.app/llms.txt</loc><lastmod>2026-10-25</lastmod><priority>0.3</priority></url>
 </urlset>

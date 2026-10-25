@@ -29,12 +29,12 @@ Trama nació en el piso de producción de Industrial Peña Balles, una maquilado
 5. Arranque y soporte: Migración de datos, capacitación por rol y soporte continuo según tu plan.
 
 ## Contacto
-- Usa el formulario de solicitud de licencia del sitio: https://ranabtawi-trama.static.hf.space/index.html#contacto
+- Usa el formulario de solicitud de licencia del sitio: https://trama-platform.vercel.app/index.html#contacto
 
 ## Idiomas
-- [Español](https://ranabtawi-trama.static.hf.space/index.html)
-- [English](https://ranabtawi-trama.static.hf.space/en/index.html)
-- [Português](https://ranabtawi-trama.static.hf.space/pt/index.html)
+- [Español](https://trama-platform.vercel.app/index.html)
+- [English](https://trama-platform.vercel.app/en/index.html)
+- [Português](https://trama-platform.vercel.app/pt/index.html)
 
 ## App o Web
 Web para la oficina, app para el piso. La app nativa en iPad o Android sigue trabajando aunque no haya señal en la nave. La versión Web pone Trama en cualquier computadora, sin instalar nada. Planta, Multiplanta y Empresa incluyen las dos.
@@ -79,5 +79,5 @@ Es un sistema para planear y seguir la fabricación de prendas: qué cortes hay,
 Sí. Trama nació en una maquiladora con varias plantas: asigna cortes por capacidad mensual de cada planta, registra la producción diaria y prioriza los envíos urgentes por fecha de entrega al cliente.
 
 ## Enlaces
-- [Trama](https://ranabtawi-trama.static.hf.space/index.html): producto, precios y preguntas frecuentes
-- [Descripción completa para IA](https://ranabtawi-trama.static.hf.space/llms-full.txt)
+- [Trama](https://trama-platform.vercel.app/index.html): producto, precios y preguntas frecuentes
+- [Descripción completa para IA](https://trama-platform.vercel.app/llms-full.txt)

@@ -6,7 +6,7 @@ import { autoReplyEmail, internalEmail, messages, parseLead } from "../lib/lead.
 
 export const config = { runtime: "nodejs", maxDuration: 15 };
 
-const DEFAULT_ORIGINS = ["https://ranabtawi-trama.static.hf.space", "https://ranabtawi-trama.hf.space", "https://huggingface.co"];
+const DEFAULT_ORIGINS = ["https://trama-platform.vercel.app", "https://ranabtawi-trama.static.hf.space", "https://ranabtawi-trama.hf.space", "https://huggingface.co"];
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
 const hits = new Map(); // best-effort per-instance rate limit; honeypot + timing stop most bots anyway

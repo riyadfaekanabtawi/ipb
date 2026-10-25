@@ -187,7 +187,7 @@ export function internalEmail(lead) {
   return { subject: `Trama · Solicitud de licencia · ${lead.company}${where}`, text, html, replyTo: `${lead.name} <${lead.email}>` };
 }
 
-const SITE = "https://ranabtawi-trama.static.hf.space";
+const SITE = "https://trama-platform.vercel.app";
 const SITE_PATH = { es: "/index.html", en: "/en/index.html", pt: "/pt/index.html" };
 const PLAN_LABELS = {
   en: { Planta: "Plant", Multiplanta: "Multi-plant", Empresa: "Enterprise", "Aún no sé": "Not sure yet" },

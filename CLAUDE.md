@@ -52,7 +52,7 @@ python3 -m http.server -d web/public 8000
 - Template syntax: `{{key}}` raw, `{{key|e}}` escaped, `{{#list}}…{{/list}}`, `{{^key}}…{{/key}}`. `app.js` reads its strings from `window.TRAMA_I18N`, injected per page.
 - The build validates JSON-LD, the FAQPage vs the visible FAQ, hreflang/canonical, and that the phone table in `site.json` matches `contact-api/lib/lead.js` (`PHONE_RULES`). Change both together.
 - Spanish is `/index.html` (x-default), English `/en/index.html`, Portuguese (Brazil) `/pt/index.html`. The host redirects `/` to `/index.html`, so canonical/hreflang/sitemap use the `index.html` URLs. Never auto-redirect by browser language.
-- Live at https://ranabtawi-trama.static.hf.space (Space `ranabtawi/trama`). Only `web/public/` is published: `web/deploy.sh` (builds, then uploads with the local `hf` login) or CI on pushes to `main` (`.github/workflows/deploy-web.yml`, needs the `HF_TOKEN` secret and `HF_SPACE=ranabtawi/trama`).
+- Live at https://trama-platform.vercel.app (canonical; `platform/scripts/merge-landing.mjs` copies `web/public/` into the platform build, so `/` is the landing and `/login`, `/app`, `/admin` are the web app) and mirrored at https://ranabtawi-trama.static.hf.space (Space `ranabtawi/trama`). Only `web/public/` is published: `web/deploy.sh` (builds, then uploads with the local `hf` login) or CI on pushes to `main` (`.github/workflows/deploy-web.yml`, needs the `HF_TOKEN` secret and `HF_SPACE=ranabtawi/trama`).
 
 ## iOS architecture
 
