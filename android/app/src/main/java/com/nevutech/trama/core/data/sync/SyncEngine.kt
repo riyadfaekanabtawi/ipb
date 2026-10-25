@@ -311,7 +311,7 @@ class SyncEngine(
     }
 
     companion object {
-        const val DEFAULT_API_BASE = "https://trama-app.vercel.app/api"
+        const val DEFAULT_API_BASE = "https://trama-platform.vercel.app/api"
         private const val WRITE_DEBOUNCE_MS = 3_000L
         private const val MAX_PUSH_ROUNDS = 50
         private const val MAX_PUSH_CHANGES = 200

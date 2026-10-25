@@ -25,7 +25,7 @@ export const config = {
   },
   /** Public URL of the web app (links in emails). */
   get appUrl() {
-    return (process.env.APP_URL ?? "https://trama-app.vercel.app").replace(/\/$/, "");
+    return (process.env.APP_URL ?? "https://trama-platform.vercel.app").replace(/\/$/, "");
   },
   get gmailUser() {
     return process.env.GMAIL_USER;
