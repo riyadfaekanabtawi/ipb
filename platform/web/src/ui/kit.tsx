@@ -1,12 +1,14 @@
 // Shared components (the web counterparts of ios/Trama/DesignSystem/Components).
 
-import { AlertCircle, CheckCircle2, ImagePlus, Info, Search, Shirt, Trash2, X } from "lucide-react";
+import { AlertCircle, CheckCircle2, ImagePlus, Info, Languages, Search, Shirt, Trash2, X } from "lucide-react";
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type ComponentType, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { useSearchParams } from "react-router-dom";
 import type { Tint } from "../domain/enums";
 import { capacityTint } from "../domain/rules";
 import { fmtPercent, initials } from "../lib/format";
 import { dismiss, toastStore } from "../lib/toast";
+import { isLang, LANG_NAME, LANGS, LOCALE, setLang, t, useLang } from "../i18n";
 
 export type Icon = ComponentType<{ size?: number | string; className?: string; strokeWidth?: number }>;
 
@@ -87,7 +89,7 @@ export function CapacityBar({ used, max, preview = 0, large }: { used: number; m
   const ratio = max > 0 ? used / max : 0;
   const previewRatio = max > 0 ? (used + preview) / max : 0;
   return (
-    <div className={`cap ${large ? "lg" : ""}`} role="meter" aria-valuenow={Math.round(ratio * 100)} aria-valuemin={0} aria-valuemax={100} aria-label={`Capacidad usada ${fmtPercent(ratio)}`}>
+    <div className={`cap ${large ? "lg" : ""}`} role="meter" aria-valuenow={Math.round(ratio * 100)} aria-valuemin={0} aria-valuemax={100} aria-label={t("kit.capacityUsed", { percent: fmtPercent(ratio) })}>
       {preview > 0 && <span className={`preview t-${capacityTint(previewRatio)}`} style={{ width: `${Math.min(1, previewRatio) * 100}%` }} />}
       <span className={`used t-${capacityTint(ratio)}`} style={{ width: `${Math.min(1, ratio) * 100}%` }} />
     </div>
@@ -182,7 +184,7 @@ export function Modal({ title, onClose, children, footer, size }: { title: React
       <div className={`modal ${size ?? ""}`} role="dialog" aria-modal="true">
         <div className="modal-head">
           <h3>{title}</h3>
-          <button type="button" className="btn ghost icon" onClick={onClose} aria-label="Cerrar">
+          <button type="button" className="btn ghost icon" onClick={onClose} aria-label={t("common.close")}>
             <X />
           </button>
         </div>
@@ -195,7 +197,7 @@ export function Modal({ title, onClose, children, footer, size }: { title: React
 }
 
 /** Form sheet: modal + Cancel/Save footer that runs an async save and closes on success. */
-export function FormModal({ title, onClose, onSave, canSave = true, saveLabel = "Guardar", children, size }: {
+export function FormModal({ title, onClose, onSave, canSave = true, saveLabel, children, size }: {
   title: ReactNode; onClose: () => void; onSave: () => Promise<unknown> | unknown; canSave?: boolean; saveLabel?: string; children: ReactNode; size?: "wide" | "narrow";
 }) {
   const [busy, setBusy] = useState(false);
@@ -223,9 +225,9 @@ export function FormModal({ title, onClose, onSave, canSave = true, saveLabel = 
       footer={
         <>
           {error && <span className="error-text grow">{error}</span>}
-          <button type="button" className="btn" onClick={onClose}>Cancelar</button>
+          <button type="button" className="btn" onClick={onClose}>{t("common.cancel")}</button>
           <button type="submit" form={formId} className="btn primary" disabled={!canSave || busy}>
-            {busy ? "Guardando…" : saveLabel}
+            {busy ? t("common.saving") : (saveLabel ?? t("common.save"))}
           </button>
         </>
       }
@@ -237,7 +239,7 @@ export function FormModal({ title, onClose, onSave, canSave = true, saveLabel = 
   );
 }
 
-export function ConfirmModal({ title, message, confirmLabel = "Eliminar", onConfirm, onClose }: { title: string; message?: string; confirmLabel?: string; onConfirm: () => Promise<unknown> | unknown; onClose: () => void }) {
+export function ConfirmModal({ title, message, confirmLabel, onConfirm, onClose }: { title: string; message?: string; confirmLabel?: string; onConfirm: () => Promise<unknown> | unknown; onClose: () => void }) {
   const [busy, setBusy] = useState(false);
   return (
     <Modal
@@ -246,7 +248,7 @@ export function ConfirmModal({ title, message, confirmLabel = "Eliminar", onConf
       size="narrow"
       footer={
         <>
-          <button type="button" className="btn" onClick={onClose}>Cancelar</button>
+          <button type="button" className="btn" onClick={onClose}>{t("common.cancel")}</button>
           <button
             type="button"
             className="btn danger solid"
@@ -261,12 +263,12 @@ export function ConfirmModal({ title, message, confirmLabel = "Eliminar", onConf
               }
             }}
           >
-            <Trash2 /> {confirmLabel}
+            <Trash2 /> {confirmLabel ?? t("common.delete")}
           </button>
         </>
       }
     >
-      <p className="muted" style={{ margin: 0 }}>{message ?? "Esta acción no se puede deshacer."}</p>
+      <p className="muted" style={{ margin: 0 }}>{message ?? t("common.cannotUndo")}</p>
     </Modal>
   );
 }
@@ -350,7 +352,7 @@ export async function readImage(file: File, maxSide = 1280): Promise<string> {
     const img = await new Promise<HTMLImageElement>((resolve, reject) => {
       const el = new Image();
       el.onload = () => resolve(el);
-      el.onerror = () => reject(new Error("No se pudo leer la imagen."));
+      el.onerror = () => reject(new Error(t("kit.imageReadError")));
       el.src = url;
     });
     const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
@@ -374,10 +376,10 @@ export function PhotoField({ label, value, onChange, maxSide }: { label: string;
         <div className="thumb">{src ? <img src={src} alt="" /> : <ImagePlus color="var(--text-3)" />}</div>
         <div className="col" style={{ gap: 6 }}>
           <div className="row wrap">
-            <button type="button" className="btn sm" onClick={() => input.current?.click()}>{src ? "Cambiar" : "Elegir imagen"}</button>
-            {src && <button type="button" className="btn sm ghost danger" onClick={() => onChange(null)}>Quitar</button>}
+            <button type="button" className="btn sm" onClick={() => input.current?.click()}>{src ? t("kit.changeImage") : t("kit.pickImage")}</button>
+            {src && <button type="button" className="btn sm ghost danger" onClick={() => onChange(null)}>{t("common.remove")}</button>}
           </div>
-          <span className="tiny faint">JPG o PNG; se optimiza antes de sincronizar.</span>
+          <span className="tiny faint">{t("kit.imageHint")}</span>
           {error && <span className="error-text">{error}</span>}
         </div>
         <input
@@ -393,7 +395,7 @@ export function PhotoField({ label, value, onChange, maxSide }: { label: string;
               setError(null);
               onChange(await readImage(file, maxSide));
             } catch (err) {
-              setError(err instanceof Error ? err.message : "No se pudo leer la imagen.");
+              setError(err instanceof Error ? err.message : t("kit.imageReadError"));
             }
           }}
         />
@@ -447,6 +449,35 @@ export function Threads({ count = 16 }: { count?: number }) {
   );
 }
 
+/** Language picker (login, activation, reset, forgot and Settings). Drops a ?lang= from the URL. */
+export function LanguageSwitcher({ className = "" }: { className?: string }) {
+  const lang = useLang();
+  const [params, setParams] = useSearchParams();
+  return (
+    <div className={`input-affix lang-switch ${className}`}>
+      <Languages />
+      <select
+        className="input"
+        aria-label={t("lang.label")}
+        value={lang}
+        onChange={(e) => {
+          const next = e.target.value;
+          if (!isLang(next)) return;
+          setLang(next);
+          if (params.has("lang")) {
+            params.delete("lang");
+            setParams(params, { replace: true });
+          }
+        }}
+      >
+        {LANGS.map((l) => (
+          <option key={l} value={l} lang={LOCALE[l]}>{LANG_NAME[l]}</option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
 export function Spinner() {
-  return <div className="spinner" aria-label="Cargando" />;
+  return <div className="spinner" aria-label={t("common.loading")} />;
 }

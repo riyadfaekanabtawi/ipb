@@ -1,7 +1,8 @@
 import { CloudOff, LogOut, Menu, Lock, RefreshCw } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { NavLink, Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { landingFor, ROLE_TITLE, SECTION_GROUPS, SECTION_TITLE, sectionsFor } from "../domain/enums";
+import { groupTitle, landingFor, roleTitle, SECTION_GROUPS, sectionTitle, sectionsFor } from "../domain/enums";
+import { t } from "../i18n";
 import { isUrgent } from "../domain/rules";
 import { useDB, useSession, useSyncState } from "../data/session";
 import { fmtDate, fmtDateTime, fullName, parseDate } from "../lib/format";
@@ -22,7 +23,7 @@ export function Shell() {
 
   useEffect(() => setOpen(false), [location.pathname]);
   useEffect(() => {
-    document.title = section ? `${SECTION_TITLE[section]} · Trama` : "Trama";
+    document.title = section ? `${sectionTitle(section)} · Trama` : "Trama";
   }, [section]);
 
   const urgentCount = useMemo(() => {
@@ -51,14 +52,14 @@ export function Shell() {
           const items = g.sections.filter((s) => allowed.includes(s));
           if (!items.length) return null;
           return (
-            <div key={g.title}>
-              <div className="nav-group">{g.title}</div>
+            <div key={g.key}>
+              <div className="nav-group">{groupTitle(g.key)}</div>
               {items.map((s) => {
                 const I = SECTION_ICON[s];
                 return (
                   <NavLink key={s} to={SECTION_PATH[s]} className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
                     <I />
-                    <span>{SECTION_TITLE[s]}</span>
+                    <span>{sectionTitle(s)}</span>
                     {s === "shipments" && urgentCount > 0 && <span className="nav-badge">{urgentCount}</span>}
                   </NavLink>
                 );
@@ -67,10 +68,10 @@ export function Shell() {
           );
         })}
         <div className="sidebar-foot">
-          <div className="row small muted" style={{ padding: "0 8px" }} title={sync.lastSyncAt ? `Última sincronización: ${fmtDateTime(sync.lastSyncAt)}` : undefined}>
+          <div className="row small muted" style={{ padding: "0 8px" }} title={sync.lastSyncAt ? t("shell.lastSync", { date: fmtDateTime(sync.lastSyncAt) }) : undefined}>
             <span className={`sync-dot ${sync.status}`} />
             <span className="grow">
-              {sync.status === "syncing" ? "Sincronizando…" : sync.status === "offline" ? "Sin conexión · cambios en espera" : sync.status === "error" ? "Error al sincronizar" : "Sincronizado"}
+              {sync.status === "syncing" ? t("shell.syncing") : sync.status === "offline" ? t("shell.offlinePending") : sync.status === "error" ? t("shell.syncError") : t("shell.synced")}
               {sync.pending > 0 && ` (${sync.pending})`}
             </span>
           </div>
@@ -78,15 +79,15 @@ export function Shell() {
             <Avatar name={fullName(user)} image={user.avatarData} size={36} />
             <div className="meta">
               <div className="name">{fullName(user)}</div>
-              <div className="role">{ROLE_TITLE[role]}</div>
+              <div className="role">{roleTitle(role)}</div>
             </div>
             <button
               type="button"
               className="btn ghost icon"
-              title="Cerrar sesión"
-              aria-label="Cerrar sesión"
+              title={t("shell.signOut")}
+              aria-label={t("shell.signOut")}
               onClick={async () => {
-                if (sync.pending > 0 && !confirm("Hay cambios sin sincronizar que se perderán. ¿Cerrar sesión?")) return;
+                if (sync.pending > 0 && !confirm(t("shell.confirmSignOut"))) return;
                 await logout();
                 navigate("/login");
               }}
@@ -98,12 +99,12 @@ export function Shell() {
       </aside>
       <div className="main">
         <header className="topbar">
-          <button type="button" className="btn ghost icon menu-btn" onClick={() => setOpen(true)} aria-label="Menú">
+          <button type="button" className="btn ghost icon menu-btn" onClick={() => setOpen(true)} aria-label={t("shell.menu")}>
             <Menu />
           </button>
-          <h1>{SECTION_TITLE[section]}</h1>
+          <h1>{sectionTitle(section)}</h1>
           <div className="spacer" />
-          <button type="button" className="btn ghost sm" onClick={() => void store.sync().catch(() => {})} title="Sincronizar ahora">
+          <button type="button" className="btn ghost sm" onClick={() => void store.sync().catch(() => {})} title={t("shell.syncNow")} aria-label={t("shell.syncNow")}>
             <RefreshCw /> <span className="tiny faint">{sync.lastSyncAt ? fmtDateTime(sync.lastSyncAt) : "—"}</span>
           </button>
         </header>
@@ -113,20 +114,20 @@ export function Shell() {
               <Lock />
               <span>
                 {licence.status === "suspended"
-                  ? "La licencia de tu empresa está suspendida. Puedes consultar la información, pero no hacer cambios."
-                  : `Tu licencia venció el ${fmtDate(licence.expiresAt)}. Los datos son de solo lectura hasta renovarla.`}{" "}
-                Contacta a soporte para reactivarla.
+                  ? t("shell.licenceSuspended")
+                  : t("shell.licenceExpired", { date: fmtDate(licence.expiresAt) })}{" "}
+                {t("shell.contactSupport")}
               </span>
             </div>
           )}
           {sync.status === "offline" && (
             <div className="banner info">
               <CloudOff />
-              <span>Sin conexión con el servidor. Tus cambios se guardan en este navegador y se enviarán al reconectar.</span>
+              <span>{t("shell.offlineBanner")}</span>
             </div>
           )}
           {!sync.loaded ? (
-            <div className="empty"><Spinner /><p>Descargando tus datos…</p></div>
+            <div className="empty"><Spinner /><p>{t("shell.downloading")}</p></div>
           ) : (
             <Outlet />
           )}

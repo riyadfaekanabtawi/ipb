@@ -90,7 +90,7 @@
         <a href="{{href}}" hreflang="{{hreflang}}" lang="{{hreflang}}" data-lang="{{code}}"{{#current}} aria-current="page"{{/current}}><span class="langs__flag" aria-hidden="true">{{flag}}</span><span aria-hidden="true">{{label}}</span><span class="sr-only">{{name}}</span></a>
 {{/langs}}
       </nav>
-      <a class="nav__login" href="{{site.login_url}}"><svg class="ico" aria-hidden="true"><use href="#i-login"/></svg>{{ui.login}}</a>
+      <a class="nav__login" href="{{login_url|e}}"><svg class="ico" aria-hidden="true"><use href="#i-login"/></svg>{{ui.login}}</a>
       <a class="btn btn--small nav__cta" href="#contacto">{{ui.cta}}</a>
       <button class="nav__menu" aria-label="{{ui.menu_open|e}}" aria-expanded="false" aria-controls="mobile-menu">
         <span></span><span></span>
@@ -101,7 +101,7 @@
       <a href="#app-o-web">{{ui.nav.compare}}</a>
       <a href="#precios">{{ui.nav.pricing}}</a>
       <a href="#preguntas">{{ui.nav.faq}}</a>
-      <a href="{{site.login_url}}" class="mobile-menu__login"><svg class="ico" aria-hidden="true"><use href="#i-login"/></svg>{{ui.login}}</a>
+      <a href="{{login_url|e}}" class="mobile-menu__login"><svg class="ico" aria-hidden="true"><use href="#i-login"/></svg>{{ui.login}}</a>
       <a href="#contacto" class="btn">{{ui.cta}}</a>
     </div>
   </header>

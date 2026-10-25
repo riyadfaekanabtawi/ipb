@@ -2,6 +2,7 @@ import { z } from "zod";
 import { decryptJson, encryptJson } from "./crypto.js";
 import { db, tx, type Tx } from "./db.js";
 import { ApiError } from "./http.js";
+import { msg, type Lang } from "./i18n.js";
 import { encryptProfile, getTenant, licenceOf, tenantKey, userDto, type TenantRow, type UserRow } from "./tenants.js";
 import type { UserClaims } from "./tokens.js";
 
@@ -76,7 +77,7 @@ function canWrite(role: string, change: Change): boolean {
 
 export async function pull(claims: UserClaims, cursor: number, limit: number) {
   const tenant = await getTenant(claims.tid);
-  if (!tenant) throw new ApiError(404, "tenant_not_found", "La empresa ya no existe.");
+  if (!tenant) throw new ApiError(404, "tenant_not_found", "tenantNotFound");
   const key = tenantKey(tenant);
   const take = Math.min(Math.max(limit, 1), 1000);
 
@@ -119,15 +120,15 @@ export async function pull(claims: UserClaims, cursor: number, limit: number) {
 
 // Push -----------------------------------------------------------------------------------
 
-export async function push(claims: UserClaims, changes: Change[]) {
+export async function push(claims: UserClaims, changes: Change[], lang: Lang = "es") {
   return tx(async (client) => {
     // Serialize pushes per company so limit checks and last-writer-wins are race-free.
     const { rows } = await client.query<TenantRow>("SELECT * FROM tenants WHERE id = $1 FOR UPDATE", [claims.tid]);
     const tenant = rows[0];
-    if (!tenant) throw new ApiError(404, "tenant_not_found", "La empresa ya no existe.");
+    if (!tenant) throw new ApiError(404, "tenant_not_found", "tenantNotFound");
     const licence = licenceOf(tenant);
     if (!licence.writable) {
-      throw new ApiError(402, "licence_inactive", licence.status === "expired" ? "Tu licencia venció: los datos son de solo lectura." : "Tu licencia está suspendida.");
+      throw new ApiError(402, "licence_inactive", licence.status === "expired" ? "licenceExpiredReadOnly" : "licenceSuspended");
     }
     const key = tenantKey(tenant);
     const applied: { entity: Entity; id: string; version: number }[] = [];
@@ -136,17 +137,17 @@ export async function push(claims: UserClaims, changes: Change[]) {
     for (const change of changes) {
       const clientTime = clampFuture(new Date(change.updatedAt));
       if (!canWrite(claims.role, change)) {
-        rejected.push({ entity: change.entity, id: change.id, reason: "forbidden", message: "Tu puesto no permite este cambio." });
+        rejected.push({ entity: change.entity, id: change.id, reason: "forbidden", message: msg(lang, "roleForbidden") });
         continue;
       }
       if (!change.deleted && !change.data) {
-        rejected.push({ entity: change.entity, id: change.id, reason: "invalid", message: "Cambio sin datos." });
+        rejected.push({ entity: change.entity, id: change.id, reason: "invalid", message: msg(lang, "changeWithoutData") });
         continue;
       }
       const result =
         change.entity === "users"
-          ? await applyUser(client, tenant, key, claims, change, clientTime)
-          : await applyRecord(client, tenant, key, claims, change, clientTime);
+          ? await applyUser(client, tenant, key, claims, change, clientTime, lang)
+          : await applyRecord(client, tenant, key, claims, change, clientTime, lang);
       if ("version" in result) applied.push({ entity: change.entity, id: change.id, version: result.version });
       else rejected.push(result);
     }
@@ -160,7 +161,7 @@ function clampFuture(date: Date): Date {
   return date.getTime() > max ? new Date(max) : date;
 }
 
-async function applyRecord(client: Tx, tenant: TenantRow, key: Buffer, claims: UserClaims, change: Change, clientTime: Date): Promise<{ version: number } | Rejection> {
+async function applyRecord(client: Tx, tenant: TenantRow, key: Buffer, claims: UserClaims, change: Change, clientTime: Date, lang: Lang): Promise<{ version: number } | Rejection> {
   const { rows } = await client.query<{ client_updated_at: Date; deleted: boolean; payload: Buffer | null; version: number }>(
     "SELECT client_updated_at, deleted, payload, version FROM records WHERE tenant_id = $1 AND entity = $2 AND id = $3",
     [tenant.id, change.entity, change.id],
@@ -168,7 +169,7 @@ async function applyRecord(client: Tx, tenant: TenantRow, key: Buffer, claims: U
   const existing = rows[0];
   if (existing && existing.client_updated_at.getTime() > clientTime.getTime()) {
     return {
-      entity: change.entity, id: change.id, reason: "stale" as const, message: "Hay una versión más reciente.",
+      entity: change.entity, id: change.id, reason: "stale" as const, message: msg(lang, "stale"),
       server: {
         entity: change.entity, id: change.id, updatedAt: existing.client_updated_at.toISOString(), deleted: existing.deleted, version: existing.version,
         data: existing.deleted || !existing.payload ? null : decryptJson<Record<string, unknown>>(key, existing.payload, recordAad(tenant.id, change.entity, change.id)),
@@ -179,7 +180,7 @@ async function applyRecord(client: Tx, tenant: TenantRow, key: Buffer, claims: U
     const { rows: count } = await client.query<{ n: number }>(
       "SELECT count(*)::int AS n FROM records WHERE tenant_id = $1 AND entity = 'plants' AND NOT deleted", [tenant.id]);
     if (count[0].n >= tenant.max_plants) {
-      return { entity: change.entity, id: change.id, reason: "limit" as const, message: `Tu plan permite ${tenant.max_plants} planta(s).` };
+      return { entity: change.entity, id: change.id, reason: "limit" as const, message: msg(lang, "plantLimit", { count: tenant.max_plants }) };
     }
   }
   const payload = change.deleted ? null : encryptJson(key, { ...change.data, id: change.id }, recordAad(tenant.id, change.entity, change.id));
@@ -208,21 +209,21 @@ const userData = z.object({
   passwordSalt: z.string().max(200).nullable().optional(),
 });
 
-async function applyUser(client: Tx, tenant: TenantRow, key: Buffer, claims: UserClaims, change: Change, clientTime: Date): Promise<{ version: number } | Rejection> {
+async function applyUser(client: Tx, tenant: TenantRow, key: Buffer, claims: UserClaims, change: Change, clientTime: Date, lang: Lang): Promise<{ version: number } | Rejection> {
   const { rows } = await client.query<UserRow>("SELECT * FROM users WHERE id = $1", [change.id]);
   const existing = rows[0];
   if (existing && existing.tenant_id !== tenant.id) {
-    return { entity: change.entity, id: change.id, reason: "conflict" as const, message: "Ese usuario pertenece a otra empresa." };
+    return { entity: change.entity, id: change.id, reason: "conflict" as const, message: msg(lang, "userOtherCompany") };
   }
   if (existing && existing.client_updated_at.getTime() > clientTime.getTime()) {
     return {
-      entity: change.entity, id: change.id, reason: "stale" as const, message: "Hay una versión más reciente.",
+      entity: change.entity, id: change.id, reason: "stale" as const, message: msg(lang, "stale"),
       server: { entity: change.entity, id: change.id, updatedAt: existing.client_updated_at.toISOString(), deleted: existing.deleted, data: existing.deleted ? null : userDto(key, existing), version: existing.version },
     };
   }
   // An administrator can't delete/deactivate themselves (UserPolicy); the apps enforce the rest.
   if (change.id === claims.sub && (change.deleted || change.data?.isActive === false)) {
-    return { entity: change.entity, id: change.id, reason: "forbidden" as const, message: "No puedes desactivar ni eliminar tu propio usuario." };
+    return { entity: change.entity, id: change.id, reason: "forbidden" as const, message: msg(lang, "cannotRemoveSelf") };
   }
   if (change.deleted) {
     if (!existing) return { version: 0 };
@@ -233,17 +234,17 @@ async function applyUser(client: Tx, tenant: TenantRow, key: Buffer, claims: Use
     return { version: saved[0].version };
   }
   const parsed = userData.safeParse(change.data);
-  if (!parsed.success) return { entity: change.entity, id: change.id, reason: "invalid" as const, message: "Datos de usuario inválidos." };
+  if (!parsed.success) return { entity: change.entity, id: change.id, reason: "invalid" as const, message: msg(lang, "invalidUserData") };
   const u = parsed.data;
   const becomesActive = u.isActive && (!existing || !existing.is_active || existing.deleted);
   if (becomesActive) {
     const { rows: count } = await client.query<{ n: number }>("SELECT count(*)::int AS n FROM users WHERE tenant_id = $1 AND is_active AND NOT deleted", [tenant.id]);
     if (count[0].n >= tenant.max_users) {
-      return { entity: change.entity, id: change.id, reason: "limit" as const, message: `Tu plan permite ${tenant.max_users} usuarios activos.` };
+      return { entity: change.entity, id: change.id, reason: "limit" as const, message: msg(lang, "userLimit", { count: tenant.max_users }) };
     }
   }
   const { rows: clash } = await client.query("SELECT 1 FROM users WHERE lower(email) = lower($1) AND id <> $2 AND NOT deleted", [u.email, change.id]);
-  if (clash.length) return { entity: change.entity, id: change.id, reason: "conflict" as const, message: "Ya existe un usuario con ese correo." };
+  if (clash.length) return { entity: change.entity, id: change.id, reason: "conflict" as const, message: msg(lang, "emailTaken") };
 
   const profile = encryptProfile(key, tenant.id, change.id, { firstName: u.firstName, lastName: u.lastName, phone: u.phone, avatarData: u.avatarData });
   const { rows: saved } = await client.query<{ version: number }>(

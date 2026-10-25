@@ -3,10 +3,11 @@
 // them to the store, which pushes them to the server.
 
 import { asReportKind, asRole, canEditReport, canManageOrders, isAdmin, type CutStatus, type ProjectStatus, type ReportKind, type Role } from "../domain/enums";
-import { isPlausibleEmail, MIN_PASSWORD, userPolicyViolation, validateAssignment, assignmentErrorMessage, type Member, type UserChange } from "../domain/rules";
+import { isPlausibleEmail, MIN_PASSWORD, userPolicyViolation, userViolationMessage, validateAssignment, assignmentErrorMessage, type Member, type UserChange } from "../domain/rules";
 import type { AssignmentDTO, Change, ClientDTO, ContactDTO, CutOrderDTO, PlantDTO, ProjectDTO, ReportDTO, StyleDTO, TenantInfo, UserDTO } from "../domain/types";
 import { fullName, parseDate } from "../lib/format";
 import { hashPassword, makeSalt } from "../lib/password";
+import { t, type MessageKey } from "../i18n";
 import { DB } from "./db";
 import { change, tombstone, type DataStore } from "./store";
 
@@ -16,7 +17,6 @@ const fail = (message: string): never => {
   throw new DomainError(message);
 };
 
-const NOT_ALLOWED = "Tu puesto no permite esta acción.";
 const trim = (s: string | null | undefined) => (s ?? "").trim();
 const orNull = (s: string | null | undefined) => trim(s) || null;
 const uuid = () => crypto.randomUUID();
@@ -44,16 +44,16 @@ export class Services {
 
   private async commit(changes: Change[]) {
     const result = await this.store.commit(changes);
-    if (!result.ok) fail(result.message ?? "No se pudo guardar.");
+    if (!result.ok) fail(result.message ?? t("svc.saveFailed"));
     return result;
   }
 
   private requireAdmin() {
-    if (!isAdmin(this.role)) fail("Solo un administrador puede hacer este cambio.");
+    if (!isAdmin(this.role)) fail(t("svc.adminOnly"));
   }
 
   private requireOrders() {
-    if (!canManageOrders(this.role)) fail(NOT_ALLOWED);
+    if (!canManageOrders(this.role)) fail(t("svc.notAllowed"));
   }
 
   // Orders ------------------------------------------------------------------------------
@@ -64,12 +64,12 @@ export class Services {
   }): Promise<CutOrderDTO> {
     this.requireOrders();
     const code = trim(draft.code);
-    if (!code) fail("Escribe el código de corte.");
-    if (!(draft.quantity > 0) || !Number.isInteger(draft.quantity)) fail("La cantidad debe ser un número entero mayor a cero.");
-    if (!(draft.unitPrice >= 0) || !Number.isFinite(draft.unitPrice)) fail("El precio unitario no puede ser negativo.");
+    if (!code) fail(t("svc.orderCodeRequired"));
+    if (!(draft.quantity > 0) || !Number.isInteger(draft.quantity)) fail(t("svc.orderQuantityInvalid"));
+    if (!(draft.unitPrice >= 0) || !Number.isFinite(draft.unitPrice)) fail(t("svc.unitPriceNegative"));
     if (existing) {
       const assigned = this.db.orderInfo(existing).assigned;
-      if (draft.quantity < assigned) fail(`Ya hay ${assigned} prendas asignadas; la cantidad no puede ser menor.`);
+      if (draft.quantity < assigned) fail(t("svc.quantityBelowAssigned", { count: assigned }));
     }
     const order: CutOrderDTO = {
       ...(existing ?? { id: uuid() }),
@@ -85,7 +85,7 @@ export class Services {
     this.requireOrders();
     const db = this.db;
     const assignments = db.assignmentsByOrder.get(order.id) ?? [];
-    if (assignments.some((a) => (db.reportsByAssignment.get(a.id) ?? []).length)) fail("No se puede eliminar: el corte ya tiene reportes de producción.");
+    if (assignments.some((a) => (db.reportsByAssignment.get(a.id) ?? []).length)) fail(t("svc.orderHasReports"));
     await this.commit([...assignments.map((a) => tombstone("assignments", a.id)), tombstone("orders", order.id)]);
   }
 
@@ -108,14 +108,14 @@ export class Services {
 
   async unassign(assignment: AssignmentDTO) {
     this.requireOrders();
-    if ((this.db.reportsByAssignment.get(assignment.id) ?? []).length) fail("No se puede eliminar: el corte ya tiene reportes.");
+    if ((this.db.reportsByAssignment.get(assignment.id) ?? []).length) fail(t("svc.assignmentHasReports"));
     await this.commit([tombstone("assignments", assignment.id)]);
   }
 
   // Reports (DOMAIN rule 4, 9) ------------------------------------------------------------
 
   private requireReport(kind: ReportKind) {
-    if (!canEditReport(this.role, kind)) fail(NOT_ALLOWED);
+    if (!canEditReport(this.role, kind)) fail(t("svc.notAllowed"));
   }
 
   private newReport(kind: ReportKind, assignment: AssignmentDTO): ReportDTO {
@@ -124,14 +124,14 @@ export class Services {
 
   private requireVisible(assignment: AssignmentDTO) {
     const { me, role } = this.actor();
-    if (role === "Gerente de Planta" && assignment.plantID !== me.plantID) fail("Solo puedes reportar la producción de tu planta.");
+    if (role === "Gerente de Planta" && assignment.plantID !== me.plantID) fail(t("svc.ownPlantOnly"));
   }
 
   async savePlantReport(assignment: AssignmentDTO, input: { operators: number; absences: number; produced: number; ironing: number; packing: number; warehouse: number }, editing?: ReportDTO) {
     this.requireReport("planta");
     this.requireVisible(assignment);
     const values = Object.values(input);
-    if (values.some((v) => !Number.isInteger(v) || v < 0)) fail("Los valores deben ser números enteros, cero o mayores.");
+    if (values.some((v) => !Number.isInteger(v) || v < 0)) fail(t("svc.plantValuesInvalid"));
     const report: ReportDTO = { ...(editing ?? this.newReport("planta", assignment)), ...input };
     await this.commit([change("reports", report)]);
   }
@@ -141,8 +141,8 @@ export class Services {
     this.requireReport("corte");
     this.requireOrders(); // the cut report also updates the assignment status
     const existing = (this.db.reportsByAssignment.get(assignment.id) ?? []).find((r) => asReportKind(r.kindRaw) === "corte");
-    if (!editing && existing) fail("Este corte ya tiene un reporte de corte. Edítalo en lugar de crear otro.");
-    if (!Number.isInteger(realQuantity) || realQuantity < 0) fail("La cantidad real no puede ser negativa.");
+    if (!editing && existing) fail(t("svc.cutReportExists"));
+    if (!Number.isInteger(realQuantity) || realQuantity < 0) fail(t("svc.realQuantityNegative"));
     const report: ReportDTO = { ...(editing ?? this.newReport("corte", assignment)), cutStatusRaw: status, realQuantity: Math.max(0, realQuantity) };
     await this.commit([change("reports", report), change("assignments", { ...assignment, cuttingStatusRaw: status })]);
   }
@@ -156,8 +156,8 @@ export class Services {
   async saveShipmentReport(assignment: AssignmentDTO, number: string, quantity: number, editing?: ReportDTO) {
     this.requireReport("envio");
     this.requireVisible(assignment);
-    if (!trim(number)) fail("Escribe el número de envío.");
-    if (!Number.isInteger(quantity) || quantity <= 0) fail("La cantidad enviada debe ser mayor a cero.");
+    if (!trim(number)) fail(t("svc.shipmentNumberRequired"));
+    if (!Number.isInteger(quantity) || quantity <= 0) fail(t("svc.shippedQuantityInvalid"));
     const report: ReportDTO = { ...(editing ?? this.newReport("envio", assignment)), shipmentNumber: trim(number), shippedQuantity: quantity };
     await this.commit([change("reports", report)]);
   }
@@ -176,20 +176,20 @@ export class Services {
 
   // Catalogs ----------------------------------------------------------------------------
 
-  private uniqueName(rows: { id: string; name?: string | null }[], raw: string, exceptId: string | undefined, genitive: string, indefinite: string) {
+  private uniqueName(rows: { id: string; name?: string | null }[], raw: string, exceptId: string | undefined, required: MessageKey, taken: MessageKey) {
     const name = trim(raw);
-    if (!name) fail(`Escribe el nombre ${genitive}.`);
-    if (rows.some((r) => r.id !== exceptId && trim(r.name).toLocaleLowerCase("es") === name.toLocaleLowerCase("es"))) fail(`Ya existe ${indefinite} con ese nombre.`);
+    if (!name) fail(t(required));
+    if (rows.some((r) => r.id !== exceptId && trim(r.name).toLocaleLowerCase("es") === name.toLocaleLowerCase("es"))) fail(t(taken));
     return name;
   }
 
   async savePlant(existing: PlantDTO | null, name: string, maxCapacity: number): Promise<PlantDTO> {
     this.requireAdmin();
     const db = this.db;
-    const clean = this.uniqueName(db.plants, name, existing?.id, "de la planta", "una planta");
-    if (!(maxCapacity > 0) || !Number.isFinite(maxCapacity)) fail("La capacidad máxima mensual debe ser mayor a cero.");
+    const clean = this.uniqueName(db.plants, name, existing?.id, "svc.plantNameRequired", "svc.plantNameTaken");
+    if (!(maxCapacity > 0) || !Number.isFinite(maxCapacity)) fail(t("svc.capacityInvalid"));
     const limit = this.actor().tenant?.maxPlants;
-    if (!existing && limit != null && db.plants.length >= limit) fail(`Tu plan permite ${limit} planta(s).`);
+    if (!existing && limit != null && db.plants.length >= limit) fail(t("svc.plantLimit", { count: limit }));
     const plant: PlantDTO = { ...(existing ?? { id: uuid() }), name: clean, maxCapacity };
     await this.commit([change("plants", plant)]);
     return plant;
@@ -198,7 +198,7 @@ export class Services {
   async deletePlant(plant: PlantDTO) {
     this.requireAdmin();
     const db = this.db;
-    if ((db.assignmentsByPlant.get(plant.id) ?? []).length) fail("No se puede eliminar: la planta tiene cortes asignados.");
+    if ((db.assignmentsByPlant.get(plant.id) ?? []).length) fail(t("svc.plantHasCuts"));
     const managers = db.users.filter((u) => u.plantID === plant.id);
     await this.commit([...managers.map((u) => change("users", stripSecrets({ ...u, plantID: null }))), tombstone("plants", plant.id)]);
   }
@@ -208,7 +208,7 @@ export class Services {
       .map((d) => ({ ...d, name: trim(d.name), role: trim(d.role), email: trim(d.email), phone: trim(d.phone) }))
       .filter((d) => d.name || d.role || d.email || d.phone);
     const bad = cleaned.find((d) => d.email && !isPlausibleEmail(d.email));
-    if (bad) fail(`El correo «${bad.email}» no es válido.`);
+    if (bad) fail(t("svc.emailInvalid", { email: bad.email }));
     const keep = new Set(cleaned.map((d) => d.id));
     const out: Change[] = existing.filter((c) => !keep.has(c.id)).map((c) => tombstone("contacts", c.id));
     cleaned.forEach((d, index) => {
@@ -223,7 +223,7 @@ export class Services {
   async saveClient(existing: ClientDTO | null, name: string, address: string, contacts: ContactDraft[]): Promise<ClientDTO> {
     this.requireAdmin();
     const db = this.db;
-    const client: ClientDTO = { ...(existing ?? { id: uuid() }), name: this.uniqueName(db.clients, name, existing?.id, "del cliente", "un cliente"), address: orNull(address) };
+    const client: ClientDTO = { ...(existing ?? { id: uuid() }), name: this.uniqueName(db.clients, name, existing?.id, "svc.clientNameRequired", "svc.clientNameTaken"), address: orNull(address) };
     const contactChanges = this.contactChanges(contacts, existing ? (db.contactsByClient.get(existing.id) ?? []) : [], { clientID: client.id });
     // Projects keep a copy of the client name so they read well later.
     const projects = existing ? (db.projectsByClient.get(existing.id) ?? []).filter((p) => p.clientName !== client.name).map((p) => change("projects", { ...p, clientName: client.name })) : [];
@@ -234,7 +234,7 @@ export class Services {
   async deleteClient(client: ClientDTO) {
     this.requireAdmin();
     const db = this.db;
-    if ((db.ordersByClient.get(client.id) ?? []).length) fail("No se puede eliminar: el cliente tiene cortes.");
+    if ((db.ordersByClient.get(client.id) ?? []).length) fail(t("svc.clientHasCuts"));
     await this.commit([
       ...(db.contactsByClient.get(client.id) ?? []).map((c) => tombstone("contacts", c.id)),
       ...(db.projectsByClient.get(client.id) ?? []).map((p) => change("projects", { ...p, clientID: null, clientName: p.clientName ?? client.name })),
@@ -245,7 +245,7 @@ export class Services {
   async saveSupplier(existing: ClientDTO | null, name: string, address: string, contacts: ContactDraft[]): Promise<ClientDTO> {
     this.requireAdmin();
     const db = this.db;
-    const supplier: ClientDTO = { ...(existing ?? { id: uuid() }), name: this.uniqueName(db.suppliers, name, existing?.id, "del proveedor", "un proveedor"), address: orNull(address) };
+    const supplier: ClientDTO = { ...(existing ?? { id: uuid() }), name: this.uniqueName(db.suppliers, name, existing?.id, "svc.supplierNameRequired", "svc.supplierNameTaken"), address: orNull(address) };
     const contactChanges = this.contactChanges(contacts, existing ? (db.contactsBySupplier.get(existing.id) ?? []) : [], { supplierID: supplier.id });
     await this.commit([change("suppliers", supplier), ...contactChanges]);
     return supplier;
@@ -258,7 +258,7 @@ export class Services {
 
   async saveStyle(existing: StyleDTO | null, name: string, imageData: string | null): Promise<StyleDTO> {
     this.requireAdmin();
-    const style: StyleDTO = { ...(existing ?? { id: uuid() }), name: this.uniqueName(this.db.styles, name, existing?.id, "del estilo", "un estilo"), imageData };
+    const style: StyleDTO = { ...(existing ?? { id: uuid() }), name: this.uniqueName(this.db.styles, name, existing?.id, "svc.styleNameRequired", "svc.styleNameTaken"), imageData };
     await this.commit([change("styles", style)]);
     return style;
   }
@@ -276,8 +276,8 @@ export class Services {
     this.requireAdmin();
     const client = this.db.clientById.get(draft.clientID ?? "");
     const freeName = trim(draft.clientName);
-    if (!client && !freeName) fail("Elige un cliente o escribe su nombre.");
-    if ([draft.quantity, draft.price, draft.minutes].some((n) => !Number.isFinite(n) || n < 0)) fail("Cantidad, precio y minutaje no pueden ser negativos.");
+    if (!client && !freeName) fail(t("svc.projectClientRequired"));
+    if ([draft.quantity, draft.price, draft.minutes].some((n) => !Number.isFinite(n) || n < 0)) fail(t("svc.projectNumbersNegative"));
     const project: ProjectDTO = {
       ...(existing ?? { id: uuid() }),
       clientID: client?.id ?? null, clientName: client?.name ?? freeName, quantity: Math.round(draft.quantity), price: draft.price, minutes: draft.minutes,
@@ -305,24 +305,24 @@ export class Services {
 
   private checkPolicy(change: UserChange, user: UserDTO) {
     const violation = userPolicyViolation(change, { id: user.id, role: asRole(user.roleRaw), isActive: user.isActive !== false }, this.actor().me.id, this.members());
-    if (violation) fail(violation);
+    if (violation) fail(userViolationMessage(violation));
   }
 
   private validUser(draft: UserDraft, exceptId?: string): UserDraft {
     const d = { ...draft, firstName: trim(draft.firstName), lastName: trim(draft.lastName), email: trim(draft.email).toLowerCase(), phone: trim(draft.phone) };
-    if (!d.firstName || !d.email) fail("Escribe el nombre y el correo del usuario.");
-    if (!isPlausibleEmail(d.email)) fail(`El correo «${d.email}» no es válido.`);
-    if (d.role === "Gerente de Planta" && !d.plantID) fail("Un gerente de planta debe tener una planta asignada.");
-    if (this.db.users.some((u) => u.id !== exceptId && (u.email ?? "").toLowerCase() === d.email)) fail("Ya existe un usuario con ese correo.");
+    if (!d.firstName || !d.email) fail(t("svc.userNameEmailRequired"));
+    if (!isPlausibleEmail(d.email)) fail(t("svc.emailInvalid", { email: d.email }));
+    if (d.role === "Gerente de Planta" && !d.plantID) fail(t("svc.plantManagerNeedsPlant"));
+    if (this.db.users.some((u) => u.id !== exceptId && (u.email ?? "").toLowerCase() === d.email)) fail(t("svc.userEmailTaken"));
     return d;
   }
 
   async createUser(draft: UserDraft, password: string): Promise<UserDTO> {
     this.requireAdmin();
     const d = this.validUser(draft);
-    if (password.length < MIN_PASSWORD) fail(`La contraseña debe tener al menos ${MIN_PASSWORD} caracteres.`);
+    if (password.length < MIN_PASSWORD) fail(t("svc.passwordTooShort", { count: MIN_PASSWORD }));
     const limit = this.actor().tenant?.maxUsers;
-    if (limit != null && this.db.users.filter((u) => u.isActive !== false).length >= limit) fail(`Tu plan permite ${limit} usuarios activos.`);
+    if (limit != null && this.db.users.filter((u) => u.isActive !== false).length >= limit) fail(t("svc.userLimit", { count: limit }));
     const salt = makeSalt();
     const user: UserDTO = {
       id: uuid(), email: d.email, firstName: d.firstName, lastName: d.lastName || null, phone: d.phone || null, roleRaw: d.role,
@@ -348,14 +348,14 @@ export class Services {
     if (!active) this.checkPolicy({ kind: "deactivate" }, user);
     if (active && user.isActive === false) {
       const limit = this.actor().tenant?.maxUsers;
-      if (limit != null && this.db.users.filter((u) => u.isActive !== false).length >= limit) fail(`Tu plan permite ${limit} usuarios activos.`);
+      if (limit != null && this.db.users.filter((u) => u.isActive !== false).length >= limit) fail(t("svc.userLimit", { count: limit }));
     }
     await this.commit([change("users", stripSecrets({ ...user, isActive: active }))]);
   }
 
   async resetPassword(user: UserDTO, password: string) {
     this.requireAdmin();
-    if (password.length < MIN_PASSWORD) fail(`La contraseña debe tener al menos ${MIN_PASSWORD} caracteres.`);
+    if (password.length < MIN_PASSWORD) fail(t("svc.passwordTooShort", { count: MIN_PASSWORD }));
     const salt = makeSalt();
     await this.commit([change("users", { ...user, passwordSalt: salt, passwordHash: await hashPassword(password, salt) })]);
   }

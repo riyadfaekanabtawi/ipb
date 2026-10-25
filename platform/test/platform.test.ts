@@ -12,14 +12,18 @@ const { app } = await import("../src/app.js");
 const { closeDb, db } = await import("../src/db.js");
 const { migrate } = await import("../scripts/migrate.js");
 const { decrypt, encrypt, hashPassword, makeSalt } = await import("../src/crypto.js");
-const { outbox } = await import("../src/mail.js");
+const { inviteEmail, outbox } = await import("../src/mail.js");
+const { langFrom, msg, MESSAGES } = await import("../src/i18n.js");
 
 type Json = Record<string, any>;
 
-async function call(method: string, path: string, opts: { token?: string; body?: unknown } = {}) {
+async function call(method: string, path: string, opts: { token?: string; body?: unknown; lang?: string } = {}) {
   const res = await app.request(`/api${path}`, {
     method,
-    headers: { "content-type": "application/json", "x-forwarded-for": `10.0.0.${Math.floor(Math.random() * 250)}`, ...(opts.token ? { authorization: `Bearer ${opts.token}` } : {}) },
+    headers: {
+      "content-type": "application/json", "x-forwarded-for": `10.0.0.${Math.floor(Math.random() * 250)}`,
+      ...(opts.token ? { authorization: `Bearer ${opts.token}` } : {}), ...(opts.lang ? { "accept-language": opts.lang } : {}),
+    },
     body: opts.body === undefined ? undefined : JSON.stringify(opts.body),
   });
   return { status: res.status, json: (await res.json()) as Json };
@@ -73,6 +77,70 @@ describe("crypto", () => {
   it("hashes passwords exactly like the iOS and Android apps", () => {
     // Same vector as android DataTest (computed independently with Python hashlib).
     expect(hashPassword("trama123", "AAECAwQFBgcICQoLDA0ODw==")).toBe("zcwRAuc66SSMfJ2S4LMBXmx9ZZUytXkJe52oTpWoI3A=");
+  });
+});
+
+describe("i18n", () => {
+  it("picks the language from Accept-Language with q-values, Spanish by default", () => {
+    expect(langFrom(undefined)).toBe("es");
+    expect(langFrom("en-US,en;q=0.9")).toBe("en");
+    expect(langFrom("pt-BR")).toBe("pt");
+    expect(langFrom("fr-FR,fr;q=0.9,pt;q=0.8,en;q=0.5")).toBe("pt");
+    expect(langFrom("de, en;q=0")).toBe("es");
+    expect(langFrom("es-MX;q=0.4, en;q=0.6")).toBe("en");
+  });
+
+  it("has the same message keys in every language", () => {
+    const keys = Object.keys(MESSAGES.es).sort();
+    expect(Object.keys(MESSAGES.en).sort()).toEqual(keys);
+    expect(Object.keys(MESSAGES.pt).sort()).toEqual(keys);
+  });
+
+  it("interpolates and pluralizes", () => {
+    expect(msg("en", "plantLimit", { count: 1 })).toBe("Your plan allows 1 plant.");
+    expect(msg("pt", "userLimit", { count: 5 })).toBe("Seu plano permite 5 usuários ativos.");
+    expect(msg("es", "deviceLimit", { count: 2 })).toContain("2 dispositivos");
+  });
+
+  it("returns API errors in the caller's language with the same code", async () => {
+    const body = { email: "nadie@nada.test", password: "x", device: { id: randomUUID(), platform: "web" } };
+    const es = await call("POST", "/auth/login", { body });
+    const en = await call("POST", "/auth/login", { body, lang: "en-US,en;q=0.9" });
+    const pt = await call("POST", "/auth/login", { body, lang: "pt-BR" });
+    expect([es.json.error.code, en.json.error.code, pt.json.error.code]).toEqual(["bad_credentials", "bad_credentials", "bad_credentials"]);
+    expect(es.json.error.message).toBe("Correo o contraseña incorrectos.");
+    expect(en.json.error.message).toBe("Incorrect email or password.");
+    expect(pt.json.error.message).toBe("E-mail ou senha incorretos.");
+    expect((await call("GET", "/nope", { lang: "en" })).json.error.message).toBe("Route not found.");
+    expect((await call("GET", "/sync/pull", { lang: "pt" })).json.error.message).toBe("Entre para continuar.");
+  });
+
+  it("localizes sync rejections", async () => {
+    const { email } = await newCompany("planta"); // 1 plant
+    const s = (await login(email, "web")).json;
+    const result = await call("POST", "/sync/push", {
+      token: s.accessToken, lang: "en",
+      body: { changes: [
+        { entity: "plants", id: randomUUID(), updatedAt: now(), data: { name: "One" } },
+        { entity: "plants", id: randomUUID(), updatedAt: now(), data: { name: "Two" } },
+      ] },
+    });
+    expect(result.json.rejected[0]).toMatchObject({ reason: "limit", message: "Your plan allows 1 plant." });
+  });
+
+  it("sends the reset email in the requester's language and the invite in the chosen one", async () => {
+    const { email } = await newCompany("planta", { lang: "pt" });
+    const invite = outbox.findLast((m) => m.to === email)!;
+    expect(invite.subject).toContain("Bem-vindo ao Trama");
+    expect(invite.html).toContain('lang="pt"');
+    await call("POST", "/auth/forgot", { body: { email }, lang: "en-GB" });
+    const reset = outbox.at(-1)!;
+    expect(reset.to).toBe(email);
+    expect(reset.subject).toBe("Reset your password · Trama");
+    expect(reset.text).toContain("Hi Laura,");
+    expect(inviteEmail("invite", "Ana", "Textiles", "https://x.test", {}).subject).toContain("Bienvenido a Trama");
+    const bad = await call("POST", "/admin/tenants", { token: adminToken, body: { name: "Idioma", plan: "web", lang: "fr", admin: { firstName: "A", email: "a@b.test" } } });
+    expect(bad.status).toBe(422);
   });
 });
 

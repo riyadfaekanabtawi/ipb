@@ -5,6 +5,7 @@ import { assignmentMetrics, CapacityLedger, orderProgress, type Metrics } from "
 import type { AssignmentDTO, ClientDTO, ContactDTO, CutOrderDTO, PlantDTO, ProjectDTO, ReportDTO, StyleDTO, SupplierDTO, UserDTO } from "../domain/types";
 import { fullName, parseDate } from "../lib/format";
 import type { DataStore } from "./store";
+import { t } from "../i18n";
 
 const byName = <T extends { name?: string | null }>(a: T, b: T) => (a.name ?? "").localeCompare(b.name ?? "", "es", { sensitivity: "base" });
 const time = (iso: string | null | undefined) => (iso ? new Date(iso).getTime() : 0);
@@ -117,8 +118,8 @@ export class DB {
       info = {
         order, ...p,
         revenue: (order.quantity ?? 0) * (order.unitPrice ?? 0),
-        clientName: this.clientById.get(order.clientID ?? "")?.name ?? "Sin cliente",
-        styleName: this.styleById.get(order.styleID ?? "")?.name ?? "Sin estilo",
+        clientName: this.clientById.get(order.clientID ?? "")?.name ?? t("common.noClient"),
+        styleName: this.styleById.get(order.styleID ?? "")?.name ?? t("common.noStyle"),
       };
       this.orderInfos.set(order.id, info);
     }
@@ -135,10 +136,10 @@ export class DB {
       info = {
         assignment: a, order, plant, metrics, reports,
         cutStatus: asCutStatus(a.cuttingStatusRaw),
-        title: order?.code?.trim() || "Corte",
-        plantName: plant?.name ?? "Sin planta",
-        clientName: this.clientById.get(order?.clientID ?? "")?.name ?? "Sin cliente",
-        styleName: this.styleById.get(order?.styleID ?? "")?.name ?? "Sin estilo",
+        title: order?.code?.trim() || t("common.cut"),
+        plantName: plant?.name ?? t("common.noPlant"),
+        clientName: this.clientById.get(order?.clientID ?? "")?.name ?? t("common.noClient"),
+        styleName: this.styleById.get(order?.styleID ?? "")?.name ?? t("common.noStyle"),
       };
       this.assignmentInfos.set(a.id, info);
     }

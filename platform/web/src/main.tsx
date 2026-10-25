@@ -15,12 +15,14 @@ import { landingFor } from "./domain/enums";
 import { SessionProvider, useAuth, useSession } from "./data/session";
 import { SECTION_PATH } from "./app/nav";
 import { applyTheme, initialTheme } from "./lib/prefs";
+import { initI18n, useLang } from "./i18n";
 import { Spinner, Toaster } from "./ui/kit";
 import "./styles.css";
 
 const AdminApp = lazy(() => import("./admin/AdminApp"));
 
 applyTheme(initialTheme());
+initI18n();
 
 function RequireSession({ children }: { children: React.ReactNode }) {
   const { phase } = useAuth();
@@ -42,8 +44,10 @@ function Landing() {
 }
 
 function App() {
+  // Remount the screens when the language changes so every string and memoized label is rebuilt.
+  const lang = useLang();
   return (
-    <Routes>
+    <Routes key={lang}>
       <Route path="/login" element={<GuestOnly><LoginPage /></GuestOnly>} />
       <Route path="/olvide" element={<ForgotPage />} />
       <Route path="/activar" element={<SetPasswordPage mode="invite" />} />

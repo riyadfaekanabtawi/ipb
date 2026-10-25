@@ -164,6 +164,10 @@ def build_context(site, langs, dicts, code, legal):
     def rel_href(target):
         return f"{base}{target['dir']}index.html" if target["code"] != code else "index.html"
 
+    # The web app picks its language from ?lang= (then the saved choice, then the browser). The
+    # EN/PT landings pass theirs; the Spanish one is the x-default, so it leaves the choice open.
+    login_url = site["login_url"] if lang.get("default") else f"{site['login_url']}?lang={code}"
+
     lang_links = [{
         "code": l["code"], "label": l["label"], "flag": l["flag"], "name": l["name"], "hreflang": l["hreflang"][0],
         "href": rel_href(l), "current": l["code"] == code,
@@ -212,7 +216,7 @@ def build_context(site, langs, dicts, code, legal):
 
     ctx = dict(d)
     ctx.update({
-        "site": site, "lang": lang, "base": base, "page_url": url, "alternates": alternates,
+        "site": site, "lang": lang, "base": base, "page_url": url, "alternates": alternates, "login_url": login_url,
         "og_alternates": [dicts[l["code"]]["meta"]["og_locale"] for l in langs if l["code"] != code],
         "langs": lang_links, "plans": plans, "countries": countries,
         "compare_rows": rows, "compare_cards": cards, "showcase_tabs": tabs,
