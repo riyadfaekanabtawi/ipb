@@ -62,7 +62,13 @@ final class PersistenceController {
     /// Wipes every entity. Used by backup restore and "reset demo data".
     func eraseAll() throws {
         let context = viewContext
-        for entity in Self.model.entities {
+        // Batch deletes silently skip rows protected by a Deny rule (plants with assignments,
+        // clients with orders), so entities that deny deletion go last, after their dependents.
+        let ordered = Self.model.entities.sorted { lhs, rhs in
+            func denies(_ e: NSEntityDescription) -> Int { e.relationshipsByName.values.filter { $0.deleteRule == .denyDeleteRule }.count }
+            return denies(lhs) < denies(rhs)
+        }
+        for entity in ordered {
             guard let name = entity.name else { continue }
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: name)
             let delete = NSBatchDeleteRequest(fetchRequest: request)
@@ -74,6 +80,22 @@ final class PersistenceController {
             }
         }
         context.reset()
+        // Batch deletes never remove Deny-protected entities (and do not throw), so sweep the
+        // remainder object by object; their dependents are gone by now.
+        var leftovers = false
+        for entity in ordered {
+            guard let name = entity.name else { continue }
+            let request = NSFetchRequest<NSManagedObject>(entityName: name)
+            request.includesPropertyValues = false
+            for object in try context.fetch(request) {
+                context.delete(object)
+                leftovers = true
+            }
+        }
+        if leftovers {
+            try context.save()
+            context.reset()
+        }
     }
 }
 

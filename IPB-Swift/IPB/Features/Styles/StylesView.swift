@@ -120,37 +120,39 @@ private struct StyleCard: View {
         let orderCount = style.orders?.count ?? 0
 
         VStack(alignment: .leading, spacing: 0) {
-            ZStack(alignment: .bottomLeading) {
-                Color.clear
-                    .aspectRatio(4 / 5, contentMode: .fit)
-                    .overlay { SwatchImage(data: style.imageData, name: style.displayName, cornerRadius: 0) }
-                    .clipped()
-                LinearGradient(colors: [.clear, .black.opacity(0.55)], startPoint: .center, endPoint: .bottom)
-                    .allowsHitTesting(false)
-                HStack(alignment: .bottom) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(style.displayName)
-                            .font(.headline)
-                            .lineLimit(2)
-                        Text(orderCount == 1 ? "1 corte" : "\(orderCount) cortes")
-                            .font(.caption.weight(.medium))
-                            .opacity(0.85)
-                    }
-                    .foregroundStyle(.white)
-                    Spacer(minLength: 8)
-                    if style.imageData != nil {
-                        Button(action: zoom) {
-                            Image(systemName: "arrow.up.left.and.arrow.down.right")
-                                .font(.footnote.weight(.bold))
-                                .frame(width: 34, height: 34)
-                                .background(.ultraThinMaterial, in: .circle)
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel("Ver imagen de \(style.displayName)")
-                    }
+            SwatchImage(data: style.imageData, name: style.displayName, cornerRadius: 0)
+                .frame(maxWidth: .infinity)
+                .frame(height: 240)
+                .overlay {
+                    LinearGradient(colors: [.clear, .black.opacity(0.55)], startPoint: .center, endPoint: .bottom)
+                        .allowsHitTesting(false)
                 }
-                .padding(14)
-            }
+                .overlay(alignment: .bottomLeading) {
+                    HStack(alignment: .bottom) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(style.displayName)
+                                .font(.headline)
+                                .lineLimit(2)
+                            Text(orderCount == 1 ? "1 corte" : "\(orderCount) cortes")
+                                .font(.caption.weight(.medium))
+                                .opacity(0.85)
+                        }
+                        .foregroundStyle(.white)
+                        Spacer(minLength: 8)
+                        if style.imageData != nil {
+                            Button(action: zoom) {
+                                Image(systemName: "arrow.up.left.and.arrow.down.right")
+                                    .font(.footnote.weight(.bold))
+                                    .frame(width: 34, height: 34)
+                                    .background(.ultraThinMaterial, in: .circle)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Ver imagen de \(style.displayName)")
+                        }
+                    }
+                    .padding(14)
+                }
+                .clipped()
 
             Group {
                 if distribution.isEmpty {
