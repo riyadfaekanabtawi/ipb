@@ -11,7 +11,7 @@ file="$(printf '%s' "$input" | /usr/bin/python3 -c 'import json,sys; d=json.load
 
 root="${CLAUDE_PROJECT_DIR:-$(git -C "$(dirname "$file")" rev-parse --show-toplevel 2>/dev/null || pwd)}"
 
-# Walk up from the file to find the XcodeGen spec (repo root, or IPB-Swift/ during the migration).
+# Walk up from the file to find the XcodeGen spec (ios/ in the monorepo).
 find_up() {
   local dir; dir="$(cd "$(dirname "$1")" && pwd)"
   while [ "$dir" != "/" ] && [ "${#dir}" -ge "${#root}" ]; do
@@ -34,7 +34,7 @@ case "$file" in
   */project.yml)
     if command -v xcodegen >/dev/null 2>&1; then
       (cd "$(dirname "$file")" && xcodegen generate --quiet) >/dev/null 2>&1 \
-        && echo '{"hookSpecificOutput":{"hookEventName":"PostToolUse","additionalContext":"project.yml changed: Xcode project regenerated with XcodeGen. Commit the regenerated IPB.xcodeproj too."}}'
+        && echo '{"hookSpecificOutput":{"hookEventName":"PostToolUse","additionalContext":"project.yml changed: Xcode project regenerated with XcodeGen. Commit the regenerated Trama.xcodeproj too."}}'
     else
       echo '{"hookSpecificOutput":{"hookEventName":"PostToolUse","additionalContext":"project.yml changed but xcodegen is not installed (brew install xcodegen). Regenerate before building."}}'
     fi
