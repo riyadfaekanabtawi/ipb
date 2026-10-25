@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_save">Save</string>
+    <string name="common_edit">Edit</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_close">Close</string>
+    <string name="common_done">Done</string>
+    <string name="common_ok">OK</string>
+    <string name="common_back">Back</string>
+    <string name="common_add">Add</string>
+    <string name="common_search">Search</string>
+    <string name="common_more_options">More options</string>
+    <string name="common_see_all">See all</string>
+    <string name="common_all_masc">All</string>
+    <string name="common_all_fem">All</string>
+    <string name="common_no_results">No results</string>
+    <string name="common_name">Name</string>
+    <string name="common_quantity">Quantity</string>
+    <string name="common_client">Client</string>
+    <string name="common_plant">Plant</string>
+    <string name="common_style">Style</string>
+    <string name="common_cut">Cut</string>
+    <string name="common_cuts">Cuts</string>
+    <string name="common_garments">Garments</string>
+    <string name="common_notes">Notes</string>
+    <string name="common_status">Status</string>
+    <string name="common_role">Role</string>
+    <string name="common_email">Email</string>
+    <string name="common_password">Password</string>
+    <string name="common_phone">Phone</string>
+    <string name="common_contact">Contact</string>
+    <string name="common_contacts">Contacts</string>
+    <string name="common_unit_price">Unit price</string>
+    <string name="common_internal_date">Internal date</string>
+    <string name="common_client_date">Client date</string>
+    <string name="common_value">Value</string>
+    <string name="common_sign_out">Sign out</string>
+    <string name="common_sync_now">Sync now</string>
+    <string name="common_no_address">No address</string>
+</resources>

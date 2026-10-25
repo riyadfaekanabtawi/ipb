@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_cancel">Cancelar</string>
+    <string name="common_save">Salvar</string>
+    <string name="common_edit">Editar</string>
+    <string name="common_delete">Excluir</string>
+    <string name="common_close">Fechar</string>
+    <string name="common_done">Concluir</string>
+    <string name="common_ok">OK</string>
+    <string name="common_back">Voltar</string>
+    <string name="common_add">Adicionar</string>
+    <string name="common_search">Buscar</string>
+    <string name="common_more_options">Mais opções</string>
+    <string name="common_see_all">Ver todos</string>
+    <string name="common_all_masc">Todos</string>
+    <string name="common_all_fem">Todas</string>
+    <string name="common_no_results">Nenhum resultado</string>
+    <string name="common_name">Nome</string>
+    <string name="common_quantity">Quantidade</string>
+    <string name="common_client">Cliente</string>
+    <string name="common_plant">Unidade</string>
+    <string name="common_style">Modelo</string>
+    <string name="common_cut">Corte</string>
+    <string name="common_cuts">Cortes</string>
+    <string name="common_garments">Peças</string>
+    <string name="common_notes">Observações</string>
+    <string name="common_status">Status</string>
+    <string name="common_role">Cargo</string>
+    <string name="common_email">E-mail</string>
+    <string name="common_password">Senha</string>
+    <string name="common_phone">Telefone</string>
+    <string name="common_contact">Contato</string>
+    <string name="common_contacts">Contatos</string>
+    <string name="common_unit_price">Preço unitário</string>
+    <string name="common_internal_date">Data interna</string>
+    <string name="common_client_date">Data do cliente</string>
+    <string name="common_value">Valor</string>
+    <string name="common_sign_out">Sair</string>
+    <string name="common_sync_now">Sincronizar</string>
+    <string name="common_no_address">Sem endereço</string>
+</resources>
