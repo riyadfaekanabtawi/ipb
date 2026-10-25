@@ -3,6 +3,7 @@ import { z } from "zod";
 import { verifyPassword } from "../crypto.js";
 import { db, tx } from "../db.js";
 import { ApiError, audit, body, clientIp, rateLimit, requireAdmin, type Env } from "../http.js";
+import { LANGS, isLang } from "../i18n.js";
 import { inviteEmail, sendMail } from "../mail.js";
 import { PLAN_IDS, PLANS } from "../plans.js";
 import { createTenant, encryptProfile, getTenant, licenceOf, tenantKey, userDto, type TenantRow, type UserRow } from "../tenants.js";
@@ -22,7 +23,7 @@ admin.post("/login", async (c) => {
   );
   const found = rows[0];
   if (!found || !verifyPassword(input.password, found.password_hash, found.password_salt)) {
-    throw new ApiError(401, "bad_credentials", "Correo o contraseña incorrectos.");
+    throw new ApiError(401, "bad_credentials", "badCredentials");
   }
   await audit(`admin:${found.id}`, "admin.login", null);
   return c.json({ accessToken: await signAccessToken({ kind: "admin", sub: found.id }), admin: { id: found.id, name: found.name } });
@@ -73,6 +74,8 @@ const createSchema = z.object({
   maxUsers: z.number().int().min(1).max(100_000).optional(),
   maxDevices: z.number().int().min(0).max(100_000).optional(),
   maxPlants: z.number().int().min(1).max(100_000).optional(),
+  /** Language of the invitation email (nothing is stored; the web app follows each browser). */
+  lang: z.enum(LANGS).default("es"),
   admin: z.object({
     firstName: z.string().trim().min(1).max(120),
     lastName: z.string().trim().max(120).default(""),
@@ -85,7 +88,7 @@ admin.post("/tenants", async (c) => {
   const actor = c.get("admin").sub;
   const result = await tx(async (client) => {
     const { rows: clash } = await client.query("SELECT 1 FROM users WHERE lower(email) = lower($1) AND NOT deleted", [input.admin.email]);
-    if (clash.length) throw new ApiError(409, "email_taken", "Ya existe un usuario con ese correo.");
+    if (clash.length) throw new ApiError(409, "email_taken", "emailTaken");
     const expiresAt = new Date();
     expiresAt.setMonth(expiresAt.getMonth() + input.months);
     const tenant = await createTenant(client, {
@@ -103,7 +106,7 @@ admin.post("/tenants", async (c) => {
     return { tenant, link };
   });
   await sendMail({
-    ...inviteEmail("invite", input.admin.firstName, input.name, result.link, { plan: input.plan, expiresAt: result.tenant.expires_at, email: input.admin.email }),
+    ...inviteEmail("invite", input.admin.firstName, input.name, result.link, { plan: input.plan, expiresAt: result.tenant.expires_at, email: input.admin.email }, input.lang),
     to: input.admin.email,
   });
   await audit(`admin:${actor}`, "tenant.create", result.tenant.id, { plan: input.plan, months: input.months });
@@ -112,7 +115,7 @@ admin.post("/tenants", async (c) => {
 
 admin.get("/tenants/:id", async (c) => {
   const tenant = await getTenant(c.req.param("id"));
-  if (!tenant) throw new ApiError(404, "not_found", "Empresa no encontrada.");
+  if (!tenant) throw new ApiError(404, "not_found", "companyNotFound");
   const key = tenantKey(tenant);
   const [users, devices, audits] = await Promise.all([
     db().query<UserRow>("SELECT * FROM users WHERE tenant_id = $1 AND NOT deleted ORDER BY created_at", [tenant.id]),
@@ -154,7 +157,7 @@ admin.patch("/tenants/:id", async (c) => {
   const updated = await tx(async (client) => {
     const { rows } = await client.query<TenantRow>("SELECT * FROM tenants WHERE id = $1 FOR UPDATE", [id]);
     const t = rows[0];
-    if (!t) throw new ApiError(404, "not_found", "Empresa no encontrada.");
+    if (!t) throw new ApiError(404, "not_found", "companyNotFound");
     const plan = (input.plan ?? t.plan) as TenantRow["plan"];
     const defaults = input.applyPlanDefaults ? PLANS[plan] : null;
     let expires = input.expiresAt ? new Date(input.expiresAt) : t.expires_at;
@@ -183,7 +186,7 @@ admin.post("/tenants/:id/devices/:deviceId/revoke", async (c) => {
   const { rowCount } = await db().query("UPDATE devices SET revoked_at = now() WHERE id = $1 AND tenant_id = $2 AND revoked_at IS NULL", [
     c.req.param("deviceId"), c.req.param("id"),
   ]);
-  if (!rowCount) throw new ApiError(404, "not_found", "Dispositivo no encontrado o ya liberado.");
+  if (!rowCount) throw new ApiError(404, "not_found", "deviceNotFound");
   await audit(`admin:${c.get("admin").sub}`, "device.revoke", c.req.param("id"), { device: c.req.param("deviceId") });
   return c.json({ ok: true });
 });
@@ -191,12 +194,13 @@ admin.post("/tenants/:id/devices/:deviceId/revoke", async (c) => {
 admin.post("/tenants/:id/users/:userId/invite", async (c) => {
   const tenant = await getTenant(c.req.param("id"));
   const { rows } = await db().query<UserRow>("SELECT * FROM users WHERE id = $1 AND tenant_id = $2 AND NOT deleted", [c.req.param("userId"), c.req.param("id")]);
-  if (!tenant || !rows[0]) throw new ApiError(404, "not_found", "Usuario no encontrado.");
+  if (!tenant || !rows[0]) throw new ApiError(404, "not_found", "userNotFound");
   const user = rows[0];
   const link = await createInvite(user.password_hash ? "reset" : "invite", { userId: user.id });
+  const lang = c.req.query("lang");
   const name = userDto(tenantKey(tenant), user, false).firstName ?? user.email;
   await sendMail({
-    ...inviteEmail(user.password_hash ? "reset" : "invite", name, tenant.name, link, { plan: tenant.plan, expiresAt: tenant.expires_at, email: user.email }),
+    ...inviteEmail(user.password_hash ? "reset" : "invite", name, tenant.name, link, { plan: tenant.plan, expiresAt: tenant.expires_at, email: user.email }, isLang(lang) ? lang : "es"),
     to: user.email,
   });
   await audit(`admin:${c.get("admin").sub}`, "user.invite", tenant.id, { user: user.id });
