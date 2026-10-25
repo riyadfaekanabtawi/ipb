@@ -92,3 +92,36 @@ python3 -m http.server -d web/public 8000
 - **No AI attribution**: no `Co-Authored-By` lines and no "generated with" text in commits or PRs. The `guard-bash` hook enforces this.
 - Hooks (`.claude/settings.json`): Bash guard, swift-format on edit, XcodeGen regeneration, Core Data reminder, session context.
 - Subagents (`.claude/agents/`): `ipb-domain-expert`, `swiftui-feature-builder`, `coredata-steward`, `ipb-reviewer`.
+
+## Pending (roadmap to a production-grade platform)
+
+Status as of 2026-10-25. Tick items off here as they land (with the PR number).
+
+### Billing (nothing built yet)
+- [ ] **Payments with Stripe Billing**: monthly/annual subscriptions per plan (cards; OXXO and SPEI for Mexico), Checkout + customer portal (update card, download receipts). Webhook → create/extend/suspend the tenant licence automatically (today licences are created by hand in the admin portal).
+- [ ] **CFDI 4.0 invoicing (Mexico)** through a PAC such as Facturapi: issue the invoice on each payment, email PDF + XML, store the UUID. Needs the owner's RFC and CSD. Decide whether non-Mexican customers get a plain invoice.
+- [ ] Dunning: reminders before expiry, grace period, automatic read-only on non-payment (the read-only mode already exists).
+
+### Must-fix before charging customers
+- [ ] **Vercel Pro** for `trama-app` and `trama-contact-api` (Hobby forbids commercial use).
+- [ ] **Own domain** (e.g. `trama.mx`) for the site, web app and API; update `web/src/site.json`, `APP_URL`, iOS `TRAMA_API_BASE_URL`, Android `API_BASE`.
+- [ ] **Transactional email on the own domain** (Resend or Amazon SES with SPF/DKIM/DMARC) instead of Gmail SMTP (≈500/day, spam risk). Both `platform/src/mail.ts` and `contact-api` send mail.
+- [ ] **Database backups**: Neon paid plan (longer point-in-time restore) and a periodic encrypted off-site dump. Back up `MASTER_KEY` outside the Mac (password manager); losing it makes all tenant data unreadable.
+- [ ] **Legal review**: the privacy notice and terms (`web/src/legal/*.json`) are drafts. Set the legal owner name and address in `web/src/site.json` → `legal` (address is empty today), confirm jurisdiction, and have a lawyer review (LFPDPPP; LGPD/GDPR if selling to Brazil/Europe). Add a data-processing agreement for Empresa customers.
+
+### Operations and security
+- [ ] Error tracking (Sentry) for the API, web app, iOS and Android; uptime monitoring and alerts.
+- [ ] Scheduled cleanup: `login_attempts` older than 30 days, used/expired `invites`, revoked `devices`.
+- [ ] Two-factor authentication for the admin portal (TOTP).
+- [ ] `MASTER_KEY` rotation tooling (`tenants.key_version` exists; re-wrap every DEK).
+- [ ] Restrict `passwordHash`/`passwordSalt` in `/api/sync/pull` (today every role receives all users' hashes; needed for offline login on shared tablets, but could be limited to admins or to users of the device's plant).
+- [ ] Tenant data export (full JSON backup from the cloud) and tenant deletion on request (privacy notice promises both).
+- [ ] Revert or flag locally kept changes the server rejects (`forbidden`/`limit`) on iOS and Android; today they stay only on the device.
+- [ ] Service worker for the web app so it opens with no network.
+- [ ] External security review / pen test before the first enterprise customer.
+
+### Distribution and QA
+- [ ] iPad distribution: Apple Business Manager Custom Apps (private) or an unlisted App Store listing; App Store review assets.
+- [ ] Android distribution: managed Google Play (private app) or signed APK channel; release signing keys.
+- [ ] Real-device end-to-end pass: connect licence, offline edits, reconnect sync, conflicts, read-only licence, device limit. The iOS sync screens have never been viewed on a simulator.
+- [ ] Unify the first-link behavior: iOS asks keep/replace, Android decides automatically (`docs/DOMAIN.md` rules 15 and 23).

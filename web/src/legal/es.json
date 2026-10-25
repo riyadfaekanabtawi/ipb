@@ -1,0 +1,319 @@
+{
+  "ui": {
+    "privacy": "Aviso de privacidad",
+    "terms": "Términos de uso",
+    "back": "Volver a Trama",
+    "updated": "Última actualización",
+    "contents": "En esta página",
+    "related": "Consulta también",
+    "form_notice": "Al enviar el formulario aceptas el <a href=\"{privacy_href}\">aviso de privacidad</a>.",
+    "updated_date": "25 de octubre de 2026",
+    "address_sentence": "Nuestro domicilio es {address}."
+  },
+  "privacy": {
+    "title": "Aviso de privacidad",
+    "description": "Cómo Trama recaba, usa, protege y comparte los datos personales del sitio, de las apps de iPad y Android y de la versión web, y cómo ejercer tus derechos ARCO.",
+    "lead": "En Trama cuidamos la información de las personas y de las empresas que confían en nosotros. Este aviso explica qué datos tratamos, para qué, con quién los compartimos y cómo puedes ejercer tus derechos, conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP) y su Reglamento.",
+    "sections": [
+      {
+        "id": "responsable",
+        "h": "1. Quién es responsable de tus datos",
+        "body": [
+          {
+            "p": "{owner} (en adelante, «Trama») es responsable del tratamiento de los datos personales que recabamos a través de este sitio, del formulario de licencias y de las cuentas de la plataforma Trama. {address_sentence}"
+          },
+          {
+            "p": "Para cualquier asunto de privacidad puedes escribirnos desde el <a href=\"{contact_href}\">formulario de contacto</a> o respondiendo a cualquier correo que te hayamos enviado."
+          }
+        ]
+      },
+      {
+        "id": "datos",
+        "h": "2. Qué datos recabamos",
+        "body": [
+          {
+            "p": "<strong>Si solicitas una licencia en el sitio:</strong>"
+          },
+          {
+            "ul": [
+              "Nombre, empresa, correo electrónico y teléfono (con país).",
+              "Número de plantas, plan de interés, idioma del sitio y el mensaje que nos escribas."
+            ]
+          },
+          {
+            "p": "<strong>Si usas Trama (apps de iPad y Android o versión web):</strong>"
+          },
+          {
+            "ul": [
+              "Datos de cuenta: nombre, apellido, correo, teléfono, puesto, planta asignada y foto de perfil opcional.",
+              "Credenciales: tu contraseña nunca se guarda en texto; solo un resumen criptográfico (PBKDF2-SHA256) que permite iniciar sesión incluso sin internet.",
+              "Datos técnicos: identificador del dispositivo, plataforma, nombre del equipo, fecha de último acceso y dirección IP para proteger el inicio de sesión contra intentos abusivos.",
+              "La información operativa que tu empresa captura (órdenes de corte, clientes, proveedores y sus contactos, estilos, asignaciones, reportes y proyectos)."
+            ]
+          },
+          {
+            "p": "No recabamos datos personales sensibles ni datos financieros de tarjetas a través de este sitio o de las apps."
+          }
+        ]
+      },
+      {
+        "id": "finalidades",
+        "h": "3. Para qué los usamos",
+        "body": [
+          {
+            "p": "<strong>Finalidades necesarias</strong> para la relación que tienes con nosotros:"
+          },
+          {
+            "ul": [
+              "Responder tu solicitud, agendar demostraciones y preparar tu cotización.",
+              "Crear y administrar la licencia de tu empresa, tus usuarios y los dispositivos autorizados.",
+              "Autenticarte, mantener tu sesión y sincronizar tu información entre iPad, Android y web.",
+              "Enviarte correos operativos: invitaciones, restablecimiento de contraseña y avisos sobre tu licencia.",
+              "Proteger la plataforma, prevenir fraudes y accesos no autorizados, y cumplir obligaciones legales."
+            ]
+          },
+          {
+            "p": "<strong>Finalidades adicionales:</strong> enviarte novedades del producto. Si no deseas recibirlas, avísanos en cualquier momento; esto no afectará tu servicio."
+          },
+          {
+            "p": "No vendemos ni rentamos datos personales y no usamos la información de tu empresa para publicidad ni para entrenar modelos."
+          }
+        ]
+      },
+      {
+        "id": "encargado",
+        "h": "4. Datos que tu empresa captura en Trama",
+        "body": [
+          {
+            "p": "La información operativa que tu empresa registra (incluidos los contactos de sus clientes y proveedores) pertenece a tu empresa. Respecto de esos datos, tu empresa es la responsable y Trama actúa como encargado: los tratamos solo para prestar el servicio, siguiendo sus instrucciones y este aviso."
+          }
+        ]
+      },
+      {
+        "id": "seguridad",
+        "h": "5. Cómo protegemos la información",
+        "body": [
+          {
+            "ul": [
+              "Cifrado en tránsito con TLS en todas las conexiones.",
+              "Cifrado en reposo: cada empresa tiene su propia llave de cifrado (AES-256-GCM) y todos sus registros y perfiles se guardan cifrados. Las llaves están protegidas por una llave maestra que no se almacena en la base de datos.",
+              "Contraseñas con resumen PBKDF2-SHA256 de 120 000 iteraciones, sesiones de corta duración y tokens de actualización ligados a cada dispositivo, que pueden revocarse.",
+              "Permisos por puesto validados también en el servidor, límites de intentos de inicio de sesión y registro de acciones administrativas."
+            ]
+          },
+          {
+            "p": "Ningún sistema es infalible. Si detectamos una vulneración que afecte de forma significativa tus derechos, te lo informaremos sin demora."
+          }
+        ]
+      },
+      {
+        "id": "transferencias",
+        "h": "6. Con quién compartimos datos",
+        "body": [
+          {
+            "p": "Usamos proveedores que tratan datos por cuenta nuestra (encargados), bajo obligaciones de confidencialidad y seguridad. Algunos se ubican fuera de México, principalmente en Estados Unidos:"
+          },
+          {
+            "ul": [
+              "Vercel: ejecución de la plataforma y del formulario de contacto.",
+              "Neon (sobre Amazon Web Services, EE. UU.): base de datos, donde la información se guarda cifrada.",
+              "Google (Gmail): envío de correos.",
+              "Hugging Face: alojamiento de este sitio."
+            ]
+          },
+          {
+            "p": "Estas remisiones no requieren tu consentimiento. Solo compartiremos datos con autoridades cuando una ley o una orden competente lo exija."
+          }
+        ]
+      },
+      {
+        "id": "conservacion",
+        "h": "7. Cuánto tiempo los conservamos",
+        "body": [
+          {
+            "p": "Conservamos los datos de tu solicitud mientras exista una conversación comercial y hasta 24 meses después. Los datos de la cuenta y de tu empresa se conservan mientras la licencia esté vigente; al terminar, tu empresa puede pedir un respaldo y la eliminación de su información, y la borramos de nuestros sistemas activos en un plazo razonable, salvo lo que debamos conservar por ley."
+          }
+        ]
+      },
+      {
+        "id": "arco",
+        "h": "8. Tus derechos ARCO y cómo ejercerlos",
+        "body": [
+          {
+            "p": "Puedes <strong>acceder</strong> a tus datos, <strong>rectificarlos</strong>, <strong>cancelarlos</strong> u <strong>oponerte</strong> a su uso, así como revocar tu consentimiento o limitar su uso y divulgación."
+          },
+          {
+            "p": "Envíanos tu solicitud desde el <a href=\"{contact_href}\">formulario de contacto</a> o respondiendo a cualquiera de nuestros correos, con: tu nombre y un medio para responderte; un documento que acredite tu identidad (o la de tu representante); qué derecho quieres ejercer y sobre qué datos; y cualquier elemento que ayude a localizarlos."
+          },
+          {
+            "p": "Te responderemos en un máximo de 20 días hábiles y, si procede, la haremos efectiva dentro de los 15 días hábiles siguientes. Si eres usuario de una empresa cliente, también puedes pedir a tu administrador que corrija o desactive tu cuenta."
+          },
+          {
+            "p": "Si consideras que tu derecho fue vulnerado, puedes acudir a la autoridad competente en materia de protección de datos personales."
+          }
+        ]
+      },
+      {
+        "id": "tecnologias",
+        "h": "9. Cookies y almacenamiento local",
+        "body": [
+          {
+            "p": "Este sitio no usa cookies de publicidad ni de rastreo. Guarda en tu navegador solo preferencias como el idioma elegido y carga tipografías desde Google Fonts. La versión web de Trama usa almacenamiento local del navegador para mantener tu sesión y una copia en caché de tu información, que se borra al cerrar sesión."
+          }
+        ]
+      },
+      {
+        "id": "menores",
+        "h": "10. Menores de edad",
+        "body": [
+          {
+            "p": "Trama es un servicio para empresas y no está dirigido a menores de 18 años."
+          }
+        ]
+      },
+      {
+        "id": "cambios",
+        "h": "11. Cambios a este aviso",
+        "body": [
+          {
+            "p": "Podemos actualizar este aviso por cambios legales o del servicio. Publicaremos la versión vigente en esta página con su fecha de actualización y, si el cambio es relevante, lo avisaremos por correo a los administradores de cada empresa."
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "title": "Términos de uso",
+    "description": "Condiciones de la licencia de Trama: planes, uso permitido, cuentas, datos, pagos, disponibilidad, responsabilidad y terminación.",
+    "lead": "Estos términos regulan el uso de Trama: las apps de iPad y Android, la versión web, la sincronización en la nube y este sitio. Al usar Trama o aceptar una licencia, tu empresa acepta estos términos. Si el contrato o la cotización firmada con tu empresa dice algo distinto, prevalece ese documento.",
+    "sections": [
+      {
+        "id": "servicio",
+        "h": "1. El servicio",
+        "body": [
+          {
+            "p": "Trama es un software de control de producción textil ofrecido por {owner}. Incluye la app para iPad y Android que funciona sin internet, la versión web y la sincronización cifrada entre dispositivos, según el plan contratado."
+          }
+        ]
+      },
+      {
+        "id": "licencia",
+        "h": "2. Licencia",
+        "body": [
+          {
+            "p": "Otorgamos a tu empresa una licencia no exclusiva, intransferible y revocable para usar Trama durante la vigencia contratada, dentro de los límites de su plan (usuarios, dispositivos y plantas). Trama no se vende: se licencia. El software, su diseño y su marca son propiedad de {owner}."
+          },
+          {
+            "p": "Las apps se distribuyen de forma privada a los clientes con licencia y no deben compartirse con terceros."
+          }
+        ]
+      },
+      {
+        "id": "uso",
+        "h": "3. Uso permitido",
+        "body": [
+          {
+            "p": "Tu empresa se compromete a no:"
+          },
+          {
+            "ul": [
+              "Revender, sublicenciar, rentar o poner Trama a disposición de terceros ajenos a tu empresa.",
+              "Copiar, modificar, descompilar o intentar obtener el código fuente, salvo lo que la ley permita expresamente.",
+              "Eludir los límites de la licencia, los permisos por puesto o las medidas de seguridad.",
+              "Usar Trama para actividades ilícitas o para almacenar información que infrinja derechos de terceros."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cuentas",
+        "h": "4. Cuentas y seguridad",
+        "body": [
+          {
+            "p": "El administrador de tu empresa crea y gestiona a los usuarios y sus puestos. Cada usuario debe mantener su contraseña en secreto y avisar de inmediato cualquier uso no autorizado. Tu empresa es responsable de la actividad realizada con sus cuentas y de desactivar a quienes ya no deban tener acceso, así como de liberar dispositivos perdidos."
+          }
+        ]
+      },
+      {
+        "id": "datos",
+        "h": "5. Tus datos",
+        "body": [
+          {
+            "p": "La información que tu empresa captura en Trama es de tu empresa. Nos autorizas a tratarla únicamente para prestar, proteger y dar soporte al servicio, como se describe en el <a href=\"{privacy_href}\">aviso de privacidad</a>. Tu empresa garantiza contar con las autorizaciones necesarias para registrar los datos de sus empleados, clientes y proveedores."
+          },
+          {
+            "p": "Las apps guardan la información en cada dispositivo y permiten exportar respaldos. Recomendamos hacer respaldos periódicos."
+          }
+        ]
+      },
+      {
+        "id": "pagos",
+        "h": "6. Planes, precios y pagos",
+        "body": [
+          {
+            "ul": [
+              "Los precios publicados están en dólares estadounidenses, por empresa y por mes, sin impuestos. El pago anual incluye dos meses sin costo.",
+              "Las condiciones de pago, la vigencia y la facturación se establecen en la cotización o contrato de tu empresa.",
+              "Podemos actualizar precios; los cambios aplican a partir de la siguiente renovación y te avisaremos con anticipación.",
+              "Salvo que la ley disponga otra cosa, los pagos no son reembolsables por periodos ya iniciados."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "vencimiento",
+        "h": "7. Vencimiento y suspensión",
+        "body": [
+          {
+            "p": "Si la licencia vence o se suspende por falta de pago o por incumplimiento de estos términos, la información sigue disponible en modo de solo lectura para que no pierdas nada, pero no podrán registrarse cambios nuevos hasta renovar. Podemos suspender de inmediato el acceso en caso de uso indebido o riesgo de seguridad."
+          }
+        ]
+      },
+      {
+        "id": "disponibilidad",
+        "h": "8. Disponibilidad y soporte",
+        "body": [
+          {
+            "p": "Las apps de iPad y Android siguen funcionando sin internet; la sincronización y la versión web dependen de la conexión y de servicios de terceros. Hacemos esfuerzos razonables para mantener la plataforma disponible y avisar los mantenimientos, pero no garantizamos un servicio ininterrumpido salvo que se pacte un nivel de servicio por escrito (plan Empresa). El soporte se brinda en español por los canales acordados."
+          }
+        ]
+      },
+      {
+        "id": "garantias",
+        "h": "9. Garantías y responsabilidad",
+        "body": [
+          {
+            "p": "Trama se ofrece «tal cual» y según su documentación. En la medida permitida por la ley, no respondemos por daños indirectos, lucro cesante ni pérdida de datos derivada de no hacer respaldos, y nuestra responsabilidad total frente a tu empresa se limita al monto pagado por la licencia en los 12 meses anteriores al hecho que la origine."
+          }
+        ]
+      },
+      {
+        "id": "terminacion",
+        "h": "10. Terminación",
+        "body": [
+          {
+            "p": "Tu empresa puede dejar de renovar en cualquier momento. Al terminar la licencia, puede solicitar un respaldo de su información y su eliminación de la nube, conforme al aviso de privacidad."
+          }
+        ]
+      },
+      {
+        "id": "cambios",
+        "h": "11. Cambios a estos términos",
+        "body": [
+          {
+            "p": "Podemos modificar estos términos. Publicaremos la versión vigente en esta página y avisaremos a los administradores cuando el cambio sea relevante. Seguir usando Trama después del aviso implica aceptar la nueva versión."
+          }
+        ]
+      },
+      {
+        "id": "ley",
+        "h": "12. Ley aplicable",
+        "body": [
+          {
+            "p": "Estos términos se rigen por las leyes de los Estados Unidos Mexicanos. Para cualquier controversia, las partes se someten a los tribunales competentes de {jurisdiction}, renunciando a cualquier otro fuero que pudiera corresponderles."
+          }
+        ]
+      }
+    ]
+  }
+}
