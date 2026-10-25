@@ -10,42 +10,46 @@ struct KPITile: View {
     var action: (() -> Void)?
 
     var body: some View {
-        Button {
-            action?()
-        } label: {
-            VStack(alignment: .leading, spacing: 12) {
-                HStack {
-                    Image(systemName: symbol)
-                        .font(.headline)
-                        .foregroundStyle(tint)
-                        .frame(width: 38, height: 38)
-                        .background(tint.opacity(0.14), in: .rect(cornerRadius: 12, style: .continuous))
-                    Spacer()
-                    if action != nil {
-                        Image(systemName: "arrow.up.right")
-                            .font(.caption.weight(.bold))
-                            .foregroundStyle(.tertiary)
-                    }
-                }
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(value)
-                        .font(.system(size: 30, weight: .bold, design: .rounded))
-                        .contentTransition(.numericText())
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.6)
-                    Text(title)
-                        .font(.subheadline.weight(.medium))
-                        .foregroundStyle(.secondary)
-                    if let footnote {
-                        Text(footnote).font(.caption).foregroundStyle(.tertiary)
-                    }
+        if let action {
+            Button(action: action) { tile }
+                .buttonStyle(.plain)
+        } else {
+            tile
+        }
+    }
+
+    private var tile: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Image(systemName: symbol)
+                    .font(.headline)
+                    .foregroundStyle(tint)
+                    .frame(width: 38, height: 38)
+                    .background(tint.opacity(0.14), in: .rect(cornerRadius: 12, style: .continuous))
+                Spacer()
+                if action != nil {
+                    Image(systemName: "arrow.up.right")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(.tertiary)
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .card(padding: 18)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(value)
+                    .font(.system(size: 30, weight: .bold, design: .rounded))
+                    .contentTransition(.numericText())
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
+                Text(title)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.secondary)
+                if let footnote {
+                    Text(footnote).font(.caption).foregroundStyle(.tertiary)
+                }
+            }
         }
-        .buttonStyle(.plain)
-        .disabled(action == nil)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .card(padding: 18)
+        .accessibilityElement(children: .combine)
     }
 }
 
