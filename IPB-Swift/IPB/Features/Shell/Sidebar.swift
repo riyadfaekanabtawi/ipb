@@ -19,8 +19,12 @@ struct Sidebar: View {
                     Section(group.rawValue) {
                         ForEach(items) { section in
                             NavigationLink(value: section) {
-                                Label(section.title, systemImage: section.symbol)
-                                    .badge(badge(for: section))
+                                Label {
+                                    Text(section.title)
+                                } icon: {
+                                    Image(systemName: section.symbol).foregroundStyle(Theme.brand)
+                                }
+                                .badge(badge(for: section))
                             }
                         }
                     }
