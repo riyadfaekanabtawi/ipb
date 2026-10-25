@@ -8,8 +8,8 @@ const C = {
 };
 const FONT = "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 const DISPLAY = "'Bricolage Grotesque','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif";
-const LOGO = "https://ranabtawi-trama.static.hf.space/assets/icon.png";
-export const SITE_URL = "https://ranabtawi-trama.static.hf.space";
+const LOGO = "https://trama-platform.vercel.app/assets/icon.png";
+export const SITE_URL = "https://trama-platform.vercel.app";
 
 export const esc = (value: unknown): string =>
   String(value ?? "").replace(/[&<>"']/g, (c) => (({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }) as Record<string, string>)[c]);

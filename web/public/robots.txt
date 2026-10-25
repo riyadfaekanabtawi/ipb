@@ -34,4 +34,4 @@ Allow: /
 User-agent: cohere-ai
 Allow: /
 
-Sitemap: https://ranabtawi-trama.static.hf.space/sitemap.xml
+Sitemap: https://trama-platform.vercel.app/sitemap.xml

@@ -15,7 +15,7 @@ Trama started as the internal app of **Industrial Peña Balles (IPB)**. It was r
 
 | | URL |
 |---|---|
-| Sales site (ES / EN / PT) | https://ranabtawi-trama.static.hf.space/index.html |
+| Sales site (ES / EN / PT) | https://trama-platform.vercel.app (mirror: https://ranabtawi-trama.static.hf.space/index.html) |
 | Web app (customers) | https://trama-platform.vercel.app/login |
 | Admin portal (vendor) | https://trama-platform.vercel.app/admin |
 | API | https://trama-platform.vercel.app/api |
