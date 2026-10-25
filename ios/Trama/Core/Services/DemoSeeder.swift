@@ -162,9 +162,9 @@ enum DemoSeeder {
 
         // Users.
         for (first, last, email, role, plant) in [
-            ("Riyad", "Anabtawi", "admin@demo.local", Role.admin, nil as Plant?),
-            ("Carmen", "Balles", "cortes@demo.local", .cutManager, nil),
-            ("Jorge", "Peña", "planta@demo.local", .plantManager, plants[0]),
+            ("Mariana", "Treviño", "admin@demo.local", Role.admin, nil as Plant?),
+            ("Carmen", "Ruiz", "cortes@demo.local", .cutManager, nil),
+            ("Jorge", "Salinas", "planta@demo.local", .plantManager, plants[0]),
             ("Ana", "Villarreal", "envios@demo.local", .shippingManager, nil),
         ] {
             _ = try? Session.createUser(
