@@ -102,7 +102,10 @@ admin.post("/tenants", async (c) => {
     const link = await createInvite("invite", { userId }, client);
     return { tenant, link };
   });
-  await sendMail({ ...inviteEmail("invite", input.admin.firstName, input.name, result.link), to: input.admin.email });
+  await sendMail({
+    ...inviteEmail("invite", input.admin.firstName, input.name, result.link, { plan: input.plan, expiresAt: result.tenant.expires_at, email: input.admin.email }),
+    to: input.admin.email,
+  });
   await audit(`admin:${actor}`, "tenant.create", result.tenant.id, { plan: input.plan, months: input.months });
   return c.json({ tenant: tenantSummary(result.tenant), inviteLink: result.link }, 201);
 });
@@ -192,7 +195,10 @@ admin.post("/tenants/:id/users/:userId/invite", async (c) => {
   const user = rows[0];
   const link = await createInvite(user.password_hash ? "reset" : "invite", { userId: user.id });
   const name = userDto(tenantKey(tenant), user, false).firstName ?? user.email;
-  await sendMail({ ...inviteEmail(user.password_hash ? "reset" : "invite", name, tenant.name, link), to: user.email });
+  await sendMail({
+    ...inviteEmail(user.password_hash ? "reset" : "invite", name, tenant.name, link, { plan: tenant.plan, expiresAt: tenant.expires_at, email: user.email }),
+    to: user.email,
+  });
   await audit(`admin:${c.get("admin").sub}`, "user.invite", tenant.id, { user: user.id });
   return c.json({ ok: true, inviteLink: link });
 });

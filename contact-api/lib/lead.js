@@ -1,3 +1,4 @@
+import { renderEmail } from "./email-layout.js";
 // Pure lead-handling logic for the "Solicitar licencia" form: validation, spam checks and email
 // bodies. No I/O here so it can be unit tested; api/contact.js wires it to SMTP.
 
@@ -156,7 +157,6 @@ export function parseLead(body, now = Date.now()) {
   return { ok: true, lead };
 }
 
-const escapeHtml = (s) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const LANG_NAMES = { es: "Español", en: "Inglés", pt: "Portugués" };
 
 /** Notification sent to the Trama inbox (always Spanish). Reply-To is the lead, so answering goes straight to them. */
@@ -168,10 +168,21 @@ export function internalEmail(lead) {
     ["Plantas", lead.plants], ["Plan de interés", lead.plan],
   ];
   const text = rows.map(([k, v]) => `${k}: ${v}`).join("\n") + `\n\n${lead.message || "(sin mensaje)"}\n`;
-  const html = `<h2 style="font-family:system-ui">Nueva solicitud de licencia</h2>
-<table style="font-family:system-ui;border-collapse:collapse">${rows.map(([k, v]) =>
-    `<tr><td style="padding:4px 12px 4px 0;color:#5e7178">${k}</td><td style="padding:4px 0"><b>${escapeHtml(v)}</b></td></tr>`).join("")}</table>
-<p style="font-family:system-ui;white-space:pre-wrap">${escapeHtml(lead.message || "(sin mensaje)")}</p>`;
+  const first = lead.name.split(/\s+/)[0];
+  const html = renderEmail({
+    lang: "es",
+    preheader: `${lead.name} · ${lead.plan} · ${lead.plants} planta(s)`,
+    eyebrow: "Nueva solicitud de licencia",
+    title: `${lead.company} quiere conocer Trama`,
+    intro: [`${lead.name} llenó el formulario del sitio en ${(LANG_NAMES[lead.lang] ?? "Español").toLowerCase()}. Respóndele en menos de un día hábil para agendar la demo.`],
+    button: { label: `Responder a ${first}`, url: `mailto:${lead.email}?subject=${encodeURIComponent(`Trama · Demo para ${lead.company}`)}` },
+    sections: [
+      { type: "details", title: "Datos del contacto", rows },
+      { type: "quote", title: "Mensaje", text: lead.message || "(sin mensaje)" },
+      { type: "notice", text: `Responder a este correo también le llega directo a ${lead.name}.` },
+    ],
+    footer: { tagline: "Control de producción textil", reason: "Notificación interna del formulario de licencias." },
+  });
   const where = lead.country ? ` · ${lead.country}` : "";
   return { subject: `Trama · Solicitud de licencia · ${lead.company}${where}`, text, html, replyTo: `${lead.name} <${lead.email}>` };
 }
@@ -241,5 +252,61 @@ ${url}
 `,
     },
   };
-  return texts[lang];
+  const html = {
+    es: {
+      eyebrow: "Solicitud recibida", title: `¡Gracias, ${first}!`,
+      intro: [`Recibimos tu solicitud de licencia para ${lead.company}. Te contactaremos en menos de un día hábil para agendar una demo con información parecida a la de tu fábrica.`],
+      summary: "Tu solicitud", rows: [["Empresa", lead.company], ["Plantas", plants], ["Plan de interés", plan]],
+      next: "Qué sigue",
+      steps: [
+        { title: "Te llamamos o escribimos", body: "En menos de un día hábil, para conocer cómo trabaja tu planta." },
+        { title: "Demo con tus datos", body: "Te mostramos Trama con órdenes, plantas y reportes parecidos a los tuyos." },
+        { title: "Licencia y arranque", body: "Activamos tu cuenta, conectamos iPad, Android o web y migramos tu información." },
+      ],
+      button: "Ver planes y precios", tagline: "Control de producción textil",
+      reason: "Recibiste este correo porque solicitaste información en el sitio de Trama. Si quieres agregar algo, solo responde.",
+    },
+    en: {
+      eyebrow: "Request received", title: `Thank you, ${first}!`,
+      intro: [`We've received your licence request for ${lead.company}. We'll get in touch within one business day to schedule a demo with data that looks like your factory's.`],
+      summary: "Your request", rows: [["Company", lead.company], ["Plants", plants], ["Plan", plan]],
+      next: "What happens next",
+      steps: [
+        { title: "We reach out", body: "Within one business day, to learn how your plant works." },
+        { title: "A demo with your data", body: "We show you Trama with orders, plants and reports like yours." },
+        { title: "Licence and onboarding", body: "We activate your account, connect iPad, Android or web, and migrate your data." },
+      ],
+      button: "See plans and pricing", tagline: "Garment production control",
+      reason: "You received this email because you requested information on the Trama website. Just reply to add anything.",
+    },
+    pt: {
+      eyebrow: "Solicitação recebida", title: `Obrigado, ${first}!`,
+      intro: [`Recebemos a sua solicitação de licença para ${lead.company}. Entraremos em contato em até um dia útil para agendar uma demonstração com informações parecidas com as da sua confecção.`],
+      summary: "Sua solicitação", rows: [["Empresa", lead.company], ["Unidades", plants], ["Plano de interesse", plan]],
+      next: "Próximos passos",
+      steps: [
+        { title: "Entramos em contato", body: "Em até um dia útil, para entender como sua confecção trabalha." },
+        { title: "Demonstração com seus dados", body: "Mostramos o Trama com ordens, unidades e relatórios parecidos com os seus." },
+        { title: "Licença e implantação", body: "Ativamos sua conta, conectamos iPad, Android ou web e migramos seus dados." },
+      ],
+      button: "Ver planos e preços", tagline: "Controle de produção têxtil",
+      reason: "Você recebeu este e-mail porque solicitou informações no site do Trama. Para acrescentar algo, é só responder.",
+    },
+  }[lang];
+  return {
+    ...texts[lang],
+    html: renderEmail({
+      lang,
+      preheader: html.intro[0],
+      eyebrow: html.eyebrow,
+      title: html.title,
+      intro: html.intro,
+      sections: [
+        { type: "details", title: html.summary, rows: html.rows },
+        { type: "steps", title: html.next, items: html.steps },
+      ],
+      button: { label: html.button, url: `${url}#precios` },
+      footer: { tagline: html.tagline, reason: html.reason, siteUrl: url },
+    }),
+  };
 }

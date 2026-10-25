@@ -71,7 +71,7 @@ export default async function handler(req, res) {
   }
   // The auto-reply is a courtesy; the lead is already delivered, so its failure doesn't fail the request.
   const reply = autoReplyEmail(parsed.lead);
-  await mailer().sendMail({ from, to: parsed.lead.email, replyTo: to, subject: reply.subject, text: reply.text })
+  await mailer().sendMail({ from, to: parsed.lead.email, replyTo: to, subject: reply.subject, text: reply.text, html: reply.html })
     .catch((error) => console.error("contact: auto-reply failed", error?.code ?? error?.message));
   return res.status(200).json({ ok: true });
 }
