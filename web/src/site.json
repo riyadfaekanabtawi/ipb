@@ -5,10 +5,17 @@
   "contact_endpoint": "https://trama-contact-api.vercel.app/api/contact",
   "lastmod": "2026-10-25",
   "languages": [
-    { "code": "es", "dir": "", "hreflang": ["es-MX", "es"], "label": "ES", "flag": "🇲🇽", "name": "Español", "default": true },
-    { "code": "en", "dir": "en/", "hreflang": ["en"], "label": "EN", "flag": "🇺🇸", "name": "English" },
-    { "code": "pt", "dir": "pt/", "hreflang": ["pt-BR", "pt"], "label": "PT", "flag": "🇧🇷", "name": "Português" }
+    { "code": "es", "dir": "", "hreflang": ["es-MX", "es"], "label": "ES", "flag": "🇲🇽", "name": "Español", "default": true, "legal": { "privacy": "privacidad.html", "terms": "terminos.html" } },
+    { "code": "en", "dir": "en/", "hreflang": ["en"], "label": "EN", "flag": "🇺🇸", "name": "English", "legal": { "privacy": "privacy.html", "terms": "terms.html" } },
+    { "code": "pt", "dir": "pt/", "hreflang": ["pt-BR", "pt"], "label": "PT", "flag": "🇧🇷", "name": "Português", "legal": { "privacy": "privacidade.html", "terms": "termos.html" } }
   ],
+  "legal": {
+    "_comment": "Legal pages (web/src/legal.html + web/src/legal/{lang}.json). Set owner (legal name) and address before relying on them.",
+    "owner": "Trama",
+    "address": "",
+    "jurisdiction": { "es": "la Ciudad de México", "en": "Mexico City", "pt": "Cidade do México" },
+    "updated": "2026-10-25"
+  },
   "plans": [
     { "id": "web", "value": "Web", "monthly": 49 },
     { "id": "planta", "value": "Planta", "monthly": 99 },

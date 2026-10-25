@@ -452,6 +452,7 @@
           <label>{{contact.message}}<textarea name="mensaje" rows="4" placeholder="{{contact.message_placeholder|e}}"></textarea></label>
           <button class="btn btn--block" type="submit">{{contact.submit}}</button>
           <p class="form__hint" role="status" aria-live="polite">{{contact.hint}}</p>
+          <p class="form__legal">{{legal.form_notice}}</p>
         </form>
       </div>
     </section>
@@ -465,6 +466,10 @@
 {{#langs}}
         <a href="{{href}}" hreflang="{{hreflang}}" lang="{{hreflang}}"{{#current}} aria-current="page"{{/current}}>{{name}}</a>
 {{/langs}}
+      </nav>
+      <nav class="footer__langs footer__legal" aria-label="Legal">
+        <a href="{{legal.privacy_href}}">{{legal.privacy}}</a>
+        <a href="{{legal.terms_href}}">{{legal.terms}}</a>
       </nav>
       <p>© <span id="year">{{year}}</span> Trama</p>
     </div>

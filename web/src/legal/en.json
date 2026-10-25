@@ -1,0 +1,319 @@
+{
+  "ui": {
+    "privacy": "Privacy notice",
+    "terms": "Terms of use",
+    "back": "Back to Trama",
+    "updated": "Last updated",
+    "contents": "On this page",
+    "related": "See also",
+    "form_notice": "By sending the form you accept the <a href=\"{privacy_href}\">privacy notice</a>.",
+    "updated_date": "October 25, 2026",
+    "address_sentence": "Our address is {address}."
+  },
+  "privacy": {
+    "title": "Privacy notice",
+    "description": "How Trama collects, uses, protects and shares personal data on the website, the iPad and Android apps and the web version, and how to exercise your rights.",
+    "lead": "At Trama we look after the information of the people and companies that trust us. This notice explains what data we process, why, who we share it with and how to exercise your rights, in accordance with Mexico's Federal Law on the Protection of Personal Data Held by Private Parties (LFPDPPP) and its regulations.",
+    "sections": [
+      {
+        "id": "controller",
+        "h": "1. Who is responsible for your data",
+        "body": [
+          {
+            "p": "{owner} (\"Trama\") is the controller of the personal data we collect through this website, the licence request form and Trama platform accounts. {address_sentence}"
+          },
+          {
+            "p": "For any privacy matter, write to us through the <a href=\"{contact_href}\">contact form</a> or reply to any email we have sent you."
+          }
+        ]
+      },
+      {
+        "id": "data",
+        "h": "2. What data we collect",
+        "body": [
+          {
+            "p": "<strong>If you request a licence on the website:</strong>"
+          },
+          {
+            "ul": [
+              "Name, company, email address and phone number (with country).",
+              "Number of plants, plan of interest, website language and the message you write to us."
+            ]
+          },
+          {
+            "p": "<strong>If you use Trama (iPad and Android apps or web version):</strong>"
+          },
+          {
+            "ul": [
+              "Account data: first and last name, email, phone, role, assigned plant and an optional profile photo.",
+              "Credentials: your password is never stored in plain text, only a cryptographic hash (PBKDF2-SHA256) that lets you sign in even without internet.",
+              "Technical data: device identifier, platform, device name, last access date and IP address, used to protect sign-in against abusive attempts.",
+              "The operational information your company enters (cut orders, clients, suppliers and their contacts, styles, assignments, reports and projects)."
+            ]
+          },
+          {
+            "p": "We do not collect sensitive personal data or payment card data through this website or the apps."
+          }
+        ]
+      },
+      {
+        "id": "purposes",
+        "h": "3. What we use it for",
+        "body": [
+          {
+            "p": "<strong>Necessary purposes</strong> for your relationship with us:"
+          },
+          {
+            "ul": [
+              "Answering your request, scheduling demos and preparing your quote.",
+              "Creating and managing your company's licence, users and authorised devices.",
+              "Authenticating you, keeping your session and syncing your information across iPad, Android and web.",
+              "Sending operational emails: invitations, password resets and licence notices.",
+              "Protecting the platform, preventing fraud and unauthorised access, and meeting legal obligations."
+            ]
+          },
+          {
+            "p": "<strong>Additional purposes:</strong> sending you product news. If you don't want them, tell us at any time; it won't affect your service."
+          },
+          {
+            "p": "We do not sell or rent personal data, and we do not use your company's information for advertising or to train models."
+          }
+        ]
+      },
+      {
+        "id": "processor",
+        "h": "4. Data your company enters in Trama",
+        "body": [
+          {
+            "p": "The operational information your company records (including the contacts of its clients and suppliers) belongs to your company. For that data your company is the controller and Trama acts as a processor: we process it only to provide the service, following your company's instructions and this notice."
+          }
+        ]
+      },
+      {
+        "id": "security",
+        "h": "5. How we protect information",
+        "body": [
+          {
+            "ul": [
+              "Encryption in transit with TLS on every connection.",
+              "Encryption at rest: each company has its own encryption key (AES-256-GCM) and all of its records and profiles are stored encrypted. Keys are protected by a master key that is not stored in the database.",
+              "Passwords hashed with PBKDF2-SHA256 (120,000 iterations), short-lived sessions and refresh tokens bound to each device, which can be revoked.",
+              "Role permissions also enforced on the server, sign-in attempt limits and a log of administrative actions."
+            ]
+          },
+          {
+            "p": "No system is infallible. If we detect a breach that significantly affects your rights, we will inform you without delay."
+          }
+        ]
+      },
+      {
+        "id": "sharing",
+        "h": "6. Who we share data with",
+        "body": [
+          {
+            "p": "We use providers that process data on our behalf (processors) under confidentiality and security obligations. Some are located outside Mexico, mainly in the United States:"
+          },
+          {
+            "ul": [
+              "Vercel: runs the platform and the contact form.",
+              "Neon (on Amazon Web Services, USA): database, where information is stored encrypted.",
+              "Google (Gmail): sending emails.",
+              "Hugging Face: hosting this website."
+            ]
+          },
+          {
+            "p": "We only share data with authorities when a law or a competent order requires it."
+          }
+        ]
+      },
+      {
+        "id": "retention",
+        "h": "7. How long we keep it",
+        "body": [
+          {
+            "p": "We keep the data of your request while a commercial conversation exists and for up to 24 months afterwards. Account and company data are kept while the licence is active; when it ends, your company can request a backup and the deletion of its information, and we delete it from our active systems within a reasonable period, except what we must keep by law."
+          }
+        ]
+      },
+      {
+        "id": "rights",
+        "h": "8. Your rights and how to exercise them",
+        "body": [
+          {
+            "p": "You can <strong>access</strong>, <strong>rectify</strong> or <strong>delete</strong> your data, <strong>object</strong> to its use, withdraw your consent or limit its use and disclosure (ARCO rights)."
+          },
+          {
+            "p": "Send your request through the <a href=\"{contact_href}\">contact form</a> or by replying to any of our emails, including: your name and a way to reply to you; a document proving your identity (or your representative's); which right you want to exercise and over which data; and anything that helps locate it."
+          },
+          {
+            "p": "We will answer within 20 business days and, if applicable, make it effective within the following 15 business days. If you are a user of a client company, you can also ask your administrator to correct or deactivate your account."
+          },
+          {
+            "p": "If you believe your rights were violated, you may contact the competent data protection authority."
+          }
+        ]
+      },
+      {
+        "id": "cookies",
+        "h": "9. Cookies and local storage",
+        "body": [
+          {
+            "p": "This website does not use advertising or tracking cookies. It only stores preferences such as your chosen language in your browser and loads fonts from Google Fonts. The Trama web version uses browser storage to keep your session and a cached copy of your information, which is cleared when you sign out."
+          }
+        ]
+      },
+      {
+        "id": "minors",
+        "h": "10. Minors",
+        "body": [
+          {
+            "p": "Trama is a business service and is not directed at people under 18."
+          }
+        ]
+      },
+      {
+        "id": "changes",
+        "h": "11. Changes to this notice",
+        "body": [
+          {
+            "p": "We may update this notice due to legal or service changes. We will publish the current version on this page with its update date and, if the change is significant, notify each company's administrators by email."
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "title": "Terms of use",
+    "description": "Trama licence terms: plans, permitted use, accounts, data, payments, availability, liability and termination.",
+    "lead": "These terms govern the use of Trama: the iPad and Android apps, the web version, cloud sync and this website. By using Trama or accepting a licence, your company accepts these terms. If the contract or signed quote with your company says otherwise, that document prevails.",
+    "sections": [
+      {
+        "id": "service",
+        "h": "1. The service",
+        "body": [
+          {
+            "p": "Trama is garment production control software offered by {owner}. It includes the iPad and Android app that works without internet, the web version and encrypted sync between devices, according to the plan purchased."
+          }
+        ]
+      },
+      {
+        "id": "licence",
+        "h": "2. Licence",
+        "body": [
+          {
+            "p": "We grant your company a non-exclusive, non-transferable, revocable licence to use Trama during the contracted term, within the limits of its plan (users, devices and plants). Trama is licensed, not sold. The software, its design and its brand belong to {owner}."
+          },
+          {
+            "p": "The apps are distributed privately to licensed customers and must not be shared with third parties."
+          }
+        ]
+      },
+      {
+        "id": "use",
+        "h": "3. Permitted use",
+        "body": [
+          {
+            "p": "Your company agrees not to:"
+          },
+          {
+            "ul": [
+              "Resell, sublicense, rent or make Trama available to anyone outside your company.",
+              "Copy, modify, decompile or attempt to obtain the source code, except where the law expressly allows it.",
+              "Circumvent licence limits, role permissions or security measures.",
+              "Use Trama for unlawful activities or to store information that infringes third-party rights."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "accounts",
+        "h": "4. Accounts and security",
+        "body": [
+          {
+            "p": "Your company's administrator creates and manages users and their roles. Each user must keep their password secret and report any unauthorised use immediately. Your company is responsible for activity carried out with its accounts, for deactivating people who should no longer have access and for releasing lost devices."
+          }
+        ]
+      },
+      {
+        "id": "data",
+        "h": "5. Your data",
+        "body": [
+          {
+            "p": "The information your company enters in Trama belongs to your company. You authorise us to process it only to provide, secure and support the service, as described in the <a href=\"{privacy_href}\">privacy notice</a>. Your company warrants that it has the authorisations needed to record the data of its employees, clients and suppliers."
+          },
+          {
+            "p": "The apps store information on each device and can export backups. We recommend making regular backups."
+          }
+        ]
+      },
+      {
+        "id": "payments",
+        "h": "6. Plans, prices and payments",
+        "body": [
+          {
+            "ul": [
+              "Published prices are in US dollars, per company per month, excluding taxes. Annual billing includes two months free.",
+              "Payment terms, term length and invoicing are set out in your company's quote or contract.",
+              "We may update prices; changes apply from the next renewal and we will notify you in advance.",
+              "Unless the law provides otherwise, payments for periods already started are non-refundable."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "expiry",
+        "h": "7. Expiry and suspension",
+        "body": [
+          {
+            "p": "If the licence expires or is suspended for non-payment or breach of these terms, information remains available in read-only mode so nothing is lost, but no new changes can be recorded until renewal. We may suspend access immediately in case of misuse or security risk."
+          }
+        ]
+      },
+      {
+        "id": "availability",
+        "h": "8. Availability and support",
+        "body": [
+          {
+            "p": "The iPad and Android apps keep working without internet; sync and the web version depend on the connection and on third-party services. We make reasonable efforts to keep the platform available and to announce maintenance, but we do not guarantee uninterrupted service unless a service level is agreed in writing (Enterprise plan). Support is provided through the agreed channels."
+          }
+        ]
+      },
+      {
+        "id": "liability",
+        "h": "9. Warranties and liability",
+        "body": [
+          {
+            "p": "Trama is provided \"as is\" and according to its documentation. To the extent permitted by law, we are not liable for indirect damages, lost profits or data loss resulting from not making backups, and our total liability to your company is limited to the amount paid for the licence in the 12 months before the event giving rise to it."
+          }
+        ]
+      },
+      {
+        "id": "termination",
+        "h": "10. Termination",
+        "body": [
+          {
+            "p": "Your company may stop renewing at any time. When the licence ends, it can request a backup of its information and its deletion from the cloud, as described in the privacy notice."
+          }
+        ]
+      },
+      {
+        "id": "changes",
+        "h": "11. Changes to these terms",
+        "body": [
+          {
+            "p": "We may modify these terms. We will publish the current version on this page and notify administrators when the change is significant. Continuing to use Trama after the notice means accepting the new version."
+          }
+        ]
+      },
+      {
+        "id": "law",
+        "h": "12. Governing law",
+        "body": [
+          {
+            "p": "These terms are governed by the laws of the United Mexican States. For any dispute, the parties submit to the competent courts of {jurisdiction}, waiving any other jurisdiction that may apply."
+          }
+        ]
+      }
+    ]
+  }
+}

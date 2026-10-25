@@ -42,5 +42,77 @@
     <image:image><image:loc>https://ranabtawi-trama.static.hf.space/assets/og.jpg</image:loc><image:title>Trama | Software de produção têxtil para confecções</image:title></image:image>
     <image:image><image:loc>https://ranabtawi-trama.static.hf.space/assets/shots/board.webp</image:loc><image:title>Quadro de corte estilo kanban</image:title></image:image>
   </url>
+  <url>
+    <loc>https://ranabtawi-trama.static.hf.space/privacidad.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
+  </url>
+  <url>
+    <loc>https://ranabtawi-trama.static.hf.space/en/privacy.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
+  </url>
+  <url>
+    <loc>https://ranabtawi-trama.static.hf.space/pt/privacidade.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/privacidad.html"/>
+  </url>
+  <url>
+    <loc>https://ranabtawi-trama.static.hf.space/terminos.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
+  </url>
+  <url>
+    <loc>https://ranabtawi-trama.static.hf.space/en/terms.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
+  </url>
+  <url>
+    <loc>https://ranabtawi-trama.static.hf.space/pt/termos.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ranabtawi-trama.static.hf.space/en/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ranabtawi-trama.static.hf.space/pt/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://ranabtawi-trama.static.hf.space/pt/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ranabtawi-trama.static.hf.space/terminos.html"/>
+  </url>
   <url><loc>https://ranabtawi-trama.static.hf.space/llms.txt</loc><lastmod>2026-10-25</lastmod><priority>0.3</priority></url>
 </urlset>
