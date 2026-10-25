@@ -1,5 +1,6 @@
 package com.nevutech.trama.feature.clients
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,13 +21,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.rememberActions
 import com.nevutech.trama.core.data.ClientEntity
 import com.nevutech.trama.core.data.ContactDraft
 import com.nevutech.trama.core.data.ContactEntity
 import com.nevutech.trama.core.data.SupplierEntity
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.Avatar
 import com.nevutech.trama.designsystem.Tokens
 import com.nevutech.trama.designsystem.TramaCard
@@ -35,7 +39,10 @@ import com.nevutech.trama.designsystem.TramaField
 /** Which party an editor is open for; [addingContact] starts with a fresh contact row. */
 data class PartyEditorTarget<T>(val item: T?, val addingContact: Boolean = false)
 
-enum class PartyKind(val noun: String) { Client("cliente"), Supplier("proveedor") }
+enum class PartyKind(@StringRes val newTitleRes: Int, @StringRes val editTitleRes: Int) {
+    Client(R.string.clients_new, R.string.clients_edit),
+    Supplier(R.string.suppliers_new, R.string.suppliers_edit),
+}
 
 /** Create/edit sheet shared by clients and suppliers: name, address and any number of contacts. */
 @Composable
@@ -64,22 +71,22 @@ fun PartyEditorSheet(
         when (kind) {
             PartyKind.Client -> {
                 val saved = catalog.saveClient(client, name, address, contacts)
-                toasts.show(if (isNew) "Cliente «${saved.name}» creado" else "Cliente actualizado")
+                toasts.show(if (isNew) L10n.str(R.string.clients_created, saved.name) else L10n.str(R.string.clients_updated))
             }
             PartyKind.Supplier -> {
                 val saved = catalog.saveSupplier(supplier, name, address, contacts)
-                toasts.show(if (isNew) "Proveedor «${saved.name}» creado" else "Proveedor actualizado")
+                toasts.show(if (isNew) L10n.str(R.string.suppliers_created, saved.name) else L10n.str(R.string.suppliers_updated))
             }
         }
     }
 
     FormSheet(
-        title = if (isNew) "Nuevo ${kind.noun}" else "Editar ${kind.noun}",
+        title = stringResource(if (isNew) kind.newTitleRes else kind.editTitleRes),
         onDismiss = onDismiss, onSave = ::save, canSave = name.isNotBlank(),
     ) {
-        FormSection("Datos generales") {
-            TramaField(name, { name = it }, "Nombre")
-            TramaField(address, { address = it }, "Dirección", singleLine = false, leading = Icons.Outlined.LocationOn)
+        FormSection(stringResource(R.string.party_general)) {
+            TramaField(name, { name = it }, stringResource(R.string.common_name))
+            TramaField(address, { address = it }, stringResource(R.string.party_address), singleLine = false, leading = Icons.Outlined.LocationOn)
         }
         ContactsEditorSection(contacts, { contacts = it }, focusId)
     }
@@ -103,7 +110,7 @@ fun PartyCard(
                 Text(name, style = MaterialTheme.typography.titleLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     Icon(Icons.Outlined.LocationOn, null, tint = Tokens.colors.secondary, modifier = Modifier.size(15.dp))
-                    Text(address ?: "Sin dirección", style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(address ?: stringResource(R.string.common_no_address), style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
         }

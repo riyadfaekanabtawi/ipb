@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Shared catalog UI -->
+    <string name="catalog_ui_delete_title">Excluir %1$s?</string>
+    <string name="catalog_ui_maybe_deleted">É possível que tenha sido excluído.</string>
+    <string name="catalog_ui_email_all">Enviar e-mail para todos</string>
+    <string name="catalog_ui_email_to">Enviar e-mail para %1$s</string>
+    <string name="catalog_ui_call">Ligar para %1$s</string>
+    <string name="catalog_ui_open_address_maps">Abrir endereço no Maps</string>
+    <string name="catalog_ui_maps">Maps</string>
+    <string name="catalog_ui_no_app_for_link">Nenhum app consegue abrir este link.</string>
+    <string name="catalog_ui_clear_search">Limpar busca</string>
+    <string name="catalog_ui_no_results_for">Nenhum resultado para “%1$s”</string>
+    <string name="catalog_ui_no_results_hint">Confira a ortografia ou tente outra busca.</string>
+    <string name="catalog_ui_hide_password">Ocultar senha</string>
+    <string name="catalog_ui_show_password">Mostrar senha</string>
+    <string name="catalog_ui_garments_lower">peças</string>
+    <string name="catalog_ui_value_lower">valor</string>
+
+    <!-- Plants -->
+    <string name="plants_search">Buscar unidade ou gerente</string>
+    <string name="plants_new">Nova unidade</string>
+    <string name="plants_edit">Editar unidade</string>
+    <string name="plants_empty_title">Nenhuma unidade</string>
+    <string name="plants_empty_message">Cadastre suas unidades com a capacidade mensal para começar a alocar cortes.</string>
+    <string name="plants_delete_message">Só é possível excluir unidades sem cortes alocados.</string>
+    <string name="plants_deleted">Unidade “%1$s” excluída</string>
+    <string name="plants_created">Unidade “%1$s” criada</string>
+    <string name="plants_updated">Unidade atualizada</string>
+    <string name="plants_kpi_total_capacity">Capacidade mensal total</string>
+    <string name="plants_kpi_used_month">Usado neste mês</string>
+    <string name="plants_kpi_of_capacity">%1$s da capacidade</string>
+    <string name="plants_kpi_active">Alocações ativas</string>
+    <string name="plants_card_capacity">Capacidade de %1$s por mês</string>
+    <string name="plants_available">Disponível %1$s</string>
+    <string name="plants_used">Usado %1$s</string>
+    <string name="plants_active_lower">ativas</string>
+    <string name="plants_no_manager">Sem gerente</string>
+    <plurals name="plants_managers">
+        <item quantity="one">%1$d gerente</item>
+        <item quantity="many">%1$d gerentes</item>
+        <item quantity="other">%1$d gerentes</item>
+    </plurals>
+    <string name="plants_capacity_footer">A capacidade é medida em pesos por mês: cada alocação consome quantidade × preço unitário.</string>
+    <string name="plants_max_capacity">Capacidade máxima mensal</string>
+    <string name="plants_this_month">Este mês</string>
+    <string name="plants_warning">Aviso</string>
+    <string name="plants_capacity_below_used">A nova capacidade é menor do que o já alocado neste mês.</string>
+    <string name="plants_not_found">Unidade não encontrada</string>
+    <string name="plants_delete_action">Excluir unidade</string>
+    <string name="plants_hero_capacity">Capacidade de %1$s por mês</string>
+    <string name="plants_available_label">Disponível</string>
+    <string name="plants_active_label">Ativas</string>
+    <string name="plants_utilization_of">Ocupação de %1$s</string>
+    <string name="plants_assignments">Alocações</string>
+    <string name="plants_total">%1$s no total</string>
+    <string name="plants_no_assignments">Nenhuma alocação</string>
+    <string name="plants_nothing_in_status">Nada neste status</string>
+    <string name="plants_assignments_empty_message">Os cortes alocados a esta unidade aparecerão aqui.</string>
+    <string name="plants_chart_title">Capacidade por mês</string>
+    <string name="plants_chart_assigned_in">Alocado em %1$d: %2$s</string>
+    <string name="plants_chart_hint">Toque em um mês para ver os detalhes.</string>
+    <string name="plants_chart_description">Gráfico da capacidade usada por mês em %1$d</string>
+    <string name="plants_chart_max">Máx. %1$s</string>
+    <string name="plants_previous_year">Ano anterior</string>
+    <string name="plants_next_year">Próximo ano</string>
+    <string name="plants_row_date">data</string>
+    <string name="plants_row_to_ship">a expedir</string>
+
+    <!-- Plant calendar -->
+    <string name="plant_calendar_previous_month">Mês anterior</string>
+    <string name="plant_calendar_next_month">Próximo mês</string>
+    <string name="plant_calendar_today">Hoje</string>
+    <string name="plant_calendar_all_plants">Todas as unidades</string>
+    <string name="plant_calendar_used">Usada %1$s</string>
+    <string name="plant_calendar_legend_production">Início da produção (cor por unidade)</string>
+    <string name="plant_calendar_legend_delivery">Entrega ao cliente</string>
+    <plurals name="plant_calendar_day_events">
+        <item quantity="one">%1$s, %2$d evento</item>
+        <item quantity="many">%1$s, %2$d eventos</item>
+        <item quantity="other">%1$s, %2$d eventos</item>
+    </plurals>
+    <string name="plant_calendar_more">+%1$d mais</string>
+    <string name="plant_calendar_no_events">Sem produção nem entregas neste dia.</string>
+    <string name="plant_calendar_day_title_pattern">EEEE, d \'de\' MMMM</string>
+
+    <!-- Clients -->
+    <string name="clients_search">Buscar cliente, contato ou e-mail</string>
+    <string name="clients_new">Novo cliente</string>
+    <string name="clients_edit">Editar cliente</string>
+    <string name="clients_empty_title">Nenhum cliente</string>
+    <string name="clients_empty_message">Cadastre seus clientes para alocar cortes e projetos a eles.</string>
+    <string name="clients_stat_cuts">cortes</string>
+    <string name="clients_stat_projects">projetos</string>
+    <string name="clients_delete_message_list">Só é possível excluir clientes sem cortes. Os projetos deles mantêm o nome.</string>
+    <string name="clients_delete_message">Só é possível excluir clientes sem cortes.</string>
+    <string name="clients_deleted">Cliente “%1$s” excluído</string>
+    <string name="clients_created">Cliente “%1$s” criado</string>
+    <string name="clients_updated">Cliente atualizado</string>
+    <string name="clients_not_found">Cliente não encontrado</string>
+    <string name="clients_open_maps">Abrir no Maps</string>
+    <string name="clients_delete_action">Excluir cliente</string>
+    <string name="clients_no_cuts">Sem cortes</string>
+    <plurals name="clients_cuts_count">
+        <item quantity="one">%1$s corte</item>
+        <item quantity="many">%1$s cortes</item>
+        <item quantity="other">%1$s cortes</item>
+    </plurals>
+    <string name="clients_no_cuts_yet">Este cliente ainda não tem cortes.</string>
+    <plurals name="clients_quotes">
+        <item quantity="one">%1$d orçamento</item>
+        <item quantity="many">%1$d orçamentos</item>
+        <item quantity="other">%1$d orçamentos</item>
+    </plurals>
+    <string name="clients_list">Lista %1$s</string>
+    <plurals name="clients_project_line">
+        <item quantity="one">%1$s peça · %2$s</item>
+        <item quantity="many">%1$s peças · %2$s</item>
+        <item quantity="other">%1$s peças · %2$s</item>
+    </plurals>
+    <string name="clients_no_fabric">Sem tecido</string>
+
+    <!-- Suppliers -->
+    <string name="suppliers_title">Fornecedor</string>
+    <string name="suppliers_search">Buscar fornecedor, contato ou e-mail</string>
+    <string name="suppliers_new">Novo fornecedor</string>
+    <string name="suppliers_edit">Editar fornecedor</string>
+    <string name="suppliers_empty_title">Nenhum fornecedor</string>
+    <string name="suppliers_empty_message">Guarde aqui seus fornecedores de tecidos, linhas e aviamentos com os contatos.</string>
+    <string name="suppliers_stat_contacts">contatos</string>
+    <string name="suppliers_deleted">Fornecedor “%1$s” excluído</string>
+    <string name="suppliers_created">Fornecedor “%1$s” criado</string>
+    <string name="suppliers_updated">Fornecedor atualizado</string>
+    <string name="suppliers_not_found">Fornecedor não encontrado</string>
+    <string name="suppliers_delete_action">Excluir fornecedor</string>
+
+    <!-- Client / supplier editor -->
+    <string name="party_general">Dados gerais</string>
+    <string name="party_address">Endereço</string>
+
+    <!-- Contacts -->
+    <string name="contact_reorder_footer">Use o menu de cada contato para reordená-lo. O primeiro é o contato principal.</string>
+    <string name="contact_add">Adicionar contato</string>
+    <string name="contact_options">Opções do contato %1$d</string>
+    <string name="contact_move_up">Subir</string>
+    <string name="contact_move_down">Descer</string>
+    <string name="contact_remove">Remover contato</string>
+    <string name="contact_email_short">E-mail</string>
+    <string name="contact_copy_data">Copiar dados</string>
+    <string name="contact_no_name">Sem nome</string>
+    <string name="contact_no_role">Sem cargo</string>
+    <string name="contact_primary">Principal</string>
+    <string name="contact_no_details">Sem dados de contato</string>
+    <string name="contact_copy_email">Copiar e-mail</string>
+    <string name="contact_email_copied">E-mail copiado</string>
+    <string name="contact_copy_phone">Copiar telefone</string>
+    <string name="contact_phone_copied">Telefone copiado</string>
+    <string name="contact_none">Sem contatos</string>
+    <plurals name="contact_count">
+        <item quantity="one">%1$d contato</item>
+        <item quantity="many">%1$d contatos</item>
+        <item quantity="other">%1$d contatos</item>
+    </plurals>
+    <string name="contact_empty">Ainda não há contatos.</string>
+</resources>

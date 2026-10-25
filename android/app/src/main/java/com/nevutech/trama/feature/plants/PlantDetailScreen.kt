@@ -44,6 +44,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
@@ -53,6 +54,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.app.rememberActions
@@ -63,6 +65,7 @@ import com.nevutech.trama.core.data.toLocalDate
 import com.nevutech.trama.core.domain.CapacityLedger
 import com.nevutech.trama.core.domain.CutStatus
 import com.nevutech.trama.core.domain.Fmt
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.Avatar
 import com.nevutech.trama.designsystem.CapacityBar
 import com.nevutech.trama.designsystem.EmptyState
@@ -102,7 +105,7 @@ fun PlantDetailScreen(id: String) {
     val plant = graph.plant(id)
     TramaScreen {
         if (plant == null) {
-            DetailScaffold("Planta") { EmptyState("Planta no encontrada", "Es posible que se haya eliminado.", Icons.Filled.SearchOff) }
+            DetailScaffold(stringResource(R.string.common_plant)) { EmptyState(stringResource(R.string.plants_not_found), stringResource(R.string.catalog_ui_maybe_deleted), Icons.Filled.SearchOff) }
             return@TramaScreen
         }
         val ledger = graph.ledger(plant)
@@ -112,19 +115,19 @@ fun PlantDetailScreen(id: String) {
         val used = ledger.used(month)
 
         DetailScaffold(plant.name, actions = {
-            IconButton({ editing = true }) { Icon(Icons.Filled.Edit, "Editar") }
-            OverflowMenu { close -> MenuItem("Eliminar planta", Icons.Filled.Delete, destructive = true) { close(); confirmingDelete = true } }
+            IconButton({ editing = true }) { Icon(Icons.Filled.Edit, stringResource(R.string.common_edit)) }
+            OverflowMenu { close -> MenuItem(stringResource(R.string.plants_delete_action), Icons.Filled.Delete, destructive = true) { close(); confirmingDelete = true } }
         }) {
             Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
-                DetailHero(plant.name, "Capacidad de ${Fmt.money(plant.maxCapacity)} por mes", leading = { Avatar(plant.name, size = 72.dp, icon = Icons.Filled.Apartment) }) {
-                    HeroStat(Fmt.money(used, compact = true), "Usado este mes")
-                    HeroStat(Fmt.money(maxOf(0.0, ledger.available(month)), compact = true), "Disponible")
-                    HeroStat(Fmt.int(graph.openAssignmentCount(plant)), "Activas")
+                DetailHero(plant.name, stringResource(R.string.plants_hero_capacity, Fmt.money(plant.maxCapacity)), leading = { Avatar(plant.name, size = 72.dp, icon = Icons.Filled.Apartment) }) {
+                    HeroStat(Fmt.money(used, compact = true), stringResource(R.string.plants_kpi_used_month))
+                    HeroStat(Fmt.money(maxOf(0.0, ledger.available(month)), compact = true), stringResource(R.string.plants_available_label))
+                    HeroStat(Fmt.int(graph.openAssignmentCount(plant)), stringResource(R.string.plants_active_label))
                 }
                 TramaCard(Modifier.fillMaxWidth()) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(18.dp)) {
                         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Text("Ocupación de ${monthName(LocalDate.now()).lowercase(Fmt.locale)}", style = MaterialTheme.typography.labelLarge)
+                            Text(stringResource(R.string.plants_utilization_of, if (Fmt.locale.language == "en") monthName(LocalDate.now()) else monthName(LocalDate.now()).lowercase(Fmt.locale)), style = MaterialTheme.typography.labelLarge)
                             CapacityBar(used, plant.maxCapacity, height = 14.dp)
                         }
                         val ratio = ledger.utilization(month)
@@ -140,16 +143,17 @@ fun PlantDetailScreen(id: String) {
             }
 
             Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                SectionTitle("Asignaciones", "${Fmt.int(all.size)} en total") {
+                val allLabel = stringResource(R.string.common_all_fem)
+                SectionTitle(stringResource(R.string.plants_assignments), stringResource(R.string.plants_total, Fmt.int(all.size))) {
                     PickerField(
-                        "Estado", listOf<CutStatus?>(null) + CutStatus.entries, statusFilter, { it?.title ?: "Todas" }, { statusFilter = it },
+                        stringResource(R.string.common_status), listOf<CutStatus?>(null) + CutStatus.entries, statusFilter, { it?.title ?: allLabel }, { statusFilter = it },
                         Modifier.widthIn(max = 260.dp),
                     )
                 }
                 if (assignments.isEmpty()) {
                     EmptyState(
-                        if (statusFilter == null) "Sin asignaciones" else "Nada en este estado",
-                        "Los cortes asignados a esta planta aparecerán aquí.", Icons.Filled.ContentCut,
+                        stringResource(if (statusFilter == null) R.string.plants_no_assignments else R.string.plants_nothing_in_status),
+                        stringResource(R.string.plants_assignments_empty_message), Icons.Filled.ContentCut,
                     )
                 } else {
                     assignments.forEach { a -> PlantAssignmentRow(graph, a) { navigator.openAssignment(a.id) } }
@@ -161,8 +165,8 @@ fun PlantDetailScreen(id: String) {
     if (editing && plant != null) PlantEditorSheet(plant, graph) { editing = false }
     if (confirmingDelete && plant != null) {
         ConfirmDeleteDialog(
-            "¿Eliminar ${plant.name}?", "Solo se pueden eliminar plantas sin cortes asignados.",
-            onConfirm = { actions.run(success = "Planta «${plant.name}» eliminada", onDone = { navigator.back() }) { app.production().deletePlant(plant) } },
+            stringResource(R.string.catalog_ui_delete_title, plant.name), stringResource(R.string.plants_delete_message),
+            onConfirm = { actions.run(success = L10n.str(R.string.plants_deleted, plant.name), onDone = { navigator.back() }) { app.production().deletePlant(plant) } },
             onDismiss = { confirmingDelete = false },
         )
     }
@@ -188,13 +192,15 @@ fun PlantCapacityChart(ledger: CapacityLedger, year: Int, onYear: (Int) -> Unit,
     val c = Tokens.colors
     val axisStyle = TextStyle(fontSize = 11.sp, color = c.secondary)
     val maxStyle = TextStyle(fontSize = 11.sp, color = c.danger, fontWeight = FontWeight.SemiBold)
+    val chartDescription = stringResource(R.string.plants_chart_description, year)
+    val maxLabel = stringResource(R.string.plants_chart_max, Fmt.money(ledger.maxCapacity, compact = true))
     val monthLabels = Month.entries.map { it.getDisplayName(JavaTextStyle.SHORT_STANDALONE, Fmt.locale).trimEnd('.') }
 
     Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text("Capacidad por mes", style = MaterialTheme.typography.titleLarge)
-                Text("Asignado en $year: ${Fmt.money(total, compact = true)}", style = MaterialTheme.typography.bodyMedium, color = c.secondary)
+                Text(stringResource(R.string.plants_chart_title), style = MaterialTheme.typography.titleLarge)
+                Text(stringResource(R.string.plants_chart_assigned_in, year, Fmt.money(total, compact = true)), style = MaterialTheme.typography.bodyMedium, color = c.secondary)
             }
             YearStepper(year, years, onYear)
         }
@@ -208,17 +214,17 @@ fun PlantCapacityChart(ledger: CapacityLedger, year: Int, onYear: (Int) -> Unit,
                     horizontalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
                     Text(Fmt.monthYear(LocalDate.of(year, pick + 1, 1)), style = MaterialTheme.typography.labelMedium)
-                    Text("Usado ${Fmt.money(value)}", style = MaterialTheme.typography.bodySmall)
-                    Text("Disponible ${Fmt.money(maxOf(0.0, ledger.maxCapacity - value))}", style = MaterialTheme.typography.bodySmall, color = c.secondary)
+                    Text(stringResource(R.string.plants_used, Fmt.money(value)), style = MaterialTheme.typography.bodySmall)
+                    Text(stringResource(R.string.plants_available, Fmt.money(maxOf(0.0, ledger.maxCapacity - value))), style = MaterialTheme.typography.bodySmall, color = c.secondary)
                 }
             } else {
-                Text("Toca un mes para ver su detalle.", style = MaterialTheme.typography.bodySmall, color = c.secondary, modifier = Modifier.align(Alignment.CenterStart))
+                Text(stringResource(R.string.plants_chart_hint), style = MaterialTheme.typography.bodySmall, color = c.secondary, modifier = Modifier.align(Alignment.CenterStart))
             }
         }
 
         Canvas(
             Modifier.fillMaxWidth().height(280.dp)
-                .semantics { contentDescription = "Gráfica de capacidad usada por mes en $year" }
+                .semantics { contentDescription = chartDescription }
                 .pointerInput(year) {
                     detectTapGestures { tap ->
                         val left = 64.dp.toPx()
@@ -261,7 +267,7 @@ fun PlantCapacityChart(ledger: CapacityLedger, year: Int, onYear: (Int) -> Unit,
             if (ledger.maxCapacity > 0) {
                 val my = y((ledger.maxCapacity / top).toFloat())
                 drawLine(c.danger, Offset(left, my), Offset(size.width, my), 1.5.dp.toPx(), pathEffect = PathEffect.dashPathEffect(floatArrayOf(18f, 12f)))
-                val label = measurer.measure("Máx. ${Fmt.money(ledger.maxCapacity, compact = true)}", maxStyle)
+                val label = measurer.measure(maxLabel, maxStyle)
                 drawText(label, topLeft = Offset(left + 4.dp.toPx(), my - label.size.height - 2.dp.toPx()))
             }
         }
@@ -276,11 +282,11 @@ fun YearStepper(year: Int, range: IntRange, onChange: (Int) -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton({ onChange(year - 1) }, enabled = year > range.first, modifier = Modifier.size(36.dp)) {
-            Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, "Año anterior")
+            Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, stringResource(R.string.plants_previous_year))
         }
         Text("$year", style = MaterialTheme.typography.titleMedium, modifier = Modifier.widthIn(min = 52.dp), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         IconButton({ onChange(year + 1) }, enabled = year < range.last, modifier = Modifier.size(36.dp)) {
-            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, "Año siguiente")
+            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.plants_next_year))
         }
     }
 }
@@ -301,10 +307,10 @@ private fun PlantAssignmentRow(graph: Graph, assignment: AssignmentEntity, onCli
         }
         Row(horizontalArrangement = Arrangement.spacedBy(22.dp), verticalAlignment = Alignment.CenterVertically) {
             if (width > 700.dp) {
-                RowFigure(Fmt.int(assignment.quantity), "prendas")
-                RowFigure(Fmt.shortDate(assignment.scheduledDate?.toLocalDate()), "fecha")
+                RowFigure(Fmt.int(assignment.quantity), stringResource(R.string.catalog_ui_garments_lower))
+                RowFigure(Fmt.shortDate(assignment.scheduledDate?.toLocalDate()), stringResource(R.string.plants_row_date))
             }
-            if (width > 480.dp) RowFigure(Fmt.int(metrics.toShip), "por enviar")
+            if (width > 480.dp) RowFigure(Fmt.int(metrics.toShip), stringResource(R.string.plants_row_to_ship))
             Pill(status.title, status.tint())
         }
     }

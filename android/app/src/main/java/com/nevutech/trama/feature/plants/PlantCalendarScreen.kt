@@ -56,12 +56,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.app.rememberGraph
 import com.nevutech.trama.core.domain.Fmt
@@ -81,8 +84,8 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-private val dayTitleFormat = DateTimeFormatter.ofPattern("EEEE d 'de' MMMM", Fmt.locale)
-private val fullDayFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(Fmt.locale)
+// Built at call time: the locale can change while the process lives.
+private fun fullDayFormat() = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(Fmt.locale)
 
 /** Month calendar of production starts and client deliveries, with each plant's capacity for the month. */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -118,7 +121,7 @@ fun PlantCalendarScreen() {
     TramaScreen {
         Row(Modifier.fillMaxSize()) {
             Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState())) {
-                ScreenHeader("Calendario de plantas", showTitle = wide)
+                ScreenHeader(stringResource(R.string.section_calendar), showTitle = wide)
                 Column(Modifier.padding(horizontal = if (wide) 24.dp else 16.dp).padding(bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
                     // Month header
                     FlowRow(
@@ -126,7 +129,7 @@ fun PlantCalendarScreen() {
                         itemVerticalAlignment = Alignment.CenterVertically,
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            IconButton({ shift(-1) }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, "Mes anterior") }
+                            IconButton({ shift(-1) }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, stringResource(R.string.plant_calendar_previous_month)) }
                             AnimatedContent(month, transitionSpec = {
                                 slideInHorizontally { it * direction / 2 } togetherWith slideOutHorizontally { -it * direction / 2 }
                             }, label = "month") { m ->
@@ -135,12 +138,13 @@ fun PlantCalendarScreen() {
                                     modifier = Modifier.width(if (wide) 260.dp else 200.dp),
                                 )
                             }
-                            IconButton({ shift(1) }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, "Mes siguiente") }
+                            IconButton({ shift(1) }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.plant_calendar_next_month)) }
                         }
-                        OutlinedButton({ direction = 1; monthText = YearMonth.now().toString(); selectedText = null }) { Text("Hoy") }
+                        OutlinedButton({ direction = 1; monthText = YearMonth.now().toString(); selectedText = null }) { Text(stringResource(R.string.plant_calendar_today)) }
+                        val allPlants = stringResource(R.string.plant_calendar_all_plants)
                         FilterMenuChip(
-                            graph.plant(plantId)?.name ?: "Todas las plantas", Icons.Filled.Apartment, plantId != null,
-                            listOf<Pair<String, () -> Unit>>("Todas las plantas" to { plantId = null }) + plants.map { p -> p.name to { plantId = p.id } },
+                            graph.plant(plantId)?.name ?: allPlants, Icons.Filled.Apartment, plantId != null,
+                            listOf<Pair<String, () -> Unit>>(allPlants to { plantId = null }) + plants.map { p -> p.name to { plantId = p.id } },
                         )
                     }
 
@@ -161,8 +165,8 @@ fun PlantCalendarScreen() {
                                             }
                                             CapacityBar(used, plant.maxCapacity)
                                             Row {
-                                                Text("Usada ${Fmt.money(used, compact = true)}", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary, modifier = Modifier.weight(1f))
-                                                Text("Disponible ${Fmt.money(maxOf(0.0, plant.maxCapacity - used), compact = true)}", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+                                                Text(stringResource(R.string.plant_calendar_used, Fmt.money(used, compact = true)), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary, modifier = Modifier.weight(1f))
+                                                Text(stringResource(R.string.plants_available, Fmt.money(maxOf(0.0, plant.maxCapacity - used), compact = true)), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
                                             }
                                         }
                                     }
@@ -188,11 +192,11 @@ fun PlantCalendarScreen() {
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(20.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Filled.ContentCut, null, tint = Tokens.colors.secondary, modifier = Modifier.size(14.dp))
-                            Text(" Inicio de producción (color por planta)", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+                            Text(" " + stringResource(R.string.plant_calendar_legend_production), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Filled.Flag, null, tint = Tokens.colors.danger, modifier = Modifier.size(14.dp))
-                            Text(" Entrega al cliente", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.danger)
+                            Text(" " + stringResource(R.string.plant_calendar_legend_delivery), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.danger)
                         }
                     }
                 }
@@ -207,7 +211,7 @@ fun PlantCalendarScreen() {
                         Column(Modifier.verticalScroll(rememberScrollState()).padding(20.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Spacer(Modifier.weight(1f))
-                                IconButton({ selectedText = null }) { Icon(Icons.Filled.Close, "Cerrar") }
+                                IconButton({ selectedText = null }) { Icon(Icons.Filled.Close, stringResource(R.string.common_close)) }
                             }
                             DayEvents(day, byDay[day].orEmpty(), openEvent)
                         }
@@ -266,12 +270,13 @@ private fun eventTint(e: CalendarEvent): Color =
 private fun DayCell(day: LocalDate, events: List<CalendarEvent>, isToday: Boolean, isSelected: Boolean, compact: Boolean, modifier: Modifier, onClick: () -> Unit) {
     val c = Tokens.colors
     val shape = RoundedCornerShape(if (compact) 8.dp else 12.dp)
+    val description = pluralStringResource(R.plurals.plant_calendar_day_events, events.size, day.format(fullDayFormat()), events.size)
     Column(
         modifier.heightIn(min = if (compact) 64.dp else 110.dp).clip(shape)
             .background(if (isSelected) c.brand.copy(alpha = 0.12f) else c.surfaceRaised)
             .border(if (isSelected) 2.dp else 1.dp, if (isSelected) c.brand else c.stroke, shape)
             .clickable(role = Role.Button, onClick = onClick)
-            .semantics { contentDescription = "${day.format(fullDayFormat)}, ${events.size} eventos" }
+            .semantics { contentDescription = description }
             .padding(if (compact) 3.dp else 6.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
@@ -303,15 +308,15 @@ private fun DayCell(day: LocalDate, events: List<CalendarEvent>, isToday: Boolea
                 }
             }
         }
-        if (events.size > limit) Text("+${events.size - limit} más", style = MaterialTheme.typography.labelSmall, color = c.secondary, maxLines = 1)
+        if (events.size > limit) Text(stringResource(R.string.plant_calendar_more, events.size - limit), style = MaterialTheme.typography.labelSmall, color = c.secondary, maxLines = 1)
     }
 }
 
 @Composable
 private fun DayEvents(day: LocalDate, events: List<CalendarEvent>, onOpen: (CalendarEvent) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Text(day.format(dayTitleFormat).replaceFirstChar { it.titlecase(Fmt.locale) }, style = MaterialTheme.typography.titleLarge)
-        if (events.isEmpty()) Text("Sin producción ni entregas este día.", color = Tokens.colors.secondary)
+        Text(day.format(DateTimeFormatter.ofPattern(stringResource(R.string.plant_calendar_day_title_pattern), Fmt.locale)).replaceFirstChar { it.titlecase(Fmt.locale) }, style = MaterialTheme.typography.titleLarge)
+        if (events.isEmpty()) Text(stringResource(R.string.plant_calendar_no_events), color = Tokens.colors.secondary)
         events.forEach { e ->
             Row(
                 Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).clickable { onOpen(e) }.padding(vertical = 8.dp),

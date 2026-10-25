@@ -1,5 +1,6 @@
 package com.nevutech.trama.feature.users
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,11 +37,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.rememberActions
 import com.nevutech.trama.app.rememberGraph
@@ -52,6 +55,7 @@ import com.nevutech.trama.core.data.fullName
 import com.nevutech.trama.core.data.roleValue
 import com.nevutech.trama.core.domain.Fmt
 import com.nevutech.trama.core.domain.Role
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.Avatar
 import com.nevutech.trama.designsystem.EmptyState
 import com.nevutech.trama.designsystem.KpiTile
@@ -81,7 +85,13 @@ import com.nevutech.trama.feature.styles.PhotoField
 import com.nevutech.trama.feature.styles.PhotoPreview
 import java.io.File
 
-private enum class UserFilter(val title: String) { Active("Activos"), Inactive("Inactivos"), All("Todos") }
+private enum class UserFilter(@StringRes val titleRes: Int, @StringRes val emptyRes: Int) {
+    Active(R.string.users_filter_active, R.string.users_empty_active),
+    Inactive(R.string.users_filter_inactive, R.string.users_empty_inactive),
+    All(R.string.common_all_masc, R.string.users_empty_all);
+
+    val title: String get() = L10n.str(titleRes)
+}
 
 /** Sheet target: a new user (null) or an existing one. */
 private data class UserEditorTarget(val user: UserEntity?)
@@ -92,7 +102,7 @@ fun UsersScreen() {
     val app = LocalApp.current
     val me by app.session.user.collectAsState()
     if (me?.roleValue != Role.Admin) {
-        TramaScreen { EmptyState("Solo administradores", "Pide a un administrador que gestione los usuarios.", Icons.Filled.Lock) }
+        TramaScreen { EmptyState(stringResource(R.string.users_admins_only), stringResource(R.string.users_admins_only_message), Icons.Filled.Lock) }
         return
     }
     val graph by rememberGraph()
@@ -119,38 +129,38 @@ fun UsersScreen() {
     }
 
     fun setActive(user: UserEntity, active: Boolean) = actions.run(
-        success = if (active) "${user.fullName} puede volver a ingresar" else "${user.fullName} fue desactivado",
+        success = L10n.str(if (active) R.string.users_activated else R.string.users_deactivated, user.fullName),
     ) { catalog.setActive(user, active, meId) }
 
     TramaScreen {
-        CatalogGrid("Usuarios", search, { search = it }, "Buscar por nombre, correo o puesto", "Nuevo usuario", { editor = UserEditorTarget(null) }) {
+        CatalogGrid(stringResource(R.string.section_users), search, { search = it }, stringResource(R.string.users_search_hint), stringResource(R.string.users_new), { editor = UserEditorTarget(null) }) {
             fullSpan {
                 AdaptiveRows(Role.entries, minWidth = 150.dp, spacing = 18.dp) { role ->
                     KpiTile(
-                        role.title, Fmt.int(users.count { it.roleValue == role && it.isActive }), role.icon, Tokens.accent(role.raw),
-                        footnote = if (roleFilter == role) "Filtrando · toca para quitar" else null,
+                        stringResource(role.titleRes), Fmt.int(users.count { it.roleValue == role && it.isActive }), role.icon, Tokens.accent(role.raw),
+                        footnote = if (roleFilter == role) stringResource(R.string.users_filtering_tap_to_clear) else null,
                         onClick = { roleFilter = if (roleFilter == role) null else role },
                     )
                 }
             }
             fullSpan {
-                Segmented(UserFilter.entries, filter, { "${it.title} (${count(it)})" }, { filter = it }, Modifier.widthIn(max = 480.dp).fillMaxWidth())
+                Segmented(UserFilter.entries, filter, { L10n.str(R.string.users_filter_count, it.title, Fmt.int(count(it))) }, { filter = it }, Modifier.widthIn(max = 480.dp).fillMaxWidth())
             }
             when {
                 visible.isEmpty() && search.isBlank() -> fullSpan {
-                    EmptyState("Sin usuarios ${filter.title.lowercase()}", "Cambia el filtro para ver a otros usuarios.", Icons.Outlined.PersonSearch)
+                    EmptyState(stringResource(filter.emptyRes), stringResource(R.string.users_empty_message), Icons.Outlined.PersonSearch)
                 }
                 visible.isEmpty() -> fullSpan { NoResults(search) }
                 else -> items(visible.size, key = { visible[it].id }) { i ->
                     val user = visible[i]
                     val isCurrent = user.id == meId
                     WithContextMenu(menu = { close ->
-                        MenuItem("Editar", Icons.Filled.Edit) { close(); editor = UserEditorTarget(user) }
-                        MenuItem("Restablecer contraseña", Icons.Filled.Key) { close(); resetting = user }
-                        if (user.isActive) MenuItem("Desactivar", Icons.Filled.PersonOff, enabled = !isCurrent) { close(); setActive(user, false) }
-                        else MenuItem("Activar", Icons.Filled.HowToReg) { close(); setActive(user, true) }
+                        MenuItem(stringResource(R.string.common_edit), Icons.Filled.Edit) { close(); editor = UserEditorTarget(user) }
+                        MenuItem(stringResource(R.string.users_reset_password), Icons.Filled.Key) { close(); resetting = user }
+                        if (user.isActive) MenuItem(stringResource(R.string.users_deactivate), Icons.Filled.PersonOff, enabled = !isCurrent) { close(); setActive(user, false) }
+                        else MenuItem(stringResource(R.string.users_activate), Icons.Filled.HowToReg) { close(); setActive(user, true) }
                         HorizontalDivider()
-                        MenuItem("Eliminar", Icons.Filled.Delete, destructive = true, enabled = !isCurrent) { close(); pendingDelete = user }
+                        MenuItem(stringResource(R.string.common_delete), Icons.Filled.Delete, destructive = true, enabled = !isCurrent) { close(); pendingDelete = user }
                     }) { open ->
                         UserCard(user, graph.plant(user.plantId), isCurrent, Modifier.cardClick({ editor = UserEditorTarget(user) }, open)) { setActive(user, it) }
                     }
@@ -163,8 +173,8 @@ fun UsersScreen() {
     resetting?.let { user -> PasswordResetSheet(user) { resetting = null } }
     pendingDelete?.let { user ->
         ConfirmDeleteDialog(
-            "¿Eliminar a ${user.fullName}?", "Perderá el acceso a Trama. Si solo quieres pausar su acceso, desactívalo.",
-            onConfirm = { actions.run(success = "Usuario «${user.fullName}» eliminado") { catalog.deleteUser(user, meId) } },
+            stringResource(R.string.users_delete_title, user.fullName), stringResource(R.string.users_delete_message),
+            onConfirm = { actions.run(success = L10n.str(R.string.users_deleted, user.fullName)) { catalog.deleteUser(user, meId) } },
             onDismiss = { pendingDelete = null },
         )
     }
@@ -180,26 +190,27 @@ private fun UserCard(user: UserEntity, plant: PlantEntity?, isCurrent: Boolean, 
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     Text(user.fullName, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
-                    if (isCurrent) Pill("Tú", Tokens.colors.brand)
+                    if (isCurrent) Pill(stringResource(R.string.users_you), Tokens.colors.brand)
                 }
-                Pill(role.title, Tokens.colors.brand, role.icon)
+                Pill(stringResource(role.titleRes), Tokens.colors.brand, role.icon)
             }
         }
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (role == Role.PlantManager) {
-                InfoLine(Icons.Filled.Apartment, plant?.name ?: "Sin planta asignada", if (plant == null) Tokens.colors.danger else Tokens.colors.ink)
+                InfoLine(Icons.Filled.Apartment, plant?.name ?: stringResource(R.string.users_no_plant), if (plant == null) Tokens.colors.danger else Tokens.colors.ink)
             }
             InfoLine(Icons.Filled.Email, user.email)
             if (user.phone.isNotBlank()) InfoLine(Icons.Filled.Phone, user.phone)
         }
         HorizontalDivider(color = Tokens.colors.stroke)
         Row(verticalAlignment = Alignment.CenterVertically) {
-            if (user.isActive) InfoLine(Icons.Filled.VerifiedUser, "Con acceso", Tokens.colors.success)
-            else InfoLine(Icons.Filled.Lock, "Sin acceso a la app", Tokens.colors.warning)
+            if (user.isActive) InfoLine(Icons.Filled.VerifiedUser, stringResource(R.string.users_has_access), Tokens.colors.success)
+            else InfoLine(Icons.Filled.Lock, stringResource(R.string.users_no_access), Tokens.colors.warning)
             Spacer(Modifier.weight(1f))
+            val stateDescription = stringResource(if (user.isActive) R.string.users_state_active else R.string.users_state_inactive)
             Switch(
                 user.isActive, setActive, enabled = !isCurrent,
-                modifier = Modifier.semantics { contentDescription = if (user.isActive) "Usuario activo" else "Usuario inactivo" },
+                modifier = Modifier.semantics { contentDescription = stateDescription },
             )
         }
     }
@@ -228,28 +239,29 @@ private fun UserEditorSheet(user: UserEntity?, meId: String?, plants: List<Plant
 
     val passwordProblem = when {
         !isNew || password.isEmpty() -> null
-        password.length < 6 -> "Al menos 6 caracteres."
-        confirmation.isNotEmpty() && confirmation != password -> "Las contraseñas no coinciden."
+        password.length < 6 -> stringResource(R.string.users_password_too_short)
+        confirmation.isNotEmpty() && confirmation != password -> stringResource(R.string.users_password_mismatch)
         else -> null
     }
     val basics = draft.firstName.isNotBlank() && draft.email.isNotBlank() && (draft.role != Role.PlantManager || draft.plantId != null)
     val canSave = if (isNew) basics && password.length >= 6 && password == confirmation else basics
 
     FormSheet(
-        if (isNew) "Nuevo usuario" else "Editar usuario", onDismiss, saveTitle = if (isNew) "Crear" else "Guardar", canSave = canSave,
+        stringResource(if (isNew) R.string.users_new else R.string.users_edit), onDismiss,
+        saveTitle = stringResource(if (isNew) R.string.users_create else R.string.common_save), canSave = canSave,
         onSave = {
             actions.run(onDone = onDismiss) {
                 if (user != null) {
                     catalog.updateUser(user, draft, meId)
-                    toasts.show("Usuario actualizado")
+                    toasts.show(L10n.str(R.string.users_updated))
                 } else {
                     val created = catalog.createUser(draft, password)
-                    toasts.show("Usuario «${created.fullName}» creado")
+                    toasts.show(L10n.str(R.string.users_created, created.fullName))
                 }
             }
         },
     ) {
-        FormSection("Perfil") {
+        FormSection(stringResource(R.string.users_profile)) {
             Row(horizontalArrangement = Arrangement.spacedBy(18.dp), verticalAlignment = Alignment.CenterVertically) {
                 val name = "${draft.firstName} ${draft.lastName}".trim().ifEmpty { "?" }
                 when (val avatar = draft.avatar) {
@@ -258,43 +270,44 @@ private fun UserEditorSheet(user: UserEntity?, meId: String?, plants: List<Plant
                     ImageEdit.Keep -> Avatar(name, currentAvatar, size = 72.dp)
                 }
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    TramaField(draft.firstName, { draft = draft.copy(firstName = it) }, "Nombre")
-                    TramaField(draft.lastName, { draft = draft.copy(lastName = it) }, "Apellido")
+                    TramaField(draft.firstName, { draft = draft.copy(firstName = it) }, stringResource(R.string.users_first_name))
+                    TramaField(draft.lastName, { draft = draft.copy(lastName = it) }, stringResource(R.string.users_last_name))
                 }
             }
-            PhotoField("Foto de perfil", currentAvatar, draft.avatar) { draft = draft.copy(avatar = it) }
+            PhotoField(stringResource(R.string.users_profile_photo), currentAvatar, draft.avatar) { draft = draft.copy(avatar = it) }
         }
-        FormSection("Contacto") {
-            TramaField(draft.email, { draft = draft.copy(email = it) }, "Correo electrónico", keyboard = KeyboardType.Email)
-            TramaField(draft.phone, { draft = draft.copy(phone = it) }, "Teléfono", keyboard = KeyboardType.Phone)
+        FormSection(stringResource(R.string.common_contact)) {
+            TramaField(draft.email, { draft = draft.copy(email = it) }, stringResource(R.string.common_email), keyboard = KeyboardType.Email)
+            TramaField(draft.phone, { draft = draft.copy(phone = it) }, stringResource(R.string.common_phone), keyboard = KeyboardType.Phone)
         }
         FormSection(
-            "Puesto",
+            stringResource(R.string.common_role),
             footer = when {
-                isSelf -> "No puedes cambiar tu propio puesto."
-                draft.role == Role.PlantManager && draft.plantId == null -> "Un gerente de planta debe tener una planta asignada."
-                draft.role == Role.PlantManager -> "Solo verá la producción de su planta."
+                isSelf -> stringResource(R.string.policy_cannot_change_own_role)
+                draft.role == Role.PlantManager && draft.plantId == null -> stringResource(R.string.catalog_error_plant_required)
+                draft.role == Role.PlantManager -> stringResource(R.string.users_plant_manager_scope)
                 else -> null
             },
             footerColor = if (!isSelf && draft.role == Role.PlantManager && draft.plantId == null) Tokens.colors.danger else null,
         ) {
-            PickerField("Puesto", Role.entries, draft.role, { it.title }, { draft = draft.copy(role = it) }, enabled = !isSelf)
+            PickerField(stringResource(R.string.common_role), Role.entries, draft.role, { it.title }, { draft = draft.copy(role = it) }, enabled = !isSelf)
             if (draft.role == Role.PlantManager) {
                 val selected = plants.firstOrNull { it.id == draft.plantId }
+                val choosePlant = stringResource(R.string.users_choose_plant)
                 PickerField(
-                    "Planta", listOf<PlantEntity?>(null) + plants, selected, { it?.name ?: "Elegir planta" }, { draft = draft.copy(plantId = it?.id) },
+                    stringResource(R.string.common_plant), listOf<PlantEntity?>(null) + plants, selected, { it?.name ?: choosePlant }, { draft = draft.copy(plantId = it?.id) },
                     isError = selected == null,
                 )
             }
         }
         if (isNew) {
             FormSection(
-                "Contraseña",
-                footer = passwordProblem ?: "Mínimo 6 caracteres. El usuario podrá ingresar sin conexión con ella.",
+                stringResource(R.string.common_password),
+                footer = passwordProblem ?: stringResource(R.string.users_password_footer),
                 footerColor = if (passwordProblem != null) Tokens.colors.danger else null,
             ) {
-                SecureField(password, { password = it }, "Contraseña")
-                SecureField(confirmation, { confirmation = it }, "Confirmar contraseña")
+                SecureField(password, { password = it }, stringResource(R.string.common_password))
+                SecureField(confirmation, { confirmation = it }, stringResource(R.string.users_confirm_password))
             }
         }
     }
@@ -308,14 +321,14 @@ private fun PasswordResetSheet(user: UserEntity, onDismiss: () -> Unit) {
     var password by remember { mutableStateOf("") }
     var confirmation by remember { mutableStateOf("") }
     val problem = when {
-        password.isNotEmpty() && password.length < 6 -> "Al menos 6 caracteres."
-        confirmation.isNotEmpty() && confirmation != password -> "Las contraseñas no coinciden."
+        password.isNotEmpty() && password.length < 6 -> stringResource(R.string.users_password_too_short)
+        confirmation.isNotEmpty() && confirmation != password -> stringResource(R.string.users_password_mismatch)
         else -> null
     }
 
     FormSheet(
-        "Restablecer contraseña", onDismiss, saveTitle = "Restablecer", canSave = password.length >= 6 && password == confirmation,
-        onSave = { actions.run(success = "Contraseña de ${user.fullName} restablecida", onDone = onDismiss) { catalog.resetPassword(user, password) } },
+        stringResource(R.string.users_reset_password), onDismiss, saveTitle = stringResource(R.string.users_reset), canSave = password.length >= 6 && password == confirmation,
+        onSave = { actions.run(success = L10n.str(R.string.users_password_reset_done, user.fullName), onDone = onDismiss) { catalog.resetPassword(user, password) } },
     ) {
         FormSection(null) {
             Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -327,11 +340,11 @@ private fun PasswordResetSheet(user: UserEntity, onDismiss: () -> Unit) {
             }
         }
         FormSection(
-            null, footer = problem ?: "Comparte la nueva contraseña con el usuario en persona.",
+            null, footer = problem ?: stringResource(R.string.users_reset_footer),
             footerColor = if (problem != null) Tokens.colors.danger else null,
         ) {
-            SecureField(password, { password = it }, "Nueva contraseña")
-            SecureField(confirmation, { confirmation = it }, "Confirmar contraseña")
+            SecureField(password, { password = it }, stringResource(R.string.users_new_password))
+            SecureField(confirmation, { confirmation = it }, stringResource(R.string.users_confirm_password))
         }
     }
 }

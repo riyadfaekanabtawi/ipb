@@ -1,5 +1,6 @@
 package com.nevutech.trama.feature.styles
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
@@ -47,8 +48,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.app.rememberActions
@@ -56,6 +60,8 @@ import com.nevutech.trama.app.rememberGraph
 import com.nevutech.trama.core.data.Graph
 import com.nevutech.trama.core.data.ImageEdit
 import com.nevutech.trama.core.data.StyleEntity
+import com.nevutech.trama.core.domain.Fmt
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.EmptyState
 import com.nevutech.trama.designsystem.Pill
 import com.nevutech.trama.designsystem.PrimaryButton
@@ -75,7 +81,7 @@ import com.nevutech.trama.feature.clients.fullSpan
 import com.nevutech.trama.feature.clients.rememberCatalog
 import com.nevutech.trama.feature.clients.rememberToasts
 
-enum class StyleSort(val title: String) { Name("Nombre"), Orders("Más cortes"), Recent("Recientes") }
+enum class StyleSort(@StringRes val titleRes: Int) { Name(R.string.common_name), Orders(R.string.styles_sort_orders), Recent(R.string.styles_sort_recent) }
 
 /** Sheet target: a new style (null) or an existing one. */
 data class StyleEditorTarget(val style: StyleEntity?)
@@ -103,23 +109,23 @@ fun StylesScreen() {
 
     TramaScreen {
         CatalogGrid(
-            "Estilos", search, { search = it }, "Buscar estilo o planta", "Nuevo estilo", { editor = StyleEditorTarget(null) },
+            stringResource(R.string.section_styles), search, { search = it }, stringResource(R.string.styles_search_hint), stringResource(R.string.styles_new), { editor = StyleEditorTarget(null) },
             minCell = 200.dp, actions = { SortMenu(sort) { sort = it } },
         ) {
             when {
                 styles.isEmpty() -> fullSpan {
-                    EmptyState("Sin estilos", "Fotografía tus estilos para reconocerlos al instante en cortes y producción.", Icons.Filled.Checkroom) {
-                        PrimaryButton("Nuevo estilo", { editor = StyleEditorTarget(null) }, icon = Icons.Filled.PhotoCamera)
+                    EmptyState(stringResource(R.string.styles_empty_title), stringResource(R.string.styles_empty_message), Icons.Filled.Checkroom) {
+                        PrimaryButton(stringResource(R.string.styles_new), { editor = StyleEditorTarget(null) }, icon = Icons.Filled.PhotoCamera)
                     }
                 }
                 visible.isEmpty() -> fullSpan { NoResults(search) }
                 else -> items(visible.size, key = { visible[it].id }) { i ->
                     val style = visible[i]
                     WithContextMenu(menu = { close ->
-                        MenuItem("Ver imagen", Icons.Filled.OpenInFull) { close(); zoomed = style }
-                        MenuItem("Editar", Icons.Filled.Edit) { close(); editor = StyleEditorTarget(style) }
+                        MenuItem(stringResource(R.string.styles_view_image), Icons.Filled.OpenInFull) { close(); zoomed = style }
+                        MenuItem(stringResource(R.string.common_edit), Icons.Filled.Edit) { close(); editor = StyleEditorTarget(style) }
                         HorizontalDivider()
-                        MenuItem("Eliminar", Icons.Filled.Delete, destructive = true) { close(); pendingDelete = style }
+                        MenuItem(stringResource(R.string.common_delete), Icons.Filled.Delete, destructive = true) { close(); pendingDelete = style }
                     }) { open ->
                         StyleCard(graph, style, onClick = { navigator.openStyle(style.id) }, onLongClick = open, zoom = { zoomed = style })
                     }
@@ -132,8 +138,8 @@ fun StylesScreen() {
     zoomed?.let { style -> ZoomableImageViewer(app.images.file(style.imageFile), style.name) { zoomed = null } }
     pendingDelete?.let { style ->
         ConfirmDeleteDialog(
-            "¿Eliminar ${style.name}?", "Los cortes que lo usan quedarán sin estilo.",
-            onConfirm = { actions.run(success = "Estilo «${style.name}» eliminado") { catalog.deleteStyle(style) } },
+            stringResource(R.string.styles_delete_title, style.name), stringResource(R.string.styles_delete_message),
+            onConfirm = { actions.run(success = L10n.str(R.string.styles_deleted, style.name)) { catalog.deleteStyle(style) } },
             onDismiss = { pendingDelete = null },
         )
     }
@@ -143,11 +149,11 @@ fun StylesScreen() {
 private fun SortMenu(sort: StyleSort, onChange: (StyleSort) -> Unit) {
     var open by remember { mutableStateOf(false) }
     Box {
-        IconButton({ open = true }) { Icon(Icons.AutoMirrored.Filled.Sort, "Ordenar: ${sort.title}") }
+        IconButton({ open = true }) { Icon(Icons.AutoMirrored.Filled.Sort, stringResource(R.string.styles_sort_label, stringResource(sort.titleRes))) }
         DropdownMenu(open, { open = false }) {
             StyleSort.entries.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option.title) }, onClick = { onChange(option); open = false },
+                    text = { Text(stringResource(option.titleRes)) }, onClick = { onChange(option); open = false },
                     leadingIcon = { if (option == sort) Icon(Icons.Filled.Check, null) else Spacer(Modifier.size(24.dp)) },
                 )
             }
@@ -166,11 +172,12 @@ private fun StyleCard(graph: Graph, style: StyleEntity, onClick: () -> Unit, onL
     val pressed by interaction.collectIsPressedAsState()
     // Gentle press-down for the image cards.
     val scale by androidx.compose.animation.core.animateFloatAsState(if (pressed) 0.97f else 1f, label = "press")
+    val moreOptions = stringResource(R.string.common_more_options)
 
     Column(
         Modifier.scale(scale).fillMaxWidth().clip(Tokens.cardShape).background(Tokens.colors.surface)
             .border(1.dp, Tokens.colors.stroke, Tokens.cardShape)
-            .combinedClickable(interactionSource = interaction, indication = androidx.compose.foundation.LocalIndication.current, onClick = onClick, onLongClick = onLongClick, onLongClickLabel = "Más opciones"),
+            .combinedClickable(interactionSource = interaction, indication = androidx.compose.foundation.LocalIndication.current, onClick = onClick, onLongClick = onLongClick, onLongClickLabel = moreOptions),
     ) {
         Box(Modifier.fillMaxWidth().height(240.dp)) {
             Swatch(style.name, file, Modifier.fillMaxSize(), corner = 0.dp)
@@ -178,18 +185,18 @@ private fun StyleCard(graph: Graph, style: StyleEntity, onClick: () -> Unit, onL
             Row(Modifier.align(Alignment.BottomStart).fillMaxWidth().padding(14.dp), verticalAlignment = Alignment.Bottom) {
                 Column(Modifier.weight(1f)) {
                     Text(style.name, color = Color.White, style = MaterialTheme.typography.titleMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                    Text(if (orderCount == 1) "1 corte" else "$orderCount cortes", color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.labelMedium)
+                    Text(pluralStringResource(R.plurals.styles_cut_count, orderCount, Fmt.int(orderCount)), color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.labelMedium)
                 }
                 if (file != null) {
                     IconButton(zoom, Modifier.size(34.dp).clip(CircleShape).background(Color.Black.copy(alpha = 0.35f))) {
-                        Icon(Icons.Filled.OpenInFull, "Ver imagen de ${style.name}", tint = Color.White, modifier = Modifier.size(16.dp))
+                        Icon(Icons.Filled.OpenInFull, stringResource(R.string.styles_view_image_of, style.name), tint = Color.White, modifier = Modifier.size(16.dp))
                     }
                 }
             }
         }
         Box(Modifier.fillMaxWidth().heightIn(min = 30.dp).padding(14.dp)) {
             if (distribution.isEmpty()) {
-                Text("Sin asignar a plantas", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary.copy(alpha = 0.6f))
+                Text(stringResource(R.string.styles_no_plants), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary.copy(alpha = 0.6f))
             } else {
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     distribution.forEach { (plant, count) -> Pill("${plant.name}: $count", Tokens.accent(plant.name), Icons.Filled.Apartment) }
@@ -208,20 +215,20 @@ fun StyleEditorSheet(style: StyleEntity?, onDismiss: () -> Unit) {
     var name by remember { mutableStateOf(style?.name ?: "") }
     var image by remember { mutableStateOf<ImageEdit>(ImageEdit.Keep) }
     val current = app.images.file(style?.imageFile)
-    val title = name.ifBlank { "Estilo" }
+    val title = name.ifBlank { stringResource(R.string.common_style) }
 
     FormSheet(
-        if (style == null) "Nuevo estilo" else "Editar estilo", onDismiss,
+        stringResource(if (style == null) R.string.styles_new else R.string.styles_edit), onDismiss,
         onSave = {
             actions.run(onDone = onDismiss) {
                 val saved = catalog.saveStyle(style, name, image)
-                toasts.show(if (style == null) "Estilo «${saved.name}» creado" else "Estilo actualizado")
+                toasts.show(if (style == null) L10n.str(R.string.styles_created, saved.name) else L10n.str(R.string.styles_updated))
             }
         },
         canSave = name.isNotBlank(),
     ) {
         PhotoPreview(title, current, image, Modifier.fillMaxWidth().height(260.dp), corner = Tokens.smallRadius)
-        FormSection("Estilo") { TramaField(name, { name = it }, "Nombre o clave (p. ej. Falda plisada SK-210)") }
-        FormSection("Foto") { PhotoField(title, current, image) { image = it } }
+        FormSection(stringResource(R.string.common_style)) { TramaField(name, { name = it }, stringResource(R.string.styles_name_hint)) }
+        FormSection(stringResource(R.string.photo_section)) { PhotoField(title, current, image) { image = it } }
     }
 }
