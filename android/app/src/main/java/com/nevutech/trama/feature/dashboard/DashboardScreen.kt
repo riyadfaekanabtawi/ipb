@@ -100,6 +100,11 @@ import java.time.LocalTime
 import java.time.YearMonth
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.nevutech.trama.R
+import com.nevutech.trama.core.l10n.L10n
 import java.time.temporal.ChronoUnit
 
 /**
@@ -220,15 +225,19 @@ class DashboardSnapshot(graph: Graph, month: YearMonth, urgencyWindow: Int, toda
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun DashboardHero(name: String?, company: String, online: Boolean, updatedAt: LocalTime, urgentCount: Int, unassigned: Long) {
-    val salute = when (LocalTime.now().hour) {
-        in 5..11 -> "Buenos días"
-        in 12..18 -> "Buenas tardes"
-        else -> "Buenas noches"
-    }
-    val greeting = if (name.isNullOrBlank()) salute else "$salute, $name"
+    val salute = stringResource(
+        when (LocalTime.now().hour) {
+            in 5..11 -> R.string.dashboard_good_morning
+            in 12..18 -> R.string.dashboard_good_afternoon
+            else -> R.string.dashboard_good_evening
+        },
+    )
+    val greeting = if (name.isNullOrBlank()) salute else stringResource(R.string.dashboard_greeting_name, salute, name)
     val summary = listOf(
-        if (urgentCount == 0) "Sin envíos urgentes" else "$urgentCount ${if (urgentCount == 1) "envío urgente" else "envíos urgentes"}",
-        if (unassigned == 0L) "todo asignado" else "${Fmt.int(unassigned)} prendas por asignar",
+        if (urgentCount == 0) stringResource(R.string.dashboard_no_urgent)
+        else pluralStringResource(R.plurals.dashboard_urgent_count, urgentCount, Fmt.int(urgentCount)),
+        if (unassigned == 0L) stringResource(R.string.dashboard_all_assigned)
+        else pluralStringResource(R.plurals.dashboard_garments_to_assign, unassigned.coerceAtMost(Int.MAX_VALUE.toLong()).toInt(), Fmt.int(unassigned)),
     ).joinToString(" · ")
     val today = MonthLabel.fullDay(LocalDate.now())
 
@@ -241,9 +250,12 @@ private fun DashboardHero(name: String?, company: String, online: Boolean, updat
         LoomBackdrop(Modifier.fillMaxSize())
         Column(Modifier.fillMaxSize().padding(28.dp)) {
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                HeroCapsule(if (online) "En línea" else "Sin conexión · modo local", if (online) Icons.Filled.Wifi else Icons.Filled.WifiOff)
+                HeroCapsule(stringResource(if (online) R.string.dashboard_online else R.string.dashboard_offline), if (online) Icons.Filled.Wifi else Icons.Filled.WifiOff)
                 if (company.isNotBlank()) HeroCapsule(company, Icons.Filled.Apartment)
-                HeroCapsule("Actualizado ${updatedAt.format(DateTimeFormatter.ofPattern("HH:mm"))}", Icons.Filled.Sync)
+                HeroCapsule(
+                    stringResource(R.string.dashboard_updated_at, updatedAt.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Fmt.locale))),
+                    Icons.Filled.Sync,
+                )
             }
             Spacer(Modifier.weight(1f))
             Text(greeting, color = Color.White, fontSize = 36.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -271,17 +283,29 @@ private fun Kpis(s: DashboardSnapshot, urgency: Int, open: (AppSection) -> Unit)
     data class Kpi(val title: String, val value: String, val icon: ImageVector, val tint: Color, val footnote: String, val section: AppSection)
     val c = Tokens.colors
     val items = listOf(
-        Kpi("Ingresos en producción", Fmt.money(s.revenue, compact = true), Icons.Filled.Payments, c.brand, "${Fmt.int(s.assignmentCount)} asignaciones", AppSection.Production),
-        Kpi("Prendas por asignar", Fmt.int(s.unassignedGarments), Icons.Filled.ContentCut, c.thread, "${Fmt.int(s.pendingOrders.size)} cortes pendientes", AppSection.Orders),
-        Kpi("En producción", Fmt.int(s.inProduction), Icons.Filled.PrecisionManufacturing, c.info, "Cortes sin terminar", AppSection.Production),
-        Kpi("Envíos urgentes", Fmt.int(s.urgent.size), Icons.Filled.Warning, if (s.urgent.isEmpty()) c.success else c.danger, "Próximos $urgency días", AppSection.Shipments),
-        Kpi("Por enviar", Fmt.int(s.toShip), Icons.Filled.Inventory2, c.success, "Prendas", AppSection.Shipments),
+        Kpi(
+            stringResource(R.string.dashboard_kpi_revenue), Fmt.money(s.revenue, compact = true), Icons.Filled.Payments, c.brand,
+            pluralStringResource(R.plurals.dashboard_kpi_assignments, s.assignmentCount, Fmt.int(s.assignmentCount)), AppSection.Production,
+        ),
+        Kpi(
+            stringResource(R.string.dashboard_kpi_to_assign), Fmt.int(s.unassignedGarments), Icons.Filled.ContentCut, c.thread,
+            pluralStringResource(R.plurals.dashboard_kpi_pending_cuts, s.pendingOrders.size, Fmt.int(s.pendingOrders.size)), AppSection.Orders,
+        ),
+        Kpi(
+            stringResource(R.string.dashboard_kpi_in_production), Fmt.int(s.inProduction), Icons.Filled.PrecisionManufacturing, c.info,
+            stringResource(R.string.dashboard_kpi_unfinished_cuts), AppSection.Production,
+        ),
+        Kpi(
+            stringResource(R.string.section_shipments), Fmt.int(s.urgent.size), Icons.Filled.Warning, if (s.urgent.isEmpty()) c.success else c.danger,
+            pluralStringResource(R.plurals.dashboard_next_days, urgency, urgency), AppSection.Shipments,
+        ),
+        Kpi(stringResource(R.string.dashboard_kpi_to_ship), Fmt.int(s.toShip), Icons.Filled.Inventory2, c.success, stringResource(R.string.common_garments), AppSection.Shipments),
     )
     AdaptiveGrid(items.size, minWidth = 180.dp) { i, m ->
         val k = items[i]
         KpiTile(
             k.title, k.value, k.icon, k.tint, k.footnote,
-            m.semantics(mergeDescendants = true) { contentDescription = "${k.title}: ${k.value}. ${k.footnote}" },
+            m.semantics(mergeDescendants = true) { contentDescription = L10n.str(R.string.dashboard_kpi_a11y, k.title, k.value, k.footnote) },
         ) { open(k.section) }
     }
 }
@@ -293,13 +317,14 @@ private fun CapacityCard(points: List<BarPoint>, month: YearMonth, onMonth: (Yea
     val used = points.sumOf { it.value }
     val max = points.sumOf { it.max }
     ChartCard(
-        "Capacidad de plantas",
-        if (max > 0) "${Fmt.money(used, compact = true)} de ${Fmt.money(max, compact = true)} · ${Fmt.percent(used / max)}" else "Usado vs. capacidad mensual",
+        stringResource(R.string.dashboard_capacity_title),
+        if (max > 0) stringResource(R.string.dashboard_capacity_used, Fmt.money(used, compact = true), Fmt.money(max, compact = true), Fmt.percent(used / max))
+        else stringResource(R.string.dashboard_capacity_subtitle),
         modifier,
         trailing = {},
     ) {
         MonthStepper(month, onMonth)
-        if (points.isEmpty()) CardEmptyState("Sin plantas", Icons.Filled.Apartment, "Da de alta plantas para ver su capacidad.")
+        if (points.isEmpty()) CardEmptyState(stringResource(R.string.dashboard_no_plants), Icons.Filled.Apartment, stringResource(R.string.dashboard_no_plants_message))
         else CapacityBarChart(points)
     }
 }
@@ -307,24 +332,26 @@ private fun CapacityCard(points: List<BarPoint>, month: YearMonth, onMonth: (Yea
 @Composable
 private fun PipelineCard(slices: List<Pair<CutStatus, Int>>, modifier: Modifier, onOpen: () -> Unit) {
     val total = slices.sumOf { it.second }
-    ChartCard("Mesa de corte", "Asignaciones por estado", modifier, trailing = {
+    ChartCard(stringResource(R.string.dashboard_pipeline_title), stringResource(R.string.dashboard_pipeline_subtitle), modifier, trailing = {
         TextButton(onOpen) {
-            Text("Tablero", style = MaterialTheme.typography.labelLarge)
+            Text(stringResource(R.string.dashboard_pipeline_board), style = MaterialTheme.typography.labelLarge)
             Icon(Icons.AutoMirrored.Filled.OpenInNew, null, Modifier.padding(start = 4.dp).size(16.dp))
         }
     }) {
         if (total == 0) {
-            CardEmptyState("Sin asignaciones", Icons.Filled.ContentCut, "Asigna cortes a una planta para verlos aquí.")
+            CardEmptyState(stringResource(R.string.dashboard_no_assignments), Icons.Filled.ContentCut, stringResource(R.string.dashboard_no_assignments_message))
         } else {
-            val tinted = slices.map { (status, count) -> DonutSlice(status.title, count, status.tint()) }
+            val tinted = slices.map { (status, count) -> DonutSlice(stringResource(status.titleRes), count, status.tint()) }
+            val openLabel = stringResource(R.string.dashboard_pipeline_open)
+            val totalLabel = pluralStringResource(R.plurals.dashboard_cuts_count, total, Fmt.int(total))
             Column(
-                Modifier.clickable(role = Role.Button, onClickLabel = "Abre el tablero de corte", onClick = onOpen)
+                Modifier.clickable(role = Role.Button, onClickLabel = openLabel, onClick = onOpen)
                     .semantics(mergeDescendants = true) {
-                        contentDescription = "$total cortes. " + tinted.joinToString(", ") { "${it.label}: ${it.value}" }
+                        contentDescription = "$totalLabel. " + tinted.joinToString(", ") { "${it.label}: ${it.value}" }
                     },
                 verticalArrangement = Arrangement.spacedBy(18.dp),
             ) {
-                DonutChart(tinted, Fmt.int(total), "cortes")
+                DonutChart(tinted, Fmt.int(total), pluralStringResource(R.plurals.dashboard_cuts_caption, total))
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     tinted.forEach { LegendRow(it.color, it.label, Fmt.int(it.value)) }
                 }
@@ -338,8 +365,8 @@ private fun PipelineCard(slices: List<Pair<CutStatus, Int>>, modifier: Modifier,
 private fun RevenueYearCard(series: List<StackSeries>, plantNames: List<String>, month: YearMonth, onMonth: (YearMonth) -> Unit) {
     val total = series.sumOf { it.values.sum() }
     ChartCard(
-        "Ingresos agendados ${month.year}",
-        "${Fmt.money(total, compact = true)} por mes de producción, por planta",
+        stringResource(R.string.dashboard_revenue_title, month.year.toString()),
+        stringResource(R.string.dashboard_revenue_subtitle, Fmt.money(total, compact = true)),
     ) {
         if (plantNames.isNotEmpty()) {
             FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -347,13 +374,14 @@ private fun RevenueYearCard(series: List<StackSeries>, plantNames: List<String>,
             }
         }
         if (total == 0.0) {
-            CardEmptyState("Sin ingresos agendados en ${month.year}", Icons.Filled.BarChart, "Las asignaciones a planta aparecerán aquí por mes.")
+            CardEmptyState(stringResource(R.string.dashboard_revenue_empty, month.year.toString()), Icons.Filled.BarChart, stringResource(R.string.dashboard_revenue_empty_message))
         } else {
             val labels = (1..12).map { MonthLabel.short(YearMonth.of(month.year, it)).capitalizedFirst() }
+            val chartDescription = stringResource(R.string.dashboard_revenue_a11y, month.year.toString(), Fmt.money(total))
             StackedBarChart(
                 series, labels, selected = month.monthValue - 1,
                 onSelect = { onMonth(YearMonth.of(month.year, it + 1)) },
-                modifier = Modifier.semantics { contentDescription = "Ingresos agendados por mes en ${month.year}: ${Fmt.money(total)}" },
+                modifier = Modifier.semantics { contentDescription = chartDescription },
             )
         }
     }
@@ -363,9 +391,9 @@ private fun RevenueYearCard(series: List<StackSeries>, plantNames: List<String>,
 
 @Composable
 private fun UrgentList(s: DashboardSnapshot, graph: Graph, urgency: Int, modifier: Modifier, onAll: () -> Unit, onOpen: (AssignmentEntity) -> Unit) {
-    ChartCard("Envíos urgentes", "Por fecha de cliente", modifier, trailing = { TextButton(onAll) { Text("Ver todos") } }) {
+    ChartCard(stringResource(R.string.section_shipments), stringResource(R.string.dashboard_urgent_subtitle), modifier, trailing = { TextButton(onAll) { Text(stringResource(R.string.common_see_all)) } }) {
         if (s.urgent.isEmpty()) {
-            CardEmptyState("Sin envíos urgentes", Icons.Filled.Verified, "Todo va a tiempo en los próximos $urgency días.")
+            CardEmptyState(stringResource(R.string.dashboard_no_urgent), Icons.Filled.Verified, pluralStringResource(R.plurals.dashboard_urgent_empty_message, urgency, urgency))
         } else {
             Column {
                 s.urgent.take(5).forEachIndexed { i, row ->
@@ -389,7 +417,7 @@ private fun UrgentRow(row: DashboardSnapshot.UrgentItem, graph: Graph, onClick: 
     }
     val order = graph.orderOf(row.assignment)
     val title = "${graph.title(row.assignment)} · ${graph.clientName(order)}"
-    val detail = "${graph.plantName(row.assignment)} · ${Fmt.int(row.toShip)} por enviar"
+    val detail = stringResource(R.string.dashboard_urgent_detail, graph.plantName(row.assignment), Fmt.int(row.toShip))
     ListRow(
         icon = if ((days ?: 0) < 0) Icons.Filled.Report else Icons.Filled.PendingActions, tint = tint,
         title = title, detail = detail, onClick = onClick,
@@ -399,9 +427,9 @@ private fun UrgentRow(row: DashboardSnapshot.UrgentItem, graph: Graph, onClick: 
 
 @Composable
 private fun PendingList(s: DashboardSnapshot, graph: Graph, modifier: Modifier, onAll: () -> Unit, onOpen: (CutOrderEntity) -> Unit) {
-    ChartCard("Cortes por asignar", "Más próximos a entregar", modifier, trailing = { TextButton(onAll) { Text("Ver todos") } }) {
+    ChartCard(stringResource(R.string.section_orders), stringResource(R.string.dashboard_pending_subtitle), modifier, trailing = { TextButton(onAll) { Text(stringResource(R.string.common_see_all)) } }) {
         if (s.pendingOrders.isEmpty()) {
-            CardEmptyState("Todo asignado", Icons.Filled.Inbox, "No hay prendas pendientes de asignar a planta.")
+            CardEmptyState(stringResource(R.string.dashboard_pending_empty), Icons.Filled.Inbox, stringResource(R.string.dashboard_pending_empty_message))
         } else {
             Column {
                 s.pendingOrders.take(5).forEachIndexed { i, order ->
@@ -418,11 +446,15 @@ private fun PendingRow(order: CutOrderEntity, graph: Graph, onClick: () -> Unit)
     val remaining = graph.remaining(order)
     val progress = if (order.quantity > 0) graph.assignedQuantity(order).toDouble() / order.quantity else 0.0
     val tint = graph.state(order).tint()
+    val a11y = pluralStringResource(
+        R.plurals.dashboard_pending_a11y, remaining.coerceAtMost(Int.MAX_VALUE.toLong()).toInt(),
+        order.code, graph.clientName(order), Fmt.int(remaining),
+    )
     Row(
         Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp))
             .clickable(role = Role.Button, onClick = onClick)
             .semantics(mergeDescendants = true) {
-                contentDescription = "Corte ${order.code}, ${graph.clientName(order)}, ${Fmt.int(remaining)} prendas por asignar"
+                contentDescription = a11y
             }
             .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
@@ -437,7 +469,7 @@ private fun PendingRow(order: CutOrderEntity, graph: Graph, onClick: () -> Unit)
         }
         Column(horizontalAlignment = Alignment.End) {
             Text(Fmt.int(remaining), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
-            Text("Cliente ${Fmt.shortDate(order.clientDate?.toLocalDate())}", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+            Text(stringResource(R.string.dashboard_client_date, Fmt.shortDate(order.clientDate?.toLocalDate())), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
         }
         Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null, tint = Tokens.colors.secondary.copy(alpha = 0.5f))
     }
@@ -466,9 +498,9 @@ private fun ListRow(icon: ImageVector, tint: Color, title: String, detail: Strin
 
 @Composable
 private fun ReportsFeed(reports: List<ReportEntity>, graph: Graph, wide: Boolean, onOpen: (ReportEntity) -> Unit) {
-    ChartCard("Actividad reciente", "Últimos reportes de producción") {
+    ChartCard(stringResource(R.string.dashboard_activity_title), stringResource(R.string.dashboard_activity_subtitle)) {
         if (reports.isEmpty()) {
-            CardEmptyState("Sin reportes todavía", Icons.Filled.Description, "Los reportes de planta, corte y envío aparecerán aquí.")
+            CardEmptyState(stringResource(R.string.dashboard_activity_empty), Icons.Filled.Description, stringResource(R.string.dashboard_activity_empty_message))
         } else {
             AdaptiveGrid(reports.size, minWidth = if (wide) 380.dp else 600.dp, spacing = 8.dp) { i, m ->
                 ReportFeedRow(reports[i], graph, m) { onOpen(reports[i]) }
@@ -482,12 +514,13 @@ private fun ReportFeedRow(report: ReportEntity, graph: Graph, modifier: Modifier
     val kind = ReportKind.fromRaw(report.kind)
     val tint = kind.tint()
     val assignment = graph.assignment(report.assignmentId)
-    val heading = "${assignment?.let(graph::title) ?: "Corte"} · ${assignment?.let(graph::plantName).orEmpty()}"
-    val footer = "${report.authorName ?: "Sin autor"} · ${relativeTime(report.createdAt)}"
+    val heading = "${assignment?.let(graph::title) ?: stringResource(R.string.common_cut)} · ${assignment?.let(graph::plantName).orEmpty()}"
+    val footer = "${report.authorName ?: stringResource(R.string.dashboard_no_author)} · ${relativeTime(report.createdAt)}"
+    val kindTitle = stringResource(kind.shortTitleRes)
     Row(
         modifier.clip(RoundedCornerShape(Tokens.smallRadius)).background(Tokens.colors.surfaceRaised)
             .clickable(role = Role.Button, onClick = onClick)
-            .semantics(mergeDescendants = true) { contentDescription = "${kind.shortTitle}. $heading. ${report.summary()}. $footer" }
+            .semantics(mergeDescendants = true) { contentDescription = "$kindTitle. $heading. ${report.summary()}. $footer" }
             .padding(10.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
@@ -496,7 +529,7 @@ private fun ReportFeedRow(report: ReportEntity, graph: Graph, modifier: Modifier
         }
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text(kind.shortTitle, style = MaterialTheme.typography.labelMedium, color = tint)
+                Text(kindTitle, style = MaterialTheme.typography.labelMedium, color = tint)
                 Text(heading, style = MaterialTheme.typography.labelMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
             Text(report.summary(), style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -512,25 +545,25 @@ private val ReportKind.icon: ImageVector
         ReportKind.Shipment -> Icons.Filled.LocalShipping
     }
 
-/** Spanish relative time, like iOS `.relative(presentation: .named)` in es_MX. */
+/** Relative time in the app's language, like iOS `.relative(presentation: .named)`. */
 fun relativeTime(epochMillis: Long, now: Instant = Instant.now()): String {
     val then = Instant.ofEpochMilli(epochMillis)
     val minutes = ChronoUnit.MINUTES.between(then, now)
-    if (minutes < 0) return "ahora"
-    fun plural(n: Long, one: String, many: String) = "hace $n ${if (n == 1L) one else many}"
+    if (minutes < 0) return L10n.str(R.string.dashboard_time_now)
+    fun plural(id: Int, n: Long) = n.toInt().let { L10n.plural(id, it, it) }
     return when {
-        minutes < 1 -> "ahora"
-        minutes < 60 -> plural(minutes, "minuto", "minutos")
-        minutes < 24 * 60 -> plural(minutes / 60, "hora", "horas")
+        minutes < 1 -> L10n.str(R.string.dashboard_time_now)
+        minutes < 60 -> plural(R.plurals.dashboard_time_minutes_ago, minutes)
+        minutes < 24 * 60 -> plural(R.plurals.dashboard_time_hours_ago, minutes / 60)
         else -> {
             val zone = ZoneId.systemDefault()
             val days = ChronoUnit.DAYS.between(then.atZone(zone).toLocalDate(), now.atZone(zone).toLocalDate())
             when {
-                days <= 1 -> "ayer"
-                days < 7 -> "hace $days días"
-                days < 30 -> plural(days / 7, "semana", "semanas")
-                days < 365 -> plural(days / 30, "mes", "meses")
-                else -> plural(days / 365, "año", "años")
+                days <= 1 -> L10n.str(R.string.dashboard_time_yesterday)
+                days < 7 -> plural(R.plurals.dashboard_time_days_ago, days)
+                days < 30 -> plural(R.plurals.dashboard_time_weeks_ago, days / 7)
+                days < 365 -> plural(R.plurals.dashboard_time_months_ago, days / 30)
+                else -> plural(R.plurals.dashboard_time_years_ago, days / 365)
             }
         }
     }

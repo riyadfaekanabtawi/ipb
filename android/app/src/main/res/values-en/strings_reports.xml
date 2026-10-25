@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Production reports -->
+    <string name="reports_title_plant">Production · %1$s</string>
+    <string name="reports_no_plant_title">No plant assigned</string>
+    <string name="reports_no_plant_message">Ask your administrator to assign you a plant to see its production.</string>
+    <string name="reports_export_csv">Export CSV</string>
+    <string name="reports_search_placeholder">Cut, list, style, client…</string>
+    <string name="reports_date_range">%1$s – %2$s</string>
+    <string name="reports_filter_pending_shipment">With garments to ship</string>
+    <string name="reports_clear_filters">Clear</string>
+    <string name="reports_no_results_message">Adjust or clear the filters.</string>
+    <string name="reports_empty_title">No cuts in production yet</string>
+    <string name="reports_empty_message">Assign cuts to plants to see them here.</string>
+    <string name="reports_filter_by_client_date">Filter by client date</string>
+    <string name="reports_date_from">From</string>
+    <string name="reports_date_to">To</string>
+    <string name="reports_sort">Sort</string>
+    <string name="reports_sort_by">Sort by</string>
+    <string name="reports_sort_ascending">Ascending</string>
+    <string name="reports_sort_descending">Descending</string>
+    <string name="reports_total_quantity">Total quantity</string>
+    <string name="reports_produced">Produced</string>
+    <string name="reports_ironing">Ironing</string>
+    <string name="reports_packing">Packing</string>
+    <string name="reports_warehouse">Warehouse</string>
+    <string name="reports_shipped">Shipped</string>
+    <string name="reports_to_ship_total">To ship</string>
+    <string name="reports_revenue_total">Revenue</string>
+    <string name="reports_row_client_list">%1$s · List %2$s</string>
+    <string name="reports_cut_done">Cut</string>
+    <string name="reports_to_ship">To ship</string>
+    <string name="reports_delivery">Delivery</string>
+    <string name="reports_revenue">Revenue</string>
+    <string name="reports_share_subject">Production report · Trama</string>
+
+    <!-- Urgent shipments -->
+    <string name="shipments_overdue">Overdue</string>
+    <string name="shipments_garments_to_ship">Garments to ship</string>
+    <string name="shipments_empty_title">No urgent shipments</string>
+    <plurals name="shipments_empty_message">
+        <item quantity="one">No cut with garments to ship is due in the next %1$d day.</item>
+        <item quantity="other">No cut with garments to ship is due in the next %1$d days.</item>
+    </plurals>
+    <plurals name="shipments_next_days">
+        <item quantity="one">Next %1$d day</item>
+        <item quantity="other">Next %1$d days</item>
+    </plurals>
+    <plurals name="shipments_window_description">
+        <item quantity="one">Window: %1$d day. Deliveries within this period or overdue count as urgent</item>
+        <item quantity="other">Window: %1$d days. Deliveries within this period or overdue count as urgent</item>
+    </plurals>
+    <plurals name="shipments_window">
+        <item quantity="one">Window: %1$d day</item>
+        <item quantity="other">Window: %1$d days</item>
+    </plurals>
+    <plurals name="shipments_days_count">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <plurals name="shipments_days_unit">
+        <item quantity="one">day</item>
+        <item quantity="other">days</item>
+    </plurals>
+    <plurals name="shipments_days_late_unit">
+        <item quantity="one">day late</item>
+        <item quantity="other">days late</item>
+    </plurals>
+    <string name="shipments_fewer_days">Fewer days</string>
+    <string name="shipments_more_days">More days</string>
+    <string name="shipments_delivery_on">Delivery %1$s</string>
+    <string name="shipments_shipped_of">%1$s of %2$s shipped</string>
+    <string name="shipments_to_ship_count">%1$s to ship</string>
+    <string name="shipments_record_shipment">Record shipment</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_good_morning">Good morning</string>
+    <string name="dashboard_good_afternoon">Good afternoon</string>
+    <string name="dashboard_good_evening">Good evening</string>
+    <string name="dashboard_greeting_name">%1$s, %2$s</string>
+    <string name="dashboard_no_urgent">No urgent shipments</string>
+    <plurals name="dashboard_urgent_count">
+        <item quantity="one">%1$s urgent shipment</item>
+        <item quantity="other">%1$s urgent shipments</item>
+    </plurals>
+    <string name="dashboard_all_assigned">everything assigned</string>
+    <plurals name="dashboard_garments_to_assign">
+        <item quantity="one">%1$s garment to assign</item>
+        <item quantity="other">%1$s garments to assign</item>
+    </plurals>
+    <string name="dashboard_online">Online</string>
+    <string name="dashboard_offline">Offline · local mode</string>
+    <string name="dashboard_updated_at">Updated %1$s</string>
+    <string name="dashboard_kpi_revenue">Revenue in production</string>
+    <plurals name="dashboard_kpi_assignments">
+        <item quantity="one">%1$s assignment</item>
+        <item quantity="other">%1$s assignments</item>
+    </plurals>
+    <string name="dashboard_kpi_to_assign">Garments to assign</string>
+    <plurals name="dashboard_kpi_pending_cuts">
+        <item quantity="one">%1$s pending cut</item>
+        <item quantity="other">%1$s pending cuts</item>
+    </plurals>
+    <string name="dashboard_kpi_in_production">In production</string>
+    <string name="dashboard_kpi_unfinished_cuts">Unfinished cuts</string>
+    <plurals name="dashboard_next_days">
+        <item quantity="one">Next %1$d day</item>
+        <item quantity="other">Next %1$d days</item>
+    </plurals>
+    <string name="dashboard_kpi_to_ship">To ship</string>
+    <string name="dashboard_kpi_a11y">%1$s: %2$s. %3$s</string>
+    <string name="dashboard_capacity_title">Plant capacity</string>
+    <string name="dashboard_capacity_used">%1$s of %2$s · %3$s</string>
+    <string name="dashboard_capacity_subtitle">Used vs. monthly capacity</string>
+    <string name="dashboard_no_plants">No plants</string>
+    <string name="dashboard_no_plants_message">Add plants to see their capacity.</string>
+    <string name="dashboard_pipeline_title">Cutting table</string>
+    <string name="dashboard_pipeline_subtitle">Assignments by status</string>
+    <string name="dashboard_pipeline_board">Board</string>
+    <string name="dashboard_no_assignments">No assignments</string>
+    <string name="dashboard_no_assignments_message">Assign cuts to a plant to see them here.</string>
+    <string name="dashboard_pipeline_open">Open the cutting board</string>
+    <plurals name="dashboard_cuts_count">
+        <item quantity="one">%1$s cut</item>
+        <item quantity="other">%1$s cuts</item>
+    </plurals>
+    <plurals name="dashboard_cuts_caption">
+        <item quantity="one">cut</item>
+        <item quantity="other">cuts</item>
+    </plurals>
+    <string name="dashboard_revenue_title">Scheduled revenue %1$s</string>
+    <string name="dashboard_revenue_subtitle">%1$s by production month, per plant</string>
+    <string name="dashboard_revenue_empty">No scheduled revenue in %1$s</string>
+    <string name="dashboard_revenue_empty_message">Plant assignments will show up here by month.</string>
+    <string name="dashboard_revenue_a11y">Scheduled revenue by month in %1$s: %2$s</string>
+    <string name="dashboard_urgent_subtitle">By client date</string>
+    <plurals name="dashboard_urgent_empty_message">
+        <item quantity="one">Everything is on time for the next %1$d day.</item>
+        <item quantity="other">Everything is on time for the next %1$d days.</item>
+    </plurals>
+    <string name="dashboard_urgent_detail">%1$s · %2$s to ship</string>
+    <string name="dashboard_pending_subtitle">Closest to delivery</string>
+    <string name="dashboard_pending_empty">Everything assigned</string>
+    <string name="dashboard_pending_empty_message">No garments are waiting to be assigned to a plant.</string>
+    <plurals name="dashboard_pending_a11y">
+        <item quantity="one">Cut %1$s, %2$s, %3$s garment to assign</item>
+        <item quantity="other">Cut %1$s, %2$s, %3$s garments to assign</item>
+    </plurals>
+    <string name="dashboard_client_date">Client %1$s</string>
+    <string name="dashboard_activity_title">Recent activity</string>
+    <string name="dashboard_activity_subtitle">Latest production reports</string>
+    <string name="dashboard_activity_empty">No reports yet</string>
+    <string name="dashboard_activity_empty_message">Plant, cut and shipment reports will show up here.</string>
+    <string name="dashboard_no_author">Unknown author</string>
+    <string name="dashboard_time_now">now</string>
+    <string name="dashboard_time_yesterday">yesterday</string>
+    <plurals name="dashboard_time_minutes_ago">
+        <item quantity="one">%1$d minute ago</item>
+        <item quantity="other">%1$d minutes ago</item>
+    </plurals>
+    <plurals name="dashboard_time_hours_ago">
+        <item quantity="one">%1$d hour ago</item>
+        <item quantity="other">%1$d hours ago</item>
+    </plurals>
+    <plurals name="dashboard_time_days_ago">
+        <item quantity="one">%1$d day ago</item>
+        <item quantity="other">%1$d days ago</item>
+    </plurals>
+    <plurals name="dashboard_time_weeks_ago">
+        <item quantity="one">%1$d week ago</item>
+        <item quantity="other">%1$d weeks ago</item>
+    </plurals>
+    <plurals name="dashboard_time_months_ago">
+        <item quantity="one">%1$d month ago</item>
+        <item quantity="other">%1$d months ago</item>
+    </plurals>
+    <plurals name="dashboard_time_years_ago">
+        <item quantity="one">%1$d year ago</item>
+        <item quantity="other">%1$d years ago</item>
+    </plurals>
+
+    <!-- Charts -->
+    <string name="chart_previous_month">Previous month</string>
+    <string name="chart_next_month">Next month</string>
+    <string name="chart_selected_month">Selected month: %1$s. Double-tap to go back to the current month</string>
+    <string name="chart_point_used">%1$s: %2$s used</string>
+    <string name="chart_value_of_max">%1$s of %2$s</string>
+    <string name="chart_select_label">Select %1$s</string>
+
+    <!-- Calculator -->
+    <string name="calculator_cleared">Calculator cleared</string>
+    <string name="calculator_summary_title">Production estimate</string>
+    <string name="calculator_summary_copied">Summary copied</string>
+    <string name="calculator_constants_saved">Constants saved</string>
+    <string name="calculator_share_summary">Share summary</string>
+    <string name="calculator_copy_summary">Copy summary</string>
+    <string name="calculator_constants">Constants</string>
+    <string name="calculator_clear">Clear</string>
+    <string name="calculator_unit_garments">garments</string>
+    <string name="calculator_unit_minutes">min</string>
+    <string name="calculator_unit_days">days</string>
+    <string name="calculator_unit_months">months</string>
+    <string name="calculator_style_quantity">Style quantity</string>
+    <string name="calculator_real_minutes">Actual minutes (SAM)</string>
+    <string name="calculator_client_minutes">Client minutes (SAM)</string>
+    <string name="calculator_operators">Operators</string>
+    <string name="calculator_internal_unit_price">Internal unit price</string>
+    <string name="calculator_price_per_style">Price per style</string>
+    <string name="calculator_operating_expenses">Operating expenses</string>
+    <string name="calculator_real_production_minute">Actual production minute</string>
+    <string name="calculator_line_operators">Line operators</string>
+    <string name="calculator_real_daily_production">Actual daily output</string>
+    <string name="calculator_plant_picker_a11y">Plant: %1$s. Tap to choose</string>
+    <string name="calculator_gross_income">Gross revenue</string>
+    <string name="calculator_net_income">Net income</string>
+    <string name="calculator_gross_income_hint">Quantity × price per style</string>
+    <string name="calculator_net_income_hint">Gross − operating expenses</string>
+    <string name="calculator_price_per_real_minute">Price per actual minute</string>
+    <string name="calculator_price_per_real_minute_hint">Price per style ÷ actual minutes</string>
+    <string name="calculator_daily_goal">Daily target</string>
+    <string name="calculator_daily_goal_hint">Operators × minutes per day ÷ minutes per garment</string>
+    <string name="calculator_daily_goal_needs_minutes">Needs minutes per day</string>
+    <string name="calculator_weekly_production">Weekly output</string>
+    <string name="calculator_weekly_production_hint">Daily target × days per week</string>
+    <string name="calculator_estimated_days">Estimated days</string>
+    <string name="calculator_estimated_days_hint">Quantity ÷ daily target</string>
+    <string name="calculator_estimated_months">Estimated months</string>
+    <string name="calculator_estimated_months_hint">Days ÷ days per month</string>
+    <string name="calculator_real_production_minute_hint">Minutes per day × operators ÷ daily output</string>
+    <string name="calculator_no_value">no value</string>
+    <string name="calculator_minute_efficiency">Minute efficiency</string>
+    <string name="calculator_minute_efficiency_hint">Client minutes ÷ actual</string>
+    <string name="calculator_constants_banner_title">Set up the plant constants</string>
+    <string name="calculator_constants_banner_message">Minutes per operator and working days are needed for the daily target, weekly output and estimated times.</string>
+    <string name="calculator_configure">Set up</string>
+    <string name="calculator_per_operator">Per operator</string>
+    <string name="calculator_minutes_per_day">Minutes per day</string>
+    <string name="calculator_minutes_per_week">Minutes per week</string>
+    <string name="calculator_minutes_per_month">Minutes per month</string>
+    <string name="calculator_calendar">Calendar</string>
+    <string name="calculator_work_days_per_week">Working days per week</string>
+    <string name="calculator_work_days_per_month">Working days per month</string>
+    <string name="calculator_constants_note">They\'re saved on this device and used in every calculation.</string>
+    <string name="calculator_summary_header">Production estimate · Trama</string>
+    <string name="calculator_summary_line">%1$s: %2$s</string>
+    <string name="calculator_summary_quantity">Quantity: %1$s garments · Actual minutes %2$s · client %3$s</string>
+    <string name="calculator_summary_operators">Operators: %1$s · Price per style %2$s · Expenses %3$s</string>
+</resources>
