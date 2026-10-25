@@ -63,9 +63,41 @@ cp .env.example .env            # fill DATABASE_URL, MASTER_KEY, JWT_SECRET
 npm run migrate
 npm run create-admin -- you@example.com "Your Name"   # prints a link to set the password
 npm run dev:api                 # http://localhost:8787/api
-npm test                        # integration tests against TEST_DATABASE_URL
-npm run typecheck
+npm run dev:web                 # http://localhost:5173 (proxies /api to :8787; API_PROXY / WEB_PORT override)
+npm test                        # API integration tests (TEST_DATABASE_URL) + web unit tests
+npm run typecheck               # API (tsconfig.json) and web (web/tsconfig.json)
+npm run build                   # SPA → dist/
 ```
+
+## Web app and admin portal (`web/`)
+
+One React + Vite + TypeScript SPA (Vite root `web/`, output `dist/`), served by the same
+Vercel project: `/api/*` goes to the function, every other path falls back to `index.html`.
+
+| Route | |
+|---|---|
+| `/login`, `/olvide`, `/activar?token=`, `/restablecer?token=` | company sign-in, forgot password, invite and reset links |
+| `/app/...` | the iPad app for the browser (role-based sections, Spanish UI) |
+| `/admin/login`, `/admin/activar?token=`, `/admin`, `/admin/empresas/:id` | vendor admin portal |
+
+```
+web/src/
+  domain/   types (sync DTOs), enums (roles, sections, statuses), rules (DOMAIN.md) + tests
+  data/     store (pull/push sync, outbox, IndexedDB cache), db (read model), services (all writes), session
+  lib/      api client (token refresh), PBKDF2, formatting (es-MX), prefs, toasts
+  ui/       design-system components (KPITile, Pill, CapacityBar, modals, fields) and charts
+  app/      screens;  admin/  admin portal (lazy-loaded)
+```
+
+- **Session:** device id is a random UUID in `localStorage` (`platform: "web"`); the refresh token
+  lives in `localStorage`, the access token only in memory; a 401 triggers one shared refresh.
+- **Data:** `/api/sync/pull` cursor loop into memory, cached per company + user in IndexedDB (cleared
+  on logout). Writes go through `data/services.ts` (domain rules + role checks), apply optimistically
+  and are pushed; `stale` rejections adopt the server copy, other rejections revert and show the
+  server message. Pending changes survive brief network drops. Polls every 30 s, on focus and when
+  back online. A licence with `writable: false` shows a banner and hides write actions.
+- Per-browser preferences (urgency window, calculator constants, theme) live in `localStorage`, like
+  the apps keep them per device.
 
 ## Deploy (Vercel)
 
