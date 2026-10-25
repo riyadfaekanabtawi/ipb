@@ -2,10 +2,12 @@ import { ArrowLeft, Eye, EyeOff, KeyRound, Mail } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../data/session";
+import { t } from "../i18n";
 import { acceptInvite, forgotPassword } from "../lib/api";
-import { Threads } from "../ui/kit";
+import { LanguageSwitcher, Threads } from "../ui/kit";
 
-export function AuthLayout({ children, kicker = "Control de producción textil", headline, copy }: { children: ReactNode; kicker?: string; headline?: string; copy?: string }) {
+/** Company sign-in layout. The admin portal passes its own copy and hides the language picker. */
+export function AuthLayout({ children, kicker, headline, copy, languagePicker = true }: { children: ReactNode; kicker?: string; headline?: string; copy?: string; languagePicker?: boolean }) {
   return (
     <div className="auth">
       <div className="auth-art">
@@ -14,16 +16,17 @@ export function AuthLayout({ children, kicker = "Control de producción textil",
           <img src="/icon.png" alt="" width={42} height={42} style={{ borderRadius: 12 }} />
           <div>
             <div style={{ fontWeight: 850, fontSize: 22, letterSpacing: "-0.02em" }}>Trama</div>
-            <div style={{ opacity: 0.75, fontSize: 13 }}>{kicker}</div>
+            <div style={{ opacity: 0.75, fontSize: 13 }}>{kicker ?? t("auth.kicker")}</div>
           </div>
         </div>
         <div>
-          <h1>{headline ?? "Del corte al envío, todo en un solo hilo."}</h1>
-          <p>{copy ?? "Asigna cortes a tus plantas según su capacidad, sigue la producción en tiempo real y no pierdas de vista ningún envío urgente."}</p>
+          <h1>{headline ?? t("auth.headline")}</h1>
+          <p>{copy ?? t("auth.copy")}</p>
         </div>
-        <div className="tiny" style={{ opacity: 0.6 }}>Tus datos viajan cifrados y se guardan cifrados por empresa.</div>
+        <div className="tiny" style={{ opacity: 0.6 }}>{t("auth.encrypted")}</div>
       </div>
       <div className="auth-form weave-bg">
+        {languagePicker && <LanguageSwitcher className="auth-lang" />}
         <div className="auth-card">{children}</div>
       </div>
     </div>
@@ -36,7 +39,7 @@ export function PasswordInput({ value, onChange, autoComplete, placeholder, auto
     <div className="input-affix">
       <KeyRound />
       <input className="input" type={show ? "text" : "password"} value={value} autoComplete={autoComplete} placeholder={placeholder} autoFocus={autoFocus} onChange={(e) => onChange(e.target.value)} style={{ paddingRight: 42 }} />
-      <button type="button" className="btn ghost icon sm" style={{ position: "absolute", right: 4 }} onClick={() => setShow(!show)} aria-label={show ? "Ocultar contraseña" : "Mostrar contraseña"}>
+      <button type="button" className="btn ghost icon sm" style={{ position: "absolute", right: 4 }} onClick={() => setShow(!show)} aria-label={show ? t("auth.hidePassword") : t("auth.showPassword")}>
         {show ? <EyeOff /> : <Eye />}
       </button>
     </div>
@@ -53,8 +56,8 @@ export function LoginPage() {
   return (
     <AuthLayout>
       <div>
-        <h2>Inicia sesión</h2>
-        <p className="muted" style={{ margin: "6px 0 0" }}>Entra con el correo y la contraseña de tu usuario de Trama.</p>
+        <h2>{t("auth.signInTitle")}</h2>
+        <p className="muted" style={{ margin: "6px 0 0" }}>{t("auth.signInIntro")}</p>
       </div>
       <form
         className="col"
@@ -67,30 +70,32 @@ export function LoginPage() {
             await signIn(email, password);
             navigate("/app", { replace: true });
           } catch (err) {
-            setError(err instanceof Error ? err.message : "No se pudo iniciar sesión.");
+            setError(err instanceof Error ? err.message : t("auth.signInFailed"));
           } finally {
             setBusy(false);
           }
         }}
       >
         <div className="field">
-          <label htmlFor="email">Correo electrónico</label>
+          <label htmlFor="email">{t("common.email")}</label>
           <div className="input-affix">
             <Mail />
-            <input id="email" className="input" type="email" autoComplete="username" required autoFocus value={email} onChange={(e) => setEmail(e.target.value)} placeholder="tu@empresa.com" />
+            <input id="email" className="input" type="email" autoComplete="username" required autoFocus value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("auth.emailPlaceholder")} />
           </div>
         </div>
         <div className="field">
-          <label>Contraseña</label>
+          <label>{t("auth.password")}</label>
           <PasswordInput value={password} onChange={setPassword} autoComplete="current-password" />
         </div>
         {error && <div className="banner error">{error}</div>}
-        <button className="btn primary block" disabled={busy || !email || !password}>{busy ? "Entrando…" : "Entrar"}</button>
-        <Link to="/olvide" className="small" style={{ textAlign: "center" }}>¿Olvidaste tu contraseña?</Link>
+        <button className="btn primary block" disabled={busy || !email || !password}>{busy ? t("auth.signingIn") : t("auth.signIn")}</button>
+        <Link to="/olvide" className="small" style={{ textAlign: "center" }}>{t("auth.forgotLink")}</Link>
       </form>
     </AuthLayout>
   );
 }
+
+const MIN_INVITE_PASSWORD = 8;
 
 /** Invitation / password reset: both consume a one-time token with /auth/accept-invite. */
 export function SetPasswordPage({ mode }: { mode: "invite" | "reset" | "admin" }) {
@@ -103,27 +108,22 @@ export function SetPasswordPage({ mode }: { mode: "invite" | "reset" | "admin" }
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const loginPath = mode === "admin" ? "/admin/login" : "/login";
-  const title = mode === "reset" ? "Nueva contraseña" : "Activa tu cuenta";
-  const intro =
-    mode === "reset"
-      ? "Elige una contraseña nueva. Por seguridad se cerrarán tus sesiones abiertas."
-      : mode === "admin"
-        ? "Define la contraseña de tu cuenta del portal de administración."
-        : "Bienvenido a Trama. Define tu contraseña para entrar desde la web, el iPad o Android.";
+  const title = mode === "reset" ? t("auth.newPasswordTitle") : t("auth.activateTitle");
+  const intro = mode === "reset" ? t("auth.resetIntro") : mode === "admin" ? t("auth.adminIntro") : t("auth.inviteIntro");
   const mismatch = confirm.length > 0 && confirm !== password;
 
   return (
-    <AuthLayout kicker={mode === "admin" ? "Portal de administración" : undefined}>
+    <AuthLayout kicker={mode === "admin" ? t("auth.adminKicker") : undefined} languagePicker={mode !== "admin"}>
       <div>
         <h2>{title}</h2>
         <p className="muted" style={{ margin: "6px 0 0" }}>{intro}</p>
       </div>
       {!token ? (
-        <div className="banner error">El enlace no es válido. Revisa que lo copiaste completo.</div>
+        <div className="banner error">{t("auth.invalidLink")}</div>
       ) : done ? (
         <div className="col" style={{ gap: 14 }}>
-          <div className="banner info">Listo. Ya puedes iniciar sesión con tu nueva contraseña.</div>
-          <button className="btn primary block" onClick={() => navigate(loginPath)}>Ir a iniciar sesión</button>
+          <div className="banner info">{t("auth.passwordSaved")}</div>
+          <button className="btn primary block" onClick={() => navigate(loginPath)}>{t("auth.goToSignIn")}</button>
         </div>
       ) : (
         <form
@@ -137,27 +137,27 @@ export function SetPasswordPage({ mode }: { mode: "invite" | "reset" | "admin" }
               await acceptInvite(token, password);
               setDone(true);
             } catch (err) {
-              setError(err instanceof Error ? err.message : "No se pudo guardar la contraseña.");
+              setError(err instanceof Error ? err.message : t("auth.savePasswordFailed"));
             } finally {
               setBusy(false);
             }
           }}
         >
           <div className="field">
-            <label>Contraseña</label>
+            <label>{t("auth.password")}</label>
             <PasswordInput value={password} onChange={setPassword} autoComplete="new-password" autoFocus />
-            <span className="hint">Al menos 8 caracteres.</span>
+            <span className="hint">{t("auth.minChars", { count: MIN_INVITE_PASSWORD })}</span>
           </div>
           <div className="field">
-            <label>Confirmar contraseña</label>
+            <label>{t("auth.confirmPassword")}</label>
             <PasswordInput value={confirm} onChange={setConfirm} autoComplete="new-password" />
-            {mismatch && <span className="error-text">Las contraseñas no coinciden.</span>}
+            {mismatch && <span className="error-text">{t("auth.passwordMismatch")}</span>}
           </div>
           {error && <div className="banner error">{error}</div>}
-          <button className="btn primary block" disabled={busy || password.length < 8 || password !== confirm}>{busy ? "Guardando…" : "Guardar contraseña"}</button>
+          <button className="btn primary block" disabled={busy || password.length < MIN_INVITE_PASSWORD || password !== confirm}>{busy ? t("common.saving") : t("auth.savePassword")}</button>
         </form>
       )}
-      <Link to={loginPath} className="small row" style={{ justifyContent: "center", gap: 6 }}><ArrowLeft size={14} /> Volver a iniciar sesión</Link>
+      <Link to={loginPath} className="small row" style={{ justifyContent: "center", gap: 6 }}><ArrowLeft size={14} /> {t("auth.backToSignIn")}</Link>
     </AuthLayout>
   );
 }
@@ -170,11 +170,11 @@ export function ForgotPage() {
   return (
     <AuthLayout>
       <div>
-        <h2>Recupera tu acceso</h2>
-        <p className="muted" style={{ margin: "6px 0 0" }}>Te enviaremos un enlace para elegir una contraseña nueva.</p>
+        <h2>{t("auth.forgotTitle")}</h2>
+        <p className="muted" style={{ margin: "6px 0 0" }}>{t("auth.forgotIntro")}</p>
       </div>
       {sent ? (
-        <div className="banner info">Si el correo está registrado, recibirás un enlace en unos minutos. Revisa también tu carpeta de spam.</div>
+        <div className="banner info">{t("auth.forgotSent")}</div>
       ) : (
         <form
           className="col"
@@ -187,24 +187,24 @@ export function ForgotPage() {
               await forgotPassword(email);
               setSent(true);
             } catch (err) {
-              setError(err instanceof Error ? err.message : "Intenta de nuevo.");
+              setError(err instanceof Error ? err.message : t("auth.tryAgain"));
             } finally {
               setBusy(false);
             }
           }}
         >
           <div className="field">
-            <label>Correo electrónico</label>
+            <label>{t("common.email")}</label>
             <div className="input-affix">
               <Mail />
-              <input className="input" type="email" required autoFocus value={email} onChange={(e) => setEmail(e.target.value)} placeholder="tu@empresa.com" />
+              <input className="input" type="email" required autoFocus value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("auth.emailPlaceholder")} />
             </div>
           </div>
           {error && <div className="banner error">{error}</div>}
-          <button className="btn primary block" disabled={busy || !email}>{busy ? "Enviando…" : "Enviar enlace"}</button>
+          <button className="btn primary block" disabled={busy || !email}>{busy ? t("auth.sending") : t("auth.sendLink")}</button>
         </form>
       )}
-      <Link to="/login" className="small row" style={{ justifyContent: "center", gap: 6 }}><ArrowLeft size={14} /> Volver a iniciar sesión</Link>
+      <Link to="/login" className="small row" style={{ justifyContent: "center", gap: 6 }}><ArrowLeft size={14} /> {t("auth.backToSignIn")}</Link>
     </AuthLayout>
   );
 }

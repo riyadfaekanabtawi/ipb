@@ -5,12 +5,13 @@ import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from 
 import { Link, Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { PLAN_IDS, PLANS, type Plan } from "../../../src/plans";
 import { AuthLayout, PasswordInput } from "../app/AuthPages";
-import { ROLE_TITLE, asRole } from "../domain/enums";
+import { asRole, roleTitle } from "../domain/enums";
 import { adminLogin, adminLogout, adminName, adminRequest, adminToken, ApiError, onAdminChange } from "../lib/api";
 import { fmtDate, fmtDateTime, fmtInt } from "../lib/format";
 import { toast, toastError } from "../lib/toast";
 import { Card, EmptyState, Field, FormModal, InfoRow, KPITile, Modal, NumberField, PageHead, Pill, Seg, SelectField, Spinner, TextField } from "../ui/kit";
 import { SetPasswordPage } from "../app/AuthPages";
+import { LANG_NAME, LANGS, type Lang } from "../i18n";
 
 const PLAN_NAME: Record<Plan, string> = { web: "Web", planta: "Planta", multiplanta: "Multiplanta", empresa: "Empresa" };
 const STATUS_LABEL = { active: "Activa", expired: "Vencida", suspended: "Suspendida" } as const;
@@ -85,7 +86,7 @@ function AdminLogin() {
   const [error, setError] = useState<string | null>(null);
   if (adminToken()) return <Navigate to="/admin" replace />;
   return (
-    <AuthLayout kicker="Portal de administración" headline="Licencias y empresas, en un solo lugar." copy="Crea empresas, envía invitaciones, ajusta planes y libera dispositivos.">
+    <AuthLayout languagePicker={false} kicker="Portal de administración" headline="Licencias y empresas, en un solo lugar." copy="Crea empresas, envía invitaciones, ajusta planes y libera dispositivos.">
       <div><h2>Portal de administración</h2><p className="muted" style={{ margin: "6px 0 0" }}>Solo para el equipo de Trama.</p></div>
       <form className="col" style={{ gap: 14 }} onSubmit={async (e) => {
         e.preventDefault();
@@ -215,6 +216,7 @@ function CreateCompany({ onClose, onCreated }: { onClose: () => void; onCreated:
   const [last, setLast] = useState("");
   const [email, setEmail] = useState("");
   const [notes, setNotes] = useState("");
+  const [lang, setLang] = useState<Lang>("es");
   const [override, setOverride] = useState(false);
   const [limits, setLimits] = useState({ maxUsers: PLANS.planta.maxUsers, maxDevices: PLANS.planta.maxDevices, maxPlants: PLANS.planta.maxPlants });
   const choosePlan = (p: Plan) => { setPlan(p); setLimits({ maxUsers: PLANS[p].maxUsers, maxDevices: PLANS[p].maxDevices, maxPlants: PLANS[p].maxPlants }); };
@@ -224,7 +226,7 @@ function CreateCompany({ onClose, onCreated }: { onClose: () => void; onCreated:
     <FormModal title="Nueva empresa" onClose={onClose} canSave={canSave} saveLabel="Crear y enviar invitación"
       onSave={async () => {
         const out = await adminRequest<{ tenant: TenantSummary; inviteLink: string }>("POST", "/tenants", {
-          name: name.trim(), plan, months, contactEmail: contactEmail.trim() || undefined, notes: notes.trim() || undefined,
+          name: name.trim(), plan, months, contactEmail: contactEmail.trim() || undefined, notes: notes.trim() || undefined, lang,
           ...(override ? limits : {}),
           admin: { firstName: first.trim(), lastName: last.trim(), email: email.trim() },
         });
@@ -255,6 +257,8 @@ function CreateCompany({ onClose, onCreated }: { onClose: () => void; onCreated:
           <TextField label="Nombre" value={first} onChange={setFirst} />
           <TextField label="Apellido" value={last} onChange={setLast} />
           <TextField label="Correo" type="email" value={email} onChange={setEmail} />
+          <SelectField label="Idioma de la invitación" value={lang} onChange={(v) => v && setLang(v)} options={LANGS.map((l) => ({ value: l, label: LANG_NAME[l] }))}
+            hint="El correo de bienvenida llega en este idioma." />
         </div>
       </div>
       <Field label="Notas internas"><textarea className="input" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Condiciones, contacto comercial…" /></Field>
@@ -327,7 +331,7 @@ function CompanyPage() {
               <div key={u.id} className="list-row static">
                 <div className="grow" style={{ minWidth: 0 }}>
                   <div className="bold ellipsis">{u.name || u.email}</div>
-                  <div className="tiny muted ellipsis">{u.email} · {ROLE_TITLE[asRole(u.role)]}</div>
+                  <div className="tiny muted ellipsis">{u.email} · {roleTitle(asRole(u.role))}</div>
                 </div>
                 {!u.isActive && <Pill text="Inactivo" tint="muted" />}
                 {!u.hasPassword && <Pill text="Invitación pendiente" tint="warning" />}

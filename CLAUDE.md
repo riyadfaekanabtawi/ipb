@@ -48,7 +48,7 @@ python3 web/build.py --check             # fail if the committed output is stale
 python3 -m http.server -d web/public 8000
 ```
 
-- Edit the sources, never the generated files: `web/src/page.html` (template), `web/src/i18n/{es,en,pt}.json` (copy, one per language; all must have the same keys), `web/src/site.json` (base URL, login URL, contact endpoint, prices, phone rules). Hand-written static files (`styles.css`, `app.js`, `assets/`, `robots.txt`, `site.webmanifest`, the Space card `README.md`) live in `web/public/`.
+- Edit the sources, never the generated files: `web/src/page.html` (template), `web/src/i18n/{es,en,pt}.json` (copy, one per language; all must have the same keys), `web/src/site.json` (base URL, login URL: the EN/PT pages append `?lang=en|pt` so the web app opens in that language, contact endpoint, prices, phone rules). Hand-written static files (`styles.css`, `app.js`, `assets/`, `robots.txt`, `site.webmanifest`, the Space card `README.md`) live in `web/public/`.
 - Template syntax: `{{key}}` raw, `{{key|e}}` escaped, `{{#list}}…{{/list}}`, `{{^key}}…{{/key}}`. `app.js` reads its strings from `window.TRAMA_I18N`, injected per page.
 - The build validates JSON-LD, the FAQPage vs the visible FAQ, hreflang/canonical, and that the phone table in `site.json` matches `contact-api/lib/lead.js` (`PHONE_RULES`). Change both together.
 - Spanish is `/index.html` (x-default), English `/en/index.html`, Portuguese (Brazil) `/pt/index.html`. The host redirects `/` to `/index.html`, so canonical/hreflang/sitemap use the `index.html` URLs. Never auto-redirect by browser language.
@@ -71,7 +71,7 @@ python3 -m http.server -d web/public 8000
 
 ## Conventions
 
-- UI copy in **Spanish (Mexico)**; code and comments in **English**.
+- UI copy in **Spanish (Mexico)**; code and comments in **English**. The platform web app (`platform/web`) and API messages are also in English and Portuguese (Brazil): add strings to `platform/web/src/i18n/es.ts` (then `en.ts`, `pt.ts`) and `platform/src/i18n.ts`, never inline. The admin portal stays Spanish.
 - Never hard-code colors; use `Theme` and the existing components (`card()`, `KPITile`, `Pill`, `CapacityBar`, `FormSheet`, `IntField`, `DecimalField`, `PhotoField`, `ChartCard`, …).
 - Feedback through `ToastCenter`; confirm destructive actions with `confirmDelete`.
 - Views never save Core Data directly; call the services inside `do/catch`.

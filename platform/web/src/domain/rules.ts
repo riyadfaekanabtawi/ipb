@@ -4,6 +4,7 @@
 import { asCutStatus, asReportKind, type AssignmentState, type CutStatus, type ReportKind, type Role } from "./enums";
 import type { ReportDTO } from "./types";
 import { fmtMoney, fmtInt } from "../lib/format";
+import { t } from "../i18n";
 
 const time = (iso: string | null | undefined) => (iso ? new Date(iso).getTime() : 0);
 
@@ -123,10 +124,10 @@ export type AssignmentError =
 
 export function assignmentErrorMessage(e: AssignmentError): string {
   switch (e.code) {
-    case "missingDate": return "Elige una fecha en el calendario.";
-    case "invalidQuantity": return "Ingresa una cantidad mayor a cero.";
-    case "exceedsRemaining": return `La cantidad no puede ser mayor a lo que falta por asignar (${fmtInt(e.remaining)}).`;
-    case "exceedsCapacity": return `La planta ha llegado a su capacidad máxima para ese mes. Disponible: ${fmtMoney(e.available)}.`;
+    case "missingDate": return t("rule.missingDate");
+    case "invalidQuantity": return t("rule.invalidQuantity");
+    case "exceedsRemaining": return t("rule.exceedsRemaining", { remaining: fmtInt(e.remaining) });
+    case "exceedsCapacity": return t("rule.exceedsCapacity", { available: fmtMoney(e.available) });
   }
 }
 
@@ -164,14 +165,18 @@ export interface Member { id: string; role: Role; isActive: boolean }
 export type UserChange = { kind: "delete" } | { kind: "deactivate" } | { kind: "changeRole"; role: Role };
 
 export const USER_VIOLATION = {
-  cannotDeleteSelf: "No puedes eliminar tu propio usuario.",
-  cannotDeactivateSelf: "No puedes desactivar tu propio usuario.",
-  cannotChangeOwnRole: "No puedes cambiar tu propio puesto.",
-  lastAdmin: "Debe quedar al menos un administrador activo.",
+  cannotDeleteSelf: "cannotDeleteSelf",
+  cannotDeactivateSelf: "cannotDeactivateSelf",
+  cannotChangeOwnRole: "cannotChangeOwnRole",
+  lastAdmin: "lastAdmin",
 } as const;
+export type UserViolation = keyof typeof USER_VIOLATION;
 
-/** Returns the message of the rule a change would break, or null when allowed (UserPolicy). */
-export function userPolicyViolation(change: UserChange, target: Member, actingUserId: string | null, members: Member[]): string | null {
+/** Display message of a user-policy violation, in the current language. */
+export const userViolationMessage = (v: UserViolation) => t(`policy.${v}`);
+
+/** Returns the rule a change would break, or null when allowed (UserPolicy). */
+export function userPolicyViolation(change: UserChange, target: Member, actingUserId: string | null, members: Member[]): UserViolation | null {
   const isSelf = target.id === actingUserId;
   if (change.kind === "delete" && isSelf) return USER_VIOLATION.cannotDeleteSelf;
   if (change.kind === "deactivate" && isSelf) return USER_VIOLATION.cannotDeactivateSelf;

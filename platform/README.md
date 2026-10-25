@@ -43,11 +43,16 @@ or is suspended, data stays readable but sync push returns `402` (read-only).
 | GET | `/api/sync/pull?cursor=N&limit=500` | changes with version > cursor |
 | POST | `/api/sync/push` | `{changes:[{entity, id, updatedAt, deleted?, data}]}` → applied / rejected |
 | POST | `/api/admin/login` | platform owners |
-| GET/POST | `/api/admin/tenants` | list / create company + admin invite |
+| GET/POST | `/api/admin/tenants` | list / create company + admin invite (optional `lang`: `es` default, `en`, `pt` for the invitation email) |
 | GET/PATCH | `/api/admin/tenants/:id` | detail / plan, limits, expiry, suspend |
 | POST | `/api/admin/tenants/:id/devices/:deviceId/revoke` | free a device seat |
-| POST | `/api/admin/tenants/:id/users/:userId/invite` | resend invite / reset |
+| POST | `/api/admin/tenants/:id/users/:userId/invite` | resend invite / reset (optional `?lang=es\|en\|pt`) |
 | GET | `/api/admin/stats` | MRR, companies by plan, expiring soon |
+
+**Languages.** Error and rejection messages (`{error: {code, message}}`, sync `rejected[].message`) follow the
+request's `Accept-Language` (`es` default, `en`, `pt`; dictionaries in `src/i18n.ts`). The `code` values never
+change, so clients should branch on codes, not messages. The web app sends its current language; iOS and Android
+send the device's. The password-reset email uses the requester's language.
 
 **Sync payloads** use the backup DTO format of the apps (`BackupService.swift` /
 Android `Backup.kt`): same field names, ISO-8601 dates, base64 images, UUID ids.
@@ -84,14 +89,15 @@ Vercel project: `/api/*` goes to the function, every other path falls back to `i
 | Route | |
 |---|---|
 | `/login`, `/olvide`, `/activar?token=`, `/restablecer?token=` | company sign-in, forgot password, invite and reset links |
-| `/app/...` | the iPad app for the browser (role-based sections, Spanish UI) |
+| `/app/...` | the iPad app for the browser (role-based sections; Spanish, English and Portuguese UI) |
 | `/admin/login`, `/admin/activar?token=`, `/admin`, `/admin/empresas/:id` | vendor admin portal |
 
 ```
 web/src/
   domain/   types (sync DTOs), enums (roles, sections, statuses), rules (DOMAIN.md) + tests
   data/     store (pull/push sync, outbox, IndexedDB cache), db (read model), services (all writes), session
-  lib/      api client (token refresh), PBKDF2, formatting (es-MX), prefs, toasts
+  i18n/     typed dictionaries es (source of keys), en, pt; t() with plurals; language detection
+  lib/      api client (token refresh, Accept-Language), PBKDF2, locale-aware formatting, prefs, toasts
   ui/       design-system components (KPITile, Pill, CapacityBar, modals, fields) and charts
   app/      screens;  admin/  admin portal (lazy-loaded)
 ```
@@ -103,6 +109,12 @@ web/src/
   and are pushed; `stale` rejections adopt the server copy, other rejections revert and show the
   server message. Pending changes survive brief network drops. Polls every 30 s, on focus and when
   back online. A licence with `writable: false` shows a banner and hides write actions.
+- **Languages:** Spanish (Mexico, default), English and Portuguese (Brazil). The language comes from `?lang=`
+  (the EN/PT landings link to `/login?lang=en|pt`), then the saved choice (`trama.lang` in `localStorage`), then
+  the browser, then Spanish; switchers on the sign-in pages and in Ajustes. Add strings to `web/src/i18n/es.ts`
+  first; TypeScript fails until `en.ts` and `pt.ts` define the same keys (`i18n.test.ts` also checks placeholders).
+  Raw role/status/report values never change; `domain/enums.ts` maps them to display text. Amounts stay in MXN,
+  formatted per locale. The admin portal is internal and always Spanish.
 - Per-browser preferences (urgency window, calculator constants, theme) live in `localStorage`, like
   the apps keep them per device.
 

@@ -3,6 +3,7 @@
 // retry. Admin-portal sessions are separate (no refresh token; access token in sessionStorage).
 
 import type { Licence, TenantInfo, UserDTO } from "../domain/types";
+import { getLang, t } from "../i18n";
 
 export class ApiError extends Error {
   constructor(readonly status: number, readonly code: string, message: string) {
@@ -35,7 +36,7 @@ export function deviceId(): string {
 
 function browserName(): string {
   const ua = navigator.userAgent;
-  const browser = /Edg\//.test(ua) ? "Edge" : /Chrome\//.test(ua) ? "Chrome" : /Firefox\//.test(ua) ? "Firefox" : /Safari\//.test(ua) ? "Safari" : "Navegador";
+  const browser = /Edg\//.test(ua) ? "Edge" : /Chrome\//.test(ua) ? "Chrome" : /Firefox\//.test(ua) ? "Firefox" : /Safari\//.test(ua) ? "Safari" : t("api.browser");
   const os = /Mac OS X/.test(ua) ? "macOS" : /Windows/.test(ua) ? "Windows" : /Android/.test(ua) ? "Android" : /iPhone|iPad/.test(ua) ? "iOS" : /Linux/.test(ua) ? "Linux" : "";
   return `${browser}${os ? ` · ${os}` : ""}`;
 }
@@ -43,7 +44,12 @@ function browserName(): string {
 async function raw(method: string, path: string, body?: unknown, token?: string | null): Promise<Response> {
   return fetch(`/api${path}`, {
     method,
-    headers: { ...(body !== undefined ? { "content-type": "application/json" } : {}), ...(token ? { authorization: `Bearer ${token}` } : {}) },
+    // The API answers its messages in this language (codes stay the same).
+    headers: {
+      "accept-language": getLang(),
+      ...(body !== undefined ? { "content-type": "application/json" } : {}),
+      ...(token ? { authorization: `Bearer ${token}` } : {}),
+    },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
 }
@@ -56,7 +62,7 @@ async function parse<T>(res: Response): Promise<T> {
     /* empty or non-JSON body */
   }
   if (!res.ok) {
-    throw new ApiError(res.status, json?.error?.code ?? "http_error", json?.error?.message ?? "Ocurrió un error. Intenta de nuevo.");
+    throw new ApiError(res.status, json?.error?.code ?? "http_error", json?.error?.message ?? t("api.genericError"));
   }
   return json as T;
 }
@@ -66,7 +72,7 @@ async function send(method: string, path: string, body?: unknown, token?: string
   try {
     return await raw(method, path, body, token);
   } catch {
-    throw new ApiError(0, "offline", "Sin conexión con el servidor.");
+    throw new ApiError(0, "offline", t("api.offline"));
   }
 }
 
@@ -116,7 +122,7 @@ export async function login(email: string, password: string): Promise<SessionInf
 export function refreshSession(): Promise<SessionInfo> {
   if (refreshing) return refreshing;
   const token = storage("local")?.getItem(REFRESH_KEY);
-  if (!token) return Promise.reject(new ApiError(401, "no_session", "Inicia sesión para continuar."));
+  if (!token) return Promise.reject(new ApiError(401, "no_session", t("api.signInToContinue")));
   refreshing = (async () => {
     try {
       const res = await send("POST", "/auth/refresh", { refreshToken: token });

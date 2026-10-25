@@ -7,6 +7,7 @@
 
 import { ENTITIES, type Change, type Entity, type EntityMap, type Licence, type ServerChange } from "../domain/types";
 import { idbDelete, idbGet, idbSet } from "./idb";
+import { t } from "../i18n";
 
 export type Row<E extends Entity = Entity> = EntityMap[E];
 type Tables = { [E in Entity]: Map<string, EntityMap[E]> };
@@ -200,7 +201,7 @@ export class DataStore {
   async commit(changes: Change[]): Promise<CommitResult> {
     if (!changes.length) return { ok: true };
     if (!this.writable) {
-      return { ok: false, message: this.licence?.status === "expired" ? "Tu licencia venció: los datos son de solo lectura." : "Tu licencia está suspendida: los datos son de solo lectura." };
+      return { ok: false, message: this.licence?.status === "expired" ? t("store.licenceExpired") : t("store.licenceSuspended") };
     }
     for (const c of changes) {
       const existing = this.outbox.find((o) => o.entity === c.entity && o.id === c.id);
@@ -218,11 +219,11 @@ export class DataStore {
       const mine = rejected.filter((r) => r.reason !== "stale" && changes.some((c) => c.entity === r.entity && c.id === r.id));
       if (mine.length) return { ok: false, message: mine[0].message };
       const stale = rejected.find((r) => r.reason === "stale" && changes.some((c) => c.entity === r.entity && c.id === r.id));
-      if (stale) return { ok: false, message: "Alguien guardó una versión más reciente; se cargó la del servidor." };
+      if (stale) return { ok: false, message: t("store.stale") };
       return { ok: true };
     } catch (error: any) {
       if (error?.status === 0) return { ok: true, queued: true };
-      return { ok: false, message: error?.message ?? "No se pudo guardar." };
+      return { ok: false, message: error?.message ?? t("svc.saveFailed") };
     } finally {
       keys.forEach((k) => this.awaited.delete(k));
     }
@@ -249,7 +250,7 @@ export class DataStore {
             if (error?.status === 402) this.licence = this.licence ? { ...this.licence, writable: false, status: this.licence.status === "active" ? "expired" : this.licence.status } : this.licence;
             for (const item of batch) this.revert(item);
             this.removeFromOutbox(batch);
-            if (!batch.some((b) => this.awaited.has(key(b.entity, b.id)))) this.onReject(error?.message ?? "No se pudo guardar.");
+            if (!batch.some((b) => this.awaited.has(key(b.entity, b.id)))) this.onReject(error?.message ?? t("svc.saveFailed"));
             this.changed();
             throw error;
           }

@@ -1,16 +1,17 @@
 // Small SVG/HTML charts: monthly stacked columns with hover tooltip, and a status stack.
 
 import { useState } from "react";
-import { fmtMoney } from "../lib/format";
+import { fmtMoney, fmtPercent, monthNames } from "../lib/format";
+import { t } from "../i18n";
 import { seriesColor } from "./kit";
 
-const MONTHS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
 export interface Series { name: string; values: number[]; colorIndex: number }
 
 /** Stacked monthly columns (one series per plant). Colors follow the entity's fixed index. */
 export function MonthlyColumns({ series, highlightMonth, height = 220 }: { series: Series[]; highlightMonth?: number; height?: number }) {
   const [hover, setHover] = useState<number | null>(null);
+  const MONTHS = monthNames();
   const totals = MONTHS.map((_, m) => series.reduce((s, x) => s + (x.values[m] ?? 0), 0));
   const max = Math.max(1, ...totals);
   const top = niceCeil(max);
@@ -22,7 +23,7 @@ export function MonthlyColumns({ series, highlightMonth, height = 220 }: { serie
 
   return (
     <div style={{ position: "relative" }}>
-      <svg viewBox={`0 0 ${W} ${H}`} width="100%" role="img" aria-label="Ingresos programados por mes y planta" style={{ display: "block", overflow: "visible" }}>
+      <svg viewBox={`0 0 ${W} ${H}`} width="100%" role="img" aria-label={t("chart.monthlyAria")} style={{ display: "block", overflow: "visible" }}>
         {ticks.map((t) => {
           const y = padT + plotH - (t / top) * plotH;
           return (
@@ -95,7 +96,7 @@ export function StatusStack({ items }: { items: { label: string; value: number; 
             <i style={{ width: 10, height: 10, borderRadius: 3, background: i.color, display: "inline-block" }} />
             <span className="grow muted">{i.label}</span>
             <span className="bold num">{i.value}</span>
-            <span className="faint num" style={{ width: 44, textAlign: "right" }}>{total ? Math.round((i.value / total) * 100) : 0}%</span>
+            <span className="faint num" style={{ width: 44, textAlign: "right" }}>{fmtPercent(total ? i.value / total : 0)}</span>
           </div>
         ))}
       </div>

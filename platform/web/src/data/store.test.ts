@@ -151,7 +151,7 @@ describe("write services", () => {
     await expect(services.savePlant(null, "Sur", 0)).rejects.toThrow("La capacidad máxima mensual debe ser mayor a cero.");
     await expect(services.savePlant(null, " ", 10)).rejects.toThrow("Escribe el nombre de la planta.");
     await services.savePlant(null, "Sur", 10);
-    await expect(services.savePlant(null, "Oriente", 10)).rejects.toThrow("Tu plan permite 2 planta(s).");
+    await expect(services.savePlant(null, "Oriente", 10)).rejects.toThrow("Tu plan permite 2 plantas.");
   });
 
   it("assigns within remaining quantity and monthly capacity", async () => {
