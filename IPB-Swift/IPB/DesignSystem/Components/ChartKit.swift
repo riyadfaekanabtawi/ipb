@@ -30,10 +30,6 @@ enum MonthLabel {
     }
 }
 
-extension String {
-    var capitalizedFirst: String { prefix(1).uppercased() + dropFirst() }
-}
-
 /// Card with a section header and arbitrary chart content.
 struct ChartCard<Content: View, Trailing: View>: View {
     var title: String
