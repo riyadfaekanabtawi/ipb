@@ -129,3 +129,9 @@ contract in `platform/src/sync.ts` and `platform/src/routes/auth.ts`. Tests: `io
 22. **Read-only licence.** When `licence.writable` is false (expired or suspended; push answers `402`),
     service writes fail with "solo lectura", a banner is shown above every section, queued changes
     stay in the outbox, and pulling keeps working.
+23. **Android parity** (`android/.../core/data/sync/`, tests in `SyncTest`): same protocol and rules
+    13–22. Local writes are queued by SQLite triggers on the synced tables (same transaction, covers
+    cascades and restores); the refresh token is encrypted with an Android Keystore AES-GCM key; a
+    WorkManager job also syncs every 30 min while connected. On first link Android does not ask (rule 15):
+    an empty company is seeded with the device's data, otherwise the device writes a local backup and
+    replaces its data with the company's. Demo data is never uploaded.

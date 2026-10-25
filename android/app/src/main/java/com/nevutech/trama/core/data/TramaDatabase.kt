@@ -10,6 +10,12 @@ import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.Upsert
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.nevutech.trama.core.data.sync.MIGRATION_1_2
+import com.nevutech.trama.core.data.sync.OutboxEntity
+import com.nevutech.trama.core.data.sync.SyncDao
+import com.nevutech.trama.core.data.sync.SyncSql
+import com.nevutech.trama.core.data.sync.SyncStateEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -71,18 +77,28 @@ interface TramaDao {
     entities = [
         PlantEntity::class, ClientEntity::class, SupplierEntity::class, ContactEntity::class, StyleEntity::class,
         CutOrderEntity::class, AssignmentEntity::class, ReportEntity::class, ProjectEntity::class, UserEntity::class,
+        OutboxEntity::class, SyncStateEntity::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = true,
 )
 abstract class TramaDatabase : RoomDatabase() {
     abstract fun dao(): TramaDao
+    abstract fun syncDao(): SyncDao
 
     companion object {
+        /** Installs the sync triggers and state row on every open (idempotent; also covers fresh installs). */
+        val syncCallback = object : Callback() {
+            override fun onOpen(db: SupportSQLiteDatabase) = SyncSql.install(db)
+        }
+
         fun build(context: Context): TramaDatabase =
-            Room.databaseBuilder(context, TramaDatabase::class.java, "trama.db").build()
+            Room.databaseBuilder(context, TramaDatabase::class.java, "trama.db")
+                .addMigrations(MIGRATION_1_2)
+                .addCallback(syncCallback)
+                .build()
 
         fun inMemory(context: Context): TramaDatabase =
-            Room.inMemoryDatabaseBuilder(context, TramaDatabase::class.java).allowMainThreadQueries().build()
+            Room.inMemoryDatabaseBuilder(context, TramaDatabase::class.java).allowMainThreadQueries().addCallback(syncCallback).build()
     }
 }

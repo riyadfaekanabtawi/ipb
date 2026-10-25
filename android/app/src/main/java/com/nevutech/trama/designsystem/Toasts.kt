@@ -34,6 +34,7 @@ import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.nevutech.trama.core.data.sync.READ_ONLY_MARKER
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -48,7 +49,19 @@ class ToastCenter {
     val current: StateFlow<Toast?> = _current.asStateFlow()
 
     fun show(message: String, style: Style = Style.Success) { _current.value = Toast(message, style) }
-    fun error(error: Throwable) = show(error.message ?: "Ocurrió un error.", Style.Error)
+    fun error(error: Throwable) = show(userMessage(error), Style.Error)
+
+    companion object {
+        /** Spanish copy for an error, including the database's read-only licence guard. */
+        fun userMessage(error: Throwable): String {
+            val message = error.message
+            return when {
+                message?.contains(READ_ONLY_MARKER) == true ->
+                    "Tu licencia está vencida o suspendida: los datos son de solo lectura. Renuévala para guardar cambios."
+                else -> message ?: "Ocurrió un error."
+            }
+        }
+    }
     fun dismiss() { _current.value = null }
 }
 

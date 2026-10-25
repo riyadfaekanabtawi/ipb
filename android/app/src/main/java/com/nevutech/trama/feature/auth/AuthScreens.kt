@@ -92,6 +92,7 @@ fun LoginScreen() {
         AuthField(password, { password = it; error = null }, "Contraseña", Icons.Filled.Lock, KeyboardType.Password, ImeAction.Go, secure = true, onGo = { signIn() })
         error?.let { Text(it, color = Tokens.colors.danger, style = MaterialTheme.typography.bodyMedium) }
         PrimaryButton("Entrar", { signIn() }, Modifier.fillMaxWidth(), icon = Icons.AutoMirrored.Filled.ArrowForward)
+        CloudSignInButton()
         if (demoSeeded) {
             Text("Cuentas de demostración", style = MaterialTheme.typography.labelMedium, color = Tokens.colors.secondary)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -139,6 +140,8 @@ fun OnboardingScreen() {
                 }.onFailure { error = it.message }
             }
         }, Modifier.fillMaxWidth(), icon = Icons.Filled.WorkspacePremium)
+        Text("¿Tu empresa ya tiene licencia de Trama? Conecta este dispositivo para descargar sus datos.", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+        CloudSignInButton()
         Column(
             Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(Tokens.colors.thread.copy(alpha = 0.14f))
                 .border(1.dp, Tokens.colors.thread.copy(alpha = 0.5f), RoundedCornerShape(16.dp))

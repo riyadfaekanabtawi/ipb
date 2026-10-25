@@ -33,7 +33,7 @@ xcodebuild -project Trama.xcodeproj -scheme Trama -destination "platform=iOS Sim
 ## Commands (Android)
 
 ```bash
-cd android && ./gradlew :app:testDebugUnitTest   # 47 JVM/Robolectric tests
+cd android && ./gradlew :app:testDebugUnitTest   # 65 JVM/Robolectric tests
 ./gradlew :app:installDebug                         # needs a running emulator (AVD `trama_tablet`)
 ```
 

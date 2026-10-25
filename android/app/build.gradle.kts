@@ -16,6 +16,8 @@ android {
         versionCode = 1
         versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Trama platform API (platform/). Debug builds can override it with the `apiBase` intent extra.
+        buildConfigField("String", "API_BASE", "\"https://trama-app.vercel.app/api\"")
     }
 
     buildTypes {
@@ -58,6 +60,7 @@ dependencies {
     implementation(libs.datastore.preferences)
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.work.runtime)
     debugImplementation(libs.compose.ui.tooling)
 
     testImplementation(libs.junit)

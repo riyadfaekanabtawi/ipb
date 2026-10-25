@@ -29,7 +29,12 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Apartment
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Badge
+import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.CloudDone
 import androidx.compose.material.icons.filled.CloudOff
+import androidx.compose.material.icons.filled.CloudUpload
+import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.FileUpload
@@ -99,6 +104,7 @@ import com.nevutech.trama.designsystem.Tokens
 import com.nevutech.trama.designsystem.TramaCard
 import com.nevutech.trama.designsystem.TramaField
 import com.nevutech.trama.designsystem.TramaScreen
+import com.nevutech.trama.feature.auth.CloudSignInDialog
 import com.nevutech.trama.app.rememberIsOnline
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -150,13 +156,16 @@ fun SettingsScreen() {
                 if (LocalConfiguration.current.screenWidthDp >= 600) Text("Ajustes", style = MaterialTheme.typography.headlineMedium)
                 AccountSection(user, graph.plant(user?.plantId)?.name) { showPassword = true }
                 PreferencesSection(isAdmin)
+                CloudSection(isAdmin)
                 DataSection(
                     isAdmin = isAdmin,
                     onExport = { exporter.launch(BackupService.filename()) },
                     onRestore = { importer.launch(arrayOf("application/json", "text/plain", "application/octet-stream")) },
                     onDemo = {
                         val operational = graph.plants.size + graph.orders.size + graph.clients.size + graph.styles.size
-                        if (operational > 0) {
+                        if (app.sync.status.value.connected) {
+                            app.toasts.show("Este dispositivo está conectado a la nube de tu empresa; los datos de ejemplo no se pueden cargar.", ToastCenter.Style.Info)
+                        } else if (operational > 0) {
                             app.toasts.show("Ya hay datos en este dispositivo. Bórralos primero para cargar los datos de ejemplo.", ToastCenter.Style.Info)
                         } else {
                             actions.run(success = "Datos de ejemplo cargados. Cuentas demo con contraseña ${DemoSeeder.DEMO_PASSWORD}.") {
@@ -233,6 +242,8 @@ fun SettingsScreen() {
         EraseFinalDialog(onDismiss = { confirmEraseFinal = false }) {
             confirmEraseFinal = false
             actions.run {
+                // A full reset also unlinks the device from the cloud (and frees its seat).
+                app.sync.forget()
                 eraseAllData(app.db, app.images)
                 app.settings.setDemoSeeded(false)
                 // Toast first: signing out disposes this screen (and its scope) on the way to onboarding.
@@ -254,6 +265,98 @@ private class PendingRestore(val bytes: ByteArray, val summary: BackupService.Su
 }
 
 // Sections
+
+/** Cloud link: company, licence, last sync, manual "Sincronizar", connect / disconnect. */
+@Composable
+private fun CloudSection(isAdmin: Boolean) {
+    val app = LocalApp.current
+    val status by app.sync.status.collectAsState()
+    val account = status.account
+    val c = Tokens.colors
+    var connect by remember { mutableStateOf(false) }
+    var confirmDisconnect by remember { mutableStateOf(false) }
+
+    SettingsSection(
+        "Nube",
+        if (status.connected) "Trama sigue funcionando sin conexión; los cambios se envían al recuperar internet." else
+            "Opcional: conecta tu licencia para respaldar y compartir los datos con los demás dispositivos de tu empresa.",
+    ) {
+        if (status.connected) {
+            InfoLine("Empresa", Icons.Filled.Apartment) { Text(account.tenantName ?: "—", color = c.secondary) }
+            InfoLine("Licencia", Icons.Filled.WorkspacePremium) {
+                val (label, tint) = when (account.licenceStatus) {
+                    "expired" -> "Vencida" to c.danger
+                    "suspended" -> "Suspendida" to c.danger
+                    else -> "Activa" to c.success
+                }
+                Pill("${planTitle(account.plan)} · $label", tint)
+            }
+            account.email?.let { email -> InfoLine("Cuenta", Icons.Filled.Badge) { Text(email, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis) } }
+            InfoLine("Última sincronización", Icons.Filled.CloudDone) {
+                Text(account.lastSyncAt?.let(::formatSyncTime) ?: "Nunca", color = c.secondary)
+            }
+            if (status.pending > 0) {
+                InfoLine("Cambios por enviar", Icons.Filled.CloudUpload) { Text(Fmt.int(status.pending), color = c.warning) }
+            }
+            account.lastError?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = c.danger) }
+            HorizontalDivider(color = c.stroke)
+            ActionRow(
+                if (status.running) "Sincronizando…" else "Sincronizar",
+                "Envía los cambios de este dispositivo y descarga los de tu empresa",
+                Icons.Filled.Sync, c.brand,
+            ) { if (!status.running) app.scope.launch { app.sync.syncNow(manual = true) } }
+            if (isAdmin) {
+                HorizontalDivider(color = c.stroke)
+                ActionRow("Desconectar este dispositivo", "Libera su lugar en la licencia; los datos se quedan aquí", Icons.Filled.CloudOff, c.danger) {
+                    confirmDisconnect = true
+                }
+            }
+        } else {
+            if (account.tenantId != null) {
+                Text(
+                    account.lastError ?: "Este dispositivo se desconectó de la nube de ${account.tenantName ?: "tu empresa"}.",
+                    style = MaterialTheme.typography.bodyMedium, color = c.secondary,
+                )
+            }
+            ActionRow("Conectar con mi licencia", "Inicia sesión con tu cuenta de Trama", Icons.Filled.Cloud, c.brand) { connect = true }
+        }
+    }
+
+    if (connect) CloudSignInDialog(onDismiss = { connect = false }, presetEmail = account.email.orEmpty())
+    if (confirmDisconnect) {
+        AlertDialog(
+            onDismissRequest = { confirmDisconnect = false },
+            title = { Text("¿Desconectar de la nube?") },
+            text = {
+                Text(
+                    if (status.pending > 0) "Hay ${status.pending} cambios sin enviar; se enviarán si vuelves a conectar este dispositivo. Los datos se quedan guardados aquí."
+                    else "Los datos se quedan guardados en este dispositivo y dejará de sincronizarse.",
+                )
+            },
+            confirmButton = {
+                TextButton({
+                    confirmDisconnect = false
+                    app.scope.launch { app.sync.signOutCloud(); app.toasts.show("Dispositivo desconectado de la nube", ToastCenter.Style.Info) }
+                }) { Text("Desconectar", color = c.danger) }
+            },
+            dismissButton = { TextButton({ confirmDisconnect = false }) { Text("Cancelar") } },
+        )
+    }
+}
+
+private fun planTitle(plan: String?) = when (plan) {
+    "web" -> "Plan Web"
+    "planta" -> "Plan Planta"
+    "multiplanta" -> "Plan Multiplanta"
+    "empresa" -> "Plan Empresa"
+    else -> "Plan"
+}
+
+private fun formatSyncTime(epochMillis: Long): String {
+    val time = java.time.Instant.ofEpochMilli(epochMillis).atZone(ZoneId.systemDefault())
+    val clock = time.toLocalTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))
+    return if (time.toLocalDate() == java.time.LocalDate.now()) "Hoy, $clock" else "${Fmt.shortDate(time.toLocalDate())}, $clock"
+}
 
 @Composable
 private fun SettingsSection(title: String, footer: String? = null, content: @Composable ColumnScope.() -> Unit) {

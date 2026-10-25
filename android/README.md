@@ -33,7 +33,7 @@ app/src/main/java/com/nevutech/trama/
 
 ```bash
 cd android
-./gradlew :app:testDebugUnitTest      # 47 tests (domain, Room, services, catalog, backup)
+./gradlew :app:testDebugUnitTest      # 65 tests (domain, Room, services, catalog, backup, sync)
 ./gradlew :app:installDebug           # on a running emulator/device
 ```
 
@@ -48,6 +48,27 @@ adb shell am start -n com.nevutech.trama/.MainActivity --ez uiTestDemo true \
 ```
 
 Demo accounts: `admin@`, `cortes@`, `planta@`, `envios@demo.local`, password `trama123`.
+
+## Cloud sync (optional)
+
+The app works fully offline; "Conectar con mi licencia" (sign-in/onboarding, or Ajustes → Nube)
+links the device to a company on the Trama platform (`platform/`). Code lives in `core/data/sync/`:
+
+| Piece | Role |
+|---|---|
+| `SyncSchema.kt` | Room v2 (`MIGRATION_1_2`): `sync_outbox` + `sync_state`; SQLite triggers queue every write and enforce the read-only licence |
+| `SyncCodec.kt` | Row ↔ payload, identical to the backup DTO elements |
+| `SyncStore.kt` | Applies pulls (upsert/delete, parents first, last writer wins), builds pushes |
+| `SyncEngine.kt` | Login/link, push + pull loop, token refresh, logout |
+| `TramaApi.kt` / `SyncPrefs.kt` | HTTP client; refresh token sealed with an Android Keystore AES-GCM key |
+
+Sync runs after sign-in, on app start/resume, when the network returns, ~3 s after local writes,
+every 30 min (WorkManager) and from the "Sincronizar" button. The API base is
+`BuildConfig.API_BASE`; debug builds accept an override (cleartext allowed to the emulator host):
+
+```bash
+adb shell am start -n com.nevutech.trama/.MainActivity --es apiBase http://10.0.2.2:8787/api
+```
 
 ## Distribution
 
