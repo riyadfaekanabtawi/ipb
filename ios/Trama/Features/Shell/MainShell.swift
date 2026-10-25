@@ -26,6 +26,7 @@ struct MainShell: View {
             }
         }
         .navigationSplitViewStyle(.balanced)
+        .safeAreaInset(edge: .top, spacing: 0) { SyncBanner() }
         .onAppear {
             if router.selection == nil || !session.role.sections.contains(router.selection!) {
                 router.selection = session.role.landing

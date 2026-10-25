@@ -37,82 +37,22 @@ enum BackupService {
     // MARK: Export
 
     static func export(context: NSManagedObjectContext, now: Date = .now) throws -> Data {
-        var ids = IDMap()
-        let plants = context.fetchAll(Plant.self)
-        let clients = context.fetchAll(Client.self)
-        let suppliers = context.fetchAll(Supplier.self)
-        let contacts = context.fetchAll(Contact.self)
-        let styles = context.fetchAll(Style.self)
-        let orders = context.fetchAll(CutOrder.self)
-        let assignments = context.fetchAll(Assignment.self)
-        let reports = context.fetchAll(ProductionReport.self)
-        let projects = context.fetchAll(Project.self)
-        let users = context.fetchAll(AppUser.self)
-
+        let ids = IDMap()
+        let resolve: DTOIDResolver = { ids[$0, $1] }
         let file = BackupFile(
             formatVersion: formatVersion,
             exportedAt: now,
             appVersion: appVersion,
-            plants: plants.map { p in
-                PlantDTO(
-                    id: ids[p, p.id], remoteID: p.remoteID, name: p.name, maxCapacity: p.maxCapacity,
-                    createdAt: p.createdAt, updatedAt: p.updatedAt)
-            },
-            clients: clients.map { c in
-                ClientDTO(
-                    id: ids[c, c.id], remoteID: c.remoteID, name: c.name, address: c.address,
-                    createdAt: c.createdAt, updatedAt: c.updatedAt)
-            },
-            suppliers: suppliers.map { s in
-                SupplierDTO(
-                    id: ids[s, s.id], remoteID: s.remoteID, name: s.name, address: s.address,
-                    createdAt: s.createdAt, updatedAt: s.updatedAt)
-            },
-            contacts: contacts.map { c in
-                ContactDTO(
-                    id: ids[c, c.id], name: c.name, email: c.email, phone: c.phone, role: c.role, sortIndex: c.sortIndex,
-                    clientID: c.client.map { ids[$0, $0.id] }, supplierID: c.supplier.map { ids[$0, $0.id] })
-            },
-            styles: styles.map { s in
-                StyleDTO(
-                    id: ids[s, s.id], remoteID: s.remoteID, name: s.name, imageData: s.imageData,
-                    createdAt: s.createdAt, updatedAt: s.updatedAt)
-            },
-            orders: orders.map { o in
-                CutOrderDTO(
-                    id: ids[o, o.id], remoteID: o.remoteID, code: o.code, list: o.list, garment: o.garment,
-                    quantity: o.quantity, unitPrice: o.unitPrice, internalDate: o.internalDate, clientDate: o.clientDate,
-                    editedBy: o.editedBy, notes: o.notes, createdAt: o.createdAt, updatedAt: o.updatedAt,
-                    clientID: o.client.map { ids[$0, $0.id] }, styleID: o.style.map { ids[$0, $0.id] })
-            },
-            assignments: assignments.map { a in
-                AssignmentDTO(
-                    id: ids[a, a.id], remoteID: a.remoteID, quantity: a.quantity, unitPrice: a.unitPrice,
-                    scheduledDate: a.scheduledDate, cuttingStatusRaw: a.cuttingStatusRaw,
-                    createdAt: a.createdAt, updatedAt: a.updatedAt,
-                    orderID: a.order.map { ids[$0, $0.id] }, plantID: a.plant.map { ids[$0, $0.id] })
-            },
-            reports: reports.map { r in
-                ProductionReportDTO(
-                    id: ids[r, r.id], remoteID: r.remoteID, kindRaw: r.kindRaw, cutStatusRaw: r.cutStatusRaw,
-                    authorName: r.authorName, operators: r.operators, absences: r.absences, produced: r.produced,
-                    ironing: r.ironing, packing: r.packing, warehouse: r.warehouse, realQuantity: r.realQuantity,
-                    shipmentNumber: r.shipmentNumber, shippedQuantity: r.shippedQuantity,
-                    createdAt: r.createdAt, updatedAt: r.updatedAt, assignmentID: r.assignment.map { ids[$0, $0.id] })
-            },
-            projects: projects.map { p in
-                ProjectDTO(
-                    id: ids[p, p.id], remoteID: p.remoteID, clientName: p.clientName, quantity: p.quantity, price: p.price,
-                    minutes: p.minutes, fabric: p.fabric, deliveryDate: p.deliveryDate, notes: p.notes, photoData: p.photoData,
-                    statusRaw: p.statusRaw, createdAt: p.createdAt, updatedAt: p.updatedAt, clientID: p.client.map { ids[$0, $0.id] })
-            },
-            users: users.map { u in
-                AppUserDTO(
-                    id: ids[u, u.id], remoteID: u.remoteID, email: u.email, firstName: u.firstName, lastName: u.lastName,
-                    phone: u.phone, roleRaw: u.roleRaw, isActive: u.isActive, passwordHash: u.passwordHash,
-                    passwordSalt: u.passwordSalt, avatarData: u.avatarData, createdAt: u.createdAt, updatedAt: u.updatedAt,
-                    plantID: u.plant.map { ids[$0, $0.id] })
-            }
+            plants: context.fetchAll(Plant.self).map { PlantDTO($0, id: resolve) },
+            clients: context.fetchAll(Client.self).map { ClientDTO($0, id: resolve) },
+            suppliers: context.fetchAll(Supplier.self).map { SupplierDTO($0, id: resolve) },
+            contacts: context.fetchAll(Contact.self).map { ContactDTO($0, id: resolve) },
+            styles: context.fetchAll(Style.self).map { StyleDTO($0, id: resolve) },
+            orders: context.fetchAll(CutOrder.self).map { CutOrderDTO($0, id: resolve) },
+            assignments: context.fetchAll(Assignment.self).map { AssignmentDTO($0, id: resolve) },
+            reports: context.fetchAll(ProductionReport.self).map { ProductionReportDTO($0, id: resolve) },
+            projects: context.fetchAll(Project.self).map { ProjectDTO($0, id: resolve) },
+            users: context.fetchAll(AppUser.self).map { AppUserDTO($0, id: resolve) }
         )
         return try encoder.encode(file)
     }
@@ -140,91 +80,29 @@ enum BackupService {
         try persistence.eraseAll()
         let context = persistence.viewContext
 
-        func uuid(_ value: UUID?) -> UUID { value ?? UUID() }
+        // Objects created so far, by entity name and UUID (relationships point backwards only).
+        var created: [String: [UUID: NSManagedObject]] = [:]
+        let lookup: DTORecordLookup = { entity, id in created[entity]?[id] }
+        func insert<T: NSManagedObject>(_ type: T.Type, id: UUID?) -> T {
+            let object = T(context: context)
+            let id = id ?? UUID()
+            object.setValue(id, forKey: "id")
+            created[String(describing: type), default: [:]][id] = object
+            return object
+        }
 
-        var plants: [UUID: Plant] = [:]
-        for d in file.plants ?? [] {
-            let p = Plant(context: context)
-            p.id = uuid(d.id); p.remoteID = d.remoteID ?? 0; p.name = d.name; p.maxCapacity = d.maxCapacity ?? 0
-            p.createdAt = d.createdAt; p.updatedAt = d.updatedAt
-            plants[p.id!] = p
-        }
-        var clients: [UUID: Client] = [:]
-        for d in file.clients ?? [] {
-            let c = Client(context: context)
-            c.id = uuid(d.id); c.remoteID = d.remoteID ?? 0; c.name = d.name; c.address = d.address
-            c.createdAt = d.createdAt; c.updatedAt = d.updatedAt
-            clients[c.id!] = c
-        }
-        var suppliers: [UUID: Supplier] = [:]
-        for d in file.suppliers ?? [] {
-            let s = Supplier(context: context)
-            s.id = uuid(d.id); s.remoteID = d.remoteID ?? 0; s.name = d.name; s.address = d.address
-            s.createdAt = d.createdAt; s.updatedAt = d.updatedAt
-            suppliers[s.id!] = s
-        }
-        for d in file.contacts ?? [] {
-            let c = Contact(context: context)
-            c.id = uuid(d.id); c.name = d.name; c.email = d.email; c.phone = d.phone; c.role = d.role
-            c.sortIndex = d.sortIndex ?? 0
-            c.client = d.clientID.flatMap { clients[$0] }
-            c.supplier = d.supplierID.flatMap { suppliers[$0] }
-        }
-        var styles: [UUID: Style] = [:]
-        for d in file.styles ?? [] {
-            let s = Style(context: context)
-            s.id = uuid(d.id); s.remoteID = d.remoteID ?? 0; s.name = d.name; s.imageData = d.imageData
-            s.createdAt = d.createdAt; s.updatedAt = d.updatedAt
-            styles[s.id!] = s
-        }
-        var orders: [UUID: CutOrder] = [:]
-        for d in file.orders ?? [] {
-            let o = CutOrder(context: context)
-            o.id = uuid(d.id); o.remoteID = d.remoteID ?? 0; o.code = d.code; o.list = d.list; o.garment = d.garment
-            o.quantity = d.quantity ?? 0; o.unitPrice = d.unitPrice ?? 0; o.internalDate = d.internalDate; o.clientDate = d.clientDate
-            o.editedBy = d.editedBy; o.notes = d.notes; o.createdAt = d.createdAt; o.updatedAt = d.updatedAt
-            o.client = d.clientID.flatMap { clients[$0] }
-            o.style = d.styleID.flatMap { styles[$0] }
-            orders[o.id!] = o
-        }
-        var assignments: [UUID: Assignment] = [:]
-        for d in file.assignments ?? [] {
-            let a = Assignment(context: context)
-            a.id = uuid(d.id); a.remoteID = d.remoteID ?? 0; a.quantity = d.quantity ?? 0; a.unitPrice = d.unitPrice ?? 0
-            a.scheduledDate = d.scheduledDate; a.cuttingStatusRaw = d.cuttingStatusRaw ?? CutStatus.waiting.rawValue
-            a.createdAt = d.createdAt; a.updatedAt = d.updatedAt
-            a.order = d.orderID.flatMap { orders[$0] }
-            a.plant = d.plantID.flatMap { plants[$0] }
-            assignments[a.id!] = a
-        }
-        for d in file.reports ?? [] {
-            let r = ProductionReport(context: context)
-            r.id = uuid(d.id); r.remoteID = d.remoteID ?? 0; r.kindRaw = d.kindRaw; r.cutStatusRaw = d.cutStatusRaw
-            r.authorName = d.authorName; r.operators = d.operators ?? 0; r.absences = d.absences ?? 0
-            r.produced = d.produced ?? 0; r.ironing = d.ironing ?? 0; r.packing = d.packing ?? 0
-            r.warehouse = d.warehouse ?? 0; r.realQuantity = d.realQuantity ?? 0; r.shipmentNumber = d.shipmentNumber
-            r.shippedQuantity = d.shippedQuantity ?? 0; r.createdAt = d.createdAt; r.updatedAt = d.updatedAt
-            r.assignment = d.assignmentID.flatMap { assignments[$0] }
-        }
-        for d in file.projects ?? [] {
-            let p = Project(context: context)
-            p.id = uuid(d.id); p.remoteID = d.remoteID ?? 0; p.clientName = d.clientName; p.quantity = d.quantity ?? 0
-            p.price = d.price ?? 0; p.minutes = d.minutes ?? 0; p.fabric = d.fabric; p.deliveryDate = d.deliveryDate
-            p.notes = d.notes; p.photoData = d.photoData; p.statusRaw = d.statusRaw ?? ProjectStatus.pending.rawValue
-            p.createdAt = d.createdAt; p.updatedAt = d.updatedAt
-            p.client = d.clientID.flatMap { clients[$0] }
-        }
-        for d in file.users ?? [] {
-            let u = AppUser(context: context)
-            u.id = uuid(d.id); u.remoteID = d.remoteID ?? 0; u.email = d.email; u.firstName = d.firstName
-            u.lastName = d.lastName; u.phone = d.phone; u.roleRaw = d.roleRaw; u.isActive = d.isActive ?? true
-            u.passwordHash = d.passwordHash; u.passwordSalt = d.passwordSalt; u.avatarData = d.avatarData
-            u.createdAt = d.createdAt; u.updatedAt = d.updatedAt
-            u.plant = d.plantID.flatMap { plants[$0] }
-        }
+        for d in file.plants ?? [] { d.apply(to: insert(Plant.self, id: d.id)) }
+        for d in file.clients ?? [] { d.apply(to: insert(Client.self, id: d.id)) }
+        for d in file.suppliers ?? [] { d.apply(to: insert(Supplier.self, id: d.id)) }
+        for d in file.contacts ?? [] { d.apply(to: insert(Contact.self, id: d.id), lookup: lookup) }
+        for d in file.styles ?? [] { d.apply(to: insert(Style.self, id: d.id)) }
+        for d in file.orders ?? [] { d.apply(to: insert(CutOrder.self, id: d.id), lookup: lookup) }
+        for d in file.assignments ?? [] { d.apply(to: insert(Assignment.self, id: d.id), lookup: lookup) }
+        for d in file.reports ?? [] { d.apply(to: insert(ProductionReport.self, id: d.id), lookup: lookup) }
+        for d in file.projects ?? [] { d.apply(to: insert(Project.self, id: d.id), lookup: lookup) }
+        for d in file.users ?? [] { d.apply(to: insert(AppUser.self, id: d.id), lookup: lookup) }
         try context.saveIfNeeded()
     }
-
     /// "Trama-respaldo-2026-10-24.json"
     static func filename(for date: Date = .now) -> String {
         let f = DateFormatter()
@@ -254,7 +132,8 @@ enum BackupService {
         return file
     }
 
-    private static let encoder: JSONEncoder = {
+    /// Shared with sync: payloads use exactly the backup encoding.
+    static let encoder: JSONEncoder = {
         let e = JSONEncoder()
         e.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
         e.dataEncodingStrategy = .base64
@@ -268,7 +147,7 @@ enum BackupService {
         return e
     }()
 
-    private static let decoder: JSONDecoder = {
+    static let decoder: JSONDecoder = {
         let d = JSONDecoder()
         d.dataDecodingStrategy = .base64
         d.dateDecodingStrategy = .custom { decoder in
@@ -283,10 +162,10 @@ enum BackupService {
     }()
 
     /// Stable UUID per object, generating one for legacy rows that never got an id.
-    private struct IDMap {
+    private final class IDMap {
         private var generated: [NSManagedObjectID: UUID] = [:]
         subscript(object: NSManagedObject, existing: UUID?) -> UUID {
-            mutating get {
+            get {
                 if let existing { return existing }
                 if let id = generated[object.objectID] { return id }
                 let id = UUID()
