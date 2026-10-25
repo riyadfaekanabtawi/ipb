@@ -26,7 +26,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.nevutech.ipb
         PRODUCT_NAME: Trama
         # Trama platform API (licences + sync). DEBUG builds accept `-apiBase <url>` at launch.
-        TRAMA_API_BASE_URL: "https://trama-platform.vercel.app/api"
+        TRAMA_API_BASE_URL: "https://trama-app.vercel.app/api"
         TARGETED_DEVICE_FAMILY: "2"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
