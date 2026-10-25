@@ -299,3 +299,19 @@ details p { color: var(--ink-soft); padding-bottom: 18px; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* SEO content sections */
+.section--tight { padding: 84px 0; }
+.define { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px; align-items: start; }
+.define__body > p { font-size: 1.15rem; color: var(--ink-soft); }
+.define__body strong { color: var(--ink); }
+.define__facts { display: grid; gap: 10px; margin: 28px 0 0; }
+.define__facts div { display: grid; grid-template-columns: 130px 1fr; gap: 16px; padding: 12px 0; border-top: 1px solid var(--stroke); }
+.define__facts dt { font-weight: 600; color: var(--brand); }
+.define__facts dd { margin: 0; color: var(--ink-soft); }
+#para-quien { background: var(--surface-2); border-block: 1px solid var(--stroke); }
+.audience { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.audience article { background: var(--surface); border: 1px solid var(--stroke); border-radius: var(--radius); padding: 24px; display: grid; gap: 8px; align-content: start; }
+.audience p { color: var(--ink-soft); font-size: 0.95rem; }
+@media (max-width: 1020px) { .define { grid-template-columns: 1fr; gap: 20px; } .audience { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 760px) { .audience { grid-template-columns: 1fr; } .define__facts div { grid-template-columns: 1fr; gap: 2px; } }
