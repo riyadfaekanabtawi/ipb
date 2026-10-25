@@ -1,0 +1,13 @@
+{
+  "name": "Trama · Control de producción textil",
+  "short_name": "Trama",
+  "lang": "es-MX",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F4F1EA",
+  "theme_color": "#0B3440",
+  "icons": [
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

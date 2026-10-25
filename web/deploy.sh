@@ -8,11 +8,11 @@ space="${HF_SPACE:-ranabtawi/trama}"
 host="https://$(echo "$space" | tr '/' '-').static.hf.space"
 out=$(mktemp -d)
 trap 'rm -rf "$out"' EXIT
-cp index.html styles.css app.js README.md "$out"/
+cp index.html styles.css app.js README.md robots.txt sitemap.xml llms.txt llms-full.txt site.webmanifest "$out"/
 cp -R assets "$out"/assets
 hf repos create "$space" --type space --sdk static --exist-ok >/dev/null
 hf upload "$space" "$out" . --repo-type space --delete "*" --commit-message "Publish website" >/dev/null
-for path in / /styles.css /app.js /assets/icon.png /assets/shots/dash.webp; do
+for path in / /styles.css /app.js /robots.txt /sitemap.xml /llms.txt /llms-full.txt /site.webmanifest /assets/og.jpg; do
   printf "%s %s\n" "$(curl -sL -o /dev/null -w '%{http_code}' "$host$path")" "$path"
 done
 echo "$host"

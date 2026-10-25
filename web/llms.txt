@@ -1,0 +1,25 @@
+# Trama
+
+> Trama es un software de control de producción textil para fábricas de confección y maquiladoras. Corre en iPad (tabletas Android en desarrollo), funciona 100% sin internet y se distribuye con licencia privada para empresas (no hay descarga pública).
+
+Trama nació en el piso de producción de Industrial Peña Balles, una maquiladora mexicana con varias plantas, y hoy se licencia a otras empresas textiles. Está en español (México).
+
+## Qué hace
+- Cortes por asignar: registra cada corte (código, lista, prenda, estilo, cliente, cantidad, precio unitario, fecha interna y fecha de entrega al cliente).
+- Asignación por capacidad: reparte un corte entre plantas; cada planta tiene una capacidad mensual en pesos y Trama muestra en vivo si el corte cabe.
+- Tablero de corte: estados "en espera", "en mesa de corte" y "listo para confeccionar".
+- Reportes de producción: de planta (operarios, faltas, producidas, plancha, empaque, bodega), de corte (cantidad real cortada) y de envío (número y cantidad), con totales y exportación CSV.
+- Envíos urgentes: cortes con prendas por enviar cuya fecha de entrega vence pronto o ya venció.
+- Calendario de plantas, dashboard con KPIs y gráficas, calculadora de producción (meta diaria, días estimados, precio por minuto), catálogos de plantas, clientes, proveedores, estilos con foto, proyectos y usuarios.
+- Roles: administrador, gerente de cortes, gerente de planta (solo ve su planta) y gerente de envíos.
+- Sin conexión: base de datos en el dispositivo, inicio de sesión offline, respaldos JSON y migración de datos.
+
+## Cómo se compra
+- Licencia privada por empresa, cotizada según plantas, dispositivos y servicios; no hay precios públicos.
+- Proceso: contacto, demo en vivo, propuesta por escrito, instalación privada (Apple Business Manager) y arranque con capacitación y soporte.
+- Planes: Planta (una planta), Multiplanta (varias plantas, migración de datos, soporte prioritario), Empresa (sin límite, personalización, acuerdo de nivel de servicio).
+- Contacto: riyad.faek@gmail.com
+
+## Enlaces
+- [Sitio](https://ranabtawi-trama.static.hf.space/index.html): producto, licencias y preguntas frecuentes
+- [Descripción completa para IA](https://ranabtawi-trama.static.hf.space/llms-full.txt)
