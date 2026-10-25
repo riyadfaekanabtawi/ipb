@@ -4,6 +4,8 @@ import androidx.room.withTransaction
 import com.nevutech.trama.core.domain.ProjectStatus
 import com.nevutech.trama.core.domain.Role
 import com.nevutech.trama.core.domain.UserPolicy
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 /** Catalog kinds that share the name rules, with their Spanish wording. */
@@ -300,7 +302,8 @@ class CatalogService(private val db: TramaDatabase, private val images: ImageSto
      * longer referenced: the old one on success, the freshly written one on failure.
      */
     private suspend fun <T> withImage(current: String?, edit: ImageEdit, write: suspend (String?) -> T): T {
-        val fresh = (edit as? ImageEdit.Replace)?.let { images.save(it.bytes) }
+        // Decoding and compressing can take a while; keep it off the caller's (often main) thread.
+        val fresh = (edit as? ImageEdit.Replace)?.let { withContext(Dispatchers.IO) { images.save(it.bytes) } }
         val target = when (edit) {
             ImageEdit.Keep -> current
             ImageEdit.Remove -> null
@@ -309,10 +312,10 @@ class CatalogService(private val db: TramaDatabase, private val images: ImageSto
         val result = try {
             write(target)
         } catch (e: Throwable) {
-            images.delete(fresh)
+            withContext(Dispatchers.IO) { images.delete(fresh) }
             throw e
         }
-        if (current != null && current != target) images.delete(current)
+        if (current != null && current != target) withContext(Dispatchers.IO) { images.delete(current) }
         return result
     }
 }

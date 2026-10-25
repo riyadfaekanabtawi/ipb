@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -140,6 +141,14 @@ fun mapsLink(address: String?): String? =
     address?.trim()?.takeIf { it.isNotEmpty() }?.let { "geo:0,0?q=" + Uri.encode(it) }
 
 /**
+ * Status-bar inset for content screens. MainShell is edge to edge and only phones (< 600dp) get a
+ * top app bar that already sits below the status bar, mirroring its own layout switch.
+ */
+@Composable
+fun Modifier.sectionTopInset(): Modifier =
+    if (androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp >= 600) statusBarsPadding() else this
+
+/**
  * Scrolling catalog page: a full-width header (title, search, actions) above an adaptive grid.
  * [content] adds grid items; use [fullSpan] for rows that should span every column.
  */
@@ -157,8 +166,8 @@ fun CatalogGrid(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minCell),
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 20.dp),
+        modifier = Modifier.fillMaxSize().sectionTopInset(),
+        contentPadding = PaddingValues(start = 24.dp, end = 24.dp, top = 20.dp, bottom = 40.dp),
         horizontalArrangement = Arrangement.spacedBy(18.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp),
     ) {
@@ -236,7 +245,7 @@ fun DetailScaffold(
     val navigator = LocalNavigator.current
     Column(Modifier.fillMaxSize()) {
         Row(
-            Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 8.dp, vertical = 4.dp),
+            Modifier.fillMaxWidth().sectionTopInset().padding(horizontal = 8.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton({ navigator.back() }) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Atrás") }
@@ -406,7 +415,7 @@ fun FormSheet(
                 shape = if (compact) RoundedCornerShape(0.dp) else Tokens.cardShape,
                 color = Tokens.colors.canvas,
             ) {
-                Column(if (compact) Modifier.statusBarsPadding() else Modifier) {
+                Column(if (compact) Modifier.statusBarsPadding().navigationBarsPadding() else Modifier) {
                     Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
                         TextButton(onDismiss) { Text("Cancelar") }
                         Text(title, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
