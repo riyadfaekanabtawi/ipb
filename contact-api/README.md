@@ -25,7 +25,7 @@ Protections:
    | `GMAIL_APP_PASSWORD` | the 16-character app password |
    | `CONTACT_TO` | where leads arrive (optional; defaults to `GMAIL_USER`) |
    | `ALLOWED_ORIGINS` | optional comma list; defaults to the Hugging Face Space origins |
-4. Deploy, then put the URL into `web/index.html`:
+4. Deploy (live: `https://trama-contact-api.vercel.app/api/contact`), then put the URL into `web/index.html`:
    `<meta name="trama-contact-endpoint" content="https://<project>.vercel.app/api/contact">`
    and publish the site (`web/deploy.sh`). Until this is set, the form falls back to a prefilled email.
 
