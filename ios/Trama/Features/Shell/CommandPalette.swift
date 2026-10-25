@@ -75,18 +75,18 @@ struct CommandPalette: View {
             .filter { q.isEmpty || $0.title.lowercased().contains(q) }
             .map { section in
                 Hit(
-                    id: "section-\(section.rawValue)", title: section.title, subtitle: section.group.rawValue,
+                    id: "section-\(section.rawValue)", title: section.title, subtitle: section.group.title,
                     symbol: section.symbol, tint: Theme.brand
                 ) { router.open(section) }
             }
-        result.append(("Ir a", sectionHits))
+        result.append((String(localized: "Ir a"), sectionHits))
         guard !q.isEmpty else { return result }
 
         if sections.contains(.production) {
             let assignments = context.fetchAll(Assignment.self).filter { $0.searchableText.contains(q) }.prefix(12)
             result.append(
                 (
-                    "Cortes en producción",
+                    String(localized: "Cortes en producción"),
                     assignments.map { a in
                         Hit(
                             id: "a-\(a.objectID)", title: "\(a.title) · \(a.plantName)",
@@ -102,10 +102,10 @@ struct CommandPalette: View {
             let orders = context.fetchAll(CutOrder.self).filter { $0.searchableText.contains(q) }.prefix(12)
             result.append(
                 (
-                    "Cortes",
+                    String(localized: "Cortes"),
                     orders.map { o in
                         Hit(
-                            id: "o-\(o.objectID)", title: "\(o.displayCode) · Lista \(o.list ?? "—")",
+                            id: "o-\(o.objectID)", title: String(localized: "\(o.displayCode) · Lista \(o.list ?? "—")"),
                             subtitle: "\(o.clientName) · \(o.assignmentState.title)",
                             symbol: "scissors", tint: o.assignmentState.tint
                         ) {
@@ -118,11 +118,11 @@ struct CommandPalette: View {
             let plants = context.fetchAll(Plant.self).filter { ($0.name ?? "").lowercased().contains(q) }
             result.append(
                 (
-                    "Plantas",
+                    String(localized: "Plantas"),
                     plants.map { p in
                         Hit(
                             id: "p-\(p.objectID)", title: p.displayName,
-                            subtitle: "Capacidad \(Fmt.money(p.maxCapacity, compact: true))/mes",
+                            subtitle: String(localized: "Capacidad \(Fmt.money(p.maxCapacity, compact: true))/mes"),
                             symbol: "building.2.fill", tint: Theme.accent(for: p.displayName)
                         ) {
                             router.open(.plants, pushing: Route.plant(p.objectID))
@@ -136,7 +136,7 @@ struct CommandPalette: View {
             }
             result.append(
                 (
-                    "Clientes",
+                    String(localized: "Clientes"),
                     clients.map { c in
                         Hit(
                             id: "c-\(c.objectID)", title: c.displayName, subtitle: c.contactList.first?.name ?? "",
@@ -151,7 +151,7 @@ struct CommandPalette: View {
             let suppliers = context.fetchAll(Supplier.self).filter { ($0.name ?? "").lowercased().contains(q) }
             result.append(
                 (
-                    "Proveedores",
+                    String(localized: "Proveedores"),
                     suppliers.map { s in
                         Hit(
                             id: "s-\(s.objectID)", title: s.displayName, subtitle: s.address ?? "",
@@ -166,10 +166,10 @@ struct CommandPalette: View {
             let styles = context.fetchAll(Style.self).filter { ($0.name ?? "").lowercased().contains(q) }
             result.append(
                 (
-                    "Estilos",
+                    String(localized: "Estilos"),
                     styles.map { s in
                         Hit(
-                            id: "st-\(s.objectID)", title: s.displayName, subtitle: "\(s.orderList.count) cortes",
+                            id: "st-\(s.objectID)", title: s.displayName, subtitle: String(localized: "\(s.orderList.count) cortes"),
                             symbol: "tshirt.fill", tint: Theme.accent(for: s.displayName)
                         ) {
                             router.open(.styles, pushing: Route.style(s.objectID))

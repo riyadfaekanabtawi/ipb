@@ -58,7 +58,7 @@ struct ProjectsView: View {
             AddToolbarButton(title: "Nuevo proyecto") { editor = .new }
         }
         .sheet(item: $editor) { target in ProjectEditorSheet(project: target.project) }
-        .confirmDelete("¿Eliminar este proyecto?", item: $pendingDelete, message: pendingDelete?.displayClient) { project in
+        .confirmDelete("¿Eliminar este proyecto?", item: $pendingDelete, message: .verbatim(pendingDelete?.displayClient)) { project in
             do {
                 try session.service.delete(project)
                 toasts.show("Proyecto eliminado")
@@ -75,11 +75,11 @@ struct ProjectsView: View {
             ForEach(ProjectStatus.allCases) { status in
                 let group = projects.filter { $0.status == status }
                 KPITile(
-                    title: status.title,
+                    title: .verbatim(status.title),
                     value: Fmt.money(group.reduce(0) { $0 + $1.total }, compact: true),
                     symbol: status.symbol,
                     tint: status == .pending ? Theme.warning : status.tint,
-                    footnote: group.count == 1 ? "1 proyecto" : "\(group.count) proyectos"
+                    footnote: "\(group.count) proyectos"
                 ) {
                     withAnimation(.snappy) {
                         filter = filter == status ? nil : status
@@ -112,8 +112,9 @@ struct ProjectsView: View {
         Group {
             if items.isEmpty {
                 ContentUnavailableView(
-                    search.isEmpty ? "Nada por aquí" : "Sin resultados", systemImage: "folder",
-                    description: Text(search.isEmpty ? "No hay proyectos con este estado." : "Prueba con otra búsqueda."))
+                    search.isEmpty ? "Nada por aquí" as LocalizedStringKey : "Sin resultados", systemImage: "folder",
+                    description: Text(
+                        search.isEmpty ? "No hay proyectos con este estado." as LocalizedStringKey : "Prueba con otra búsqueda."))
             } else {
                 LazyVGrid(columns: AdaptiveGrid.adaptive(min: 300), spacing: 18) {
                     ForEach(items, id: \.objectID) { project in
@@ -167,7 +168,12 @@ struct ProjectsView: View {
             try withAnimation(.spring(duration: 0.4)) {
                 try CatalogService(context: context).setStatus(status, of: project)
             }
-            toasts.show("Proyecto de \(project.displayClient): \(status.title.lowercased())")
+            let client = project.displayClient
+            switch status {
+            case .pending: toasts.show("Proyecto de \(client): pendiente")
+            case .accepted: toasts.show("Proyecto de \(client): aceptado")
+            case .declined: toasts.show("Proyecto de \(client): declinado")
+            }
         } catch {
             toasts.error(error)
         }
@@ -283,7 +289,7 @@ private struct ProjectCard: View {
                 .font(.system(.title2, design: .rounded, weight: .bold))
                 .monospacedDigit()
                 .contentTransition(.numericText())
-            Text("\(Fmt.int(Int(project.quantity))) prendas × \(Fmt.money(project.price))")
+            Text("\(Int(project.quantity)) prendas × \(Fmt.money(project.price))")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .padding(.top, -10)
@@ -414,7 +420,7 @@ struct ProjectEditorSheet: View {
             }
 
             Section("Foto o muestra") {
-                PhotoField(title: draft.fabric.isEmpty ? "Proyecto" : draft.fabric, data: $draft.photo)
+                PhotoField(title: draft.fabric.isEmpty ? "Proyecto" : .verbatim(draft.fabric), data: $draft.photo)
             }
         }
         .animation(.snappy, value: draft.client)

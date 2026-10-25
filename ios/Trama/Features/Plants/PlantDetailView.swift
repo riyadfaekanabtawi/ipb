@@ -23,7 +23,7 @@ struct PlantDetailView: View {
                 .card()
 
             VStack(alignment: .leading, spacing: 14) {
-                SectionHeader("Asignaciones", subtitle: "\(Fmt.int(plant.assignmentList.count)) en total") {
+                SectionHeader("Asignaciones", subtitle: "\(plant.assignmentList.count) en total") {
                     Picker("Estado", selection: $statusFilter.animation(.snappy)) {
                         Text("Todas").tag(CutStatus?.none)
                         ForEach(CutStatus.allCases) { status in
@@ -34,7 +34,7 @@ struct PlantDetailView: View {
                 }
                 if assignments.isEmpty {
                     ContentUnavailableView(
-                        statusFilter == nil ? "Sin asignaciones" : "Nada en este estado", systemImage: "scissors",
+                        statusFilter == nil ? "Sin asignaciones" as LocalizedStringKey : "Nada en este estado", systemImage: "scissors",
                         description: Text("Los cortes asignados a esta planta aparecerán aquí.")
                     )
                     .frame(maxWidth: .infinity)
@@ -78,7 +78,7 @@ struct PlantDetailView: View {
         return VStack(alignment: .leading, spacing: 18) {
             DetailHero(
                 plant.displayName,
-                subtitle: "Capacidad de \(Fmt.money(plant.maxCapacity)) por mes"
+                subtitle: String(localized: "Capacidad de \(Fmt.money(plant.maxCapacity)) por mes")
             ) {
                 AvatarView(name: plant.displayName, size: 72, symbol: "building.2.fill")
             } trailing: {
@@ -272,7 +272,8 @@ private struct PlantAssignmentRow: View {
                 .background(status.tint.opacity(0.14), in: .rect(cornerRadius: 12, style: .continuous))
             VStack(alignment: .leading, spacing: 3) {
                 Text(assignment.title).font(.headline)
-                Text(assignment.order?.clientName ?? "Sin cliente").font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+                Text(assignment.order?.clientName ?? String(localized: "Sin cliente")).font(.subheadline).foregroundStyle(.secondary)
+                    .lineLimit(1)
             }
             .frame(minWidth: 160, alignment: .leading)
             Spacer(minLength: 8)
@@ -292,7 +293,7 @@ private struct PlantAssignmentRow: View {
         }
     }
 
-    private func stat(_ value: String, _ label: String) -> some View {
+    private func stat(_ value: String, _ label: LocalizedStringKey) -> some View {
         VStack(alignment: .trailing, spacing: 0) {
             Text(value).font(.subheadline.weight(.semibold)).monospacedDigit()
             Text(label).font(.caption2).foregroundStyle(.secondary)

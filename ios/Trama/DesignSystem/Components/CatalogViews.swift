@@ -65,7 +65,7 @@ struct DetailHero<Leading: View, Trailing: View>: View {
 /// White-on-brand figure used inside `DetailHero`.
 struct HeroStat: View {
     var value: String
-    var label: String
+    var label: LocalizedStringKey
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -86,7 +86,7 @@ struct HeroStat: View {
 struct CardStat: View {
     var symbol: String
     var value: String
-    var label: String
+    var label: LocalizedStringKey
     var tint: Color = Theme.brand
 
     var body: some View {
@@ -107,7 +107,7 @@ struct CardStat: View {
 
 /// Toolbar "+" button with ⌘N.
 struct AddToolbarButton: ToolbarContent {
-    var title: String
+    var title: LocalizedStringKey
     var action: () -> Void
 
     var body: some ToolbarContent {
@@ -145,7 +145,7 @@ struct CatalogRowCard<Content: View>: View {
 extension View {
     /// `confirmDelete` driven by an optional item rather than a Bool.
     func confirmDelete<Item>(
-        _ title: String, item: Binding<Item?>, message: String? = nil, action: @escaping (Item) -> Void
+        _ title: LocalizedStringKey, item: Binding<Item?>, message: LocalizedStringKey? = nil, action: @escaping (Item) -> Void
     ) -> some View {
         confirmDelete(
             title,

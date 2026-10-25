@@ -36,11 +36,11 @@ extension View {
 
 /// Section heading with optional trailing accessory.
 struct SectionHeader<Trailing: View>: View {
-    var title: String
-    var subtitle: String?
+    var title: LocalizedStringKey
+    var subtitle: LocalizedStringKey?
     @ViewBuilder var trailing: Trailing
 
-    init(_ title: String, subtitle: String? = nil, @ViewBuilder trailing: () -> Trailing = { EmptyView() }) {
+    init(_ title: LocalizedStringKey, subtitle: LocalizedStringKey? = nil, @ViewBuilder trailing: () -> Trailing = { EmptyView() }) {
         self.title = title
         self.subtitle = subtitle
         self.trailing = trailing()
@@ -62,14 +62,28 @@ struct SectionHeader<Trailing: View>: View {
 
 /// Small capsule tag with icon and tint.
 struct Pill: View {
-    var text: String
+    var text: Text
     var symbol: String?
     var tint: Color
+
+    init(text: LocalizedStringKey, symbol: String? = nil, tint: Color) {
+        self.text = Text(text)
+        self.symbol = symbol
+        self.tint = tint
+    }
+
+    /// Already-localized or user-provided text (enum titles, plant names), shown as-is.
+    @_disfavoredOverload
+    init(text: String, symbol: String? = nil, tint: Color) {
+        self.text = Text(verbatim: text)
+        self.symbol = symbol
+        self.tint = tint
+    }
 
     var body: some View {
         HStack(spacing: 5) {
             if let symbol { Image(systemName: symbol).imageScale(.small) }
-            Text(text).lineLimit(1)
+            text.lineLimit(1)
         }
         .font(.caption.weight(.semibold))
         .padding(.horizontal, 10)
@@ -81,7 +95,7 @@ struct Pill: View {
 
 /// Label/value row used in detail cards.
 struct InfoRow: View {
-    var label: String
+    var label: LocalizedStringKey
     var value: String
     var symbol: String?
 

@@ -1,7 +1,7 @@
 import CoreData
 import Foundation
-import Observation
 import OSLog
+import Observation
 import UIKit
 
 /// Connects the offline-first store to the Trama platform (licence + encrypted sync).
@@ -101,11 +101,13 @@ final class SyncEngine {
 
     /// Persistent per-install device id (Keychain), sent with every login for the seat count.
     var device: DeviceInfo {
-        let id = secrets.string(for: Keys.deviceID) ?? {
-            let id = UUID().uuidString
-            secrets.set(id, for: Keys.deviceID)
-            return id
-        }()
+        let id =
+            secrets.string(for: Keys.deviceID)
+            ?? {
+                let id = UUID().uuidString
+                secrets.set(id, for: Keys.deviceID)
+                return id
+            }()
         return DeviceInfo(id: id, name: UIDevice.current.name)
     }
 
@@ -301,8 +303,12 @@ final class SyncEngine {
         try context.saveIfNeeded()
 
         if let first = problems.first {
-            let more = problems.count > 1 ? " (y \(problems.count - 1) más)" : ""
-            toasts?.show("No se sincronizó un cambio: \(first)\(more)", style: .error)
+            let others = problems.count - 1
+            let message: LocalizedStringResource =
+                others > 0
+                ? "No se sincronizó un cambio: \(first) (y \(others) más)"
+                : "No se sincronizó un cambio: \(first)"
+            toasts?.show(message, style: .error)
         }
     }
 
@@ -379,7 +385,11 @@ final class SyncEngine {
         Self.save(licence, Keys.licence, defaults)
         applyTrackingFlags()
         if wasWritable, !licence.writable {
-            toasts?.show("Tu licencia está \(licence.statusTitle.lowercased()): los datos quedan en solo lectura.", style: .info)
+            let message: LocalizedStringResource =
+                licence.status == "suspended"
+                ? "Tu licencia está suspendida: los datos quedan en solo lectura."
+                : "Tu licencia está vencida: los datos quedan en solo lectura."
+            toasts?.show(message, style: .info)
         }
     }
 
@@ -410,7 +420,10 @@ final class SyncEngine {
         guard let account, auth.tenant.id == account.tenantID else {
             await api.logout()
             hasSession = false
-            throw APIError.server(status: 409, code: "tenant_mismatch", message: "Ese usuario pertenece a otra empresa. Desconecta la licencia en Ajustes para cambiar de empresa.")
+            throw APIError.server(
+                status: 409, code: "tenant_mismatch",
+                message: String(
+                    localized: "Ese usuario pertenece a otra empresa. Desconecta la licencia en Ajustes para cambiar de empresa."))
         }
         link(Account(email: normalized(email), tenantID: auth.tenant.id, tenantName: auth.tenant.name), licence: auth.licence)
         let user = try adoptServerUser(auth.user)

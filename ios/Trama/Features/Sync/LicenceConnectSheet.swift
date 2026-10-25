@@ -39,7 +39,9 @@ struct LicenceConnectSheet: View {
             } header: {
                 Text("Cuenta de Trama")
             } footer: {
-                Text("Usa el correo y la contraseña que activaste desde la invitación de tu empresa. Después podrás entrar aunque no haya internet.")
+                Text(
+                    "Usa el correo y la contraseña que activaste desde la invitación de tu empresa. Después podrás entrar aunque no haya internet."
+                )
             }
 
             if hasLocalData {
@@ -86,7 +88,11 @@ struct LicenceConnectSheet: View {
             defer { working = false }
             do {
                 try await sync.connect(email: email, password: password, localData: hasLocalData ? localData : .keepAndUpload)
-                toasts.show("Conectado a \(sync.account?.tenantName ?? "tu empresa")")
+                if let tenant = sync.account?.tenantName {
+                    toasts.show("Conectado a \(tenant)")
+                } else {
+                    toasts.show("Conectado a tu empresa")
+                }
                 onConnected()
                 dismiss()
             } catch {
@@ -112,12 +118,14 @@ struct SyncStatusView: View {
                     .background(tint.opacity(0.14), in: .rect(cornerRadius: 12, style: .continuous))
                     .symbolEffect(.pulse, isActive: sync.isSyncing)
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(sync.account?.tenantName ?? "Sin licencia").font(.headline)
+                    Text(sync.account?.tenantName ?? String(localized: "Sin licencia")).font(.headline)
                     Text(subtitle).font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()
                 if let licence = sync.licence {
-                    Pill(text: "\(licence.planTitle) · \(licence.statusTitle)", symbol: "checkmark.seal", tint: licence.writable ? Theme.success : Theme.warning)
+                    Pill(
+                        text: "\(licence.planTitle) · \(licence.statusTitle)", symbol: "checkmark.seal",
+                        tint: licence.writable ? Theme.success : Theme.warning)
                 }
             }
             if let error = sync.lastError, !sync.isSyncing {
@@ -131,16 +139,16 @@ struct SyncStatusView: View {
     }
 
     private var subtitle: String {
-        if sync.isSyncing { return "Sincronizando…" }
+        if sync.isSyncing { return String(localized: "Sincronizando…") }
         var parts: [String] = []
         if let email = sync.account?.email { parts.append(email) }
         if let last = sync.lastSyncAt {
-            parts.append("Última sincronización \(last.formatted(.relative(presentation: .named)))")
+            parts.append(String(localized: "Última sincronización \(last.formatted(.relative(presentation: .named)))"))
         } else {
-            parts.append("Aún no se sincroniza")
+            parts.append(String(localized: "Aún no se sincroniza"))
         }
-        if sync.pendingCount > 0 { parts.append("\(sync.pendingCount) \(sync.pendingCount == 1 ? "cambio pendiente" : "cambios pendientes")") }
-        if !connectivity.isOnline { parts.append("sin conexión") }
+        if sync.pendingCount > 0 { parts.append(String(localized: "\(sync.pendingCount) cambios pendientes")) }
+        if !connectivity.isOnline { parts.append(String(localized: "sin conexión")) }
         return parts.joined(separator: " · ")
     }
 
@@ -185,10 +193,13 @@ struct SyncBanner: View {
 
     private var message: String? {
         if sync.isReadOnly {
-            return "Licencia \(sync.licence?.statusTitle.lowercased() ?? "inactiva"): solo lectura. Puedes consultar los datos, pero no registrar cambios."
+            if let status = sync.licence?.statusTitle {
+                return String(localized: "Solo lectura (licencia: \(status)). Puedes consultar los datos, pero no registrar cambios.")
+            }
+            return String(localized: "Solo lectura: tu licencia no está activa. Puedes consultar los datos, pero no registrar cambios.")
         }
         if sync.needsReconnect {
-            return "La sincronización está en pausa. Conecta tu licencia de nuevo en Ajustes para enviar tus cambios."
+            return String(localized: "La sincronización está en pausa. Conecta tu licencia de nuevo en Ajustes para enviar tus cambios.")
         }
         return nil
     }

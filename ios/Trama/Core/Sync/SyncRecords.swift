@@ -75,7 +75,9 @@ enum RecordPayload {
         }
     }
 
-    static func decode<K: CodingKey>(_ entity: SyncEntity, from container: KeyedDecodingContainer<K>, forKey key: K) throws
+    static func decode<K: CodingKey>(
+        _ entity: SyncEntity, from container: KeyedDecodingContainer<K>, forKey key: K
+    ) throws
         -> RecordPayload?
     {
         guard container.contains(key), try !container.decodeNil(forKey: key) else { return nil }
@@ -212,18 +214,18 @@ struct LicenceInfo: Codable, Equatable {
     var planTitle: String {
         switch plan {
         case "web": "Web"
-        case "planta": "Planta"
-        case "multiplanta": "Multiplanta"
-        case "empresa": "Empresa"
+        case "planta": String(localized: "plan.planta", defaultValue: "Planta", comment: "Licence plan name")
+        case "multiplanta": String(localized: "plan.multiplanta", defaultValue: "Multiplanta", comment: "Licence plan name")
+        case "empresa": String(localized: "plan.empresa", defaultValue: "Empresa", comment: "Licence plan name")
         default: plan.capitalized
         }
     }
 
     var statusTitle: String {
         switch status {
-        case "active": "Activa"
-        case "expired": "Vencida"
-        case "suspended": "Suspendida"
+        case "active": String(localized: "Activa", comment: "Licence status")
+        case "expired": String(localized: "Vencida", comment: "Licence status")
+        case "suspended": String(localized: "Suspendida", comment: "Licence status")
         default: status
         }
     }

@@ -31,13 +31,13 @@ struct ProductionFunnel: View {
 
     private var stages: [(String, Int, String, Color)] {
         [
-            ("Planeadas", metrics.quantity, "list.bullet.clipboard", Theme.brand),
-            ("Cortadas", metrics.realCut, "scissors", Theme.warning),
-            ("Producidas", metrics.produced, "gearshape.2", Theme.info),
-            ("En plancha", metrics.ironing, "flame", Color(hex: 0xC2410C)),
-            ("En empaque", metrics.packing, "shippingbox", Color(hex: 0x6E56CF)),
-            ("En bodega", metrics.warehouse, "building.columns", Color(hex: 0x0E7490)),
-            ("Enviadas", metrics.shipped, "paperplane.fill", Theme.success),
+            (String(localized: "Planeadas"), metrics.quantity, "list.bullet.clipboard", Theme.brand),
+            (String(localized: "Cortadas"), metrics.realCut, "scissors", Theme.warning),
+            (String(localized: "Producidas"), metrics.produced, "gearshape.2", Theme.info),
+            (String(localized: "En plancha"), metrics.ironing, "flame", Color(hex: 0xC2410C)),
+            (String(localized: "En empaque"), metrics.packing, "shippingbox", Color(hex: 0x6E56CF)),
+            (String(localized: "En bodega"), metrics.warehouse, "building.columns", Color(hex: 0x0E7490)),
+            (String(localized: "Enviadas"), metrics.shipped, "paperplane.fill", Theme.success),
         ]
     }
 
@@ -100,7 +100,7 @@ struct AssignmentCard: View {
             if !compact {
                 HStack(spacing: 14) {
                     Label(Fmt.int(Int(assignment.quantity)), systemImage: "number")
-                    Label(Fmt.int(metrics.toShip) + " por enviar", systemImage: "shippingbox")
+                    Label("\(metrics.toShip) por enviar", systemImage: "shippingbox")
                 }
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -139,7 +139,7 @@ struct OrderRow: View {
             Spacer(minLength: 12)
             VStack(alignment: .trailing, spacing: 6) {
                 Text(Fmt.money(order.revenue)).font(.headline.monospacedDigit())
-                Text("\(Fmt.int(order.remainingQuantity)) de \(Fmt.int(Int(order.quantity))) por asignar")
+                Text("\(order.remainingQuantity) de \(Int(order.quantity)) por asignar")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 ProgressView(value: Double(order.assignedQuantity), total: Double(max(order.quantity, 1)))

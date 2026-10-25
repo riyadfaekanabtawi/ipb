@@ -59,7 +59,7 @@ struct SuppliersView: View {
         .sheet(item: $editor) { target in
             PartyEditorSheet(supplier: target.object, startWithNewContact: target.addingContact)
         }
-        .confirmDelete("¿Eliminar \(pendingDelete?.displayName ?? "proveedor")?", item: $pendingDelete) { supplier in
+        .confirmDelete("¿Eliminar \(pendingDelete?.displayName ?? String(localized: "proveedor"))?", item: $pendingDelete) { supplier in
             delete(supplier)
         }
     }

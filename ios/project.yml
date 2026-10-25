@@ -3,7 +3,8 @@ options:
   bundleIdPrefix: com.nevutech
   deploymentTarget:
     iOS: "17.0"
-  developmentLanguage: es
+  # Spanish (Mexico) is the source language; en and pt-BR come from the String Catalogs.
+  developmentLanguage: es-MX
   createIntermediateGroups: true
   groupSortPosition: top
 settings:
@@ -14,6 +15,8 @@ settings:
     DEVELOPMENT_TEAM: P4SZK98WUR
     ENABLE_USER_SCRIPT_SANDBOXING: YES
     SWIFT_STRICT_CONCURRENCY: minimal
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+    SWIFT_EMIT_LOC_STRINGS: YES
 targets:
   Trama:
     type: application
@@ -42,7 +45,8 @@ targets:
     info:
       path: Trama/Resources/Info.plist
       properties:
-        CFBundleDevelopmentRegion: es
+        CFBundleDevelopmentRegion: es-MX
+        CFBundleLocalizations: [es-MX, en, pt-BR]
         ITSAppUsesNonExemptEncryption: false
         LSSupportsOpeningDocumentsInPlace: false
         UIFileSharingEnabled: false
@@ -74,5 +78,8 @@ schemes:
       targets:
         - TramaTests
       gatherCoverageData: true
+      # Existing tests assert source-language (Spanish) copy and demo names.
+      language: es-MX
+      region: MX
     run:
       config: Debug

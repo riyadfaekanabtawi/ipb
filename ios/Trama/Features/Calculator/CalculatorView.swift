@@ -125,7 +125,9 @@ struct CalculatorView: View {
     }
 
     @ViewBuilder
-    private func row(_ title: String, _ symbol: String, _ value: Binding<Double>, unit: String? = nil, divider: Bool = true) -> some View {
+    private func row(
+        _ title: LocalizedStringKey, _ symbol: String, _ value: Binding<Double>, unit: LocalizedStringKey? = nil, divider: Bool = true
+    ) -> some View {
         if divider { Divider() }
         LiveNumberField(title: title, symbol: symbol, value: value, unit: unit).calcRow()
     }
@@ -142,23 +144,38 @@ struct CalculatorView: View {
     /// Plain-text summary for the pasteboard / share sheet.
     static func summary(client: String, plant: String?, input: CalculatorInput, result: CalculatorResult) -> String {
         func money(_ v: Double?) -> String { v.map { Fmt.money($0) } ?? "—" }
-        func num(_ v: Double?, _ unit: String) -> String { v.map { "\(Fmt.number($0)) \(unit)" } ?? "—" }
-        var lines = ["Cálculo de producción · Trama"]
-        if !client.isEmpty { lines.append("Cliente: \(client)") }
-        if let plant { lines.append("Planta: \(plant)") }
+        /// Formats `v` and wraps it with its localized unit ("12.5 prendas"); "—" when missing.
+        func num(_ v: Double?, digits: Int = 1, _ withUnit: (String) -> String) -> String {
+            v.map { withUnit(Fmt.number($0, digits: digits)) } ?? "—"
+        }
+        var lines = [String(localized: "Cálculo de producción · Trama")]
+        if !client.isEmpty { lines.append(String(localized: "Cliente: \(client)")) }
+        if let plant { lines.append(String(localized: "Planta: \(plant)")) }
+        let quantity = Fmt.int(Int(input.quantity))
+        let realMinutes = Fmt.number(input.realMinutes, digits: 2)
+        let clientMinutes = Fmt.number(input.clientMinutes, digits: 2)
+        let operators = Fmt.int(Int(input.operators))
+        let pricePerStyle = Fmt.money(input.pricePerStyle)
+        let expenses = Fmt.money(input.operatingExpenses)
+        let dailyGoal = num(result.dailyGoal) { String(localized: "\($0) prendas") }
+        let weekly = num(result.weeklyProduction) { String(localized: "\($0) prendas") }
+        let days = num(result.estimatedDays) { String(localized: "\($0) días") }
+        let months = num(result.estimatedMonths, digits: 2) { String(localized: "\($0) meses") }
+        let efficiency = result.minuteEfficiency.map { Fmt.percent($0) } ?? "—"
+        let realMinute = num(result.realProductionMinute, digits: 2) { String(localized: "\($0) min") }
         lines += [
-            "Cantidad: \(Fmt.int(Int(input.quantity))) prendas · Minutaje real \(Fmt.number(input.realMinutes, digits: 2)) · cliente \(Fmt.number(input.clientMinutes, digits: 2))",
-            "Operarios: \(Fmt.int(Int(input.operators))) · Precio por estilo \(Fmt.money(input.pricePerStyle)) · Gastos \(Fmt.money(input.operatingExpenses))",
+            String(localized: "Cantidad: \(quantity) prendas · Minutaje real \(realMinutes) · cliente \(clientMinutes)"),
+            String(localized: "Operarios: \(operators) · Precio por estilo \(pricePerStyle) · Gastos \(expenses)"),
             "",
-            "Ingreso bruto: \(money(result.grossIncome))",
-            "Ingreso neto: \(money(result.netIncome))",
-            "Precio por minuto real: \(money(result.pricePerRealMinute))",
-            "Meta diaria: \(num(result.dailyGoal, "prendas"))",
-            "Producción semanal: \(num(result.weeklyProduction, "prendas"))",
-            "Días estimados: \(num(result.estimatedDays, "días"))",
-            "Meses estimados: \(num(result.estimatedMonths, "meses"))",
-            "Eficiencia de minutaje: \(result.minuteEfficiency.map(Fmt.percent) ?? "—")",
-            "Minuto real de producción: \(num(result.realProductionMinute, "min"))",
+            String(localized: "Ingreso bruto: \(money(result.grossIncome))"),
+            String(localized: "Ingreso neto: \(money(result.netIncome))"),
+            String(localized: "Precio por minuto real: \(money(result.pricePerRealMinute))"),
+            String(localized: "Meta diaria: \(dailyGoal)"),
+            String(localized: "Producción semanal: \(weekly)"),
+            String(localized: "Días estimados: \(days)"),
+            String(localized: "Meses estimados: \(months)"),
+            String(localized: "Eficiencia de minutaje: \(efficiency)"),
+            String(localized: "Minuto real de producción: \(realMinute)"),
         ]
         return lines.joined(separator: "\n")
     }
@@ -208,7 +225,7 @@ private struct CalculatorResults: View {
 }
 
 private struct IncomeCard: View {
-    var title: String
+    var title: LocalizedStringKey
     var value: Double?
     var symbol: String
     var emphasized: Bool
@@ -247,12 +264,12 @@ private struct IncomeCard: View {
 }
 
 private struct ResultCard: View {
-    var title: String
+    var title: LocalizedStringKey
     var value: String?
-    var unit: String?
+    var unit: LocalizedStringKey?
     var symbol: String
     var tint: Color
-    var hint: String
+    var hint: LocalizedStringKey
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -299,7 +316,7 @@ private struct EfficiencyCard: View {
             }
             .frame(width: 54, height: 54)
             VStack(alignment: .leading, spacing: 4) {
-                Text(efficiency.map(Fmt.percent) ?? "—")
+                Text(efficiency.map { Fmt.percent($0) } ?? "—")
                     .font(.system(size: 26, weight: .bold, design: .rounded))
                     .monospacedDigit()
                     .contentTransition(.numericText())
@@ -377,7 +394,7 @@ private struct ConstantsSheet: View {
 }
 
 private struct CalcSectionTitle: View {
-    var title: String
+    var title: LocalizedStringKey
     var symbol: String
 
     var body: some View {

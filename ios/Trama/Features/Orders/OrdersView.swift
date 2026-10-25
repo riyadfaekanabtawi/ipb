@@ -20,9 +20,9 @@ struct OrdersView: View {
         var id: String { rawValue }
         var title: String {
             switch self {
-            case .pending: "Por asignar"
-            case .all: "Todos"
-            case .assigned: "Asignados"
+            case .pending: String(localized: "Por asignar")
+            case .all: String(localized: "Todos")
+            case .assigned: String(localized: "Asignados")
             }
         }
     }
@@ -180,7 +180,7 @@ struct OrderEditorSheet: View {
                 Text("Cantidad y precio")
             } footer: {
                 if let order, quantity < order.assignedQuantity {
-                    Text("Ya hay \(Fmt.int(order.assignedQuantity)) prendas asignadas; la cantidad no puede ser menor.")
+                    Text("Ya hay \(order.assignedQuantity) prendas asignadas; la cantidad no puede ser menor.")
                         .foregroundStyle(Theme.danger)
                 }
             }

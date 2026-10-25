@@ -61,7 +61,7 @@ struct AssignSheet: View {
         VStack(spacing: 20) {
             VStack(alignment: .leading, spacing: 14) {
                 SectionHeader(
-                    "Cantidad", subtitle: "\(Fmt.int(order.remainingQuantity)) prendas pendientes de \(Fmt.int(Int(order.quantity)))")
+                    "Cantidad", subtitle: "\(order.remainingQuantity) prendas pendientes de \(Int(order.quantity))")
                 HStack {
                     TextField("0", value: $quantity, format: .number)
                         .font(.system(size: 40, weight: .bold, design: .rounded))
@@ -74,7 +74,7 @@ struct AssignSheet: View {
                     in: 0...Double(max(order.remainingQuantity, 1)), step: 1)
                 HStack {
                     ForEach([0.25, 0.5, 1.0], id: \.self) { fraction in
-                        Button(fraction == 1 ? "Todo" : Fmt.percent(fraction)) {
+                        Button(fraction == 1 ? String(localized: "Todo") : Fmt.percent(fraction)) {
                             withAnimation { quantity = Int((Double(order.remainingQuantity) * fraction).rounded()) }
                         }
                         .buttonStyle(.bordered)
@@ -99,7 +99,7 @@ struct AssignSheet: View {
                     FlowRow(spacing: 8) {
                         ForEach(distribution, id: \.plant.objectID) { item in
                             Pill(
-                                text: "\(item.plant.displayName) · \(item.count)", symbol: "building.2",
+                                text: item.plant.displayName + " · " + Fmt.int(item.count), symbol: "building.2",
                                 tint: Theme.accent(for: item.plant.displayName))
                         }
                     }
@@ -132,7 +132,7 @@ struct AssignSheet: View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 3) {
                 if let plant = selectedPlant {
-                    Text("\(Fmt.int(quantity)) prendas → \(plant.displayName)").font(.headline)
+                    Text("\(quantity) prendas → \(plant.displayName)").font(.headline)
                     if case .failure(let error) = validation {
                         Text(error.localizedDescription).font(.caption).foregroundStyle(Theme.danger)
                     } else {
@@ -173,7 +173,7 @@ struct AssignSheet: View {
         guard let plant = selectedPlant else { return }
         do {
             try session.service.assign(order: order, to: plant, quantity: quantity, date: date)
-            toasts.show("Asignaste \(Fmt.int(quantity)) prendas a \(plant.displayName)")
+            toasts.show("Asignaste \(quantity) prendas a \(plant.displayName)")
             dismiss()
         } catch {
             toasts.error(error)

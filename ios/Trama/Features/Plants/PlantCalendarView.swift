@@ -30,7 +30,7 @@ struct PlantCalendarView: View {
             guard let date = a.scheduledDate, plantFilter == nil || a.plant == plantFilter else { return nil }
             return Event(
                 id: "p-\(a.objectID)", kind: .production, date: date, title: a.title,
-                subtitle: "\(a.plantName) · \(Fmt.int(Int(a.quantity))) prendas", tint: Theme.accent(for: a.plantName),
+                subtitle: String(localized: "\(a.plantName) · \(Int(a.quantity)) prendas"), tint: Theme.accent(for: a.plantName),
                 route: .assignment(a.objectID))
         }
         let deliveries = orders.compactMap { o -> Event? in
@@ -38,7 +38,7 @@ struct PlantCalendarView: View {
             if let plantFilter, !o.assignmentList.contains(where: { $0.plant == plantFilter }) { return nil }
             return Event(
                 id: "d-\(o.objectID)", kind: .delivery, date: date, title: o.displayCode,
-                subtitle: "Entrega a \(o.clientName)", tint: Theme.danger, route: .order(o.objectID))
+                subtitle: String(localized: "Entrega a \(o.clientName)"), tint: Theme.danger, route: .order(o.objectID))
         }
         return (production + deliveries).filter { calendar.isDate($0.date, equalTo: month, toGranularity: .month) }
     }

@@ -123,7 +123,7 @@ struct StyleDetailView: View {
                         ForEach(distribution, id: \.plant.objectID) { entry in
                             NavigationLink(value: Route.plant(entry.plant.objectID)) {
                                 Pill(
-                                    text: "\(entry.plant.displayName): \(entry.count) \(entry.count == 1 ? "asignación" : "asignaciones")",
+                                    text: "\(entry.plant.displayName): \(entry.count) asignaciones",
                                     symbol: "building.2.fill", tint: Theme.accent(for: entry.plant.displayName))
                             }
                             .buttonStyle(.plain)
@@ -160,7 +160,7 @@ private struct StyleOrderRow: View {
                 Text(order.clientName).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
             }
             Spacer(minLength: 8)
-            Text("\(Fmt.int(Int(order.quantity))) prendas").font(.subheadline.weight(.semibold)).monospacedDigit()
+            Text("\(Int(order.quantity)) prendas").font(.subheadline.weight(.semibold)).monospacedDigit()
             Pill(text: state.title, symbol: nil, tint: state.tint)
         }
     }

@@ -6,12 +6,13 @@ import Foundation
 enum DemoSeeder {
     static let demoPassword = "trama123"
 
-    static func seed(into context: NSManagedObjectContext, now: Date = .now) {
+    static func seed(into context: NSManagedObjectContext, now: Date = .now, language: String = L10n.language) {
+        let copy = Copy(language: language)
         let cal = Calendar.current
         func day(_ offset: Int) -> Date { cal.date(byAdding: .day, value: offset, to: cal.startOfDay(for: now))! }
 
         // Plants (capacity in MXN per month).
-        let plantSpecs: [(String, Double)] = [("Planta Norte", 1_800_000), ("Planta Sur", 1_200_000), ("Planta Bajío", 950_000)]
+        let plantSpecs: [(String, Double)] = zip(copy.plants, [1_800_000, 1_200_000, 950_000]).map { ($0, $1) }
         let plants = plantSpecs.map { name, cap -> Plant in
             let p = Plant(context: context)
             p.stampCreated()
@@ -25,21 +26,21 @@ enum DemoSeeder {
             (
                 "Bayer California", "Av. Insurgentes Sur 1458, CDMX",
                 [
-                    ("Laura Méndez", "Compras", "laura.mendez@bayerca.com", "55 2345 9988"),
-                    ("Óscar Ruiz", "Calidad", "oscar.ruiz@bayerca.com", "55 2345 9900"),
+                    ("Laura Méndez", copy.purchasing, "laura.mendez@bayerca.com", "55 2345 9988"),
+                    ("Óscar Ruiz", copy.quality, "oscar.ruiz@bayerca.com", "55 2345 9900"),
                 ]
             ),
             (
                 "Best Girl", "Blvd. Díaz Ordaz 230, Monterrey",
-                [("Sofía Treviño", "Directora de producto", "sofia@bestgirl.mx", "81 1122 3344")]
+                [("Sofía Treviño", copy.productDirector, "sofia@bestgirl.mx", "81 1122 3344")]
             ),
             (
                 "Andes Denim Co.", "Calle 5 de Mayo 77, Guadalajara",
-                [("Diego Paredes", "Gerente de abasto", "dparedes@andesdenim.com", "33 9988 7766")]
+                [("Diego Paredes", copy.sourcingManager, "dparedes@andesdenim.com", "33 9988 7766")]
             ),
             (
                 "Lumen Activewear", "Parque Industrial Querétaro, Nave 12",
-                [("Mariana Sosa", "Planeación", "mariana@lumenactive.com", "442 555 1010")]
+                [("Mariana Sosa", copy.planning, "mariana@lumenactive.com", "442 555 1010")]
             ),
         ]
         let clients = clientSpecs.map { name, address, contacts -> Client in
@@ -59,9 +60,9 @@ enum DemoSeeder {
 
         // Suppliers.
         for (name, address, contact) in [
-            ("Hilados del Bajío", "León, Gto.", ("Ramón Ibarra", "Ventas", "ventas@hiladosbajio.mx", "477 210 3030")),
-            ("Avíos y Etiquetas MX", "Puebla, Pue.", ("Claudia Romo", "Ejecutiva de cuenta", "claudia@aviosmx.com", "222 404 5050")),
-            ("Telas Finas del Norte", "Torreón, Coah.", ("Héctor Garza", "Director comercial", "hgarza@telasfinas.mx", "871 300 2020")),
+            ("Hilados del Bajío", "León, Gto.", ("Ramón Ibarra", copy.sales, "ventas@hiladosbajio.mx", "477 210 3030")),
+            ("Avíos y Etiquetas MX", "Puebla, Pue.", ("Claudia Romo", copy.accountExecutive, "claudia@aviosmx.com", "222 404 5050")),
+            ("Telas Finas del Norte", "Torreón, Coah.", ("Héctor Garza", copy.salesDirector, "hgarza@telasfinas.mx", "871 300 2020")),
         ] {
             let s = Supplier(context: context)
             s.stampCreated()
@@ -74,7 +75,7 @@ enum DemoSeeder {
         }
 
         // Styles.
-        let styles = ["Falda plisada SK-210", "Jeans skinny DN-88", "Blusa lino BL-14", "Legging sport LG-301", "Chamarra mezclilla JK-05"]
+        let styles = copy.styles
             .map { name -> Style in
                 let s = Style(context: context)
                 s.stampCreated()
@@ -88,22 +89,34 @@ enum DemoSeeder {
             var code, list, garment: String; var qty: Int; var price: Double; var client, style: Int; var internalDue, clientDue: Int
         }
         let orderSpecs = [
-            OrderSpec(code: "C-1042", list: "L-340", garment: "Falda", qty: 4_000, price: 68, client: 0, style: 0, internalDue: -20, clientDue: 4),
             OrderSpec(
-                code: "C-1043", list: "L-340", garment: "Jeans", qty: 6_500, price: 112, client: 2, style: 1, internalDue: -15, clientDue: 12),
-            OrderSpec(code: "C-1050", list: "L-352", garment: "Blusa", qty: 2_800, price: 74, client: 1, style: 2, internalDue: -9, clientDue: 2),
+                code: "C-1042", list: "L-340", garment: copy.skirt, qty: 4_000, price: 68, client: 0, style: 0, internalDue: -20,
+                clientDue: 4),
             OrderSpec(
-                code: "C-1051", list: "L-352", garment: "Legging", qty: 9_000, price: 58, client: 3, style: 3, internalDue: -6, clientDue: 21),
+                code: "C-1043", list: "L-340", garment: copy.jeans, qty: 6_500, price: 112, client: 2, style: 1, internalDue: -15,
+                clientDue: 12),
             OrderSpec(
-                code: "C-1060", list: "L-360", garment: "Chamarra", qty: 1_500, price: 260, client: 2, style: 4, internalDue: -2, clientDue: 35),
-            OrderSpec(code: "C-1061", list: "L-360", garment: "Falda", qty: 3_200, price: 70, client: 0, style: 0, internalDue: 0, clientDue: 40),
-            OrderSpec(code: "C-1062", list: "L-361", garment: "Blusa", qty: 5_000, price: 76, client: 1, style: 2, internalDue: 1, clientDue: 45),
+                code: "C-1050", list: "L-352", garment: copy.blouse, qty: 2_800, price: 74, client: 1, style: 2, internalDue: -9,
+                clientDue: 2),
+            OrderSpec(
+                code: "C-1051", list: "L-352", garment: copy.leggings, qty: 9_000, price: 58, client: 3, style: 3, internalDue: -6,
+                clientDue: 21),
+            OrderSpec(
+                code: "C-1060", list: "L-360", garment: copy.jacket, qty: 1_500, price: 260, client: 2, style: 4, internalDue: -2,
+                clientDue: 35),
+            OrderSpec(
+                code: "C-1061", list: "L-360", garment: copy.skirt, qty: 3_200, price: 70, client: 0, style: 0, internalDue: 0,
+                clientDue: 40),
+            OrderSpec(
+                code: "C-1062", list: "L-361", garment: copy.blouse, qty: 5_000, price: 76, client: 1, style: 2, internalDue: 1,
+                clientDue: 45),
         ]
         var orders: [CutOrder] = []
         for spec in orderSpecs {
             if let order = try? service.createOrder(
                 code: spec.code, list: spec.list, garment: spec.garment, quantity: spec.qty, unitPrice: spec.price,
-                client: clients[spec.client], style: styles[spec.style], internalDate: day(spec.internalDue), clientDate: day(spec.clientDue), notes: nil
+                client: clients[spec.client], style: styles[spec.style], internalDate: day(spec.internalDue),
+                clientDate: day(spec.clientDue), notes: nil
             ) {
                 order.createdAt = day(spec.internalDue)
                 orders.append(order)
@@ -146,11 +159,10 @@ enum DemoSeeder {
         // Projects (quotes).
         for (client, qty, price, minutes, fabric, status, due, notes) in [
             (
-                "Lumen Activewear", 12_000, 61.5, 14.0, "Supplex 220g", ProjectStatus.pending, 60,
-                "Muestra física aprobada, falta precio final."
+                "Lumen Activewear", 12_000, 61.5, 14.0, "Supplex 220g", ProjectStatus.pending, 60, copy.projectNotes[0]
             ),
-            ("Bayer California", 8_000, 72.0, 11.5, "Popelina 100% algodón", .accepted, 75, "Entregas parciales cada 15 días."),
-            ("Best Girl", 3_000, 95.0, 22.0, "Lino lavado", .declined, 30, "Cliente buscó proveedor más barato."),
+            ("Bayer California", 8_000, 72.0, 11.5, copy.poplin, .accepted, 75, copy.projectNotes[1]),
+            ("Best Girl", 3_000, 95.0, 22.0, copy.washedLinen, .declined, 30, copy.projectNotes[2]),
         ] {
             let p = Project(context: context)
             p.stampCreated()
@@ -173,5 +185,74 @@ enum DemoSeeder {
         }
 
         try? context.saveIfNeeded()
+    }
+
+    /// Demo company name stored in Ajustes when the demo is loaded.
+    static func companyName(language: String = L10n.language) -> String { Copy(language: language).company }
+
+    /// Seeded texts in the app language, so the demo (and the landing screenshots) look native.
+    /// Brand, person and place names stay as they are; raw values and roles never change.
+    struct Copy {
+        var company: String
+        var plants: [String]
+        var styles: [String]
+        var skirt, jeans, blouse, leggings, jacket: String
+        var purchasing, quality, productDirector, sourcingManager, planning: String
+        var sales, accountExecutive, salesDirector: String
+        var poplin, washedLinen: String
+        var projectNotes: [String]
+
+        init(language: String) {
+            switch String(language.prefix(2)) {
+            case "en":
+                company = "Demo Textiles"
+                plants = ["North Plant", "South Plant", "Bajío Plant"]
+                styles = [
+                    "Pleated skirt SK-210", "Skinny jeans DN-88", "Linen blouse BL-14", "Sport leggings LG-301", "Denim jacket JK-05",
+                ]
+                (skirt, jeans, blouse, leggings, jacket) = ("Skirt", "Jeans", "Blouse", "Leggings", "Jacket")
+                (purchasing, quality, productDirector, sourcingManager, planning) = (
+                    "Purchasing", "Quality", "Product director", "Sourcing manager", "Planning"
+                )
+                (sales, accountExecutive, salesDirector) = ("Sales", "Account executive", "Sales director")
+                (poplin, washedLinen) = ("100% cotton poplin", "Washed linen")
+                projectNotes = [
+                    "Physical sample approved; final price pending.", "Partial deliveries every 15 days.",
+                    "The client went with a cheaper supplier.",
+                ]
+            case "pt":
+                company = "Têxtil Demo"
+                plants = ["Unidade Norte", "Unidade Sul", "Unidade Bajío"]
+                styles = [
+                    "Saia plissada SK-210", "Calça skinny DN-88", "Blusa de linho BL-14", "Legging esportiva LG-301", "Jaqueta jeans JK-05",
+                ]
+                (skirt, jeans, blouse, leggings, jacket) = ("Saia", "Calça jeans", "Blusa", "Legging", "Jaqueta")
+                (purchasing, quality, productDirector, sourcingManager, planning) = (
+                    "Compras", "Qualidade", "Diretora de produto", "Gerente de suprimentos", "Planejamento"
+                )
+                (sales, accountExecutive, salesDirector) = ("Vendas", "Executiva de contas", "Diretor comercial")
+                (poplin, washedLinen) = ("Popeline 100% algodão", "Linho lavado")
+                projectNotes = [
+                    "Amostra física aprovada; falta o preço final.", "Entregas parciais a cada 15 dias.",
+                    "O cliente escolheu um fornecedor mais barato.",
+                ]
+            default:
+                company = "Textiles Demo"
+                plants = ["Planta Norte", "Planta Sur", "Planta Bajío"]
+                styles = [
+                    "Falda plisada SK-210", "Jeans skinny DN-88", "Blusa lino BL-14", "Legging sport LG-301", "Chamarra mezclilla JK-05",
+                ]
+                (skirt, jeans, blouse, leggings, jacket) = ("Falda", "Jeans", "Blusa", "Legging", "Chamarra")
+                (purchasing, quality, productDirector, sourcingManager, planning) = (
+                    "Compras", "Calidad", "Directora de producto", "Gerente de abasto", "Planeación"
+                )
+                (sales, accountExecutive, salesDirector) = ("Ventas", "Ejecutiva de cuenta", "Director comercial")
+                (poplin, washedLinen) = ("Popelina 100% algodón", "Lino lavado")
+                projectNotes = [
+                    "Muestra física aprobada, falta precio final.", "Entregas parciales cada 15 días.",
+                    "Cliente buscó proveedor más barato.",
+                ]
+            }
+        }
     }
 }

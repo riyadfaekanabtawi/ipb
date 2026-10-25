@@ -35,6 +35,13 @@ final class ToastCenter {
     private(set) var current: Toast?
     private var dismissTask: Task<Void, Never>?
 
+    /// Localized message (string literals are extracted into the String Catalog).
+    func show(_ message: LocalizedStringResource, style: Toast.Style = .success) {
+        show(String(localized: message), style: style)
+    }
+
+    /// Text that is already localized (e.g. `error.localizedDescription`), shown as-is.
+    @_disfavoredOverload
     func show(_ message: String, style: Toast.Style = .success) {
         current = Toast(message: message, style: style)
         let generator = UINotificationFeedbackGenerator()

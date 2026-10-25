@@ -109,7 +109,10 @@ struct ProductionReportsView: View {
         }
         .tramaScreenBackground()
         .searchable(text: $query, prompt: "Corte, lista, estilo, cliente…")
-        .navigationTitle(isPlantManager ? "Producción · \(session.user?.plant?.displayName ?? "Sin planta")" : "Reportes de producción")
+        .navigationTitle(
+            isPlantManager
+                ? "Producción · \(session.user?.plant?.displayName ?? String(localized: "Sin planta"))" : "Reportes de producción"
+        )
         .toolbar {
             ToolbarItem(placement: .primaryAction) { sortMenu }
             ToolbarItem(placement: .primaryAction) {
@@ -137,20 +140,20 @@ struct ProductionReportsView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
                 if !isPlantManager {
-                    FilterMenu(title: plant?.displayName ?? "Planta", symbol: "building.2", isActive: plant != nil) {
+                    FilterMenu(title: plant?.displayName ?? String(localized: "Planta"), symbol: "building.2", isActive: plant != nil) {
                         Picker("Planta", selection: $plant) {
                             Text("Todas").tag(Plant?.none)
                             ForEach(plants) { Text($0.displayName).tag(Optional($0)) }
                         }
                     }
                 }
-                FilterMenu(title: client?.displayName ?? "Cliente", symbol: "person.2", isActive: client != nil) {
+                FilterMenu(title: client?.displayName ?? String(localized: "Cliente"), symbol: "person.2", isActive: client != nil) {
                     Picker("Cliente", selection: $client) {
                         Text("Todos").tag(Client?.none)
                         ForEach(clients) { Text($0.displayName).tag(Optional($0)) }
                     }
                 }
-                FilterMenu(title: status?.title ?? "Estado", symbol: "scissors", isActive: status != nil) {
+                FilterMenu(title: status?.title ?? String(localized: "Estado"), symbol: "scissors", isActive: status != nil) {
                     Picker("Estado", selection: $status) {
                         Text("Todos").tag(CutStatus?.none)
                         ForEach(CutStatus.allCases) { Label($0.title, systemImage: $0.symbol).tag(Optional($0)) }
@@ -160,7 +163,7 @@ struct ProductionReportsView: View {
                     showDateFilter = true
                 } label: {
                     FilterChip(
-                        title: useDateRange ? "\(Fmt.shortDate(from)) – \(Fmt.shortDate(to))" : "Fecha cliente",
+                        title: useDateRange ? "\(Fmt.shortDate(from)) – \(Fmt.shortDate(to))" : String(localized: "Fecha cliente"),
                         symbol: "calendar", isActive: useDateRange)
                 }
                 .buttonStyle(.plain)
@@ -175,7 +178,7 @@ struct ProductionReportsView: View {
                 Button {
                     onlyPending.toggle()
                 } label: {
-                    FilterChip(title: "Con pendientes por enviar", symbol: "shippingbox", isActive: onlyPending)
+                    FilterChip(title: String(localized: "Con pendientes por enviar"), symbol: "shippingbox", isActive: onlyPending)
                 }
                 .buttonStyle(.plain)
                 if hasFilters {
@@ -258,13 +261,13 @@ enum SortKey: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var title: String {
         switch self {
-        case .clientDate: "Fecha de entrega"
-        case .code: "Corte"
-        case .plant: "Planta"
-        case .status: "Estado"
-        case .quantity: "Cantidad"
-        case .toShip: "Por enviar"
-        case .revenue: "Ingreso"
+        case .clientDate: String(localized: "Fecha de entrega")
+        case .code: String(localized: "Corte")
+        case .plant: String(localized: "Planta")
+        case .status: String(localized: "Estado")
+        case .quantity: String(localized: "Cantidad")
+        case .toShip: String(localized: "Por enviar")
+        case .revenue: String(localized: "Ingreso")
         }
     }
 
@@ -326,7 +329,7 @@ private struct ProductionRowView: View {
         }
     }
 
-    private func metric(_ title: String, _ value: String, tint: Color = .primary) -> some View {
+    private func metric(_ title: LocalizedStringKey, _ value: String, tint: Color = .primary) -> some View {
         VStack(alignment: .trailing, spacing: 2) {
             Text(value).font(.subheadline.weight(.semibold).monospacedDigit()).foregroundStyle(tint)
             Text(title).font(.caption2).foregroundStyle(.secondary)
@@ -375,7 +378,7 @@ struct FilterChip: View {
 }
 
 private struct TotalChip: View {
-    var title: String
+    var title: LocalizedStringKey
     var value: String
     var symbol: String
     var tint: Color
@@ -403,9 +406,13 @@ struct ProductionCSV: Transferable {
     var rows: [ProductionRow]
 
     var csv: String {
+        // Column headers are for people opening the file, so they follow the app language.
         let header = [
-            "Corte", "Lista", "Cliente", "Estilo", "Prenda", "Planta", "Estado", "Cantidad", "Cortadas", "Producidas",
-            "Plancha", "Empaque", "Bodega", "Enviadas", "Por enviar", "Ingreso", "Fecha interna", "Fecha cliente",
+            String(localized: "Corte"), String(localized: "Lista"), String(localized: "Cliente"), String(localized: "Estilo"),
+            String(localized: "Prenda"), String(localized: "Planta"), String(localized: "Estado"), String(localized: "Cantidad"),
+            String(localized: "Cortadas"), String(localized: "Producidas"), String(localized: "Plancha"), String(localized: "Empaque"),
+            String(localized: "Bodega"), String(localized: "Enviadas"), String(localized: "Por enviar"), String(localized: "Ingreso"),
+            String(localized: "Fecha interna"), String(localized: "Fecha cliente"),
         ]
         let iso = Date.ISO8601FormatStyle().year().month().day()
         func esc(_ s: String) -> String {

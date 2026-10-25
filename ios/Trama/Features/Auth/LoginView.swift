@@ -233,7 +233,7 @@ private struct BrandPanel: View {
 
 struct AuthField: View {
     var symbol: String
-    var placeholder: String
+    var placeholder: LocalizedStringKey
     @Binding var text: String
     var secure = false
     @State private var reveal = false

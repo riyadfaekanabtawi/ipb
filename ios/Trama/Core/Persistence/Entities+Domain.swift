@@ -35,7 +35,7 @@ extension AppUser: Timestamped {}
 // MARK: - Plant
 
 extension Plant {
-    var displayName: String { name ?? "Planta" }
+    var displayName: String { name ?? String(localized: "Planta") }
 
     var assignmentList: [Assignment] {
         (assignments as? Set<Assignment> ?? []).sorted { ($0.scheduledDate ?? .distantPast) < ($1.scheduledDate ?? .distantPast) }
@@ -54,7 +54,7 @@ extension Plant {
 // MARK: - Client / Supplier / Contact
 
 extension Client {
-    var displayName: String { name ?? "Cliente" }
+    var displayName: String { name ?? String(localized: "Cliente") }
     var contactList: [Contact] { (contacts as? Set<Contact> ?? []).sorted { $0.sortIndex < $1.sortIndex } }
     var orderList: [CutOrder] {
         (orders as? Set<CutOrder> ?? []).sorted { ($0.createdAt ?? .distantPast) > ($1.createdAt ?? .distantPast) }
@@ -62,7 +62,7 @@ extension Client {
 }
 
 extension Supplier {
-    var displayName: String { name ?? "Proveedor" }
+    var displayName: String { name ?? String(localized: "Proveedor") }
     var contactList: [Contact] { (contacts as? Set<Contact> ?? []).sorted { $0.sortIndex < $1.sortIndex } }
 }
 
@@ -75,7 +75,7 @@ extension Contact {
 // MARK: - Style
 
 extension Style {
-    var displayName: String { name ?? "Estilo" }
+    var displayName: String { name ?? String(localized: "Estilo") }
     var orderList: [CutOrder] { (orders as? Set<CutOrder> ?? []).sorted { ($0.code ?? "") < ($1.code ?? "") } }
 
     /// Number of assignments of this style per plant (legacy "Estilo asignado a plantas").
@@ -94,9 +94,9 @@ extension Style {
 // MARK: - CutOrder
 
 extension CutOrder {
-    var displayCode: String { code?.isEmpty == false ? code! : "Sin código" }
-    var clientName: String { client?.displayName ?? "Sin cliente" }
-    var styleName: String { style?.displayName ?? "Sin estilo" }
+    var displayCode: String { code?.isEmpty == false ? code! : String(localized: "Sin código") }
+    var clientName: String { client?.displayName ?? String(localized: "Sin cliente") }
+    var styleName: String { style?.displayName ?? String(localized: "Sin estilo") }
 
     var assignmentList: [Assignment] {
         (assignments as? Set<Assignment> ?? []).sorted { ($0.createdAt ?? .distantPast) < ($1.createdAt ?? .distantPast) }
@@ -134,7 +134,7 @@ extension Assignment {
         AssignmentMetrics(quantity: Int(quantity), unitPrice: unitPrice, reports: reportList.map(\.snapshot))
     }
 
-    var plantName: String { plant?.displayName ?? "Sin planta" }
+    var plantName: String { plant?.displayName ?? String(localized: "Sin planta") }
     var title: String { order?.displayCode ?? "Corte" }
 
     func isUrgent(windowDays: Int, now: Date = .now) -> Bool {
@@ -178,11 +178,14 @@ extension ProductionReport {
     var summary: String {
         switch kind {
         case .plant:
-            "\(Fmt.int(Int(produced))) producidas · \(Fmt.int(Int(operators))) operarios · \(Fmt.int(Int(absences))) faltas"
+            [
+                String(localized: "\(Int(produced)) producidas"), String(localized: "\(Int(operators)) operarios"),
+                String(localized: "\(Int(absences)) faltas"),
+            ].joined(separator: " · ")
         case .cut:
-            "\(cutStatus?.title ?? "—") · \(Fmt.int(Int(realQuantity))) cortadas"
+            "\(cutStatus?.title ?? "—") · " + String(localized: "\(Int(realQuantity)) cortadas")
         case .shipment:
-            "Envío #\(shipmentNumber ?? "—") · \(Fmt.int(Int(shippedQuantity))) prendas"
+            String(localized: "Envío #\(shipmentNumber ?? "—")") + " · " + String(localized: "\(Int(shippedQuantity)) prendas")
         }
     }
 }
@@ -196,7 +199,7 @@ extension Project {
     }
 
     var total: Double { Double(quantity) * price }
-    var displayClient: String { client?.displayName ?? clientName ?? "Sin cliente" }
+    var displayClient: String { client?.displayName ?? clientName ?? String(localized: "Sin cliente") }
 }
 
 // MARK: - AppUser
@@ -209,6 +212,6 @@ extension AppUser {
 
     var fullName: String {
         let full = [firstName, lastName].compactMap { $0 }.joined(separator: " ").trimmingCharacters(in: .whitespaces)
-        return full.isEmpty ? (email ?? "Usuario") : full
+        return full.isEmpty ? (email ?? String(localized: "Usuario")) : full
     }
 }

@@ -106,7 +106,7 @@ final class LegacyImporter {
     private func importPlant(_ row: LegacyRow) {
         guard let dto = LegacyMapper.plant(row) else { return skip(.plants) }
         let (plant, created) = upsert(Plant.self, dto.remoteID, cache: &plants, resource: .plants)
-        plant.name = dto.name ?? plant.name ?? "Planta \(dto.remoteID)"
+        plant.name = dto.name ?? plant.name ?? String(localized: "Planta \(dto.remoteID)")
         plant.maxCapacity = dto.maxCapacity
         finish(plant, created)
     }
@@ -248,7 +248,7 @@ final class LegacyImporter {
         report.kind = dto.kind
         report.assignment = assignment
         if let date = dto.createdAt { report.createdAt = date }
-        report.authorName = report.authorName ?? "Sistema anterior"
+        report.authorName = report.authorName ?? String(localized: "Sistema anterior")
         report.operators = dto.operators
         report.absences = dto.absences
         report.produced = dto.produced
@@ -312,7 +312,7 @@ final class LegacyImporter {
         order.unitPrice = cut.unitPrice
         order.clientDate = cut.clientDate
         order.internalDate = cut.scheduledDate
-        order.editedBy = "Sistema anterior"
+        order.editedBy = String(localized: "Sistema anterior")
         order.client = cut.clientName.flatMap { client(named: $0, create: true) }
         order.style = cut.styleName.flatMap { style(named: $0) }
         return order
