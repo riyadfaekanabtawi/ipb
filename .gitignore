@@ -114,3 +114,15 @@ build-iPhoneSimulator/
 
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
+
+### Xcode ###
+xcuserdata/
+DerivedData/
+*.xcscmblueprint
+*.xccheckout
+build/
+
+### Claude Code: shared project config is versioned (overrides global ignores) ###
+!CLAUDE.md
+!.claude/
+.claude/settings.local.json
