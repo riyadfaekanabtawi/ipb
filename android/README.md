@@ -49,6 +49,23 @@ adb shell am start -n com.nevutech.trama/.MainActivity --ez uiTestDemo true \
 
 Demo accounts: `admin@`, `cortes@`, `planta@`, `envios@demo.local`, password `trama123`.
 
+## Languages
+
+Spanish (Mexico) is the default (`res/values/`); English (`values-en/`) and Portuguese (Brazil,
+`values-pt-rBR/`) are translated. A build step copies `values-pt-rBR` to `values-pt`, so every
+Portuguese locale gets it; any other device language falls back to Spanish.
+
+- Copy lives in `strings*.xml` (one file per area). `StringResourcesTest` fails when a key or a
+  format argument is missing in a translation.
+- Compose uses `stringResource`/`pluralStringResource`; services, sync and toasts use
+  `L10n.str`/`L10n.plural` (`core/l10n/L10n.kt`). Enum raw values (roles, statuses, report kinds)
+  are never translated; their `titleRes` is.
+- The language follows the device, or the picker in Ajustes (and Android 13+ Settings → Apps →
+  Trama → Language; `res/xml/locales_config.xml`). Android 12 and older store the choice in the app.
+- `Fmt` formats numbers and dates in the current locale; amounts are always MXN.
+- Demo data is seeded in the current language. API calls send `Accept-Language` (`es-MX`, `en`,
+  `pt-BR`) so the server can answer in the same language.
+
 ## Cloud sync (optional)
 
 The app works fully offline; "Conectar con mi licencia" (sign-in/onboarding, or Ajustes → Nube)
