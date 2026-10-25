@@ -31,7 +31,7 @@ xcodebuild -project Trama.xcodeproj -scheme Trama -destination "platform=iOS Sim
 
 ## Commands (web)
 
-`web/` is plain HTML/CSS/JS with no build step. Preview it with `python3 -m http.server -d web 8000`. Deploy happens by pushing `web/**` to `main` (`.github/workflows/deploy-web.yml`, needs the `HF_TOKEN` secret and the `HF_SPACE` variable). Never deploy by hand.
+`web/` is plain HTML/CSS/JS with no build step. Preview it with `python3 -m http.server -d web 8000`. Live at https://ranabtawi-trama.static.hf.space (Space `ranabtawi/trama`). Publish with `web/deploy.sh` (uses the local `hf` login) or let CI do it on pushes to `main` (`.github/workflows/deploy-web.yml`, needs the `HF_TOKEN` secret and `HF_SPACE=ranabtawi/trama`).
 
 ## iOS architecture
 
