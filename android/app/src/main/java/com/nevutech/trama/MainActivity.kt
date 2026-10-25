@@ -6,12 +6,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.RootScreen
 import com.nevutech.trama.core.data.DemoSeeder
 import com.nevutech.trama.core.data.TramaDatabase
 import com.nevutech.trama.designsystem.TramaTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 private const val TAG = "Trama"
@@ -28,6 +31,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // While visible, pull other devices' changes every 30 s (no-op when not linked; same as iOS and web).
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                while (true) {
+                    delay(30_000)
+                    activeContainer?.sync?.requestSync()
+                }
+            }
+        }
         val app = application as TramaApplication
         // Debug QA hook, same contract as iOS -uiTestDemo: in-memory demo store + optional auto sign-in.
         // adb shell am start -n com.nevutech.trama/.MainActivity --ez uiTestDemo true --es loginAs admin@demo.local --es openSection Board [--es openRoute firstAssignment|firstOrder]
