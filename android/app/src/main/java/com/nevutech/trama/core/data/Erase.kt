@@ -5,9 +5,17 @@ import androidx.room.withTransaction
 /**
  * Deletes every row in one transaction (children first, so RESTRICT foreign keys never fire)
  * and, unless [keepImages], every stored image. Port of iOS `PersistenceController.eraseAll()`.
+ * A local reset: nothing is queued for sync, and the outbox and pull cursor start over.
  */
 suspend fun eraseAllData(db: TramaDatabase, images: ImageStore, keepImages: Boolean = false) {
-    db.withTransaction { clearTables(db) }
+    val sync = db.syncDao()
+    db.withTransaction {
+        sync.setApplying(true)
+        clearTables(db)
+        sync.setApplying(false)
+        sync.clearOutbox()
+        sync.setCursor(0)
+    }
     if (!keepImages) images.clear()
 }
 

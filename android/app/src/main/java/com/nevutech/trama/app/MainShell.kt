@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DrawerValue
@@ -126,7 +127,9 @@ fun MainShell(debugStartSection: String? = null, debugStartRoute: String? = null
 
     val host: @Composable (Modifier) -> Unit = { modifier ->
         CompositionLocalProvider(LocalNavigator provides navigator) {
-            NavHost(nav, startDestination = Routes.section(start), modifier = modifier) {
+          Column(modifier) {
+            ReadOnlyBanner()
+            NavHost(nav, startDestination = Routes.section(start), modifier = Modifier.weight(1f)) {
                 composable(Routes.SECTION_PATTERN, arguments = listOf(navArgument("name") { type = NavType.StringType })) { entry ->
                     val section = AppSection.entries.firstOrNull { it.name == entry.arguments?.getString("name") } ?: start
                     SectionScreen(if (section in sections) section else start)
@@ -138,6 +141,7 @@ fun MainShell(debugStartSection: String? = null, debugStartRoute: String? = null
                 detail(Routes.SUPPLIER) { SupplierDetailScreen(it) }
                 detail(Routes.STYLE) { StyleDetailScreen(it) }
             }
+          }
         }
     }
 
@@ -265,3 +269,23 @@ private fun Sidebar(sections: List<AppSection>, current: AppSection?, onSelect: 
     }
 }
 
+
+/** Shown while the company's licence is expired or suspended: data stays readable, writes are blocked. */
+@Composable
+private fun ReadOnlyBanner() {
+    val app = LocalApp.current
+    val status by app.sync.status.collectAsState()
+    if (!status.readOnly) return
+    val expired = status.account.licenceStatus == "expired"
+    Row(
+        Modifier.fillMaxWidth().background(Tokens.colors.warning.copy(alpha = 0.16f)).padding(horizontal = 20.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Icon(Icons.Filled.Lock, null, tint = Tokens.colors.warning, modifier = Modifier.size(18.dp))
+        Text(
+            if (expired) "Tu licencia venció: los datos son de solo lectura. Renuévala para seguir registrando cambios."
+            else "La licencia de tu empresa está suspendida: los datos son de solo lectura.",
+            style = MaterialTheme.typography.bodyMedium,
+        )
+    }
+}

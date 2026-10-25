@@ -17,6 +17,14 @@ import kotlinx.coroutines.launch
 private const val TAG = "Trama"
 
 class MainActivity : ComponentActivity() {
+    private var activeContainer: AppContainer? = null
+
+    override fun onStart() {
+        super.onStart()
+        // App start / resume: catch up with the cloud (no-op when not linked).
+        activeContainer?.sync?.requestSync()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -24,7 +32,7 @@ class MainActivity : ComponentActivity() {
         // Debug QA hook, same contract as iOS -uiTestDemo: in-memory demo store + optional auto sign-in.
         // adb shell am start -n com.nevutech.trama/.MainActivity --ez uiTestDemo true --es loginAs admin@demo.local --es openSection Board [--es openRoute firstAssignment|firstOrder]
         val container = if (BuildConfig.DEBUG && intent.getBooleanExtra("uiTestDemo", false)) {
-            AppContainer(this, TramaDatabase.inMemory(this)).also { demo ->
+            AppContainer(this, TramaDatabase.inMemory(this), cloud = false).also { demo ->
                 lifecycleScope.launch(kotlinx.coroutines.Dispatchers.Default) {
                     runCatching {
                         DemoSeeder.seed(demo.db)
@@ -36,6 +44,9 @@ class MainActivity : ComponentActivity() {
                 }
             }
         } else app.container
+        // Debug: point the app at a local API, e.g. --es apiBase http://10.0.2.2:8787/api
+        if (BuildConfig.DEBUG) intent.getStringExtra("apiBase")?.let { app.container.setApiBase(it) }
+        activeContainer = container
         val startSection = intent.getStringExtra("openSection")
         val startRoute = intent.getStringExtra("openRoute")
         setContent {
