@@ -1,0 +1,83 @@
+# Trama
+
+> Trama es un software de control de producción textil para fábricas de confección y maquiladoras. Tiene app nativa para iPad y Android que funciona 100% sin internet y una versión Web para la oficina. Se vende por suscripción mensual o anual con licencia privada por empresa (las apps no tienen descarga pública).
+
+Trama nació en el piso de producción de Industrial Peña Balles, una maquiladora mexicana con varias plantas, y hoy se licencia a otras empresas textiles. La interfaz está en español (México); el sitio está en español, inglés y portugués.
+
+## Qué hace
+- Control de cortes: registra cada corte (código, lista, prenda, estilo, cliente, cantidad, precio unitario, fecha interna y fecha de entrega al cliente).
+- Asignación por capacidad: reparte un corte entre plantas; cada planta tiene una capacidad mensual y Trama muestra en vivo si el corte cabe.
+- Tablero de corte: estados en espera, en mesa de corte y listo para confeccionar.
+- Reportes de producción: de planta (operarios, faltas, producidas, plancha, empaque, bodega), de corte (cantidad real cortada) y de envío, con totales y exportación CSV.
+- Envíos urgentes: cortes con prendas por enviar cuya fecha de entrega vence pronto o ya venció.
+- Calendario de plantas, dashboard con KPIs y gráficas, calculadora de producción (meta diaria, días estimados, precio por minuto), catálogos de plantas, clientes, proveedores, estilos con foto, proyectos y usuarios.
+- Roles: administrador, gerente de cortes, gerente de planta (solo ve su planta) y gerente de envíos.
+- App sin conexión: base de datos en el dispositivo, inicio de sesión offline, respaldo y sincronización al volver la conexión. La versión Web requiere internet.
+
+## Precios (USD por mes, impuestos no incluidos)
+- Web: $49 USD/mes (anual: $41 USD/mes, $490 USD/año). Acceso desde el navegador, sin instalar nada; 1 planta; Hasta 5 usuarios; Todos los módulos: cortes, asignación, reportes y envíos; Soporte por correo; Requiere conexión a internet.
+- Planta: $99 USD/mes (anual: $83 USD/mes, $990 USD/año). Apps para iPad y Android, 100% sin internet; Acceso Web incluido; 1 planta; Hasta 10 usuarios o dispositivos; Respaldo y sincronización automáticos; Soporte por correo.
+- Multiplanta: $249 USD/mes (anual: $208 USD/mes, $2,490 USD/año). Todo lo de Planta; Hasta 5 plantas con capacidad por mes; Hasta 30 usuarios o dispositivos; Migración de datos de tu sistema actual; Capacitación por rol; Soporte prioritario.
+- Empresa: Desde $590 USD/mes (anual: $492 USD/mes, $5,900 USD/año). Plantas y usuarios ilimitados; Reportes y flujos a la medida; iPad, Android y Web; Acuerdo de nivel de servicio (SLA); Onboarding dedicado.
+- Pago anual: 2 meses gratis (se paga el equivalente a 10 meses). El precio es por empresa, no por usuario.
+
+## Cómo se contrata
+1. Escríbenos: Elige un plan o cuéntanos cuántas plantas y usuarios tienes.
+2. Demo en vivo: Te mostramos Trama con datos parecidos a los de tu fábrica.
+3. Confirmamos tu plan: Precio publicado y todo por escrito, sin costos ocultos.
+4. Acceso privado: Apps: distribución privada a tus iPads y Android, sin descarga pública. Plan Web: acceso con usuario y contraseña.
+5. Arranque y soporte: Migración de datos, capacitación por rol y soporte continuo según tu plan.
+
+## Contacto
+- Usa el formulario de solicitud de licencia del sitio: https://ranabtawi-trama.static.hf.space/index.html#contacto
+
+## Idiomas
+- [Español](https://ranabtawi-trama.static.hf.space/index.html)
+- [English](https://ranabtawi-trama.static.hf.space/en/index.html)
+- [Português](https://ranabtawi-trama.static.hf.space/pt/index.html)
+
+## App o Web
+Web para la oficina, app para el piso. La app nativa en iPad o Android sigue trabajando aunque no haya señal en la nave. La versión Web pone Trama en cualquier computadora, sin instalar nada. Planta, Multiplanta y Empresa incluyen las dos.
+
+- Funciona sin internet: app: Base de datos en el dispositivo; web: Necesita conexión.
+- Si se cae la red: app: Nadie se detiene; web: Se pausa hasta reconectar.
+- Sincronización: app: Automática al volver la conexión; web: Siempre en línea.
+- Velocidad: app: Instantánea, sin pantallas de carga; web: Depende de tu conexión.
+- Cámara para fotos de estilos: app: Toma la foto desde la tableta; web: Sube archivos desde la computadora.
+- Sin instalación: app: Distribución privada a tus dispositivos; web: Abre el navegador y entra.
+- En cualquier computadora: app: iPad, tabletas y teléfonos Android; web: Windows, Mac o Linux.
+- Ideal para: app: Gerentes de corte, planta y envíos; web: Administración, ventas y dirección.
+- Precio: app: Desde $99 USD/mes, incluye Web; web: Desde $49 USD/mes.
+
+## Preguntas frecuentes
+
+### ¿Cuánto cuesta Trama?
+Web cuesta $49 USD al mes, Planta $99, Multiplanta $249 y Empresa desde $590, más IVA. Si pagas anual, tienes 2 meses gratis. El precio es por empresa, no por usuario.
+
+### ¿Cuál es la diferencia entre la app y la versión Web?
+La app para iPad y Android guarda los datos en el dispositivo, así que funciona sin internet, es más rápida y usa la cámara para las fotos de estilos. La versión Web no requiere instalación y se usa desde cualquier computadora, pero necesita conexión. Planta, Multiplanta y Empresa incluyen ambas.
+
+### ¿Puedo descargar Trama de la App Store o Google Play?
+No. Las apps se distribuyen de forma privada a las empresas con licencia, así controlas qué dispositivos las tienen y nadie fuera de tu empresa puede instalarlas. La versión Web se usa con usuario y contraseña.
+
+### ¿Necesito internet para usarla?
+Con la app, no: inicio de sesión, cortes, reportes, catálogos y gráficas funcionan sin conexión, y todo se sincroniza cuando vuelve el internet. La versión Web sí necesita conexión.
+
+### ¿Funciona en Android?
+Sí. Hay app nativa para tabletas y teléfonos Android 8.0 o superior, con las mismas reglas y el mismo formato de respaldo que la de iPad.
+
+### ¿Dónde quedan mis datos?
+En la app, en una base de datos local en cada dispositivo, con respaldo automático. Además puedes exportar respaldos completos cuando quieras y restaurarlos en otro iPad o Android.
+
+### ¿Pueden migrar la información de mi sistema actual?
+Sí. La migración está incluida en Multiplanta y Empresa: importamos plantas, clientes, proveedores, estilos, cortes y reportes. Revisamos cada caso en la demo.
+
+### ¿Qué es un software de control de producción textil?
+Es un sistema para planear y seguir la fabricación de prendas: qué cortes hay, en qué planta se producen, cuánto lleva cada uno y cuándo se envía. Trama lo hace en tableta, sin internet y con roles para cada gerente.
+
+### ¿Sirve para maquiladoras?
+Sí. Trama nació en una maquiladora con varias plantas: asigna cortes por capacidad mensual de cada planta, registra la producción diaria y prioriza los envíos urgentes por fecha de entrega al cliente.
+
+## Enlaces
+- [Trama](https://ranabtawi-trama.static.hf.space/index.html): producto, precios y preguntas frecuentes
+- [Descripción completa para IA](https://ranabtawi-trama.static.hf.space/llms-full.txt)
