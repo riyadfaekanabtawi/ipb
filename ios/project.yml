@@ -1,0 +1,72 @@
+name: Trama
+options:
+  bundleIdPrefix: com.nevutech
+  deploymentTarget:
+    iOS: "17.0"
+  developmentLanguage: es
+  createIntermediateGroups: true
+  groupSortPosition: top
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "3.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: P4SZK98WUR
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    SWIFT_STRICT_CONCURRENCY: minimal
+targets:
+  Trama:
+    type: application
+    platform: iOS
+    sources:
+      - path: Trama
+    settings:
+      base:
+        # Bundle id kept from the original IPB app so installed iPads update in place.
+        PRODUCT_BUNDLE_IDENTIFIER: com.nevutech.ipb
+        PRODUCT_NAME: Trama
+        TARGETED_DEVICE_FAMILY: "2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Trama
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_NSCameraUsageDescription: "Trama usa la cámara para fotografiar estilos, muestras y proyectos."
+        INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "Trama usa tus fotos para adjuntar imágenes de estilos y proyectos."
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.business
+        INFOPLIST_KEY_UIUserInterfaceStyle: Automatic
+    info:
+      path: Trama/Resources/Info.plist
+      properties:
+        CFBundleDevelopmentRegion: es
+        ITSAppUsesNonExemptEncryption: false
+        LSSupportsOpeningDocumentsInPlace: false
+        UIFileSharingEnabled: false
+  TramaTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: TramaTests
+    dependencies:
+      - target: Trama
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.nevutech.ipb.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TARGETED_DEVICE_FAMILY: "2"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Trama.app/Trama"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  Trama:
+    build:
+      targets:
+        Trama: all
+        TramaTests: [test]
+    test:
+      targets:
+        - TramaTests
+      gatherCoverageData: true
+    run:
+      config: Debug

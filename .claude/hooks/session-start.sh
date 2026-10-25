@@ -6,14 +6,14 @@ cd "$root" 2>/dev/null || exit 0
 
 branch="$(git branch --show-current 2>/dev/null || echo '?')"
 dirty="$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')"
-project_dir="."
-[ -f "IPB-Swift/project.yml" ] && project_dir="IPB-Swift"
+project_dir="ios"
 
 cat <<EOF
-IPB repo context
+Trama monorepo context (ios/ web/ android/ docs/)
 - Branch: ${branch} (${dirty} uncommitted changes)
 - Xcode project spec: ${project_dir}/project.yml (XcodeGen). Regenerate with: (cd ${project_dir} && xcodegen generate)
 - Build/test: see "Commands" in CLAUDE.md. Use an iPad simulator; the app is iPad-only.
+- Business rules: docs/DOMAIN.md (shared contract for iOS and the Android port).
 - Policy: no AI attribution in commits or PRs; never push to main; every change ships through a PR.
 EOF
 exit 0

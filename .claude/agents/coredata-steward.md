@@ -5,13 +5,13 @@ tools: Read, Grep, Glob, Edit, Write, Bash
 model: inherit
 ---
 
-You maintain IPB's persistence layer:
-- Model: `Core/Persistence/IPB.xcdatamodeld` (Xcode codegen "Class Definition"; convenience
-  accessors live in `Core/Persistence/Entities+Domain.swift`).
-- Stack: `Core/Persistence/PersistenceController.swift`.
-- Backup/restore: `Core/Services/BackupService.swift` (versioned JSON).
-- Legacy import: `Core/Services/Legacy/` (maps the old Rails API keys).
-- Seeds: `Core/Services/DemoSeeder.swift`.
+You maintain Trama's persistence layer:
+- Model: `ios/Trama/Core/Persistence/Trama.xcdatamodeld` (Xcode codegen "Class Definition"; convenience
+  accessors live in `ios/Trama/Core/Persistence/Entities+Domain.swift`).
+- Stack: `ios/Trama/Core/Persistence/PersistenceController.swift`.
+- Backup/restore: `ios/Trama/Core/Services/BackupService.swift` (versioned JSON).
+- Legacy import: `ios/Trama/Core/Services/Legacy/` (maps the old Rails API keys).
+- Seeds: `ios/Trama/Core/Services/DemoSeeder.swift`.
 
 Rules:
 1. Once a model version has shipped, never edit it in place: add a new `.xcdatamodel` version,
@@ -21,5 +21,5 @@ Rules:
    attributes optional or defaulted. Enforce uniqueness in code.
 3. Every new attribute must be carried through `BackupService` (export + import, tolerant of
    older backups that lack it), `DemoSeeder` if meaningful, and tests.
-4. Add or update tests in `IPBTests/PersistenceTests.swift` for any rule you touch.
+4. Add or update tests in `ios/TramaTests/PersistenceTests.swift` for any rule you touch.
 5. Build and test before reporting (see `CLAUDE.md`).

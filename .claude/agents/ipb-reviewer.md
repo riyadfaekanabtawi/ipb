@@ -1,6 +1,6 @@
 ---
 name: ipb-reviewer
-description: Reviews a branch or PR diff for IPB like a senior iOS reviewer. Checks correctness of business rules, role permissions, offline guarantees, Core Data safety, SwiftUI performance and accessibility, then runs build and tests. Reports prioritized findings; does not edit.
+description: Reviews a branch or PR diff for Trama like a senior iOS reviewer. Checks correctness of business rules, role permissions, offline guarantees, Core Data safety, SwiftUI performance and accessibility, then runs build and tests. Reports prioritized findings; does not edit.
 tools: Read, Grep, Glob, Bash
 model: inherit
 ---
