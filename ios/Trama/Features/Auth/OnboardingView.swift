@@ -16,6 +16,7 @@ struct OnboardingView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var error: String?
+    @State private var showConnect = false
 
     var body: some View {
         AuthLayout {
@@ -62,6 +63,8 @@ struct OnboardingView: View {
                     Rectangle().frame(height: 1).foregroundStyle(Theme.stroke)
                 }
 
+                LicenceConnectButton(linkedCompany: nil) { showConnect = true }
+
                 Button(action: loadDemo) {
                     VStack(alignment: .leading, spacing: 4) {
                         Label("Explorar con datos de ejemplo", systemImage: "sparkles")
@@ -77,6 +80,9 @@ struct OnboardingView: View {
                 }
                 .buttonStyle(.plain)
             }
+        }
+        .sheet(isPresented: $showConnect) {
+            LicenceConnectSheet(prefilledEmail: email) { onFinished() }
         }
     }
 

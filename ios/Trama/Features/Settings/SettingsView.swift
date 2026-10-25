@@ -8,6 +8,7 @@ struct SettingsView: View {
     @Environment(ConnectivityMonitor.self) private var connectivity
     @Environment(\.managedObjectContext) private var context
     @Environment(\.persistence) private var persistence
+    @Environment(SyncEngine.self) private var sync
 
     @AppStorage("settings.urgencyWindowDays") private var urgencyWindow = 7
     @AppStorage("demo.seeded") private var demoSeeded = false
@@ -15,6 +16,11 @@ struct SettingsView: View {
 
     @State private var showPassword = false
     @State private var confirmSignOut = false
+
+    // Sync
+    @State private var showConnect = false
+    @State private var confirmDisconnect = false
+    @State private var confirmUpload = false
 
     // Backup
     @State private var exportDocument: BackupDocument?
@@ -32,6 +38,7 @@ struct SettingsView: View {
     var body: some View {
         Form {
             accountSection
+            syncSection
             preferencesSection
             dataSection
             if isAdmin {
@@ -61,7 +68,27 @@ struct SettingsView: View {
         .navigationTitle("Ajustes")
         .sheet(isPresented: $showPassword) { ChangePasswordSheet() }
         .confirmationDialog("¿Cerrar sesión?", isPresented: $confirmSignOut, titleVisibility: .visible) {
-            Button("Cerrar sesión", role: .destructive) { session.signOut() }
+            Button("Cerrar sesión", role: .destructive) { Task { await sync.signOut() } }
+        } message: {
+            if sync.isLinked {
+                Text("Para volver a sincronizar, la siguiente persona debe entrar con internet.")
+            }
+        }
+        .sheet(isPresented: $showConnect) { LicenceConnectSheet(prefilledEmail: session.user?.email ?? "") }
+        .confirmationDialog("¿Desconectar la licencia?", isPresented: $confirmDisconnect, titleVisibility: .visible) {
+            Button("Desconectar", role: .destructive) {
+                Task {
+                    await sync.disconnect()
+                    toasts.show("Este iPad ya no sincroniza con tu empresa", style: .info)
+                }
+            }
+        } message: {
+            Text("Los datos se quedan en este iPad, pero los cambios pendientes de enviar se descartan y ya no se sincronizará.")
+        }
+        .confirmationDialog("¿Subir todos los datos de este iPad?", isPresented: $confirmUpload, titleVisibility: .visible) {
+            Button("Subir datos") { uploadAll() }
+        } message: {
+            Text("Envía a tu empresa todos los registros de este iPad (por ejemplo, después de importar del sistema anterior). Si un registro cambió en otro dispositivo después, se conserva la versión más reciente.")
         }
         .fileExporter(
             isPresented: $showExporter, document: exportDocument, contentType: .json,
@@ -136,6 +163,64 @@ struct SettingsView: View {
         }
     }
 
+    @ViewBuilder
+    private var syncSection: some View {
+        Section {
+            if sync.isLinked {
+                SyncStatusView()
+                Button {
+                    Task { await sync.sync() }
+                } label: {
+                    SettingsActionRow(
+                        title: sync.isSyncing ? "Sincronizando…" : "Sincronizar", subtitle: "Envía tus cambios y descarga los de tu empresa",
+                        symbol: "arrow.triangle.2.circlepath", tint: Theme.brand)
+                }
+                .disabled(sync.isSyncing || sync.needsReconnect)
+                if sync.needsReconnect {
+                    Button {
+                        showConnect = true
+                    } label: {
+                        SettingsActionRow(
+                            title: "Conectar de nuevo", subtitle: "Tu sesión en la nube terminó; entra con tu contraseña",
+                            symbol: "key.icloud", tint: Theme.warning)
+                    }
+                }
+                if isAdmin {
+                    Button {
+                        confirmUpload = true
+                    } label: {
+                        SettingsActionRow(
+                            title: "Subir todos los datos de este iPad", subtitle: "Útil después de importar del sistema anterior",
+                            symbol: "icloud.and.arrow.up", tint: Theme.info)
+                    }
+                    .disabled(sync.isSyncing || sync.needsReconnect || sync.isReadOnly)
+                    Button {
+                        confirmDisconnect = true
+                    } label: {
+                        SettingsActionRow(
+                            title: "Desconectar licencia", subtitle: "Deja de sincronizar este iPad", symbol: "icloud.slash", tint: Theme.danger)
+                    }
+                }
+            } else {
+                Button {
+                    showConnect = true
+                } label: {
+                    SettingsActionRow(
+                        title: "Conectar con mi licencia", subtitle: "Sincroniza este iPad con los demás dispositivos de tu empresa",
+                        symbol: "key.icloud.fill", tint: Theme.brand)
+                }
+            }
+        } header: {
+            Text("Sincronización")
+        } footer: {
+            Text(
+                sync.isLinked
+                    ? "Trama sigue funcionando sin internet. Los cambios se guardan en este iPad y se envían solos al recuperar la conexión."
+                    : "Sin licencia, Trama funciona solo en este iPad."
+            )
+        }
+    }
+
     private var preferencesSection: some View {
         Section {
             if session.role == .admin {
@@ -174,18 +259,22 @@ struct SettingsView: View {
                         title: "Exportar respaldo", subtitle: "Archivo JSON con todos los datos e imágenes", symbol: "square.and.arrow.up",
                         tint: Theme.brand)
                 }
-                Button {
-                    showImporter = true
-                } label: {
-                    SettingsActionRow(
-                        title: "Restaurar respaldo", subtitle: "Reemplaza los datos de este iPad", symbol: "arrow.counterclockwise.circle",
-                        tint: Theme.warning)
-                }
-                Button(action: loadDemo) {
-                    SettingsActionRow(
-                        title: "Cargar datos de ejemplo",
-                        subtitle: demoSeeded ? "Ya cargados en este iPad" : "Solo si no hay datos operativos",
-                        symbol: "sparkles", tint: Theme.thread)
+                // Restoring or seeding would silently diverge from the company's data, so both
+                // are local-only actions.
+                if !sync.isLinked {
+                    Button {
+                        showImporter = true
+                    } label: {
+                        SettingsActionRow(
+                            title: "Restaurar respaldo", subtitle: "Reemplaza los datos de este iPad",
+                            symbol: "arrow.counterclockwise.circle", tint: Theme.warning)
+                    }
+                    Button(action: loadDemo) {
+                        SettingsActionRow(
+                            title: "Cargar datos de ejemplo",
+                            subtitle: demoSeeded ? "Ya cargados en este iPad" : "Solo si no hay datos operativos",
+                            symbol: "sparkles", tint: Theme.thread)
+                    }
                 }
                 Button {
                     confirmErase = true
@@ -203,7 +292,11 @@ struct SettingsView: View {
             Text("Datos")
         } footer: {
             if isAdmin {
-                Text("Los respaldos incluyen las contraseñas cifradas de los usuarios. Guárdalos en un lugar seguro.")
+                Text(
+                    sync.isLinked
+                        ? "Los respaldos incluyen las contraseñas cifradas de los usuarios. Para restaurar un respaldo o cargar datos de ejemplo, primero desconecta la licencia. Borrar los datos también desconecta este iPad."
+                        : "Los respaldos incluyen las contraseñas cifradas de los usuarios. Guárdalos en un lugar seguro."
+                )
             }
         }
     }
@@ -221,7 +314,7 @@ struct SettingsView: View {
                 Label("Funciona sin conexión", systemImage: "icloud.slash")
                     .font(.subheadline.weight(.semibold))
                 Text(
-                    "Todos los datos viven en este iPad (Core Data). Puedes registrar cortes, asignaciones y reportes sin internet; la conexión solo se usa para importar del sistema anterior."
+                    "Todos los datos viven en este iPad (Core Data). Puedes registrar cortes, asignaciones y reportes sin internet; con licencia, la conexión sincroniza los cambios con tu empresa."
                 )
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -293,8 +386,24 @@ struct SettingsView: View {
         toasts.show("Datos de ejemplo cargados. Cuentas demo con contraseña \(DemoSeeder.demoPassword).")
     }
 
+    private func uploadAll() {
+        Task {
+            do {
+                try await sync.uploadAllLocalData()
+                if let error = sync.lastError {
+                    toasts.show(error, style: .error)
+                } else {
+                    toasts.show("Datos de este iPad enviados a tu empresa")
+                }
+            } catch {
+                toasts.error(error)
+            }
+        }
+    }
+
     private func eraseAll() {
         do {
+            if sync.isLinked { Task { await sync.disconnect() } }
             try persistence.eraseAll()
             demoSeeded = false
             session.signOut()
@@ -405,7 +514,7 @@ private struct ChangePasswordSheet: View {
         Session.setPassword(new, for: user)
         user.touch()
         do {
-            try context.saveIfNeeded()
+            try context.saveTracked()
             toasts.show("Contraseña actualizada")
             dismiss()
         } catch {
@@ -431,4 +540,8 @@ private struct ChangePasswordSheet: View {
         .environment(ToastCenter())
         .environment(AppRouter())
         .environment(ConnectivityMonitor())
+        .environment(
+            SyncEngine(
+                persistence: persistence, session: session, toasts: nil, secrets: MemorySecretStore(),
+                defaults: UserDefaults(suiteName: "trama.preview") ?? .standard, enabled: false))
 }

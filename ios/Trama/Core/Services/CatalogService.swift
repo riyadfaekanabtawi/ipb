@@ -239,7 +239,7 @@ struct CatalogService {
 
     private func save() throws {
         do {
-            try context.saveIfNeeded()
+            try context.saveTracked()
         } catch {
             context.rollback()
             throw error

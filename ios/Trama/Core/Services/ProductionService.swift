@@ -2,7 +2,7 @@ import CoreData
 import Foundation
 
 /// All production writes go through here so business rules live in one place
-/// (and a future sync outbox has a single choke point).
+/// (and the sync outbox has a single choke point: `saveTracked`).
 struct ProductionService {
     let context: NSManagedObjectContext
     var author: String?
@@ -33,7 +33,7 @@ struct ProductionService {
         apply(
             to: order, code: code, list: list, garment: garment, quantity: quantity, unitPrice: unitPrice,
             client: client, style: style, internalDate: internalDate, clientDate: clientDate, notes: notes)
-        try context.saveIfNeeded()
+        try context.saveTracked()
         return order
     }
 
@@ -45,7 +45,7 @@ struct ProductionService {
             to: order, code: code, list: list, garment: garment, quantity: quantity, unitPrice: unitPrice,
             client: client, style: style, internalDate: internalDate, clientDate: clientDate, notes: notes)
         order.touch()
-        try context.saveIfNeeded()
+        try context.saveTracked()
     }
 
     private func apply(
@@ -87,7 +87,7 @@ struct ProductionService {
         assignment.cuttingStatus = .waiting
         order.editedBy = author
         order.touch()
-        try context.saveIfNeeded()
+        try context.saveTracked()
         return assignment
     }
 
@@ -96,7 +96,7 @@ struct ProductionService {
             throw ServiceError.inUse("el corte ya tiene reportes")
         }
         context.delete(assignment)
-        try context.saveIfNeeded()
+        try context.saveTracked()
     }
 
     // MARK: Reports
@@ -152,7 +152,7 @@ struct ProductionService {
     func delete(_ report: ProductionReport) throws {
         if report.kind == .cut, let assignment = report.assignment { assignment.cuttingStatus = .waiting }
         context.delete(report)
-        try context.saveIfNeeded()
+        try context.saveTracked()
     }
 
     private func newReport(_ kind: ReportKind, on assignment: Assignment) -> ProductionReport {
@@ -167,7 +167,7 @@ struct ProductionService {
     private func finish(_ report: ProductionReport, on assignment: Assignment) throws -> ProductionReport {
         report.touch()
         assignment.touch()
-        try context.saveIfNeeded()
+        try context.saveTracked()
         return report
     }
 
@@ -176,13 +176,13 @@ struct ProductionService {
     func delete(_ plant: Plant) throws {
         if !(plant.assignments as? Set<Assignment> ?? []).isEmpty { throw ServiceError.inUse("la planta tiene cortes asignados") }
         context.delete(plant)
-        try context.saveIfNeeded()
+        try context.saveTracked()
     }
 
     func delete(_ client: Client) throws {
         if !(client.orders as? Set<CutOrder> ?? []).isEmpty { throw ServiceError.inUse("el cliente tiene cortes") }
         context.delete(client)
-        try context.saveIfNeeded()
+        try context.saveTracked()
     }
 
     func delete(_ order: CutOrder) throws {
@@ -190,11 +190,11 @@ struct ProductionService {
             throw ServiceError.inUse("el corte ya tiene reportes de producción")
         }
         context.delete(order)
-        try context.saveIfNeeded()
+        try context.saveTracked()
     }
 
     func delete(_ object: NSManagedObject) throws {
         context.delete(object)
-        try context.saveIfNeeded()
+        try context.saveTracked()
     }
 }
