@@ -1,6 +1,6 @@
 # Trama
 
-**Control de producción textil para iPad, sin conexión.**
+**Control de producción textil para iPad y Android, sin conexión.**
 
 Trama runs a garment manufacturer's floor: cut orders are assigned to plants against their
 monthly capacity, plant, cut and shipment managers report progress from their iPads, and the
@@ -16,7 +16,7 @@ Trama started as the internal app of **Industrial Peña Balles (IPB)**. It was r
 |---|---|---|
 | [`ios/`](ios/) | iPad app: SwiftUI + Core Data, iOS 17+ | ✅ Production |
 | [`web/`](web/) | Sales landing page (static site, deployed to Hugging Face Spaces) | ✅ |
-| [`android/`](android/) | Kotlin / Jetpack Compose port | 🗺️ Planned ([plan](android/README.md)) |
+| [`android/`](android/) | Android app: Kotlin + Jetpack Compose + Room (tablets and phones) | ✅ ([docs](android/README.md)) |
 | [`docs/`](docs/) | Platform-neutral domain spec shared by all apps ([DOMAIN.md](docs/DOMAIN.md)) | ✅ |
 
 ## Features (iPad)
