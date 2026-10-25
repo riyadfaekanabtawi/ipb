@@ -36,3 +36,7 @@ web/dist/
 .claude/settings.local.json
 .claude/worktrees/
 android/build/
+
+# Contact API
+contact-api/node_modules/
+contact-api/.vercel/
