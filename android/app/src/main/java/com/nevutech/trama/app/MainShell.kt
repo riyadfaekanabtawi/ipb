@@ -51,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
@@ -63,6 +64,7 @@ import com.nevutech.trama.R
 import com.nevutech.trama.core.data.fullName
 import com.nevutech.trama.core.data.roleValue
 import com.nevutech.trama.core.domain.AppSection
+import com.nevutech.trama.core.domain.Fmt
 import com.nevutech.trama.designsystem.Avatar
 import com.nevutech.trama.designsystem.Tokens
 import com.nevutech.trama.feature.calculator.CalculatorScreen
@@ -160,19 +162,19 @@ fun MainShell(debugStartSection: String? = null, debugStartRoute: String? = null
                 sections.forEach { section ->
                     NavigationRailItem(
                         selected = section == currentSection, onClick = { select(section) },
-                        icon = { Icon(section.icon, section.title) }, label = { Text(section.title.substringBefore(" "), maxLines = 1) },
+                        icon = { Icon(section.icon, stringResource(section.titleRes)) }, label = { Text(stringResource(section.railLabelRes), maxLines = 1) },
                     )
                 }
                 Spacer(Modifier.weight(1f))
-                NavigationRailItem(false, { confirmSignOut = true }, icon = { Icon(Icons.AutoMirrored.Filled.Logout, "Cerrar sesión") })
+                NavigationRailItem(false, { confirmSignOut = true }, icon = { Icon(Icons.AutoMirrored.Filled.Logout, stringResource(R.string.common_sign_out)) })
             }
             host(Modifier.weight(1f).fillMaxHeight().statusBarsPadding())
         }
         else -> ModalNavigationDrawer(drawerContent = { ModalDrawerSheet { sidebar() } }, drawerState = drawerState) {
             Column(Modifier.fillMaxSize()) {
                 TopAppBar(
-                    title = { Text(currentSection?.title ?: "Trama") },
-                    navigationIcon = { IconButton({ scope.launch { drawerState.open() } }) { Icon(Icons.Filled.Menu, "Menú") } },
+                    title = { Text(currentSection?.let { stringResource(it.titleRes) } ?: stringResource(R.string.app_name)) },
+                    navigationIcon = { IconButton({ scope.launch { drawerState.open() } }) { Icon(Icons.Filled.Menu, stringResource(R.string.shell_menu)) } },
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = Tokens.colors.canvas),
                 )
                 host(Modifier.weight(1f))
@@ -183,10 +185,10 @@ fun MainShell(debugStartSection: String? = null, debugStartRoute: String? = null
     if (confirmSignOut) {
         AlertDialog(
             onDismissRequest = { confirmSignOut = false },
-            title = { Text("¿Cerrar sesión?") },
-            text = { Text("Tus datos se quedan guardados en este dispositivo.") },
-            confirmButton = { TextButton({ confirmSignOut = false; scope.launch { app.session.signOut() } }) { Text("Cerrar sesión", color = Tokens.colors.danger) } },
-            dismissButton = { TextButton({ confirmSignOut = false }) { Text("Cancelar") } },
+            title = { Text(stringResource(R.string.shell_sign_out_title)) },
+            text = { Text(stringResource(R.string.shell_sign_out_message)) },
+            confirmButton = { TextButton({ confirmSignOut = false; scope.launch { app.session.signOut() } }) { Text(stringResource(R.string.common_sign_out), color = Tokens.colors.danger) } },
+            dismissButton = { TextButton({ confirmSignOut = false }) { Text(stringResource(R.string.common_cancel)) } },
         )
     }
 }
@@ -228,13 +230,13 @@ private fun Sidebar(sections: List<AppSection>, current: AppSection?, onSelect: 
     Column(Modifier.fillMaxHeight().background(Tokens.colors.surfaceRaised).statusBarsPadding()) {
         Row(Modifier.padding(horizontal = 20.dp, vertical = 18.dp), verticalAlignment = Alignment.CenterVertically) {
             androidx.compose.foundation.Image(painterResource(R.drawable.trama_mark), null, Modifier.size(34.dp).clip(RoundedCornerShape(9.dp)))
-            Text("Trama", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(start = 10.dp))
+            Text(stringResource(R.string.app_name), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(start = 10.dp))
         }
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 12.dp)) {
             AppSection.Group.entries.forEach { group ->
                 val items = sections.filter { it.group == group }
                 if (items.isNotEmpty()) {
-                    Text(group.title, style = MaterialTheme.typography.labelMedium, color = Tokens.colors.secondary, modifier = Modifier.padding(start = 16.dp, top = 14.dp, bottom = 6.dp))
+                    Text(stringResource(group.titleRes), style = MaterialTheme.typography.labelMedium, color = Tokens.colors.secondary, modifier = Modifier.padding(start = 16.dp, top = 14.dp, bottom = 6.dp))
                     items.forEach { section ->
                         val badge = when (section) {
                             AppSection.Orders -> pendingOrders
@@ -242,9 +244,9 @@ private fun Sidebar(sections: List<AppSection>, current: AppSection?, onSelect: 
                             else -> 0
                         }
                         NavigationDrawerItem(
-                            label = { Text(section.title) },
+                            label = { Text(stringResource(section.titleRes)) },
                             icon = { Icon(section.icon, null, tint = Tokens.colors.brand) },
-                            badge = { if (badge > 0) Text("$badge", color = Tokens.colors.secondary) },
+                            badge = { if (badge > 0) Text(Fmt.int(badge), color = Tokens.colors.secondary) },
                             selected = section == current,
                             onClick = { onSelect(section) },
                             colors = NavigationDrawerItemDefaults.colors(selectedContainerColor = Tokens.colors.brand.copy(alpha = 0.12f)),
@@ -261,14 +263,33 @@ private fun Sidebar(sections: List<AppSection>, current: AppSection?, onSelect: 
                 Avatar(u.fullName, app.images.file(u.avatarFile), 42.dp)
                 Column(Modifier.weight(1f)) {
                     Text(u.fullName, style = MaterialTheme.typography.titleSmall, maxLines = 1)
-                    Text(u.roleValue.title, style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+                    Text(stringResource(u.roleValue.titleRes), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
                 }
-                IconButton(onSignOut) { Icon(Icons.AutoMirrored.Filled.Logout, "Cerrar sesión", tint = Tokens.colors.brand) }
+                IconButton(onSignOut) { Icon(Icons.AutoMirrored.Filled.Logout, stringResource(R.string.common_sign_out), tint = Tokens.colors.brand) }
             }
         }
     }
 }
 
+
+/** Short label for the navigation rail, where the full section title doesn't fit. */
+private val AppSection.railLabelRes: Int
+    get() = when (this) {
+        AppSection.Dashboard -> R.string.shell_rail_dashboard
+        AppSection.Orders -> R.string.shell_rail_orders
+        AppSection.Board -> R.string.shell_rail_board
+        AppSection.Production -> R.string.shell_rail_production
+        AppSection.Shipments -> R.string.shell_rail_shipments
+        AppSection.Calendar -> R.string.shell_rail_calendar
+        AppSection.Plants -> R.string.shell_rail_plants
+        AppSection.Clients -> R.string.shell_rail_clients
+        AppSection.Suppliers -> R.string.shell_rail_suppliers
+        AppSection.Styles -> R.string.shell_rail_styles
+        AppSection.Projects -> R.string.shell_rail_projects
+        AppSection.Users -> R.string.shell_rail_users
+        AppSection.Calculator -> R.string.shell_rail_calculator
+        AppSection.Settings -> R.string.shell_rail_settings
+    }
 
 /** Shown while the company's licence is expired or suspended: data stays readable, writes are blocked. */
 @Composable
@@ -283,8 +304,7 @@ private fun ReadOnlyBanner() {
     ) {
         Icon(Icons.Filled.Lock, null, tint = Tokens.colors.warning, modifier = Modifier.size(18.dp))
         Text(
-            if (expired) "Tu licencia venció: los datos son de solo lectura. Renuévala para seguir registrando cambios."
-            else "La licencia de tu empresa está suspendida: los datos son de solo lectura.",
+            stringResource(if (expired) R.string.shell_read_only_expired else R.string.shell_read_only_suspended),
             style = MaterialTheme.typography.bodyMedium,
         )
     }

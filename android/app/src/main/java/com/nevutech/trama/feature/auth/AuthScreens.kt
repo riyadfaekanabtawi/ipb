@@ -53,6 +53,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -66,6 +67,7 @@ import com.nevutech.trama.core.data.AuthException
 import com.nevutech.trama.core.data.DemoSeeder
 import com.nevutech.trama.core.data.Session
 import com.nevutech.trama.core.domain.Role
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.LoomBackdrop
 import com.nevutech.trama.designsystem.PrimaryButton
 import com.nevutech.trama.designsystem.Tokens
@@ -86,19 +88,19 @@ fun LoginScreen() {
     }
 
     AuthLayout {
-        Text("Bienvenido de nuevo", style = MaterialTheme.typography.displaySmall)
-        Text("Ingresa con tu correo de trabajo para continuar.", color = Tokens.colors.secondary)
-        AuthField(email, { email = it; error = null }, "Correo electrónico", Icons.Filled.Email, KeyboardType.Email, ImeAction.Next)
-        AuthField(password, { password = it; error = null }, "Contraseña", Icons.Filled.Lock, KeyboardType.Password, ImeAction.Go, secure = true, onGo = { signIn() })
+        Text(stringResource(R.string.auth_ui_welcome_back), style = MaterialTheme.typography.displaySmall)
+        Text(stringResource(R.string.auth_ui_sign_in_subtitle), color = Tokens.colors.secondary)
+        AuthField(email, { email = it; error = null }, stringResource(R.string.common_email), Icons.Filled.Email, KeyboardType.Email, ImeAction.Next)
+        AuthField(password, { password = it; error = null }, stringResource(R.string.common_password), Icons.Filled.Lock, KeyboardType.Password, ImeAction.Go, secure = true, onGo = { signIn() })
         error?.let { Text(it, color = Tokens.colors.danger, style = MaterialTheme.typography.bodyMedium) }
-        PrimaryButton("Entrar", { signIn() }, Modifier.fillMaxWidth(), icon = Icons.AutoMirrored.Filled.ArrowForward)
+        PrimaryButton(stringResource(R.string.auth_ui_sign_in), { signIn() }, Modifier.fillMaxWidth(), icon = Icons.AutoMirrored.Filled.ArrowForward)
         CloudSignInButton()
         if (demoSeeded) {
-            Text("Cuentas de demostración", style = MaterialTheme.typography.labelMedium, color = Tokens.colors.secondary)
+            Text(stringResource(R.string.auth_ui_demo_accounts), style = MaterialTheme.typography.labelMedium, color = Tokens.colors.secondary)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 listOf("admin" to Role.Admin, "cortes" to Role.CutManager, "planta" to Role.PlantManager, "envios" to Role.ShippingManager).forEach { (prefix, role) ->
                     Text(
-                        role.title, color = Tokens.colors.brand, style = MaterialTheme.typography.labelMedium,
+                        stringResource(role.titleRes), color = Tokens.colors.brand, style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier.clip(Tokens.chipShape).background(Tokens.colors.brand.copy(alpha = 0.1f))
                             .clickable { signIn("$prefix@demo.local", DemoSeeder.DEMO_PASSWORD) }.padding(horizontal = 12.dp, vertical = 8.dp),
                     )
@@ -120,27 +122,27 @@ fun OnboardingScreen() {
     var error by remember { mutableStateOf<String?>(null) }
 
     AuthLayout {
-        Text("Configura Trama", style = MaterialTheme.typography.displaySmall)
-        Text("Registra tu empresa y la cuenta de administrador de este dispositivo. Podrás agregar a tus gerentes después.", color = Tokens.colors.secondary)
-        AuthField(company, { company = it }, "Nombre de tu empresa", Icons.Filled.Business)
+        Text(stringResource(R.string.auth_ui_setup_title), style = MaterialTheme.typography.displaySmall)
+        Text(stringResource(R.string.auth_ui_setup_subtitle), color = Tokens.colors.secondary)
+        AuthField(company, { company = it }, stringResource(R.string.auth_ui_company_name), Icons.Filled.Business)
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            AuthField(first, { first = it }, "Nombre", Icons.Filled.Person, modifier = Modifier.weight(1f))
-            AuthField(last, { last = it }, "Apellido", Icons.Filled.Person, modifier = Modifier.weight(1f))
+            AuthField(first, { first = it }, stringResource(R.string.auth_ui_first_name), Icons.Filled.Person, modifier = Modifier.weight(1f))
+            AuthField(last, { last = it }, stringResource(R.string.auth_ui_last_name), Icons.Filled.Person, modifier = Modifier.weight(1f))
         }
-        AuthField(email, { email = it }, "Correo electrónico", Icons.Filled.Email, KeyboardType.Email)
-        AuthField(password, { password = it }, "Contraseña (mín. 6 caracteres)", Icons.Filled.Lock, KeyboardType.Password, secure = true)
+        AuthField(email, { email = it }, stringResource(R.string.common_email), Icons.Filled.Email, KeyboardType.Email)
+        AuthField(password, { password = it }, stringResource(R.string.auth_ui_password_min), Icons.Filled.Lock, KeyboardType.Password, secure = true)
         error?.let { Text(it, color = Tokens.colors.danger) }
-        PrimaryButton("Crear administrador", {
+        PrimaryButton(stringResource(R.string.auth_ui_create_admin), {
             scope.launch {
                 runCatching {
                     val user = Session.createUser(app.db.dao(), first, last, email, "", password, Role.Admin, null)
                     app.settings.setCompanyName(company)
                     app.session.adopt(user)
-                    app.toasts.show("¡Listo, ${user.firstName}! Trama está configurado.")
+                    app.toasts.show(L10n.str(R.string.auth_ui_setup_done, user.firstName))
                 }.onFailure { error = it.message }
             }
         }, Modifier.fillMaxWidth(), icon = Icons.Filled.WorkspacePremium)
-        Text("¿Tu empresa ya tiene licencia de Trama? Conecta este dispositivo para descargar sus datos.", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+        Text(stringResource(R.string.auth_ui_has_licence), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
         CloudSignInButton()
         Column(
             Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(Tokens.colors.thread.copy(alpha = 0.14f))
@@ -151,7 +153,7 @@ fun OnboardingScreen() {
                         app.settings.setDemoSeeded(true)
                         app.settings.setCompanyName(DemoSeeder.DEMO_COMPANY)
                         app.db.dao().userByEmail("admin@demo.local")?.let { app.session.adopt(it) }
-                        app.toasts.show("Datos de ejemplo cargados. Sesión iniciada como administrador.")
+                        app.toasts.show(L10n.str(R.string.auth_ui_demo_loaded))
                     }
                 }
                 .padding(18.dp),
@@ -159,9 +161,9 @@ fun OnboardingScreen() {
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Filled.AutoAwesome, null, tint = Tokens.colors.thread)
-                Text("Explorar con datos de ejemplo", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(start = 8.dp))
+                Text(stringResource(R.string.auth_ui_explore_demo), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(start = 8.dp))
             }
-            Text("Plantas, clientes, cortes y reportes ficticios. Puedes borrarlos en Ajustes.", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+            Text(stringResource(R.string.auth_ui_explore_demo_detail), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
         }
     }
 }
@@ -192,12 +194,12 @@ private fun BrandPanel(modifier: Modifier, compact: Boolean) {
         LoomBackdrop(Modifier.fillMaxSize())
         Column(Modifier.align(Alignment.BottomStart).padding(if (compact) 24.dp else 56.dp), verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 14.dp)) {
             Image(painterResource(R.drawable.trama_mark), null, Modifier.size(if (compact) 60.dp else 92.dp).clip(RoundedCornerShape(if (compact) 16.dp else 24.dp)))
-            Text("Trama", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = if (compact) 30.sp else 46.sp)
+            Text(stringResource(R.string.app_name), color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = if (compact) 30.sp else 46.sp)
             Text(
-                if (company.isBlank()) "Control de producción textil" else "Control de producción textil · $company",
+                if (company.isBlank()) stringResource(R.string.auth_ui_tagline) else stringResource(R.string.auth_ui_tagline_company, company),
                 color = Tokens.colors.thread, fontWeight = FontWeight.SemiBold, fontSize = if (compact) 16.sp else 22.sp,
             )
-            if (!compact) Text("Cortes, plantas y envíos en un solo tablero.\nFunciona sin conexión: tus datos viven en este dispositivo.", color = Color.White.copy(alpha = 0.8f), fontSize = 18.sp)
+            if (!compact) Text(stringResource(R.string.auth_ui_brand_pitch), color = Color.White.copy(alpha = 0.8f), fontSize = 18.sp)
         }
     }
 }
@@ -212,7 +214,7 @@ private fun AuthField(
     OutlinedTextField(
         value, onChange, modifier, label = { Text(label) }, singleLine = true,
         leadingIcon = { Icon(icon, null, tint = Tokens.colors.brand) },
-        trailingIcon = if (secure) { { IconButton({ reveal = !reveal }) { Icon(if (reveal) Icons.Filled.VisibilityOff else Icons.Filled.Visibility, if (reveal) "Ocultar contraseña" else "Mostrar contraseña") } } } else null,
+        trailingIcon = if (secure) { { IconButton({ reveal = !reveal }) { Icon(if (reveal) Icons.Filled.VisibilityOff else Icons.Filled.Visibility, stringResource(if (reveal) R.string.auth_ui_hide_password else R.string.auth_ui_show_password)) } } } else null,
         visualTransformation = if (secure && !reveal) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(keyboardType = keyboard, imeAction = ime),
         keyboardActions = KeyboardActions(onGo = { onGo() }),

@@ -1,5 +1,6 @@
 package com.nevutech.trama.core.l10n
 
+import android.annotation.SuppressLint
 import android.app.LocaleManager
 import android.content.Context
 import android.content.res.Configuration
@@ -43,8 +44,9 @@ object L10n {
     private const val PREFS = "trama_locale"
     private const val KEY = "app.language"
 
-    @Volatile private var app: Context? = null
-    @Volatile private var cached: Pair<String, Context>? = null
+    // Application context only (set in init), so holding it statically doesn't leak an activity.
+    @SuppressLint("StaticFieldLeak") @Volatile private var app: Context? = null
+    @SuppressLint("StaticFieldLeak") @Volatile private var cached: Pair<String, Context>? = null
 
     fun init(context: Context) {
         app = context.applicationContext

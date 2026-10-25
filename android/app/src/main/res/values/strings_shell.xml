@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- App shell, sign-in, cloud link, Ajustes and shared components (Spanish, Mexico). -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
+    <!-- Shell -->
+    <string name="shell_menu">Menú</string>
+    <string name="shell_sign_out_title">¿Cerrar sesión?</string>
+    <string name="shell_sign_out_message">Tus datos se quedan guardados en este dispositivo.</string>
+    <string name="shell_read_only_expired">Tu licencia venció: los datos son de solo lectura. Renuévala para seguir registrando cambios.</string>
+    <string name="shell_read_only_suspended">La licencia de tu empresa está suspendida: los datos son de solo lectura.</string>
+    <string name="shell_rail_dashboard">Dashboard</string>
+    <string name="shell_rail_orders">Cortes</string>
+    <string name="shell_rail_board">Tablero</string>
+    <string name="shell_rail_production">Reportes</string>
+    <string name="shell_rail_shipments">Envíos</string>
+    <string name="shell_rail_calendar">Calendario</string>
+    <string name="shell_rail_plants">Plantas</string>
+    <string name="shell_rail_clients">Clientes</string>
+    <string name="shell_rail_suppliers">Proveedores</string>
+    <string name="shell_rail_styles">Estilos</string>
+    <string name="shell_rail_projects">Proyectos</string>
+    <string name="shell_rail_users">Usuarios</string>
+    <string name="shell_rail_calculator">Calculadora</string>
+    <string name="shell_rail_settings">Ajustes</string>
+
+    <!-- Components -->
+    <string name="ui_capacity_used">Capacidad usada %1$s</string>
+
+    <!-- Sign-in and onboarding -->
+    <string name="auth_ui_welcome_back">Bienvenido de nuevo</string>
+    <string name="auth_ui_sign_in_subtitle">Ingresa con tu correo de trabajo para continuar.</string>
+    <string name="auth_ui_sign_in">Entrar</string>
+    <string name="auth_ui_demo_accounts">Cuentas de demostración</string>
+    <string name="auth_ui_setup_title">Configura Trama</string>
+    <string name="auth_ui_setup_subtitle">Registra tu empresa y la cuenta de administrador de este dispositivo. Podrás agregar a tus gerentes después.</string>
+    <string name="auth_ui_company_name">Nombre de tu empresa</string>
+    <string name="auth_ui_first_name">Nombre</string>
+    <string name="auth_ui_last_name">Apellido</string>
+    <string name="auth_ui_password_min">Contraseña (mín. 6 caracteres)</string>
+    <string name="auth_ui_create_admin">Crear administrador</string>
+    <string name="auth_ui_setup_done">¡Listo, %1$s! Trama está configurado.</string>
+    <string name="auth_ui_has_licence">¿Tu empresa ya tiene licencia de Trama? Conecta este dispositivo para descargar sus datos.</string>
+    <string name="auth_ui_demo_loaded">Datos de ejemplo cargados. Sesión iniciada como administrador.</string>
+    <string name="auth_ui_explore_demo">Explorar con datos de ejemplo</string>
+    <string name="auth_ui_explore_demo_detail">Plantas, clientes, cortes y reportes ficticios. Puedes borrarlos en Ajustes.</string>
+    <string name="auth_ui_tagline">Control de producción textil</string>
+    <string name="auth_ui_tagline_company">Control de producción textil · %1$s</string>
+    <string name="auth_ui_brand_pitch">Cortes, plantas y envíos en un solo tablero.\nFunciona sin conexión: tus datos viven en este dispositivo.</string>
+    <string name="auth_ui_show_password">Mostrar contraseña</string>
+    <string name="auth_ui_hide_password">Ocultar contraseña</string>
+
+    <!-- Cloud link -->
+    <string name="cloud_connect_licence">Conectar con mi licencia</string>
+    <string name="cloud_connect">Conectar</string>
+    <string name="cloud_connected_to">Dispositivo conectado a la licencia de %1$s.</string>
+    <string name="cloud_connected">Dispositivo conectado a la licencia de tu empresa.</string>
+    <string name="cloud_connect_failed">No se pudo conectar. Intenta de nuevo.</string>
+    <string name="cloud_connect_explainer">Usa el correo y la contraseña de tu cuenta de Trama. Tus datos se sincronizarán con la nube de tu empresa y seguirás trabajando sin conexión.</string>
+    <string name="cloud_connecting">Conectando y sincronizando…</string>
+
+    <!-- Ajustes -->
+    <string name="settings_backup_saved">Respaldo guardado</string>
+    <string name="settings_file_write_failed">No se pudo escribir el archivo.</string>
+    <string name="settings_file_read_failed">No se pudo leer el archivo.</string>
+    <string name="settings_demo_blocked_cloud">Este dispositivo está conectado a la nube de tu empresa; los datos de ejemplo no se pueden cargar.</string>
+    <string name="settings_demo_blocked_data">Ya hay datos en este dispositivo. Bórralos primero para cargar los datos de ejemplo.</string>
+    <string name="settings_demo_loaded">Datos de ejemplo cargados. Cuentas demo con contraseña %1$s.</string>
+    <string name="settings_restore_title">¿Restaurar respaldo?</string>
+    <plurals name="settings_restore_done">
+        <item quantity="one">Respaldo restaurado: %1$s registro</item>
+        <item quantity="many">Respaldo restaurado: %1$s registros</item>
+        <item quantity="other">Respaldo restaurado: %1$s registros</item>
+    </plurals>
+    <string name="settings_restore_done_sign_in">Respaldo restaurado. Inicia sesión con una cuenta del respaldo.</string>
+    <string name="settings_restore_confirm">Reemplazar todos los datos</string>
+    <string name="settings_restore_message">Respaldo del %1$s (Trama %2$s): %3$s. Se borrarán todos los datos actuales de este dispositivo.</string>
+    <string name="settings_unknown_date">fecha desconocida</string>
+    <string name="settings_no_records">sin registros</string>
+    <string name="settings_erase_title">¿Borrar todos los datos?</string>
+    <string name="settings_erase_message">Se eliminarán plantas, cortes, reportes, catálogos y usuarios de este dispositivo. Exporta un respaldo antes si lo necesitas.</string>
+    <string name="settings_continue">Continuar</string>
+    <string name="settings_erased">Se borraron todos los datos</string>
+    <string name="settings_erase_final_title">Confirmación final</string>
+    <string name="settings_erase_word">BORRAR</string>
+    <string name="settings_erase_final_message">Escribe %1$s para eliminar todos los datos. Esta acción no se puede deshacer.</string>
+    <string name="settings_erase_all">Borrar todo</string>
+
+    <string name="settings_cloud">Nube</string>
+    <string name="settings_cloud_footer_connected">Trama sigue funcionando sin conexión; los cambios se envían al recuperar internet.</string>
+    <string name="settings_cloud_footer_offline">Opcional: conecta tu licencia para respaldar y compartir los datos con los demás dispositivos de tu empresa.</string>
+    <string name="settings_company">Empresa</string>
+    <string name="settings_licence">Licencia</string>
+    <string name="settings_licence_expired">Vencida</string>
+    <string name="settings_licence_suspended">Suspendida</string>
+    <string name="settings_licence_active">Activa</string>
+    <string name="settings_account_line">Cuenta</string>
+    <string name="settings_last_sync">Última sincronización</string>
+    <string name="settings_never">Nunca</string>
+    <string name="settings_pending_changes">Cambios por enviar</string>
+    <string name="settings_syncing">Sincronizando…</string>
+    <string name="settings_sync_detail">Envía los cambios de este dispositivo y descarga los de tu empresa</string>
+    <string name="settings_disconnect_device">Desconectar este dispositivo</string>
+    <string name="settings_disconnect_device_detail">Libera su lugar en la licencia; los datos se quedan aquí</string>
+    <string name="settings_disconnected_from">Este dispositivo se desconectó de la nube de %1$s.</string>
+    <string name="settings_disconnected">Este dispositivo se desconectó de la nube de tu empresa.</string>
+    <string name="settings_connect_detail">Inicia sesión con tu cuenta de Trama</string>
+    <string name="settings_disconnect_title">¿Desconectar de la nube?</string>
+    <plurals name="settings_disconnect_pending">
+        <item quantity="one">Hay %1$s cambio sin enviar; se enviará si vuelves a conectar este dispositivo. Los datos se quedan guardados aquí.</item>
+        <item quantity="many">Hay %1$s cambios sin enviar; se enviarán si vuelves a conectar este dispositivo. Los datos se quedan guardados aquí.</item>
+        <item quantity="other">Hay %1$s cambios sin enviar; se enviarán si vuelves a conectar este dispositivo. Los datos se quedan guardados aquí.</item>
+    </plurals>
+    <string name="settings_disconnect_message">Los datos se quedan guardados en este dispositivo y dejará de sincronizarse.</string>
+    <string name="settings_disconnected_toast">Dispositivo desconectado de la nube</string>
+    <string name="settings_disconnect">Desconectar</string>
+    <string name="settings_plan_web">Plan Web</string>
+    <string name="settings_plan_plant">Plan Planta</string>
+    <string name="settings_plan_multiplant">Plan Multiplanta</string>
+    <string name="settings_plan_enterprise">Plan Empresa</string>
+    <string name="settings_plan">Plan</string>
+    <string name="settings_today_at">Hoy, %1$s</string>
+    <string name="settings_day_at">%1$s, %2$s</string>
+
+    <string name="settings_language">Idioma</string>
+    <string name="settings_language_footer">Cambia el idioma de Trama en este dispositivo. Los datos que registras no se traducen.</string>
+    <string name="settings_language_system">Usar idioma del sistema</string>
+    <string name="settings_language_es" translatable="false">Español (México)</string>
+    <string name="settings_language_en" translatable="false">English</string>
+    <string name="settings_language_pt" translatable="false">Português (Brasil)</string>
+
+    <string name="settings_account">Cuenta</string>
+    <string name="settings_change_password">Cambiar contraseña</string>
+    <string name="settings_preferences">Preferencias</string>
+    <string name="settings_urgency_footer">Un envío es urgente si tiene prendas por enviar y la fecha del cliente cae dentro de esta ventana, o ya venció.</string>
+    <string name="settings_company_name">Nombre de la empresa</string>
+    <string name="settings_urgency_window">Ventana de urgencia</string>
+    <string name="settings_urgency_window_value">Ventana de urgencia: %1$s</string>
+    <plurals name="settings_days">
+        <item quantity="one">%1$d día</item>
+        <item quantity="many">%1$d días</item>
+        <item quantity="other">%1$d días</item>
+    </plurals>
+    <string name="settings_urgency_decrease">Reducir ventana</string>
+    <string name="settings_urgency_increase">Ampliar ventana</string>
+
+    <string name="settings_data">Datos</string>
+    <string name="settings_data_footer">Los respaldos incluyen las contraseñas cifradas de los usuarios. Guárdalos en un lugar seguro.</string>
+    <string name="settings_export">Exportar respaldo</string>
+    <string name="settings_export_detail">Archivo JSON con todos los datos e imágenes</string>
+    <string name="settings_restore">Restaurar respaldo</string>
+    <string name="settings_restore_detail">Reemplaza los datos de este dispositivo</string>
+    <string name="settings_demo">Cargar datos de ejemplo</string>
+    <string name="settings_demo_detail_loaded">Ya cargados en este dispositivo</string>
+    <string name="settings_demo_detail">Solo si no hay datos operativos</string>
+    <string name="settings_erase">Borrar todos los datos</string>
+    <string name="settings_erase_detail">Regresa Trama a su configuración inicial</string>
+    <string name="settings_data_admin_only">Solo el administrador puede respaldar, restaurar o borrar los datos.</string>
+
+    <string name="settings_about">Acerca de</string>
+    <string name="settings_storage_in_memory">En memoria (demostración)</string>
+    <string name="settings_version">Versión</string>
+    <string name="settings_connection">Conexión</string>
+    <string name="settings_online">En línea</string>
+    <string name="settings_offline">Sin conexión</string>
+    <string name="settings_works_offline">Funciona sin conexión</string>
+    <string name="settings_works_offline_detail">Todos los datos viven en este dispositivo. Puedes registrar cortes, asignaciones y reportes sin internet; Trama nunca necesita conexión para operar.</string>
+    <string name="settings_storage">Almacenamiento</string>
+
+    <string name="settings_password_wrong_current">La contraseña actual no es correcta.</string>
+    <string name="settings_password_mismatch">Las contraseñas nuevas no coinciden.</string>
+    <string name="settings_password_same">La nueva contraseña debe ser distinta a la actual.</string>
+    <string name="settings_password_updated">Contraseña actualizada</string>
+    <string name="settings_password_current">Contraseña actual</string>
+    <string name="settings_password_new">Nueva contraseña (mín. 6 caracteres)</string>
+    <string name="settings_password_confirm">Confirmar nueva contraseña</string>
+</resources>
