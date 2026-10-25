@@ -54,6 +54,8 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.app.rememberActions
@@ -62,6 +64,7 @@ import com.nevutech.trama.core.data.CutOrderEntity
 import com.nevutech.trama.core.data.Graph
 import com.nevutech.trama.core.data.toLocalDate
 import com.nevutech.trama.core.domain.Fmt
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.EmptyState
 import com.nevutech.trama.designsystem.KpiTile
 import com.nevutech.trama.designsystem.Pill
@@ -105,12 +108,12 @@ fun OrdersScreen() {
             contentPadding = PaddingValues(start = if (wide) 24.dp else 16.dp, end = if (wide) 24.dp else 16.dp, bottom = 100.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            item { ScreenHeader("Cortes por asignar", showTitle = wide) }
+            item { ScreenHeader(stringResource(R.string.section_orders), showTitle = wide) }
             item {
                 val tiles: List<@Composable (Modifier) -> Unit> = listOf(
-                    { KpiTile("Cortes pendientes", Fmt.int(pending.size), Icons.Filled.ContentCut, Tokens.colors.danger, modifier = it) },
-                    { KpiTile("Prendas por asignar", Fmt.int(garments), Icons.Filled.Checkroom, Tokens.colors.warning, modifier = it) },
-                    { KpiTile("Valor por asignar", Fmt.money(value, compact = true), Icons.Filled.Payments, Tokens.colors.brand, modifier = it) },
+                    { KpiTile(stringResource(R.string.orders_kpi_pending_cuts), Fmt.int(pending.size), Icons.Filled.ContentCut, Tokens.colors.danger, modifier = it) },
+                    { KpiTile(stringResource(R.string.orders_kpi_garments_to_assign), Fmt.int(garments), Icons.Filled.Checkroom, Tokens.colors.warning, modifier = it) },
+                    { KpiTile(stringResource(R.string.orders_kpi_value_to_assign), Fmt.money(value, compact = true), Icons.Filled.Payments, Tokens.colors.brand, modifier = it) },
                 )
                 if (wide) {
                     Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) { tiles.forEach { it(Modifier.weight(1f)) } }
@@ -122,26 +125,26 @@ fun OrdersScreen() {
                 val controls: @Composable (Modifier) -> Unit = { m ->
                     SingleChoiceSegmentedButtonRow(m) {
                         OrderFilter.entries.forEachIndexed { i, f ->
-                            SegmentedButton(filter == f, { filter = f }, SegmentedButtonDefaults.itemShape(i, OrderFilter.entries.size)) { Text(f.title, maxLines = 1) }
+                            SegmentedButton(filter == f, { filter = f }, SegmentedButtonDefaults.itemShape(i, OrderFilter.entries.size)) { Text(stringResource(f.titleRes), maxLines = 1) }
                         }
                     }
                 }
                 if (wide) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                         controls(Modifier.widthIn(max = 420.dp))
-                        SearchBox(query, { query = it }, "Código, lista, cliente, estilo…", Modifier.weight(1f))
+                        SearchBox(query, { query = it }, stringResource(R.string.orders_search_placeholder), Modifier.weight(1f))
                     }
                 } else {
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        SearchBox(query, { query = it }, "Código, lista, cliente, estilo…")
+                        SearchBox(query, { query = it }, stringResource(R.string.orders_search_placeholder))
                         controls(Modifier.fillMaxWidth())
                     }
                 }
             }
             if (rows.isEmpty()) {
                 item {
-                    if (q.isEmpty()) EmptyState("No hay cortes aquí", "Todos los cortes de este filtro están al día.", Icons.Filled.Verified)
-                    else EmptyState("Sin resultados", "Prueba con otro código, lista o cliente.", Icons.Filled.SearchOff)
+                    if (q.isEmpty()) EmptyState(stringResource(R.string.orders_empty_title), stringResource(R.string.orders_empty_message), Icons.Filled.Verified)
+                    else EmptyState(stringResource(R.string.common_no_results), stringResource(R.string.orders_no_results_message), Icons.Filled.SearchOff)
                 }
             }
             items(rows, key = { it.id }) { order ->
@@ -151,7 +154,7 @@ fun OrdersScreen() {
         Box(Modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.BottomEnd) {
             ExtendedFloatingActionButton(
                 onClick = { creating = true }, containerColor = Tokens.colors.brand, contentColor = androidx.compose.ui.graphics.Color.White,
-                icon = { Icon(Icons.Filled.Add, null) }, text = { Text("Nuevo corte") },
+                icon = { Icon(Icons.Filled.Add, null) }, text = { Text(stringResource(R.string.orders_new)) },
             )
         }
     }
@@ -160,8 +163,8 @@ fun OrdersScreen() {
     editing?.let { OrderEditorSheet(it) { editing = null } }
     deleting?.let { order ->
         ConfirmDialog(
-            "¿Eliminar el corte ${order.code}?", "Se eliminarán también sus asignaciones sin reportes.", "Eliminar",
-            onConfirm = { actions.run(success = "Corte eliminado") { app.production().deleteOrder(order) } },
+            stringResource(R.string.orders_delete_title, order.code), stringResource(R.string.orders_delete_message), stringResource(R.string.common_delete),
+            onConfirm = { actions.run(success = L10n.str(R.string.orders_deleted)) { app.production().deleteOrder(order) } },
             onDismiss = { deleting = null },
         )
     }
@@ -178,12 +181,15 @@ fun OrderRow(graph: Graph, order: CutOrderEntity, wide: Boolean, onOpen: () -> U
     val assigned = graph.assignedQuantity(order)
     var menu by remember { mutableStateOf(false) }
     val shape = RoundedCornerShape(18.dp)
+    val openLabel = stringResource(R.string.orders_open)
+    val optionsLabel = stringResource(R.string.orders_options)
+    val remainingText = stringResource(R.string.orders_remaining_of, Fmt.int(graph.remaining(order)), Fmt.int(order.quantity))
     Row(
         Modifier.fillMaxWidth().background(c.surface, shape).border(1.dp, c.stroke, shape)
             .combinedClickable(
-                onClick = onOpen, onClickLabel = "Abrir corte",
+                onClick = onOpen, onClickLabel = openLabel,
                 onLongClick = if (onEdit != null) ({ haptics.performHapticFeedback(HapticFeedbackType.LongPress); menu = true }) else null,
-                onLongClickLabel = "Opciones",
+                onLongClickLabel = optionsLabel,
             )
             .padding(14.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -193,36 +199,36 @@ fun OrderRow(graph: Graph, order: CutOrderEntity, wide: Boolean, onOpen: () -> U
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text(order.code, style = MaterialTheme.typography.titleMedium)
-                Text("Lista ${order.list.ifBlank { "—" }}", style = MaterialTheme.typography.bodyMedium, color = c.secondary, maxLines = 1)
+                Text(stringResource(R.string.orders_list_label, order.list.ifBlank { "—" }), style = MaterialTheme.typography.bodyMedium, color = c.secondary, maxLines = 1)
             }
             Text(
                 listOf(graph.clientName(order), order.garment, graph.styleName(order)).filter { it.isNotBlank() }.joinToString(" · "),
                 style = MaterialTheme.typography.bodyMedium, color = c.secondary, maxLines = 1,
             )
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Pill(state.title, state.tint())
+                Pill(stringResource(state.titleRes), state.tint())
                 DaysLeftBadge(order.clientDate?.toLocalDate())
             }
             if (!wide) {
-                Text("${Fmt.money(order.quantity * order.unitPrice)} · ${Fmt.int(graph.remaining(order))} de ${Fmt.int(order.quantity)} por asignar", style = MaterialTheme.typography.bodySmall, color = c.secondary)
+                Text("${Fmt.money(order.quantity * order.unitPrice)} · $remainingText", style = MaterialTheme.typography.bodySmall, color = c.secondary)
                 Meter(assigned.toDouble() / maxOf(order.quantity, 1L), state.tint())
             }
         }
         if (wide) {
             Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Text(Fmt.money(order.quantity * order.unitPrice), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
-                Text("${Fmt.int(graph.remaining(order))} de ${Fmt.int(order.quantity)} por asignar", style = MaterialTheme.typography.bodySmall, color = c.secondary)
+                Text(remainingText, style = MaterialTheme.typography.bodySmall, color = c.secondary)
                 Meter(assigned.toDouble() / maxOf(order.quantity, 1L), state.tint(), Modifier.width(160.dp))
             }
         }
         if (onEdit != null || onDelete != null) {
             Box {
-                IconButton({ menu = true }) { Icon(Icons.Filled.MoreVert, "Opciones del corte ${order.code}", tint = c.secondary) }
+                IconButton({ menu = true }) { Icon(Icons.Filled.MoreVert, stringResource(R.string.orders_options_for, order.code), tint = c.secondary) }
                 DropdownMenu(menu, { menu = false }) {
-                    onEdit?.let { DropdownMenuItem(text = { Text("Editar") }, leadingIcon = { Icon(Icons.Filled.Edit, null) }, onClick = { menu = false; it() }) }
+                    onEdit?.let { DropdownMenuItem(text = { Text(stringResource(R.string.common_edit)) }, leadingIcon = { Icon(Icons.Filled.Edit, null) }, onClick = { menu = false; it() }) }
                     onDelete?.let {
                         DropdownMenuItem(
-                            text = { Text("Eliminar", color = c.danger) }, leadingIcon = { Icon(Icons.Filled.Delete, null, tint = c.danger) },
+                            text = { Text(stringResource(R.string.common_delete), color = c.danger) }, leadingIcon = { Icon(Icons.Filled.Delete, null, tint = c.danger) },
                             onClick = { menu = false; it() },
                         )
                     }

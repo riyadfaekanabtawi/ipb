@@ -81,12 +81,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role as SemanticsRole
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.rememberActions
 import com.nevutech.trama.app.rememberGraph
@@ -100,6 +103,7 @@ import com.nevutech.trama.core.domain.Fmt
 import com.nevutech.trama.core.domain.ReportKind
 import com.nevutech.trama.core.domain.Role
 import com.nevutech.trama.core.domain.UrgencyPolicy
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.IntField
 import com.nevutech.trama.designsystem.Pill
 import com.nevutech.trama.designsystem.PrimaryButton
@@ -172,7 +176,7 @@ fun daysLeftTint(days: Int?): Color = when {
 
 @Composable
 fun CutStatusPill(status: CutStatus, modifier: Modifier = Modifier) =
-    Pill(status.title, status.tint(), status.icon, modifier)
+    Pill(stringResource(status.titleRes), status.tint(), status.icon, modifier)
 
 /** Days-left chip colored by urgency. */
 @Composable
@@ -196,7 +200,7 @@ fun ScreenHeader(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         if (onBack != null) {
-            IconButton(onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Atrás", tint = Tokens.colors.brand) }
+            IconButton(onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.common_back), tint = Tokens.colors.brand) }
         }
         Column(Modifier.weight(1f).padding(start = if (onBack == null) 8.dp else 0.dp)) {
             if (showTitle) {
@@ -216,7 +220,7 @@ fun SearchBox(query: String, onQueryChange: (String) -> Unit, placeholder: Strin
         placeholder = { Text(placeholder) },
         leadingIcon = { Icon(Icons.Filled.Search, null, tint = Tokens.colors.secondary) },
         trailingIcon = if (query.isNotEmpty()) {
-            { IconButton({ onQueryChange("") }) { Icon(Icons.Filled.Close, "Borrar búsqueda") } }
+            { IconButton({ onQueryChange("") }) { Icon(Icons.Filled.Close, stringResource(R.string.production_clear_search)) } }
         } else null,
         shape = Tokens.chipShape,
         colors = OutlinedTextFieldDefaults.colors(
@@ -280,7 +284,7 @@ fun ConfirmDialog(title: String, message: String?, confirm: String, onConfirm: (
         title = { Text(title) },
         text = message?.let { { Text(it) } },
         confirmButton = { TextButton({ onConfirm(); onDismiss() }) { Text(confirm, color = Tokens.colors.danger) } },
-        dismissButton = { TextButton(onDismiss) { Text("Cancelar") } },
+        dismissButton = { TextButton(onDismiss) { Text(stringResource(R.string.common_cancel)) } },
     )
 }
 
@@ -295,9 +299,9 @@ fun TramaDatePickerDialog(initial: LocalDate?, onPick: (LocalDate) -> Unit, onDi
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton({ state.selectedDateMillis?.let { onPick(it.fromPickerMillis()) }; onDismiss() }) { Text("Aceptar") }
+            TextButton({ state.selectedDateMillis?.let { onPick(it.fromPickerMillis()) }; onDismiss() }) { Text(stringResource(R.string.common_ok)) }
         },
-        dismissButton = { TextButton(onDismiss) { Text("Cancelar") } },
+        dismissButton = { TextButton(onDismiss) { Text(stringResource(R.string.common_cancel)) } },
     ) { DatePicker(state) }
 }
 
@@ -312,13 +316,13 @@ private data class Stage(val title: String, val value: Int, val icon: ImageVecto
 fun ProductionFunnel(metrics: AssignmentMetrics, modifier: Modifier = Modifier) {
     val c = Tokens.colors
     val stages = listOf(
-        Stage("Planeadas", metrics.quantity, Icons.AutoMirrored.Filled.ListAlt, c.brand),
-        Stage("Cortadas", metrics.realCut, Icons.Filled.ContentCut, c.warning),
-        Stage("Producidas", metrics.produced, Icons.Filled.PrecisionManufacturing, c.info),
-        Stage("En plancha", metrics.ironing, Icons.Filled.Iron, StageTints.ironing),
-        Stage("En empaque", metrics.packing, Icons.Filled.Inventory2, StageTints.packing),
-        Stage("En bodega", metrics.warehouse, Icons.Filled.Warehouse, StageTints.warehouse),
-        Stage("Enviadas", metrics.shipped, Icons.AutoMirrored.Filled.Send, c.success),
+        Stage(stringResource(R.string.production_stage_planned), metrics.quantity, Icons.AutoMirrored.Filled.ListAlt, c.brand),
+        Stage(stringResource(R.string.production_stage_cut), metrics.realCut, Icons.Filled.ContentCut, c.warning),
+        Stage(stringResource(R.string.production_stage_produced), metrics.produced, Icons.Filled.PrecisionManufacturing, c.info),
+        Stage(stringResource(R.string.production_stage_ironing), metrics.ironing, Icons.Filled.Iron, StageTints.ironing),
+        Stage(stringResource(R.string.production_stage_packing), metrics.packing, Icons.Filled.Inventory2, StageTints.packing),
+        Stage(stringResource(R.string.production_stage_warehouse), metrics.warehouse, Icons.Filled.Warehouse, StageTints.warehouse),
+        Stage(stringResource(R.string.production_stage_shipped), metrics.shipped, Icons.AutoMirrored.Filled.Send, c.success),
     )
     val top = maxOf(metrics.quantity, metrics.realCut, 1).toDouble()
     val wide = isWideLayout()
@@ -368,8 +372,11 @@ fun AssignmentCard(graph: Graph, assignment: AssignmentEntity, modifier: Modifie
             if (showPlant) Text(plant, style = MaterialTheme.typography.labelMedium, color = Tokens.accent(plant), maxLines = 1)
         }
         Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            Text("${Fmt.int(assignment.quantity)} prendas", style = MaterialTheme.typography.bodySmall, color = c.secondary)
-            Text("${Fmt.int(metrics.toShip)} por enviar", style = MaterialTheme.typography.bodySmall, color = c.secondary)
+            Text(
+                pluralStringResource(R.plurals.production_garments_count, assignment.quantity.toPluralCount(), Fmt.int(assignment.quantity)),
+                style = MaterialTheme.typography.bodySmall, color = c.secondary,
+            )
+            Text(stringResource(R.string.production_to_ship_count, Fmt.int(metrics.toShip)), style = MaterialTheme.typography.bodySmall, color = c.secondary)
         }
         Meter(metrics.shippingProgress, if (metrics.isComplete) c.success else c.brand)
     }
@@ -386,7 +393,24 @@ sealed interface ReportEditorRequest {
     data class Edit(override val assignmentId: String, val reportId: String) : ReportEditorRequest
 }
 
-private val stampFormat = DateTimeFormatter.ofPattern("d MMM HH:mm", Fmt.locale)
+/** Clamp for plural selection (counts are Long in the database). */
+fun Long.toPluralCount(): Int = coerceIn(0L, Int.MAX_VALUE.toLong()).toInt()
+
+private fun stampFormat() = DateTimeFormatter.ofPattern(if (Fmt.locale.language == "en") "MMM d, HH:mm" else "d MMM HH:mm", Fmt.locale)
+
+@androidx.annotation.StringRes
+private fun ReportKind.editTitleRes() = when (this) {
+    ReportKind.Plant -> R.string.production_report_edit_plant
+    ReportKind.Cut -> R.string.production_report_edit_cut
+    ReportKind.Shipment -> R.string.production_report_edit_shipment
+}
+
+@androidx.annotation.StringRes
+private fun ReportKind.savedRes() = when (this) {
+    ReportKind.Plant -> R.string.production_report_saved_plant
+    ReportKind.Cut -> R.string.production_report_saved_cut
+    ReportKind.Shipment -> R.string.production_report_saved_shipment
+}
 
 /** Create or edit one of the three report kinds for an assignment, in a bottom sheet. */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -426,7 +450,7 @@ fun ReportEditorSheet(request: ReportEditorRequest, onDismiss: () -> Unit) {
         ReportKind.Cut -> realQuantity >= 0
         ReportKind.Shipment -> shipmentNumber.isNotBlank() && shippedQuantity > 0
     }
-    val title = (if (report == null) "" else "Editar ") + (if (report == null) kind.title else kind.title.lowercase())
+    val title = stringResource(if (report == null) kind.titleRes else kind.editTitleRes())
 
     val sheet = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheet, containerColor = Tokens.colors.canvas) {
@@ -439,25 +463,34 @@ fun ReportEditorSheet(request: ReportEditorRequest, onDismiss: () -> Unit) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                 IconTile(kind.icon, kind.tint(), 48.dp)
                 Column {
-                    Text("Corte ${graph.title(assignment)}", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.production_cut_title, graph.title(assignment)), style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "${graph.plantName(assignment)} · ${Fmt.int(assignment.quantity)} prendas · ${LocalDateTime.now().format(stampFormat)}",
+                        pluralStringResource(
+                            R.plurals.production_report_header, assignment.quantity.toPluralCount(),
+                            graph.plantName(assignment), Fmt.int(assignment.quantity), LocalDateTime.now().format(stampFormat()),
+                        ),
                         style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary,
                     )
                 }
             }
             when (kind) {
                 ReportKind.Plant -> {
-                    FormSection("Personal") {
-                        FieldPair({ IntField(operators, { operators = it }, "Operarios", it) }, { IntField(absences, { absences = it }, "Faltas", it) })
+                    FormSection(stringResource(R.string.production_section_staff)) {
+                        val operatorsLabel = stringResource(R.string.production_field_operators)
+                        val absencesLabel = stringResource(R.string.production_field_absences)
+                        FieldPair({ IntField(operators, { operators = it }, operatorsLabel, it) }, { IntField(absences, { absences = it }, absencesLabel, it) })
                     }
-                    FormSection("Avance", footer = "Captura el estado actual de la planta. El último reporte reemplaza a los anteriores en los totales.") {
-                        FieldPair({ IntField(produced, { produced = it }, "Prendas producidas", it) }, { IntField(ironing, { ironing = it }, "En plancha", it) })
-                        FieldPair({ IntField(packing, { packing = it }, "En empaque", it) }, { IntField(warehouse, { warehouse = it }, "En bodega", it) })
+                    FormSection(stringResource(R.string.production_section_progress), footer = stringResource(R.string.production_progress_footer)) {
+                        val producedLabel = stringResource(R.string.production_field_produced)
+                        val ironingLabel = stringResource(R.string.production_stage_ironing)
+                        val packingLabel = stringResource(R.string.production_stage_packing)
+                        val warehouseLabel = stringResource(R.string.production_stage_warehouse)
+                        FieldPair({ IntField(produced, { produced = it }, producedLabel, it) }, { IntField(ironing, { ironing = it }, ironingLabel, it) })
+                        FieldPair({ IntField(packing, { packing = it }, packingLabel, it) }, { IntField(warehouse, { warehouse = it }, warehouseLabel, it) })
                     }
                 }
                 ReportKind.Cut -> {
-                    FormSection("Estado del corte") {
+                    FormSection(stringResource(R.string.production_section_cut_status)) {
                         CutStatus.entries.forEach { status ->
                             Row(
                                 Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp))
@@ -467,39 +500,39 @@ fun ReportEditorSheet(request: ReportEditorRequest, onDismiss: () -> Unit) {
                             ) {
                                 RadioButton(cutStatus == status, null)
                                 Icon(status.icon, null, tint = status.tint(), modifier = Modifier.size(20.dp))
-                                Text(status.title, style = MaterialTheme.typography.bodyLarge)
+                                Text(stringResource(status.titleRes), style = MaterialTheme.typography.bodyLarge)
                             }
                         }
                     }
                     FormSection(
                         null,
-                        footer = "Solo hay un reporte de corte por asignación. Si la cantidad real difiere de las ${Fmt.int(assignment.quantity)} planeadas, los envíos se miden contra la real.",
-                    ) { IntField(realQuantity, { realQuantity = it }, "Cantidad real cortada") }
+                        footer = pluralStringResource(R.plurals.production_cut_footer, assignment.quantity.toPluralCount(), Fmt.int(assignment.quantity)),
+                    ) { IntField(realQuantity, { realQuantity = it }, stringResource(R.string.production_field_real_cut)) }
                 }
                 ReportKind.Shipment -> {
                     val pending = metrics.toShip + (report?.shippedQuantity?.toInt() ?: 0)
                     FormSection(
-                        "Envío", footer = "Pendientes por enviar: ${Fmt.int(pending)}.",
+                        stringResource(R.string.report_kind_shipment_short), footer = stringResource(R.string.production_shipment_pending, Fmt.int(pending)),
                         footerTint = if (shippedQuantity > pending) Tokens.colors.warning else null,
                     ) {
                         OutlinedTextField(
-                            shipmentNumber, { shipmentNumber = it }, Modifier.fillMaxWidth(), label = { Text("Número de envío") }, singleLine = true,
+                            shipmentNumber, { shipmentNumber = it }, Modifier.fillMaxWidth(), label = { Text(stringResource(R.string.production_field_shipment_number)) }, singleLine = true,
                             keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters), shape = RoundedCornerShape(14.dp),
                         )
-                        IntField(shippedQuantity, { shippedQuantity = it }, "Cantidad enviada")
+                        IntField(shippedQuantity, { shippedQuantity = it }, stringResource(R.string.production_field_shipped))
                     }
                 }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                TextButton(onDismiss) { Text("Cancelar") }
+                TextButton(onDismiss) { Text(stringResource(R.string.common_cancel)) }
                 Spacer(Modifier.weight(1f))
                 PrimaryButton(
-                    if (report == null) "Cargar" else "Guardar",
+                    stringResource(if (report == null) R.string.production_report_submit else R.string.common_save),
                     enabled = canSave,
                     onClick = {
                         val code = graph.title(assignment)
                         actions.run(
-                            success = if (report == null) "Cargaste el ${kind.title.lowercase()} de $code" else "Reporte actualizado",
+                            success = if (report == null) L10n.str(kind.savedRes(), code) else L10n.str(R.string.production_report_updated),
                             onDone = onDismiss,
                         ) {
                             val service = app.production()

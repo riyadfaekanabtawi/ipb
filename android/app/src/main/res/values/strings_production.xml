@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Orders, assignment, cutting board and production screens (Spanish, Mexico). -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
+    <!-- Cut orders list -->
+    <string name="orders_kpi_pending_cuts">Cortes pendientes</string>
+    <string name="orders_kpi_garments_to_assign">Prendas por asignar</string>
+    <string name="orders_kpi_value_to_assign">Valor por asignar</string>
+    <string name="orders_filter_assigned">Asignados</string>
+    <string name="orders_search_placeholder">Código, lista, cliente, estilo…</string>
+    <string name="orders_empty_title">No hay cortes aquí</string>
+    <string name="orders_empty_message">Todos los cortes de este filtro están al día.</string>
+    <string name="orders_no_results_message">Prueba con otro código, lista o cliente.</string>
+    <string name="orders_new">Nuevo corte</string>
+    <string name="orders_edit">Editar corte</string>
+    <string name="orders_delete_title">¿Eliminar el corte %1$s?</string>
+    <string name="orders_delete_message">Se eliminarán también sus asignaciones sin reportes.</string>
+    <string name="orders_deleted">Corte eliminado</string>
+    <string name="orders_open">Abrir corte</string>
+    <string name="orders_options">Opciones</string>
+    <string name="orders_options_for">Opciones del corte %1$s</string>
+    <string name="orders_list_label">Lista %1$s</string>
+    <string name="orders_remaining_of">%1$s de %2$s por asignar</string>
+
+    <!-- Cut order detail -->
+    <string name="orders_assign_to_plant">Asignar a planta</string>
+    <string name="orders_client_and_list">%1$s · Lista %2$s</string>
+    <string name="orders_garment_fallback">Prenda</string>
+    <string name="orders_detail">Detalle</string>
+    <string name="orders_total_revenue">Ingreso total</string>
+    <string name="orders_edited_by">Editado por</string>
+    <string name="orders_assigned_ring">asignado</string>
+    <plurals name="orders_garments_to_assign">
+        <item quantity="one">%1$s prenda por asignar</item>
+        <item quantity="many">%1$s prendas por asignar</item>
+        <item quantity="other">%1$s prendas por asignar</item>
+    </plurals>
+    <string name="orders_of_total">de %1$s</string>
+    <string name="orders_assignments_title">Asignaciones</string>
+    <string name="orders_assignments_subtitle">Dónde se está produciendo este corte</string>
+    <string name="orders_no_assignments">Sin asignar</string>
+    <string name="orders_no_assignments_message">Asigna prendas a una planta según su capacidad mensual.</string>
+    <string name="orders_unassign_title">¿Quitar esta asignación?</string>
+    <string name="orders_unassign_message">Las prendas vuelven a quedar por asignar.</string>
+    <string name="orders_unassign">Quitar asignación</string>
+    <string name="orders_unassigned">Asignación eliminada</string>
+    <string name="orders_assignment_options">Opciones de la asignación</string>
+    <plurals name="orders_assignment_line">
+        <item quantity="one">%1$s prenda · %2$s · %3$s</item>
+        <item quantity="many">%1$s prendas · %2$s · %3$s</item>
+        <item quantity="other">%1$s prendas · %2$s · %3$s</item>
+    </plurals>
+
+    <!-- Cut order editor -->
+    <string name="orders_section_identification">Identificación</string>
+    <string name="orders_field_code">Código de corte</string>
+    <string name="orders_field_list">Lista</string>
+    <string name="orders_field_garment">Prenda (ej. Falda, Jeans)</string>
+    <string name="orders_section_client_style">Cliente y estilo</string>
+    <string name="orders_section_quantity_price">Cantidad y precio</string>
+    <string name="orders_total_revenue_value">Ingreso total: %1$s</string>
+    <string name="orders_section_dates">Fechas</string>
+    <string name="orders_field_client_delivery_date">Fecha de entrega al cliente</string>
+    <string name="orders_created">Corte %1$s creado</string>
+    <string name="orders_updated">Corte %1$s actualizado</string>
+
+    <!-- Assign sheet -->
+    <string name="assign_ui_title">Asignar %1$s</string>
+    <plurals name="assign_ui_pending_of">
+        <item quantity="one">%1$s prenda pendiente de %2$s</item>
+        <item quantity="many">%1$s prendas pendientes de %2$s</item>
+        <item quantity="other">%1$s prendas pendientes de %2$s</item>
+    </plurals>
+    <plurals name="assign_ui_garments_unit">
+        <item quantity="one">prenda</item>
+        <item quantity="many">prendas</item>
+        <item quantity="other">prendas</item>
+    </plurals>
+    <string name="assign_ui_all">Todo</string>
+    <string name="assign_ui_value">Valor de la asignación</string>
+    <string name="assign_ui_month_title">Mes de producción</string>
+    <string name="assign_ui_month_subtitle">La capacidad de cada planta es mensual</string>
+    <string name="assign_ui_style_distribution">Este estilo ya se produce en</string>
+    <string name="assign_ui_capacity_of">Capacidad de %1$s</string>
+    <string name="assign_ui_no_plants">No hay plantas</string>
+    <string name="assign_ui_no_plants_message">Crea una planta en Catálogos → Plantas.</string>
+    <plurals name="assign_ui_summary">
+        <item quantity="one">%1$s prenda → %2$s</item>
+        <item quantity="many">%1$s prendas → %2$s</item>
+        <item quantity="other">%1$s prendas → %2$s</item>
+    </plurals>
+    <string name="assign_ui_value_in_month">%1$s en %2$s</string>
+    <string name="assign_ui_pick_plant">Elige una planta</string>
+    <string name="assign_ui_assign">Asignar</string>
+    <plurals name="assign_ui_done">
+        <item quantity="one">Asignaste %1$s prenda a %2$s</item>
+        <item quantity="many">Asignaste %1$s prendas a %2$s</item>
+        <item quantity="other">Asignaste %1$s prendas a %2$s</item>
+    </plurals>
+    <string name="assign_ui_max_per_month">Máx. %1$s/mes</string>
+    <string name="assign_ui_fits">Cabe</string>
+    <string name="assign_ui_exceeds">Excede</string>
+    <string name="assign_ui_used">Usado %1$s</string>
+    <string name="assign_ui_available">Disponible %1$s</string>
+
+    <!-- Cutting board -->
+    <string name="board_moved">%1$s → %2$s</string>
+    <string name="board_search_placeholder">Buscar corte, cliente, planta…</string>
+    <string name="board_all_plants">Todas las plantas</string>
+    <string name="board_hide_shipped">Ocultar enviados</string>
+    <string name="board_move_not_allowed">Solo administradores y gerentes de cortes pueden mover cortes.</string>
+    <plurals name="board_column_summary">
+        <item quantity="one">%1$d corte · %2$s prendas</item>
+        <item quantity="many">%1$d cortes · %2$s prendas</item>
+        <item quantity="other">%1$d cortes · %2$s prendas</item>
+    </plurals>
+    <string name="board_drop_here">Arrastra cortes aquí</string>
+    <string name="board_no_cuts">Sin cortes</string>
+    <string name="board_move_to">Mover a %1$s</string>
+    <string name="board_move_cut">Mover %1$s</string>
+
+    <!-- Shared production components -->
+    <string name="production_clear_search">Borrar búsqueda</string>
+    <string name="production_stage_planned">Planeadas</string>
+    <string name="production_stage_cut">Cortadas</string>
+    <string name="production_stage_produced">Producidas</string>
+    <string name="production_stage_ironing">En plancha</string>
+    <string name="production_stage_packing">En empaque</string>
+    <string name="production_stage_warehouse">En bodega</string>
+    <string name="production_stage_shipped">Enviadas</string>
+    <plurals name="production_garments_count">
+        <item quantity="one">%1$s prenda</item>
+        <item quantity="many">%1$s prendas</item>
+        <item quantity="other">%1$s prendas</item>
+    </plurals>
+    <string name="production_to_ship">Por enviar</string>
+    <string name="production_to_ship_count">%1$s por enviar</string>
+    <string name="production_revenue">Ingreso</string>
+    <string name="production_sort_client_date">Fecha de entrega</string>
+
+    <!-- Report editor -->
+    <string name="production_report_edit_plant">Editar reporte de planta</string>
+    <string name="production_report_edit_cut">Editar reporte de corte</string>
+    <string name="production_report_edit_shipment">Editar reporte de envío</string>
+    <string name="production_report_saved_plant">Cargaste el reporte de planta de %1$s</string>
+    <string name="production_report_saved_cut">Cargaste el reporte de corte de %1$s</string>
+    <string name="production_report_saved_shipment">Cargaste el reporte de envío de %1$s</string>
+    <string name="production_report_updated">Reporte actualizado</string>
+    <string name="production_report_submit">Cargar</string>
+    <string name="production_cut_title">Corte %1$s</string>
+    <plurals name="production_report_header">
+        <item quantity="one">%1$s · %2$s prenda · %3$s</item>
+        <item quantity="many">%1$s · %2$s prendas · %3$s</item>
+        <item quantity="other">%1$s · %2$s prendas · %3$s</item>
+    </plurals>
+    <string name="production_section_staff">Personal</string>
+    <string name="production_field_operators">Operarios</string>
+    <string name="production_field_absences">Faltas</string>
+    <string name="production_section_progress">Avance</string>
+    <string name="production_progress_footer">Captura el estado actual de la planta. El último reporte reemplaza a los anteriores en los totales.</string>
+    <string name="production_field_produced">Prendas producidas</string>
+    <string name="production_section_cut_status">Estado del corte</string>
+    <plurals name="production_cut_footer">
+        <item quantity="one">Solo hay un reporte de corte por asignación. Si la cantidad real difiere de la %1$s planeada, los envíos se miden contra la real.</item>
+        <item quantity="many">Solo hay un reporte de corte por asignación. Si la cantidad real difiere de las %1$s planeadas, los envíos se miden contra la real.</item>
+        <item quantity="other">Solo hay un reporte de corte por asignación. Si la cantidad real difiere de las %1$s planeadas, los envíos se miden contra la real.</item>
+    </plurals>
+    <string name="production_field_real_cut">Cantidad real cortada</string>
+    <string name="production_shipment_pending">Pendientes por enviar: %1$s.</string>
+    <string name="production_field_shipment_number">Número de envío</string>
+    <string name="production_field_shipped">Cantidad enviada</string>
+
+    <!-- Assignment detail -->
+    <string name="assignment_not_found">Corte no encontrado</string>
+    <string name="assignment_not_found_message">Es posible que se haya eliminado.</string>
+    <string name="assignment_view_style_image">Ver imagen del estilo</string>
+    <string name="assignment_header_subtitle">%1$s · Lista %2$s · %3$s</string>
+    <string name="assignment_production_date">Producción %1$s</string>
+    <string name="assignment_progress_title">Avance de producción</string>
+    <string name="assignment_progress_subtitle">Último reporte de planta, corte real y envíos acumulados</string>
+    <string name="assignment_view_full_order">Ver corte completo</string>
+    <string name="assignment_reports_title">Reportes</string>
+    <plurals name="assignment_reports_total">
+        <item quantity="one">%1$d en total</item>
+        <item quantity="many">%1$d en total</item>
+        <item quantity="other">%1$d en total</item>
+    </plurals>
+    <string name="assignment_no_reports">Sin reportes</string>
+    <string name="assignment_no_reports_message">Los gerentes cargan aquí el avance de planta, el corte real y los envíos.</string>
+    <string name="assignment_delete_report_title">¿Eliminar este reporte?</string>
+    <string name="assignment_report_deleted">Reporte eliminado</string>
+    <string name="assignment_shipped_ring">enviado</string>
+    <string name="assignment_add_report">Cargar reporte</string>
+    <string name="assignment_report_options">Opciones del reporte</string>
+
+    <!-- Calendar events -->
+    <plurals name="production_calendar_event_subtitle">
+        <item quantity="one">%1$s · %2$s prenda</item>
+        <item quantity="many">%1$s · %2$s prendas</item>
+        <item quantity="other">%1$s · %2$s prendas</item>
+    </plurals>
+    <string name="production_calendar_delivery_to">Entrega a %1$s</string>
+
+    <!-- CSV export columns (same order as iOS) -->
+    <string name="production_csv_cut">Corte</string>
+    <string name="production_csv_list">Lista</string>
+    <string name="production_csv_client">Cliente</string>
+    <string name="production_csv_style">Estilo</string>
+    <string name="production_csv_garment">Prenda</string>
+    <string name="production_csv_plant">Planta</string>
+    <string name="production_csv_status">Estado</string>
+    <string name="production_csv_quantity">Cantidad</string>
+    <string name="production_csv_cut_qty">Cortadas</string>
+    <string name="production_csv_produced">Producidas</string>
+    <string name="production_csv_ironing">Plancha</string>
+    <string name="production_csv_packing">Empaque</string>
+    <string name="production_csv_warehouse">Bodega</string>
+    <string name="production_csv_shipped">Enviadas</string>
+    <string name="production_csv_to_ship">Por enviar</string>
+    <string name="production_csv_revenue">Ingreso</string>
+    <string name="production_csv_internal_date">Fecha interna</string>
+    <string name="production_csv_client_date">Fecha cliente</string>
+</resources>

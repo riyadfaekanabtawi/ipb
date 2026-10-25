@@ -52,6 +52,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.nevutech.trama.R
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
 import com.nevutech.trama.app.rememberActions
@@ -60,6 +63,7 @@ import com.nevutech.trama.core.data.AssignmentEntity
 import com.nevutech.trama.core.data.Graph
 import com.nevutech.trama.core.data.toLocalDate
 import com.nevutech.trama.core.domain.Fmt
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.Avatar
 import com.nevutech.trama.designsystem.EmptyState
 import com.nevutech.trama.designsystem.InfoRow
@@ -77,6 +81,7 @@ import com.nevutech.trama.feature.production.CutStatusPill
 import com.nevutech.trama.feature.production.DaysLeftBadge
 import com.nevutech.trama.feature.production.ScreenHeader
 import com.nevutech.trama.feature.production.isWideLayout
+import com.nevutech.trama.feature.production.toPluralCount
 
 /** Cut order detail: summary, assignment progress, assignments per plant and the assign action. */
 @OptIn(ExperimentalLayoutApi::class)
@@ -97,8 +102,8 @@ fun OrderDetailScreen(id: String) {
     TramaScreen {
         if (order == null) {
             Column {
-                ScreenHeader("Corte", onBack = { navigator.back() })
-                EmptyState("Corte no encontrado", "Es posible que se haya eliminado.", Icons.Filled.SearchOff)
+                ScreenHeader(stringResource(R.string.common_cut), onBack = { navigator.back() })
+                EmptyState(stringResource(R.string.assignment_not_found), stringResource(R.string.assignment_not_found_message), Icons.Filled.SearchOff)
             }
             return@TramaScreen
         }
@@ -107,12 +112,12 @@ fun OrderDetailScreen(id: String) {
         val styleFile = app.images.file(graph.style(order.styleId)?.imageFile)
 
         Column(Modifier.fillMaxSize()) {
-            ScreenHeader("Corte ${order.code}", onBack = { navigator.back() }) {
-                IconButton({ editing = true }) { Icon(Icons.Filled.Edit, "Editar", tint = Tokens.colors.brand) }
+            ScreenHeader(stringResource(R.string.production_cut_title, order.code), onBack = { navigator.back() }) {
+                IconButton({ editing = true }) { Icon(Icons.Filled.Edit, stringResource(R.string.common_edit), tint = Tokens.colors.brand) }
                 if (wide) {
-                    PrimaryButton("Asignar a planta", { assigning = true }, enabled = remaining > 0, icon = Icons.AutoMirrored.Filled.CallSplit)
+                    PrimaryButton(stringResource(R.string.orders_assign_to_plant), { assigning = true }, enabled = remaining > 0, icon = Icons.AutoMirrored.Filled.CallSplit)
                 } else {
-                    IconButton({ assigning = true }, enabled = remaining > 0) { Icon(Icons.AutoMirrored.Filled.CallSplit, "Asignar a planta", tint = Tokens.colors.brand) }
+                    IconButton({ assigning = true }, enabled = remaining > 0) { Icon(Icons.AutoMirrored.Filled.CallSplit, stringResource(R.string.orders_assign_to_plant), tint = Tokens.colors.brand) }
                 }
             }
             Column(
@@ -123,17 +128,17 @@ fun OrderDetailScreen(id: String) {
                 // Header
                 TramaCard {
                     Row(horizontalArrangement = Arrangement.spacedBy(20.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.size(if (wide) 120.dp else 84.dp).clickable(onClickLabel = "Ver imagen del estilo") { zoom = true }) {
+                        Box(Modifier.size(if (wide) 120.dp else 84.dp).clickable(onClickLabel = stringResource(R.string.assignment_view_style_image)) { zoom = true }) {
                             Swatch(graph.styleName(order), styleFile, Modifier.fillMaxSize(), corner = 20.dp)
                         }
                         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                                 Text(order.code, fontSize = if (wide) 34.sp else 26.sp, fontWeight = FontWeight.Bold)
-                                Pill(state.title, state.tint(), modifier = Modifier.align(Alignment.CenterVertically))
+                                Pill(stringResource(state.titleRes), state.tint(), modifier = Modifier.align(Alignment.CenterVertically))
                             }
-                            Text("${graph.clientName(order)} · Lista ${order.list.ifBlank { "—" }}", style = MaterialTheme.typography.titleMedium, color = Tokens.colors.secondary)
+                            Text(stringResource(R.string.orders_client_and_list, graph.clientName(order), order.list.ifBlank { "—" }), style = MaterialTheme.typography.titleMedium, color = Tokens.colors.secondary)
                             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                                Pill(order.garment.ifBlank { "Prenda" }, Tokens.colors.brand, Icons.Filled.Checkroom)
+                                Pill(order.garment.ifBlank { stringResource(R.string.orders_garment_fallback) }, Tokens.colors.brand, Icons.Filled.Checkroom)
                                 Pill(graph.styleName(order), Tokens.accent(graph.styleName(order)), Icons.Filled.Palette)
                                 DaysLeftBadge(order.clientDate?.toLocalDate())
                             }
@@ -143,13 +148,13 @@ fun OrderDetailScreen(id: String) {
 
                 val details: @Composable (Modifier) -> Unit = { m ->
                     TramaCard(m) {
-                        SectionHeader("Detalle")
-                        InfoRow("Cantidad", Fmt.int(order.quantity), Icons.Filled.Numbers)
-                        InfoRow("Precio unitario", Fmt.money(order.unitPrice), Icons.Filled.Sell)
-                        InfoRow("Ingreso total", Fmt.money(order.quantity * order.unitPrice), Icons.Filled.Payments)
-                        InfoRow("Fecha interna", Fmt.date(order.internalDate?.toLocalDate()), Icons.Filled.CalendarMonth)
-                        InfoRow("Fecha cliente", Fmt.date(order.clientDate?.toLocalDate()), Icons.Filled.EventAvailable)
-                        order.editedBy?.let { InfoRow("Editado por", it, Icons.Filled.Person) }
+                        SectionHeader(stringResource(R.string.orders_detail))
+                        InfoRow(stringResource(R.string.common_quantity), Fmt.int(order.quantity), Icons.Filled.Numbers)
+                        InfoRow(stringResource(R.string.common_unit_price), Fmt.money(order.unitPrice), Icons.Filled.Sell)
+                        InfoRow(stringResource(R.string.orders_total_revenue), Fmt.money(order.quantity * order.unitPrice), Icons.Filled.Payments)
+                        InfoRow(stringResource(R.string.common_internal_date), Fmt.date(order.internalDate?.toLocalDate()), Icons.Filled.CalendarMonth)
+                        InfoRow(stringResource(R.string.common_client_date), Fmt.date(order.clientDate?.toLocalDate()), Icons.Filled.EventAvailable)
+                        order.editedBy?.let { InfoRow(stringResource(R.string.orders_edited_by), it, Icons.Filled.Person) }
                         order.notes?.takeIf { it.isNotBlank() }?.let {
                             Text(it, style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary, modifier = Modifier.padding(top = 4.dp))
                         }
@@ -163,14 +168,17 @@ fun OrderDetailScreen(id: String) {
                                 ProgressRing(ratio, Modifier.fillMaxSize(), tint = state.tint(), stroke = 14.dp)
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     Text(Fmt.percent(ratio), fontSize = 30.sp, fontWeight = FontWeight.Bold)
-                                    Text("asignado", style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
+                                    Text(stringResource(R.string.orders_assigned_ring), style = MaterialTheme.typography.bodySmall, color = Tokens.colors.secondary)
                                 }
                             }
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text("${Fmt.int(remaining)} prendas por asignar", style = MaterialTheme.typography.titleMedium)
-                                Text("de ${Fmt.int(order.quantity)}", style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary)
+                                Text(
+                                    pluralStringResource(R.plurals.orders_garments_to_assign, remaining.toLong().toPluralCount(), Fmt.int(remaining)),
+                                    style = MaterialTheme.typography.titleMedium,
+                                )
+                                Text(stringResource(R.string.orders_of_total, Fmt.int(order.quantity)), style = MaterialTheme.typography.bodyMedium, color = Tokens.colors.secondary)
                             }
-                            PrimaryButton("Asignar a planta", { assigning = true }, enabled = remaining > 0, icon = Icons.AutoMirrored.Filled.CallSplit)
+                            PrimaryButton(stringResource(R.string.orders_assign_to_plant), { assigning = true }, enabled = remaining > 0, icon = Icons.AutoMirrored.Filled.CallSplit)
                         }
                     }
                 }
@@ -181,10 +189,10 @@ fun OrderDetailScreen(id: String) {
                 }
 
                 TramaCard {
-                    SectionHeader("Asignaciones", "Dónde se está produciendo este corte")
+                    SectionHeader(stringResource(R.string.orders_assignments_title), stringResource(R.string.orders_assignments_subtitle))
                     val assignments = graph.assignmentsOf(order).sortedBy { it.scheduledDate ?: Long.MAX_VALUE }
                     if (assignments.isEmpty()) {
-                        EmptyState("Sin asignar", "Asigna prendas a una planta según su capacidad mensual.", Icons.Filled.Apartment)
+                        EmptyState(stringResource(R.string.orders_no_assignments), stringResource(R.string.orders_no_assignments_message), Icons.Filled.Apartment)
                     }
                     assignments.forEach { a ->
                         AssignmentLine(graph, a, onOpen = { navigator.openAssignment(a.id) }, onUnassign = { unassigning = a })
@@ -203,8 +211,8 @@ fun OrderDetailScreen(id: String) {
     }
     unassigning?.let { a ->
         ConfirmDialog(
-            "¿Quitar esta asignación?", "Las prendas vuelven a quedar por asignar.", "Quitar asignación",
-            onConfirm = { actions.run(success = "Asignación eliminada") { app.production().unassign(a) } },
+            stringResource(R.string.orders_unassign_title), stringResource(R.string.orders_unassign_message), stringResource(R.string.orders_unassign),
+            onConfirm = { actions.run(success = L10n.str(R.string.orders_unassigned)) { app.production().unassign(a) } },
             onDismiss = { unassigning = null },
         )
     }
@@ -216,26 +224,30 @@ private fun AssignmentLine(graph: Graph, a: AssignmentEntity, onOpen: () -> Unit
     val c = Tokens.colors
     var menu by remember { mutableStateOf(false) }
     val plant = graph.plantName(a)
+    val optionsLabel = stringResource(R.string.orders_options)
     Row(
         Modifier.fillMaxWidth().background(c.surfaceRaised, RoundedCornerShape(14.dp))
-            .combinedClickable(onClick = onOpen, onLongClick = { menu = true }, onLongClickLabel = "Opciones").padding(12.dp),
+            .combinedClickable(onClick = onOpen, onLongClick = { menu = true }, onLongClickLabel = optionsLabel).padding(12.dp),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         Avatar(plant, size = 44.dp, icon = Icons.Filled.Apartment)
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(plant, style = MaterialTheme.typography.titleMedium)
             Text(
-                "${Fmt.int(a.quantity)} prendas · ${Fmt.money(graph.metrics(a).revenue)} · ${Fmt.date(a.scheduledDate?.toLocalDate())}",
+                pluralStringResource(
+                    R.plurals.orders_assignment_line, a.quantity.toPluralCount(),
+                    Fmt.int(a.quantity), Fmt.money(graph.metrics(a).revenue), Fmt.date(a.scheduledDate?.toLocalDate()),
+                ),
                 style = MaterialTheme.typography.bodyMedium, color = c.secondary,
             )
             if (!isWideLayout()) CutStatusPill(graph.cutStatus(a))
         }
         if (isWideLayout()) CutStatusPill(graph.cutStatus(a))
         Box {
-            IconButton({ menu = true }) { Icon(Icons.Filled.MoreVert, "Opciones de la asignación", tint = c.secondary) }
+            IconButton({ menu = true }) { Icon(Icons.Filled.MoreVert, stringResource(R.string.orders_assignment_options), tint = c.secondary) }
             DropdownMenu(menu, { menu = false }) {
                 DropdownMenuItem(
-                    text = { Text("Quitar asignación", color = c.danger) }, leadingIcon = { Icon(Icons.AutoMirrored.Filled.Undo, null, tint = c.danger) },
+                    text = { Text(stringResource(R.string.orders_unassign), color = c.danger) }, leadingIcon = { Icon(Icons.AutoMirrored.Filled.Undo, null, tint = c.danger) },
                     onClick = { menu = false; onUnassign() },
                 )
             }

@@ -57,6 +57,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.nevutech.trama.app.LocalApp
 import com.nevutech.trama.app.LocalNavigator
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.nevutech.trama.R
 import com.nevutech.trama.app.rememberActions
 import com.nevutech.trama.app.rememberGraph
 import com.nevutech.trama.core.data.AssignmentEntity
@@ -67,6 +70,7 @@ import com.nevutech.trama.core.data.toLocalDate
 import com.nevutech.trama.core.domain.Fmt
 import com.nevutech.trama.core.domain.ReportKind
 import com.nevutech.trama.core.domain.Role
+import com.nevutech.trama.core.l10n.L10n
 import com.nevutech.trama.designsystem.EmptyState
 import com.nevutech.trama.designsystem.InfoRow
 import com.nevutech.trama.designsystem.Pill
@@ -82,8 +86,8 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-private val dayFormat = DateTimeFormatter.ofPattern("EEEE d MMM", com.nevutech.trama.core.domain.Fmt.locale)
-private val timeFormat = DateTimeFormatter.ofPattern("HH:mm", com.nevutech.trama.core.domain.Fmt.locale)
+private fun dayFormat() = DateTimeFormatter.ofPattern(if (Fmt.locale.language == "en") "EEEE, MMM d" else "EEEE d MMM", Fmt.locale)
+private fun timeFormat() = DateTimeFormatter.ofPattern("HH:mm", Fmt.locale)
 
 /** Detail of a cut assigned to a plant: live production funnel, report timeline and role-aware report actions. */
 @OptIn(ExperimentalLayoutApi::class)
@@ -105,8 +109,8 @@ fun AssignmentDetailScreen(id: String) {
     TramaScreen {
         if (assignment == null) {
             Column {
-                ScreenHeader("Corte", onBack = { navigator.back() })
-                EmptyState("Corte no encontrado", "Es posible que se haya eliminado.", Icons.Filled.SearchOff)
+                ScreenHeader(stringResource(R.string.common_cut), onBack = { navigator.back() })
+                EmptyState(stringResource(R.string.assignment_not_found), stringResource(R.string.assignment_not_found_message), Icons.Filled.SearchOff)
             }
             return@TramaScreen
         }
@@ -115,7 +119,7 @@ fun AssignmentDetailScreen(id: String) {
         val styleFile = app.images.file(graph.style(order?.styleId)?.imageFile)
 
         Column(Modifier.fillMaxSize()) {
-            ScreenHeader("Corte ${graph.title(assignment)}", onBack = { navigator.back() }) {
+            ScreenHeader(stringResource(R.string.production_cut_title, graph.title(assignment)), onBack = { navigator.back() }) {
                 AddReportMenu(graph, assignment, role, compact = !wide) { editor = it }
             }
             Column(
@@ -126,7 +130,7 @@ fun AssignmentDetailScreen(id: String) {
                 // Header
                 TramaCard {
                     Row(horizontalArrangement = Arrangement.spacedBy(if (wide) 20.dp else 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.size(if (wide) 110.dp else 72.dp).clickable(onClickLabel = "Ver imagen del estilo") { zoom = true }) {
+                        Box(Modifier.size(if (wide) 110.dp else 72.dp).clickable(onClickLabel = stringResource(R.string.assignment_view_style_image)) { zoom = true }) {
                             Swatch(graph.styleName(order), styleFile, Modifier.fillMaxSize(), corner = 20.dp)
                         }
                         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -135,12 +139,12 @@ fun AssignmentDetailScreen(id: String) {
                                 CutStatusPill(graph.cutStatus(assignment), Modifier.align(Alignment.CenterVertically))
                             }
                             Text(
-                                "${graph.clientName(order)} · Lista ${order?.list?.ifBlank { null } ?: "—"} · ${order?.garment.orEmpty()}",
+                                stringResource(R.string.assignment_header_subtitle, graph.clientName(order), order?.list?.ifBlank { null } ?: "—", order?.garment.orEmpty()),
                                 style = MaterialTheme.typography.titleMedium, color = Tokens.colors.secondary,
                             )
                             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                                 PlantPill(graph.plantName(assignment))
-                                Pill("Producción ${Fmt.date(assignment.scheduledDate?.toLocalDate())}", Tokens.colors.brand, Icons.Filled.CalendarMonth)
+                                Pill(stringResource(R.string.assignment_production_date, Fmt.date(assignment.scheduledDate?.toLocalDate())), Tokens.colors.brand, Icons.Filled.CalendarMonth)
                                 DaysLeftBadge(graph.clientDate(assignment))
                             }
                         }
@@ -151,21 +155,21 @@ fun AssignmentDetailScreen(id: String) {
 
                 val funnel: @Composable (Modifier) -> Unit = { m ->
                     TramaCard(m) {
-                        SectionHeader("Avance de producción", "Último reporte de planta, corte real y envíos acumulados")
+                        SectionHeader(stringResource(R.string.assignment_progress_title), stringResource(R.string.assignment_progress_subtitle))
                         ProductionFunnel(metrics)
                     }
                 }
                 val stats: @Composable (Modifier) -> Unit = { m ->
                     TramaCard(m) {
-                        InfoRow("Por enviar", Fmt.int(metrics.toShip), Icons.Filled.Inventory2)
-                        InfoRow("Operarios", Fmt.int(metrics.operators), Icons.Filled.Groups)
-                        InfoRow("Faltas", Fmt.int(metrics.absences), Icons.Filled.PersonOff)
-                        InfoRow("Precio unitario", Fmt.money(metrics.unitPrice), Icons.Filled.Sell)
-                        InfoRow("Ingreso", Fmt.money(metrics.revenue), Icons.Filled.Payments)
+                        InfoRow(stringResource(R.string.production_to_ship), Fmt.int(metrics.toShip), Icons.Filled.Inventory2)
+                        InfoRow(stringResource(R.string.production_field_operators), Fmt.int(metrics.operators), Icons.Filled.Groups)
+                        InfoRow(stringResource(R.string.production_field_absences), Fmt.int(metrics.absences), Icons.Filled.PersonOff)
+                        InfoRow(stringResource(R.string.common_unit_price), Fmt.money(metrics.unitPrice), Icons.Filled.Sell)
+                        InfoRow(stringResource(R.string.production_revenue), Fmt.money(metrics.revenue), Icons.Filled.Payments)
                         if (order != null) {
                             OutlinedButton({ navigator.openOrder(order.id) }, Modifier.fillMaxWidth().padding(top = 4.dp)) {
                                 Icon(Icons.AutoMirrored.Filled.OpenInNew, null, Modifier.size(18.dp))
-                                Text("  Ver corte completo")
+                                Text("  " + stringResource(R.string.assignment_view_full_order))
                             }
                         }
                     }
@@ -185,20 +189,22 @@ fun AssignmentDetailScreen(id: String) {
                         SingleChoiceSegmentedButtonRow(m) {
                             options.forEachIndexed { i, k ->
                                 SegmentedButton(kindFilter == k, { kindFilter = k }, SegmentedButtonDefaults.itemShape(i, options.size)) {
-                                    Text(k?.shortTitle ?: "Todos", maxLines = 1)
+                                    Text(stringResource(k?.shortTitleRes ?: R.string.common_all_masc), maxLines = 1)
                                 }
                             }
                         }
                     }
+                    val reportsTitle = stringResource(R.string.assignment_reports_title)
+                    val reportsTotal = pluralStringResource(R.plurals.assignment_reports_total, all.size, all.size)
                     if (wide) {
-                        SectionHeader("Reportes", "${all.size} en total") { picker(Modifier.width(360.dp)) }
+                        SectionHeader(reportsTitle, reportsTotal) { picker(Modifier.width(360.dp)) }
                     } else {
-                        SectionHeader("Reportes", "${all.size} en total")
+                        SectionHeader(reportsTitle, reportsTotal)
                         picker(Modifier.fillMaxWidth())
                     }
                     if (reports.isEmpty()) {
                         EmptyState(
-                            "Sin reportes", "Los gerentes cargan aquí el avance de planta, el corte real y los envíos.", Icons.Filled.FindInPage,
+                            stringResource(R.string.assignment_no_reports), stringResource(R.string.assignment_no_reports_message), Icons.Filled.FindInPage,
                         ) { AddReportMenu(graph, assignment, role, compact = false) { editor = it } }
                     }
                     reports.forEach { report ->
@@ -221,8 +227,8 @@ fun AssignmentDetailScreen(id: String) {
     editor?.let { request -> androidx.compose.runtime.key(request) { ReportEditorSheet(request) { editor = null } } }
     deleting?.let { report ->
         ConfirmDialog(
-            "¿Eliminar este reporte?", null, "Eliminar",
-            onConfirm = { actions.run(success = "Reporte eliminado") { app.production().deleteReport(report) } },
+            stringResource(R.string.assignment_delete_report_title), null, stringResource(R.string.common_delete),
+            onConfirm = { actions.run(success = L10n.str(R.string.assignment_report_deleted)) { app.production().deleteReport(report) } },
             onDismiss = { deleting = null },
         )
     }
@@ -234,7 +240,7 @@ private fun ShippedRing(progress: Double, complete: Boolean) {
         ProgressRing(progress, Modifier.fillMaxSize(), tint = if (complete) Tokens.colors.success else Tokens.colors.brand, stroke = 12.dp)
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(Fmt.percent(progress), style = MaterialTheme.typography.titleLarge)
-            Text("enviado", style = MaterialTheme.typography.labelSmall, color = Tokens.colors.secondary)
+            Text(stringResource(R.string.assignment_shipped_ring), style = MaterialTheme.typography.labelSmall, color = Tokens.colors.secondary)
         }
     }
 }
@@ -256,15 +262,15 @@ fun AddReportMenu(graph: Graph, assignment: AssignmentEntity, role: Role, compac
     Box {
         val onClick = { if (kinds.size == 1) onRequest(request(kinds.first())) else open = true }
         if (compact) {
-            IconButton(onClick) { Icon(Icons.Filled.Add, "Cargar reporte", tint = Tokens.colors.brand) }
+            IconButton(onClick) { Icon(Icons.Filled.Add, stringResource(R.string.assignment_add_report), tint = Tokens.colors.brand) }
         } else {
-            PrimaryButton("Cargar reporte", onClick, icon = Icons.Filled.Add)
+            PrimaryButton(stringResource(R.string.assignment_add_report), onClick, icon = Icons.Filled.Add)
         }
         DropdownMenu(open, { open = false }) {
             kinds.forEach { kind ->
                 val editsCut = kind == ReportKind.Cut && existingCut != null
                 DropdownMenuItem(
-                    text = { Text(if (editsCut) "Editar reporte de corte" else kind.title) },
+                    text = { Text(stringResource(if (editsCut) R.string.production_report_edit_cut else kind.titleRes)) },
                     leadingIcon = { Icon(if (editsCut) Icons.Filled.Edit else kind.icon, null, tint = kind.tint()) },
                     onClick = { open = false; onRequest(request(kind)) },
                 )
@@ -280,28 +286,29 @@ private fun ReportRow(report: ReportEntity, canEdit: Boolean, onEdit: () -> Unit
     val kind = ReportKind.fromRaw(report.kind)
     var menu by remember { mutableStateOf(false) }
     val created = Instant.ofEpochMilli(report.createdAt).atZone(ZoneId.systemDefault())
+    val editLabel = stringResource(R.string.common_edit)
     Row(
         Modifier.fillMaxWidth().background(c.surfaceRaised, RoundedCornerShape(14.dp))
-            .let { if (canEdit) it.combinedClickable(onClick = onEdit, onClickLabel = "Editar", onLongClick = { menu = true }) else it }
+            .let { if (canEdit) it.combinedClickable(onClick = onEdit, onClickLabel = editLabel, onLongClick = { menu = true }) else it }
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         IconTile(kind.icon, kind.tint(), 44.dp)
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-            Text(kind.title, style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(kind.titleRes), style = MaterialTheme.typography.titleMedium)
             Text(report.summary(), style = MaterialTheme.typography.bodyMedium, color = c.secondary)
         }
         Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(3.dp)) {
-            Text(created.format(dayFormat).replaceFirstChar { it.titlecase(Fmt.locale) }, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-            Text(listOfNotNull(created.format(timeFormat), report.authorName).joinToString(" · "), style = MaterialTheme.typography.bodySmall, color = c.secondary)
+            Text(created.format(dayFormat()).replaceFirstChar { it.titlecase(Fmt.locale) }, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
+            Text(listOfNotNull(created.format(timeFormat()), report.authorName).joinToString(" · "), style = MaterialTheme.typography.bodySmall, color = c.secondary)
         }
         if (canEdit) {
             Box {
-                IconButton({ menu = true }) { Icon(Icons.Filled.MoreVert, "Opciones del reporte", tint = c.secondary) }
+                IconButton({ menu = true }) { Icon(Icons.Filled.MoreVert, stringResource(R.string.assignment_report_options), tint = c.secondary) }
                 DropdownMenu(menu, { menu = false }) {
-                    DropdownMenuItem(text = { Text("Editar") }, leadingIcon = { Icon(Icons.Filled.Edit, null) }, onClick = { menu = false; onEdit() })
+                    DropdownMenuItem(text = { Text(editLabel) }, leadingIcon = { Icon(Icons.Filled.Edit, null) }, onClick = { menu = false; onEdit() })
                     DropdownMenuItem(
-                        text = { Text("Eliminar", color = c.danger) }, leadingIcon = { Icon(Icons.Filled.Delete, null, tint = c.danger) },
+                        text = { Text(stringResource(R.string.common_delete), color = c.danger) }, leadingIcon = { Icon(Icons.Filled.Delete, null, tint = c.danger) },
                         onClick = { menu = false; onDelete() },
                     )
                 }

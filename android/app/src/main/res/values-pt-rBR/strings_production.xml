@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Cut orders list -->
+    <string name="orders_kpi_pending_cuts">Cortes pendentes</string>
+    <string name="orders_kpi_garments_to_assign">Peças a alocar</string>
+    <string name="orders_kpi_value_to_assign">Valor a alocar</string>
+    <string name="orders_filter_assigned">Alocados</string>
+    <string name="orders_search_placeholder">Código, lista, cliente, modelo…</string>
+    <string name="orders_empty_title">Nenhum corte aqui</string>
+    <string name="orders_empty_message">Todos os cortes deste filtro estão em dia.</string>
+    <string name="orders_no_results_message">Tente outro código, lista ou cliente.</string>
+    <string name="orders_new">Novo corte</string>
+    <string name="orders_edit">Editar corte</string>
+    <string name="orders_delete_title">Excluir o corte %1$s?</string>
+    <string name="orders_delete_message">As alocações dele sem relatórios também serão excluídas.</string>
+    <string name="orders_deleted">Corte excluído</string>
+    <string name="orders_open">Abrir corte</string>
+    <string name="orders_options">Opções</string>
+    <string name="orders_options_for">Opções do corte %1$s</string>
+    <string name="orders_list_label">Lista %1$s</string>
+    <string name="orders_remaining_of">%1$s de %2$s a alocar</string>
+
+    <!-- Cut order detail -->
+    <string name="orders_assign_to_plant">Alocar na unidade</string>
+    <string name="orders_client_and_list">%1$s · Lista %2$s</string>
+    <string name="orders_garment_fallback">Peça</string>
+    <string name="orders_detail">Detalhes</string>
+    <string name="orders_total_revenue">Receita total</string>
+    <string name="orders_edited_by">Editado por</string>
+    <string name="orders_assigned_ring">alocado</string>
+    <plurals name="orders_garments_to_assign">
+        <item quantity="one">%1$s peça a alocar</item>
+        <item quantity="many">%1$s peças a alocar</item>
+        <item quantity="other">%1$s peças a alocar</item>
+    </plurals>
+    <string name="orders_of_total">de %1$s</string>
+    <string name="orders_assignments_title">Alocações</string>
+    <string name="orders_assignments_subtitle">Onde este corte está sendo produzido</string>
+    <string name="orders_no_assignments">Sem alocação</string>
+    <string name="orders_no_assignments_message">Aloque peças em uma unidade conforme a capacidade mensal dela.</string>
+    <string name="orders_unassign_title">Remover esta alocação?</string>
+    <string name="orders_unassign_message">As peças voltam a ficar a alocar.</string>
+    <string name="orders_unassign">Remover alocação</string>
+    <string name="orders_unassigned">Alocação removida</string>
+    <string name="orders_assignment_options">Opções da alocação</string>
+    <plurals name="orders_assignment_line">
+        <item quantity="one">%1$s peça · %2$s · %3$s</item>
+        <item quantity="many">%1$s peças · %2$s · %3$s</item>
+        <item quantity="other">%1$s peças · %2$s · %3$s</item>
+    </plurals>
+
+    <!-- Cut order editor -->
+    <string name="orders_section_identification">Identificação</string>
+    <string name="orders_field_code">Código do corte</string>
+    <string name="orders_field_list">Lista</string>
+    <string name="orders_field_garment">Peça (ex.: Saia, Calça jeans)</string>
+    <string name="orders_section_client_style">Cliente e modelo</string>
+    <string name="orders_section_quantity_price">Quantidade e preço</string>
+    <string name="orders_total_revenue_value">Receita total: %1$s</string>
+    <string name="orders_section_dates">Datas</string>
+    <string name="orders_field_client_delivery_date">Data de entrega ao cliente</string>
+    <string name="orders_created">Corte %1$s criado</string>
+    <string name="orders_updated">Corte %1$s atualizado</string>
+
+    <!-- Assign sheet -->
+    <string name="assign_ui_title">Alocar %1$s</string>
+    <plurals name="assign_ui_pending_of">
+        <item quantity="one">%1$s peça pendente de %2$s</item>
+        <item quantity="many">%1$s peças pendentes de %2$s</item>
+        <item quantity="other">%1$s peças pendentes de %2$s</item>
+    </plurals>
+    <plurals name="assign_ui_garments_unit" tools:ignore="ImpliedQuantity">
+        <item quantity="one">peça</item>
+        <item quantity="many">peças</item>
+        <item quantity="other">peças</item>
+    </plurals>
+    <string name="assign_ui_all">Tudo</string>
+    <string name="assign_ui_value">Valor da alocação</string>
+    <string name="assign_ui_month_title">Mês de produção</string>
+    <string name="assign_ui_month_subtitle">A capacidade de cada unidade é mensal</string>
+    <string name="assign_ui_style_distribution">Este modelo já é produzido em</string>
+    <string name="assign_ui_capacity_of">Capacidade de %1$s</string>
+    <string name="assign_ui_no_plants">Nenhuma unidade</string>
+    <string name="assign_ui_no_plants_message">Crie uma unidade em Cadastros → Unidades.</string>
+    <plurals name="assign_ui_summary">
+        <item quantity="one">%1$s peça → %2$s</item>
+        <item quantity="many">%1$s peças → %2$s</item>
+        <item quantity="other">%1$s peças → %2$s</item>
+    </plurals>
+    <string name="assign_ui_value_in_month">%1$s em %2$s</string>
+    <string name="assign_ui_pick_plant">Escolha uma unidade</string>
+    <string name="assign_ui_assign">Alocar</string>
+    <plurals name="assign_ui_done">
+        <item quantity="one">%1$s peça alocada em %2$s</item>
+        <item quantity="many">%1$s peças alocadas em %2$s</item>
+        <item quantity="other">%1$s peças alocadas em %2$s</item>
+    </plurals>
+    <string name="assign_ui_max_per_month">Máx. %1$s/mês</string>
+    <string name="assign_ui_fits">Cabe</string>
+    <string name="assign_ui_exceeds">Excede</string>
+    <string name="assign_ui_used">Usado %1$s</string>
+    <string name="assign_ui_available">Disponível %1$s</string>
+
+    <!-- Cutting board -->
+    <string name="board_moved">%1$s → %2$s</string>
+    <string name="board_search_placeholder">Buscar corte, cliente, unidade…</string>
+    <string name="board_all_plants">Todas as unidades</string>
+    <string name="board_hide_shipped">Ocultar expedidos</string>
+    <string name="board_move_not_allowed">Só administradores e gerentes de corte podem mover cortes.</string>
+    <plurals name="board_column_summary">
+        <item quantity="one">%1$d corte · %2$s peças</item>
+        <item quantity="many">%1$d cortes · %2$s peças</item>
+        <item quantity="other">%1$d cortes · %2$s peças</item>
+    </plurals>
+    <string name="board_drop_here">Arraste cortes para cá</string>
+    <string name="board_no_cuts">Sem cortes</string>
+    <string name="board_move_to">Mover para %1$s</string>
+    <string name="board_move_cut">Mover %1$s</string>
+
+    <!-- Shared production components -->
+    <string name="production_clear_search">Limpar busca</string>
+    <string name="production_stage_planned">Planejadas</string>
+    <string name="production_stage_cut">Cortadas</string>
+    <string name="production_stage_produced">Produzidas</string>
+    <string name="production_stage_ironing">Na passadoria</string>
+    <string name="production_stage_packing">Na embalagem</string>
+    <string name="production_stage_warehouse">No estoque</string>
+    <string name="production_stage_shipped">Expedidas</string>
+    <plurals name="production_garments_count">
+        <item quantity="one">%1$s peça</item>
+        <item quantity="many">%1$s peças</item>
+        <item quantity="other">%1$s peças</item>
+    </plurals>
+    <string name="production_to_ship">A expedir</string>
+    <string name="production_to_ship_count">%1$s a expedir</string>
+    <string name="production_revenue">Receita</string>
+    <string name="production_sort_client_date">Data de entrega</string>
+
+    <!-- Report editor -->
+    <string name="production_report_edit_plant">Editar relatório da unidade</string>
+    <string name="production_report_edit_cut">Editar relatório de corte</string>
+    <string name="production_report_edit_shipment">Editar relatório de expedição</string>
+    <string name="production_report_saved_plant">Relatório da unidade de %1$s registrado</string>
+    <string name="production_report_saved_cut">Relatório de corte de %1$s registrado</string>
+    <string name="production_report_saved_shipment">Relatório de expedição de %1$s registrado</string>
+    <string name="production_report_updated">Relatório atualizado</string>
+    <string name="production_report_submit">Registrar</string>
+    <string name="production_cut_title">Corte %1$s</string>
+    <plurals name="production_report_header">
+        <item quantity="one">%1$s · %2$s peça · %3$s</item>
+        <item quantity="many">%1$s · %2$s peças · %3$s</item>
+        <item quantity="other">%1$s · %2$s peças · %3$s</item>
+    </plurals>
+    <string name="production_section_staff">Equipe</string>
+    <string name="production_field_operators">Operadores</string>
+    <string name="production_field_absences">Faltas</string>
+    <string name="production_section_progress">Andamento</string>
+    <string name="production_progress_footer">Registre a situação atual da unidade. O último relatório substitui os anteriores nos totais.</string>
+    <string name="production_field_produced">Peças produzidas</string>
+    <string name="production_section_cut_status">Status do corte</string>
+    <plurals name="production_cut_footer">
+        <item quantity="one">Há apenas um relatório de corte por alocação. Se a quantidade real for diferente da %1$s planejada, as expedições são medidas pela real.</item>
+        <item quantity="many">Há apenas um relatório de corte por alocação. Se a quantidade real for diferente das %1$s planejadas, as expedições são medidas pela real.</item>
+        <item quantity="other">Há apenas um relatório de corte por alocação. Se a quantidade real for diferente das %1$s planejadas, as expedições são medidas pela real.</item>
+    </plurals>
+    <string name="production_field_real_cut">Quantidade real cortada</string>
+    <string name="production_shipment_pending">Pendentes de expedição: %1$s.</string>
+    <string name="production_field_shipment_number">Número da expedição</string>
+    <string name="production_field_shipped">Quantidade expedida</string>
+
+    <!-- Assignment detail -->
+    <string name="assignment_not_found">Corte não encontrado</string>
+    <string name="assignment_not_found_message">Talvez tenha sido excluído.</string>
+    <string name="assignment_view_style_image">Ver imagem do modelo</string>
+    <string name="assignment_header_subtitle">%1$s · Lista %2$s · %3$s</string>
+    <string name="assignment_production_date">Produção %1$s</string>
+    <string name="assignment_progress_title">Andamento da produção</string>
+    <string name="assignment_progress_subtitle">Último relatório da unidade, corte real e expedições acumuladas</string>
+    <string name="assignment_view_full_order">Ver corte completo</string>
+    <string name="assignment_reports_title">Relatórios</string>
+    <plurals name="assignment_reports_total">
+        <item quantity="one">%1$d no total</item>
+        <item quantity="many">%1$d no total</item>
+        <item quantity="other">%1$d no total</item>
+    </plurals>
+    <string name="assignment_no_reports">Sem relatórios</string>
+    <string name="assignment_no_reports_message">Os gerentes registram aqui o andamento da unidade, o corte real e as expedições.</string>
+    <string name="assignment_delete_report_title">Excluir este relatório?</string>
+    <string name="assignment_report_deleted">Relatório excluído</string>
+    <string name="assignment_shipped_ring">expedido</string>
+    <string name="assignment_add_report">Registrar relatório</string>
+    <string name="assignment_report_options">Opções do relatório</string>
+
+    <!-- Calendar events -->
+    <plurals name="production_calendar_event_subtitle">
+        <item quantity="one">%1$s · %2$s peça</item>
+        <item quantity="many">%1$s · %2$s peças</item>
+        <item quantity="other">%1$s · %2$s peças</item>
+    </plurals>
+    <string name="production_calendar_delivery_to">Entrega para %1$s</string>
+
+    <!-- CSV export columns -->
+    <string name="production_csv_cut">Corte</string>
+    <string name="production_csv_list">Lista</string>
+    <string name="production_csv_client">Cliente</string>
+    <string name="production_csv_style">Modelo</string>
+    <string name="production_csv_garment">Peça</string>
+    <string name="production_csv_plant">Unidade</string>
+    <string name="production_csv_status">Status</string>
+    <string name="production_csv_quantity">Quantidade</string>
+    <string name="production_csv_cut_qty">Cortadas</string>
+    <string name="production_csv_produced">Produzidas</string>
+    <string name="production_csv_ironing">Passadoria</string>
+    <string name="production_csv_packing">Embalagem</string>
+    <string name="production_csv_warehouse">Estoque</string>
+    <string name="production_csv_shipped">Expedidas</string>
+    <string name="production_csv_to_ship">A expedir</string>
+    <string name="production_csv_revenue">Receita</string>
+    <string name="production_csv_internal_date">Data interna</string>
+    <string name="production_csv_client_date">Data do cliente</string>
+</resources>
