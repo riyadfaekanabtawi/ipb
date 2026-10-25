@@ -73,3 +73,21 @@ Every entity has `id` (UUID), `createdAt`, `updatedAt` and `remoteID` (legacy im
 ## Backup format
 
 Versioned JSON (`formatVersion: 1`) with every entity and attribute. Relationships are referenced by UUID, images are base64. See `ios/Trama/Core/Services/BackupService.swift`. Android must read and write the same format, so customers can move data between platforms.
+
+## Sync (optional cloud, `platform/`)
+
+Local storage stays the source of truth; sync never blocks a screen. Contract (see `platform/src/sync.ts`):
+
+- **Payload** = one backup element (`data`), same keys and formats as the backup file. Ids may be sent in
+  any case; the server stores and returns them lowercase.
+- **Push** queued local changes (`entity`, `id`, `updatedAt`, `deleted`, `data`). Every local write,
+  including cascaded deletes, must be queued; changes applied from the server must not be.
+- **Pull** pages after a persisted cursor; apply by id (upsert, `deleted` → delete), parents before children.
+- **Conflicts:** last writer wins on `updatedAt`. A pulled change does not overwrite a newer unpushed local
+  edit; a `stale` push rejection carries the server copy, which the device adopts. `forbidden`, `limit`,
+  `conflict` and `invalid` rejections are shown to the user and dropped.
+- **Licence:** when `licence.writable` is false the data stays readable, local writes are blocked and the
+  queue is kept until renewal.
+- **First link of a device:** an empty company is seeded with the device's data; otherwise the device backs
+  up and replaces its local data with the company's. Demo data is never uploaded.
+- Synced users carry `passwordHash`/`passwordSalt`, so offline sign-in keeps working (rule 10).
