@@ -1,15 +1,22 @@
 package com.nevutech.trama.core.data
 
+import androidx.annotation.StringRes
 import androidx.room.withTransaction
+import com.nevutech.trama.R
 import com.nevutech.trama.core.domain.AssignmentMetrics
 import com.nevutech.trama.core.domain.AssignmentRules
 import com.nevutech.trama.core.domain.CapacityLedger
 import com.nevutech.trama.core.domain.CutStatus
+import com.nevutech.trama.core.domain.Fmt
 import com.nevutech.trama.core.domain.ReportKind
+import com.nevutech.trama.core.l10n.L10n
 import java.time.LocalDate
 
 /** Thrown for business-rule violations; [message] is user-facing Spanish copy. */
-class ServiceException(message: String) : Exception(message)
+/** A rule violation shown to the user as is; [message] is already in the app's language. */
+class ServiceException(message: String) : Exception(message) {
+    constructor(@StringRes id: Int, vararg args: Any) : this(L10n.str(id, *args))
+}
 
 /**
  * All production writes go through here (port of ios ProductionService.swift) so the rules live
@@ -24,12 +31,12 @@ class ProductionService(private val db: TramaDatabase, private val author: Strin
         existing: CutOrderEntity?, code: String, list: String, garment: String, quantity: Long, unitPrice: Double,
         clientId: String?, styleId: String?, internalDate: LocalDate?, clientDate: LocalDate?, notes: String?,
     ): CutOrderEntity = db.withTransaction {
-        if (code.isBlank()) throw ServiceException("Escribe el código del corte.")
-        if (quantity <= 0) throw ServiceException("La cantidad debe ser mayor a cero.")
-        if (unitPrice < 0) throw ServiceException("El precio no puede ser negativo.")
+        if (code.isBlank()) throw ServiceException(R.string.error_order_code_required)
+        if (quantity <= 0) throw ServiceException(R.string.error_quantity_positive)
+        if (unitPrice < 0) throw ServiceException(R.string.error_price_negative)
         if (existing != null) {
             val assigned = dao.assignmentsOfOrder(existing.id).sumOf { it.quantity }
-            if (quantity < assigned) throw ServiceException("Ya hay ${assigned} prendas asignadas; la cantidad no puede ser menor.")
+            if (quantity < assigned) throw ServiceException(L10n.plural(R.plurals.error_quantity_below_assigned, assigned.coerceAtMost(Int.MAX_VALUE.toLong()).toInt(), Fmt.int(assigned)))
         }
         val order = (existing ?: CutOrderEntity(code = "", quantity = 0, unitPrice = 0.0)).copy(
             code = code.trim(), list = list.trim(), garment = garment.trim(), quantity = quantity, unitPrice = unitPrice,
@@ -42,7 +49,7 @@ class ProductionService(private val db: TramaDatabase, private val author: Strin
 
     suspend fun deleteOrder(order: CutOrderEntity) = db.withTransaction {
         val hasReports = dao.assignmentsOfOrder(order.id).any { dao.reportsOf(it.id).isNotEmpty() }
-        if (hasReports) throw ServiceException("No se puede eliminar: el corte ya tiene reportes de producción.")
+        if (hasReports) throw ServiceException(R.string.error_order_has_reports)
         dao.delete(order)
     }
 
@@ -50,8 +57,8 @@ class ProductionService(private val db: TramaDatabase, private val author: Strin
 
     /** Assigns part (or all) of an order to a plant for a month, enforcing pending quantity and monthly capacity. */
     suspend fun assign(orderId: String, plantId: String, quantity: Int, date: LocalDate?): AssignmentEntity = db.withTransaction {
-        val order = dao.order(orderId) ?: throw ServiceException("El corte ya no existe.")
-        val plant = dao.plant(plantId) ?: throw ServiceException("La planta ya no existe.")
+        val order = dao.order(orderId) ?: throw ServiceException(R.string.error_order_missing)
+        val plant = dao.plant(plantId) ?: throw ServiceException(R.string.error_plant_missing)
         val remaining = (order.quantity - dao.assignmentsOfOrder(order.id).sumOf { it.quantity }).toInt().coerceAtLeast(0)
         val ledger = CapacityLedger(plant.maxCapacity, dao.assignmentsOfPlant(plant.id).mapNotNull { a ->
             a.scheduledDate?.let { CapacityLedger.Booking(it.toLocalDate(), a.quantity * a.unitPrice) }
@@ -67,7 +74,7 @@ class ProductionService(private val db: TramaDatabase, private val author: Strin
     }
 
     suspend fun unassign(assignment: AssignmentEntity) = db.withTransaction {
-        if (dao.reportsOf(assignment.id).isNotEmpty()) throw ServiceException("No se puede eliminar: el corte ya tiene reportes.")
+        if (dao.reportsOf(assignment.id).isNotEmpty()) throw ServiceException(R.string.error_assignment_has_reports)
         dao.delete(assignment)
     }
 
@@ -90,10 +97,10 @@ class ProductionService(private val db: TramaDatabase, private val author: Strin
     suspend fun saveCutReport(status: CutStatus, realQuantity: Int, assignmentId: String, editing: ReportEntity? = null) = db.withTransaction {
         val existing = dao.reportsOf(assignmentId).firstOrNull { it.kind == ReportKind.Cut.raw }
         if (editing == null && existing != null) {
-            throw ServiceException("Este corte ya tiene un reporte de corte. Edítalo en lugar de crear otro.")
+            throw ServiceException(R.string.error_cut_report_exists)
         }
         val base = editing ?: newReport(ReportKind.Cut, assignmentId)
-        val assignment = dao.assignment(assignmentId) ?: throw ServiceException("El corte ya no existe.")
+        val assignment = dao.assignment(assignmentId) ?: throw ServiceException(R.string.error_order_missing)
         dao.upsert(assignment.copy(cuttingStatus = status.raw, updatedAt = now()))
         finish(base.copy(cutStatus = status.raw, realQuantity = realQuantity.coerceAtLeast(0).toLong()))
     }
@@ -105,7 +112,7 @@ class ProductionService(private val db: TramaDatabase, private val author: Strin
     }
 
     suspend fun saveShipmentReport(number: String, quantity: Int, assignmentId: String, editing: ReportEntity? = null) = db.withTransaction {
-        if (number.isBlank() || quantity <= 0) throw ServiceException("Escribe el número de envío y una cantidad mayor a cero.")
+        if (number.isBlank() || quantity <= 0) throw ServiceException(R.string.error_shipment_fields)
         val base = editing ?: newReport(ReportKind.Shipment, assignmentId)
         finish(base.copy(shipmentNumber = number.trim(), shippedQuantity = quantity.toLong()))
     }
@@ -130,12 +137,12 @@ class ProductionService(private val db: TramaDatabase, private val author: Strin
     // Guarded deletes
 
     suspend fun deletePlant(plant: PlantEntity) = db.withTransaction {
-        if (dao.assignmentsOfPlant(plant.id).isNotEmpty()) throw ServiceException("No se puede eliminar: la planta tiene cortes asignados.")
+        if (dao.assignmentsOfPlant(plant.id).isNotEmpty()) throw ServiceException(R.string.error_plant_has_assignments)
         dao.delete(plant)
     }
 
     suspend fun deleteClient(client: ClientEntity) = db.withTransaction {
-        if (dao.orderCountOfClient(client.id) > 0) throw ServiceException("No se puede eliminar: el cliente tiene cortes.")
+        if (dao.orderCountOfClient(client.id) > 0) throw ServiceException(R.string.error_client_has_orders)
         dao.delete(client)
     }
 

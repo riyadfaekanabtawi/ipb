@@ -1,14 +1,17 @@
 package com.nevutech.trama.core.data
 
+import com.nevutech.trama.R
 import com.nevutech.trama.core.domain.AssignmentMetrics
 import com.nevutech.trama.core.domain.CapacityLedger
 import com.nevutech.trama.core.domain.CutStatus
+import com.nevutech.trama.core.domain.Fmt
 import com.nevutech.trama.core.domain.OrderAssignmentState
 import com.nevutech.trama.core.domain.ProjectStatus
 import com.nevutech.trama.core.domain.ReportKind
 import com.nevutech.trama.core.domain.ReportSnapshot
 import com.nevutech.trama.core.domain.Role
 import com.nevutech.trama.core.domain.UrgencyPolicy
+import com.nevutech.trama.core.l10n.L10n
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -61,8 +64,8 @@ class Graph(
     fun assignedQuantity(order: CutOrderEntity) = assignmentsOf(order).sumOf { it.quantity }
     fun remaining(order: CutOrderEntity) = maxOf(0L, order.quantity - assignedQuantity(order))
     fun state(order: CutOrderEntity) = OrderAssignmentState.of(order.quantity, assignedQuantity(order))
-    fun clientName(order: CutOrderEntity?) = client(order?.clientId)?.name ?: "Sin cliente"
-    fun styleName(order: CutOrderEntity?) = style(order?.styleId)?.name ?: "Sin estilo"
+    fun clientName(order: CutOrderEntity?) = client(order?.clientId)?.name ?: L10n.str(R.string.graph_no_client)
+    fun styleName(order: CutOrderEntity?) = style(order?.styleId)?.name ?: L10n.str(R.string.graph_no_style)
     fun ordersOf(client: ClientEntity) = orders.filter { it.clientId == client.id }
     fun ordersOf(style: StyleEntity) = orders.filter { it.styleId == style.id }
 
@@ -70,9 +73,9 @@ class Graph(
     fun reportsOf(assignment: AssignmentEntity) = reportsByAssignment[assignment.id].orEmpty()
     fun cutReport(assignment: AssignmentEntity) = reportsOf(assignment).firstOrNull { it.kind == ReportKind.Cut.raw }
     fun cutStatus(assignment: AssignmentEntity) = CutStatus.fromRaw(assignment.cuttingStatus) ?: CutStatus.Waiting
-    fun plantName(assignment: AssignmentEntity) = plant(assignment.plantId)?.name ?: "Sin planta"
+    fun plantName(assignment: AssignmentEntity) = plant(assignment.plantId)?.name ?: L10n.str(R.string.graph_no_plant)
     fun orderOf(assignment: AssignmentEntity) = order(assignment.orderId)
-    fun title(assignment: AssignmentEntity) = orderOf(assignment)?.code ?: "Corte"
+    fun title(assignment: AssignmentEntity) = orderOf(assignment)?.code ?: L10n.str(R.string.graph_cut_fallback)
     fun clientDate(assignment: AssignmentEntity) = orderOf(assignment)?.clientDate?.toLocalDate()
 
     fun metrics(assignment: AssignmentEntity): AssignmentMetrics = metricsCache.getOrPut(assignment.id) {
@@ -131,9 +134,9 @@ fun ReportEntity.snapshot() = ReportSnapshot(
 )
 
 fun ReportEntity.summary(): String = when (ReportKind.fromRaw(kind)) {
-    ReportKind.Plant -> "$produced producidas · $operators operarios · $absences faltas"
-    ReportKind.Cut -> "${CutStatus.fromRaw(cutStatus)?.title ?: "—"} · $realQuantity cortadas"
-    ReportKind.Shipment -> "Envío #${shipmentNumber ?: "—"} · $shippedQuantity prendas"
+    ReportKind.Plant -> L10n.str(R.string.report_summary_plant, Fmt.int(produced), Fmt.int(operators), Fmt.int(absences))
+    ReportKind.Cut -> L10n.str(R.string.report_summary_cut, CutStatus.fromRaw(cutStatus)?.title ?: "—", Fmt.int(realQuantity))
+    ReportKind.Shipment -> L10n.str(R.string.report_summary_shipment, shipmentNumber ?: "—", Fmt.int(shippedQuantity))
 }
 
 val UserEntity.fullName: String

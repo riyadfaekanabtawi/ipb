@@ -1,3 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Default resources: Spanish (Mexico). Every key must exist in values-en and values-pt-rBR
+    with the same format arguments (checked by StringResourcesTest). Feature screens keep their
+    copy in strings_<area>.xml files next to this one.
+-->
 <resources>
-    <string name="app_name">Trama</string>
+    <string name="app_name" translatable="false">Trama</string>
+
+    <!-- Roles (raw values stay in Spanish in the database) -->
+    <string name="role_admin">Administrador</string>
+    <string name="role_plant_manager">Gerente de planta</string>
+    <string name="role_cut_manager">Gerente de cortes</string>
+    <string name="role_shipping_manager">Gerente de envíos</string>
+
+    <!-- Cut status -->
+    <string name="cut_status_waiting">En espera</string>
+    <string name="cut_status_on_table">En mesa de corte</string>
+    <string name="cut_status_ready">Listo para confeccionar</string>
+
+    <!-- Report kinds -->
+    <string name="report_kind_plant">Reporte de planta</string>
+    <string name="report_kind_cut">Reporte de corte</string>
+    <string name="report_kind_shipment">Reporte de envío</string>
+    <string name="report_kind_plant_short">Planta</string>
+    <string name="report_kind_cut_short">Corte</string>
+    <string name="report_kind_shipment_short">Envío</string>
+
+    <!-- Project status -->
+    <string name="project_status_pending">Pendiente</string>
+    <string name="project_status_accepted">Aceptado</string>
+    <string name="project_status_declined">Declinado</string>
+
+    <!-- Order assignment state -->
+    <string name="order_state_unassigned">Por asignar</string>
+    <string name="order_state_partial">Parcial</string>
+    <string name="order_state_assigned">Asignado</string>
+
+    <!-- Navigation sections -->
+    <string name="section_dashboard">Dashboard</string>
+    <string name="section_orders">Cortes por asignar</string>
+    <string name="section_board">Tablero de corte</string>
+    <string name="section_production">Reportes de producción</string>
+    <string name="section_shipments">Envíos urgentes</string>
+    <string name="section_calendar">Calendario de plantas</string>
+    <string name="section_plants">Plantas</string>
+    <string name="section_clients">Clientes</string>
+    <string name="section_suppliers">Proveedores</string>
+    <string name="section_styles">Estilos</string>
+    <string name="section_projects">Proyectos</string>
+    <string name="section_users">Usuarios</string>
+    <string name="section_calculator">Calculadora</string>
+    <string name="section_settings">Ajustes</string>
+    <string name="section_group_operations">Operación</string>
+    <string name="section_group_catalogs">Catálogos</string>
+    <string name="section_group_tools">Herramientas</string>
+
+    <!-- Relative due dates -->
+    <string name="fmt_no_date">Sin fecha</string>
+    <string name="fmt_due_yesterday">Venció ayer</string>
+    <string name="fmt_due_today">Vence hoy</string>
+    <string name="fmt_due_tomorrow">Vence mañana</string>
+    <plurals name="fmt_overdue_days">
+        <item quantity="one">Vencido hace %1$d día</item>
+        <item quantity="many">Vencido hace %1$d días</item>
+        <item quantity="other">Vencido hace %1$d días</item>
+    </plurals>
+    <plurals name="fmt_in_days">
+        <item quantity="one">En %1$d día</item>
+        <item quantity="many">En %1$d días</item>
+        <item quantity="other">En %1$d días</item>
+    </plurals>
+
+    <!-- Fallback names -->
+    <string name="graph_no_client">Sin cliente</string>
+    <string name="graph_no_style">Sin estilo</string>
+    <string name="graph_no_plant">Sin planta</string>
+    <string name="graph_cut_fallback">Corte</string>
+    <string name="report_summary_plant">%1$s producidas · %2$s operarios · %3$s faltas</string>
+    <string name="report_summary_cut">%1$s · %2$s cortadas</string>
+    <string name="report_summary_shipment">Envío #%1$s · %2$s prendas</string>
+
+    <!-- User policy -->
+    <string name="policy_cannot_delete_self">No puedes eliminar tu propio usuario.</string>
+    <string name="policy_cannot_deactivate_self">No puedes desactivar tu propio usuario.</string>
+    <string name="policy_cannot_change_own_role">No puedes cambiar tu propio puesto.</string>
+    <string name="policy_last_admin">Debe quedar al menos un administrador activo.</string>
+
+    <!-- Assignment rules -->
+    <string name="assign_error_missing_date">Elige una fecha en el calendario.</string>
+    <string name="assign_error_invalid_quantity">Ingresa una cantidad mayor a cero.</string>
+    <string name="assign_error_exceeds_remaining">La cantidad no puede ser mayor a lo que falta por asignar (%1$s).</string>
+    <string name="assign_error_exceeds_capacity">La planta ha llegado a su capacidad máxima para ese mes. Disponible: %1$s.</string>
+
+    <!-- Local sign-in -->
+    <string name="auth_error_empty_fields">Completa todos los campos para ingresar.</string>
+    <string name="auth_error_unknown_email">Parece que no tienes acceso a Trama. Comunícate con el administrador.</string>
+    <string name="auth_error_wrong_password">Tu correo no coincide con tu contraseña. Intenta nuevamente.</string>
+    <string name="auth_error_inactive">Tu usuario está desactivado. Comunícate con el administrador.</string>
+    <string name="auth_error_email_taken">Ya existe un usuario con ese correo.</string>
+    <string name="auth_error_weak_password">La contraseña debe tener al menos 6 caracteres.</string>
+
+    <!-- Production service -->
+    <string name="error_order_code_required">Escribe el código del corte.</string>
+    <string name="error_quantity_positive">La cantidad debe ser mayor a cero.</string>
+    <string name="error_price_negative">El precio no puede ser negativo.</string>
+    <plurals name="error_quantity_below_assigned">
+        <item quantity="one">Ya hay %1$s prenda asignada; la cantidad no puede ser menor.</item>
+        <item quantity="many">Ya hay %1$s prendas asignadas; la cantidad no puede ser menor.</item>
+        <item quantity="other">Ya hay %1$s prendas asignadas; la cantidad no puede ser menor.</item>
+    </plurals>
+    <string name="error_order_has_reports">No se puede eliminar: el corte ya tiene reportes de producción.</string>
+    <string name="error_order_missing">El corte ya no existe.</string>
+    <string name="error_plant_missing">La planta ya no existe.</string>
+    <string name="error_assignment_has_reports">No se puede eliminar: el corte ya tiene reportes.</string>
+    <string name="error_cut_report_exists">Este corte ya tiene un reporte de corte. Edítalo en lugar de crear otro.</string>
+    <string name="error_shipment_fields">Escribe el número de envío y una cantidad mayor a cero.</string>
+    <string name="error_plant_has_assignments">No se puede eliminar: la planta tiene cortes asignados.</string>
+    <string name="error_client_has_orders">No se puede eliminar: el cliente tiene cortes.</string>
+    <string name="error_read_only_licence">Tu licencia está vencida o suspendida: los datos son de solo lectura. Renuévala para guardar cambios.</string>
+    <string name="error_generic">Ocurrió un error.</string>
+
+    <!-- Catalog service -->
+    <string name="catalog_error_empty_name_plant">Escribe el nombre de la planta.</string>
+    <string name="catalog_error_empty_name_client">Escribe el nombre del cliente.</string>
+    <string name="catalog_error_empty_name_supplier">Escribe el nombre del proveedor.</string>
+    <string name="catalog_error_empty_name_style">Escribe el nombre del estilo.</string>
+    <string name="catalog_error_duplicate_plant">Ya existe una planta con ese nombre.</string>
+    <string name="catalog_error_duplicate_client">Ya existe un cliente con ese nombre.</string>
+    <string name="catalog_error_duplicate_supplier">Ya existe un proveedor con ese nombre.</string>
+    <string name="catalog_error_duplicate_style">Ya existe un estilo con ese nombre.</string>
+    <string name="catalog_error_invalid_capacity">La capacidad máxima mensual debe ser mayor a cero.</string>
+    <string name="catalog_error_invalid_email">El correo «%1$s» no es válido.</string>
+    <string name="catalog_error_missing_project_client">Elige un cliente o escribe su nombre.</string>
+    <string name="catalog_error_negative_amount">Cantidad, precio y minutaje no pueden ser negativos.</string>
+    <string name="catalog_error_empty_user_name">Escribe el nombre y el correo del usuario.</string>
+    <string name="catalog_error_plant_required">Un gerente de planta debe tener una planta asignada.</string>
+
+    <!-- Backups -->
+    <string name="backup_error_invalid_file">El archivo no es un respaldo válido de Trama.</string>
+    <string name="backup_error_unsupported_version">Este respaldo es de una versión más nueva de Trama (formato %1$d). Actualiza la app para restaurarlo.</string>
+    <string name="backup_count_plants">Plantas</string>
+    <string name="backup_count_clients">Clientes</string>
+    <string name="backup_count_suppliers">Proveedores</string>
+    <string name="backup_count_styles">Estilos</string>
+    <string name="backup_count_orders">Cortes</string>
+    <string name="backup_count_assignments">Asignaciones</string>
+    <string name="backup_count_reports">Reportes</string>
+    <string name="backup_count_projects">Proyectos</string>
+    <string name="backup_count_users">Usuarios</string>
+    <plurals name="backup_count_plants">
+        <item quantity="one">%1$d planta</item>
+        <item quantity="many">%1$d plantas</item>
+        <item quantity="other">%1$d plantas</item>
+    </plurals>
+    <plurals name="backup_count_clients">
+        <item quantity="one">%1$d cliente</item>
+        <item quantity="many">%1$d clientes</item>
+        <item quantity="other">%1$d clientes</item>
+    </plurals>
+    <plurals name="backup_count_suppliers">
+        <item quantity="one">%1$d proveedor</item>
+        <item quantity="many">%1$d proveedores</item>
+        <item quantity="other">%1$d proveedores</item>
+    </plurals>
+    <plurals name="backup_count_styles">
+        <item quantity="one">%1$d estilo</item>
+        <item quantity="many">%1$d estilos</item>
+        <item quantity="other">%1$d estilos</item>
+    </plurals>
+    <plurals name="backup_count_orders">
+        <item quantity="one">%1$d corte</item>
+        <item quantity="many">%1$d cortes</item>
+        <item quantity="other">%1$d cortes</item>
+    </plurals>
+    <plurals name="backup_count_assignments">
+        <item quantity="one">%1$d asignación</item>
+        <item quantity="many">%1$d asignaciones</item>
+        <item quantity="other">%1$d asignaciones</item>
+    </plurals>
+    <plurals name="backup_count_reports">
+        <item quantity="one">%1$d reporte</item>
+        <item quantity="many">%1$d reportes</item>
+        <item quantity="other">%1$d reportes</item>
+    </plurals>
+    <plurals name="backup_count_projects">
+        <item quantity="one">%1$d proyecto</item>
+        <item quantity="many">%1$d proyectos</item>
+        <item quantity="other">%1$d proyectos</item>
+    </plurals>
+    <plurals name="backup_count_users">
+        <item quantity="one">%1$d usuario</item>
+        <item quantity="many">%1$d usuarios</item>
+        <item quantity="other">%1$d usuarios</item>
+    </plurals>
+
+    <!-- Cloud API and sync -->
+    <string name="api_error_offline">No hay conexión con el servidor de Trama. Revisa tu internet e intenta de nuevo.</string>
+    <string name="api_error_bad_response">Respuesta inesperada del servidor. Intenta más tarde.</string>
+    <string name="api_error_session_expired">Tu sesión expiró. Vuelve a iniciar sesión.</string>
+    <string name="api_error_too_large">El envío es demasiado grande; sincroniza en partes.</string>
+    <string name="api_error_unavailable">El servidor de Trama no está disponible. Intenta más tarde.</string>
+    <string name="api_error_generic">Ocurrió un error con el servidor (%1$d).</string>
+    <string name="sync_connect_first">Conecta tu licencia para sincronizar.</string>
+    <string name="sync_done">Sincronizado</string>
+    <string name="sync_error_empty_credentials">Escribe tu correo y tu contraseña.</string>
+    <string name="sync_error_cloud_session_expired">Tu sesión en la nube expiró. Vuelve a conectar tu licencia.</string>
+    <string name="sync_error_licence_blocked">Tu licencia no permite guardar cambios.</string>
+    <string name="sync_error_record_too_large">Un registro es demasiado grande para sincronizarse (revisa sus imágenes).</string>
+
+    <!-- Demo data (seeded in the current language) -->
+    <string name="demo_company">Textiles Demo</string>
+    <string name="demo_plant_north">Planta Norte</string>
+    <string name="demo_plant_south">Planta Sur</string>
+    <string name="demo_plant_bajio">Planta Bajío</string>
+    <string name="demo_role_purchasing">Compras</string>
+    <string name="demo_role_quality">Calidad</string>
+    <string name="demo_role_product_director">Directora de producto</string>
+    <string name="demo_role_sourcing_manager">Gerente de abasto</string>
+    <string name="demo_role_planning">Planeación</string>
+    <string name="demo_role_sales">Ventas</string>
+    <string name="demo_role_account_executive">Ejecutiva de cuenta</string>
+    <string name="demo_role_commercial_director">Director comercial</string>
+    <string name="demo_style_skirt">Falda plisada SK-210</string>
+    <string name="demo_style_jeans">Jeans skinny DN-88</string>
+    <string name="demo_style_blouse">Blusa lino BL-14</string>
+    <string name="demo_style_legging">Legging sport LG-301</string>
+    <string name="demo_style_jacket">Chamarra mezclilla JK-05</string>
+    <string name="demo_garment_skirt">Falda</string>
+    <string name="demo_garment_jeans">Jeans</string>
+    <string name="demo_garment_blouse">Blusa</string>
+    <string name="demo_garment_legging">Legging</string>
+    <string name="demo_garment_jacket">Chamarra</string>
+    <string name="demo_fabric_poplin" formatted="false">Popelina 100% algodón</string>
+    <string name="demo_fabric_linen">Lino lavado</string>
+    <string name="demo_project_note_pending">Muestra física aprobada, falta precio final.</string>
+    <string name="demo_project_note_accepted">Entregas parciales cada 15 días.</string>
+    <string name="demo_project_note_declined">Cliente buscó proveedor más barato.</string>
 </resources>

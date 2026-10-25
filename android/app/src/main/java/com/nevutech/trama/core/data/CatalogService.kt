@@ -1,31 +1,37 @@
 package com.nevutech.trama.core.data
 
+import androidx.annotation.StringRes
 import androidx.room.withTransaction
+import com.nevutech.trama.R
 import com.nevutech.trama.core.domain.ProjectStatus
 import com.nevutech.trama.core.domain.Role
 import com.nevutech.trama.core.domain.UserPolicy
+import com.nevutech.trama.core.l10n.L10n
+import java.time.LocalDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
 
-/** Catalog kinds that share the name rules, with their Spanish wording. */
-enum class CatalogKind(val genitive: String, val indefinite: String) {
-    Plant("de la planta", "una planta"),
-    Client("del cliente", "un cliente"),
-    Supplier("del proveedor", "un proveedor"),
-    Style("del estilo", "un estilo"),
+/**
+ * Catalog kinds that share the name rules. Each language words the messages as a whole sentence
+ * (gender and articles differ), so every kind has its own strings.
+ */
+enum class CatalogKind(@StringRes val emptyNameRes: Int, @StringRes val duplicateNameRes: Int) {
+    Plant(R.string.catalog_error_empty_name_plant, R.string.catalog_error_duplicate_plant),
+    Client(R.string.catalog_error_empty_name_client, R.string.catalog_error_duplicate_client),
+    Supplier(R.string.catalog_error_empty_name_supplier, R.string.catalog_error_duplicate_supplier),
+    Style(R.string.catalog_error_empty_name_style, R.string.catalog_error_duplicate_style),
 }
 
-/** User-facing validation messages, identical to ios CatalogService.CatalogError. */
+/** User-facing validation messages (same rules as ios CatalogService.CatalogError), in the app's language. */
 object CatalogErrors {
-    fun emptyName(kind: CatalogKind) = "Escribe el nombre ${kind.genitive}."
-    fun duplicateName(kind: CatalogKind) = "Ya existe ${kind.indefinite} con ese nombre."
-    const val INVALID_CAPACITY = "La capacidad máxima mensual debe ser mayor a cero."
-    fun invalidEmail(email: String) = "El correo «$email» no es válido."
-    const val MISSING_PROJECT_CLIENT = "Elige un cliente o escribe su nombre."
-    const val NEGATIVE_AMOUNT = "Cantidad, precio y minutaje no pueden ser negativos."
-    const val EMPTY_USER_NAME = "Escribe el nombre y el correo del usuario."
-    const val PLANT_REQUIRED = "Un gerente de planta debe tener una planta asignada."
+    fun emptyName(kind: CatalogKind) = L10n.str(kind.emptyNameRes)
+    fun duplicateName(kind: CatalogKind) = L10n.str(kind.duplicateNameRes)
+    val INVALID_CAPACITY get() = L10n.str(R.string.catalog_error_invalid_capacity)
+    fun invalidEmail(email: String) = L10n.str(R.string.catalog_error_invalid_email, email)
+    val MISSING_PROJECT_CLIENT get() = L10n.str(R.string.catalog_error_missing_project_client)
+    val NEGATIVE_AMOUNT get() = L10n.str(R.string.catalog_error_negative_amount)
+    val EMPTY_USER_NAME get() = L10n.str(R.string.catalog_error_empty_user_name)
+    val PLANT_REQUIRED get() = L10n.str(R.string.catalog_error_plant_required)
 }
 
 /** What an editor wants done with an image slot. */

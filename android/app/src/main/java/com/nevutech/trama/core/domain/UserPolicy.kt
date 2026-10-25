@@ -1,5 +1,9 @@
 package com.nevutech.trama.core.domain
 
+import androidx.annotation.StringRes
+import com.nevutech.trama.R
+import com.nevutech.trama.core.l10n.L10n
+
 /**
  * Keeps the user catalog administrable: an admin can't lock themselves out, and there is always
  * at least one active admin left.
@@ -13,11 +17,13 @@ object UserPolicy {
         data class ChangeRole(val role: Role) : Change
     }
 
-    enum class Violation(val message: String) {
-        CannotDeleteSelf("No puedes eliminar tu propio usuario."),
-        CannotDeactivateSelf("No puedes desactivar tu propio usuario."),
-        CannotChangeOwnRole("No puedes cambiar tu propio puesto."),
-        LastAdmin("Debe quedar al menos un administrador activo."),
+    enum class Violation(@StringRes val messageRes: Int) {
+        CannotDeleteSelf(R.string.policy_cannot_delete_self),
+        CannotDeactivateSelf(R.string.policy_cannot_deactivate_self),
+        CannotChangeOwnRole(R.string.policy_cannot_change_own_role),
+        LastAdmin(R.string.policy_last_admin);
+
+        val message: String get() = L10n.str(messageRes)
     }
 
     /** Returns the rule a change would break, or null when it is allowed. */

@@ -24,11 +24,19 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 
-/** Pure logic behind the production screens (JVM only, no Android). */
+/**
+ * Logic behind the production screens. Runs on Robolectric only so fallback labels ("Sin estilo")
+ * resolve from the string resources.
+ */
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [35])
 class ProductionFeatureTest {
     private val today = LocalDate.of(2026, 10, 15)
 

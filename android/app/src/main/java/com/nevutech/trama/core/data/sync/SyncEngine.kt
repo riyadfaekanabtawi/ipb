@@ -1,11 +1,15 @@
 package com.nevutech.trama.core.data.sync
 
+import com.nevutech.trama.R
 import com.nevutech.trama.core.data.BackupService
 import com.nevutech.trama.core.data.ImageStore
 import com.nevutech.trama.core.data.SettingsStore
 import com.nevutech.trama.core.data.TramaDatabase
 import com.nevutech.trama.core.data.UserEntity
 import com.nevutech.trama.core.data.now
+import com.nevutech.trama.core.l10n.L10n
+import java.io.File
+import java.time.LocalDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,8 +25,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.JsonPrimitive
-import java.io.File
-import java.time.LocalDate
 
 /** Everything the UI shows about sync. */
 data class SyncStatus(
@@ -91,7 +93,7 @@ class SyncEngine(
     /** Push then pull. Returns whether it completed; failures are recorded in the status. */
     suspend fun syncNow(manual: Boolean = true): Boolean {
         if (!prefs.account().connected) {
-            if (manual) notify("Conecta tu licencia para sincronizar.", true)
+            if (manual) notify(L10n.str(R.string.sync_connect_first), true)
             return false
         }
         return mutex.withLock {
@@ -104,7 +106,7 @@ class SyncEngine(
                     if (manual) notify(blocked, true)
                     false
                 } else {
-                    if (manual) notify("Sincronizado", false)
+                    if (manual) notify(L10n.str(R.string.sync_done), false)
                     true
                 }
             } catch (e: OfflineException) {
@@ -131,7 +133,7 @@ class SyncEngine(
         running.value = true
         try {
             val cleanEmail = email.trim().lowercase()
-            if (cleanEmail.isEmpty() || password.isEmpty()) throw ApiException(422, "empty", "Escribe tu correo y tu contraseña.")
+            if (cleanEmail.isEmpty() || password.isEmpty()) throw ApiException(422, "empty", L10n.str(R.string.sync_error_empty_credentials))
             val auth = api.login(cleanEmail, password, DeviceInfo(prefs.deviceId(), "android", deviceName))
             accessToken = auth.accessToken
             if (prefs.account().tenantId != auth.tenant.id) link(auth)
@@ -147,7 +149,7 @@ class SyncEngine(
                 // Signed in anyway: the next sync retries.
                 prefs.recordSync(null, e.message)
             }
-            store.adoptUser(auth.user) ?: throw ApiException(500, "bad_response", "Respuesta inesperada del servidor. Intenta más tarde.")
+            store.adoptUser(auth.user) ?: throw ApiException(500, "bad_response", L10n.str(R.string.api_error_bad_response))
         } finally {
             running.value = false
         }
@@ -231,7 +233,7 @@ class SyncEngine(
         return auth.accessToken
     }
 
-    private fun sessionExpired() = ApiException(401, "session_expired", "Tu sesión en la nube expiró. Vuelve a conectar tu licencia.")
+    private fun sessionExpired() = ApiException(401, "session_expired", L10n.str(R.string.sync_error_cloud_session_expired))
 
     private suspend fun applyLicence(licence: Licence) {
         prefs.saveLicence(licence)
@@ -260,11 +262,11 @@ class SyncEngine(
                         // Expired/suspended licence: keep the outbox for when it is renewed.
                         prefs.saveLicence(prefs.account().let { a -> Licence(a.plan ?: "", "expired", a.licenceExpiresAt ?: "", false) })
                         store.setReadOnly(true)
-                        return e.message ?: "Tu licencia no permite guardar cambios."
+                        return e.message ?: L10n.str(R.string.sync_error_licence_blocked)
                     }
                     e.status == 413 && batch.size == 1 -> {
                         store.ack(batch[0].first)
-                        notify("Un registro es demasiado grande para sincronizarse (revisa sus imágenes).", true)
+                        notify(L10n.str(R.string.sync_error_record_too_large), true)
                         return@repeat
                     }
                     else -> throw e

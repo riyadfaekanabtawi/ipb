@@ -1,14 +1,16 @@
 package com.nevutech.trama.core.data.sync
 
+import com.nevutech.trama.R
+import com.nevutech.trama.core.l10n.L10n
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonObject
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.URL
 
 // Client for the Trama platform API (platform/src/app.ts, routes/auth.ts, sync.ts).
 // Plain HttpURLConnection + kotlinx.serialization: no extra dependencies, and pure JVM so it is
@@ -76,14 +78,19 @@ import java.net.URL
 @Serializable private data class ErrorDetail(val code: String? = null, val message: String? = null)
 @Serializable private data class OkBody(val ok: Boolean = true)
 
-/** The server answered with an error; [message] is its Spanish copy (shown as is). */
+/** The server answered with an error; [message] is its copy (localized via `Accept-Language`, shown as is). */
 class ApiException(val status: Int, val code: String, message: String) : Exception(message)
 
 /** The server couldn't be reached (offline, DNS, timeout). */
-class OfflineException(cause: Throwable? = null) :
-    Exception("No hay conexión con el servidor de Trama. Revisa tu internet e intenta de nuevo.", cause)
+class OfflineException(cause: Throwable? = null) : Exception(cause) {
+    override val message: String get() = L10n.str(R.string.api_error_offline)
+}
 
-class TramaApi(private val baseUrl: () -> String) {
+/**
+ * [language] is sent as `Accept-Language` on every request so the server answers in the app's
+ * language (it falls back to Spanish when it doesn't support it).
+ */
+class TramaApi(private val language: () -> String = L10n::acceptLanguage, private val baseUrl: () -> String) {
     private val json = SyncCodec.json
 
     suspend fun login(email: String, password: String, device: DeviceInfo): AuthResponse =
@@ -118,6 +125,7 @@ class TramaApi(private val baseUrl: () -> String) {
             connection.connectTimeout = 15_000
             connection.readTimeout = 60_000
             connection.setRequestProperty("Accept", "application/json")
+            connection.setRequestProperty("Accept-Language", language())
             token?.let { connection.setRequestProperty("Authorization", "Bearer $it") }
             if (body != null) {
                 val bytes = json.encodeToString(bodySerializer, body).toByteArray(Charsets.UTF_8)
@@ -133,7 +141,7 @@ class TramaApi(private val baseUrl: () -> String) {
             try {
                 json.decodeFromString(result, text)
             } catch (e: Exception) {
-                throw ApiException(status, "bad_response", "Respuesta inesperada del servidor. Intenta más tarde.")
+                throw ApiException(status, "bad_response", L10n.str(R.string.api_error_bad_response))
             }
         } catch (e: IOException) {
             throw OfflineException(e)
@@ -145,10 +153,10 @@ class TramaApi(private val baseUrl: () -> String) {
     private fun error(status: Int, text: String): ApiException {
         val detail = runCatching { json.decodeFromString(ErrorBody.serializer(), text).error }.getOrNull()
         val fallback = when (status) {
-            401 -> "Tu sesión expiró. Vuelve a iniciar sesión."
-            413 -> "El envío es demasiado grande; sincroniza en partes."
-            in 500..599 -> "El servidor de Trama no está disponible. Intenta más tarde."
-            else -> "Ocurrió un error con el servidor ($status)."
+            401 -> L10n.str(R.string.api_error_session_expired)
+            413 -> L10n.str(R.string.api_error_too_large)
+            in 500..599 -> L10n.str(R.string.api_error_unavailable)
+            else -> L10n.str(R.string.api_error_generic, status)
         }
         return ApiException(status, detail?.code ?: "http_$status", detail?.message ?: fallback)
     }

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Roles -->
+    <string name="role_admin">Administrador</string>
+    <string name="role_plant_manager">Gerente de Unidade</string>
+    <string name="role_cut_manager">Gerente de Corte</string>
+    <string name="role_shipping_manager">Gerente de Expedição</string>
+
+    <!-- Cut status -->
+    <string name="cut_status_waiting">Em espera</string>
+    <string name="cut_status_on_table">Na mesa de corte</string>
+    <string name="cut_status_ready">Pronto para costura</string>
+
+    <!-- Report kinds -->
+    <string name="report_kind_plant">Relatório da unidade</string>
+    <string name="report_kind_cut">Relatório de corte</string>
+    <string name="report_kind_shipment">Relatório de expedição</string>
+    <string name="report_kind_plant_short">Unidade</string>
+    <string name="report_kind_cut_short">Corte</string>
+    <string name="report_kind_shipment_short">Expedição</string>
+
+    <!-- Project status -->
+    <string name="project_status_pending">Pendente</string>
+    <string name="project_status_accepted">Aceito</string>
+    <string name="project_status_declined">Recusado</string>
+
+    <!-- Order assignment state -->
+    <string name="order_state_unassigned">A alocar</string>
+    <string name="order_state_partial">Parcial</string>
+    <string name="order_state_assigned">Alocado</string>
+
+    <!-- Navigation sections -->
+    <string name="section_dashboard">Painel</string>
+    <string name="section_orders">Cortes a alocar</string>
+    <string name="section_board">Quadro de corte</string>
+    <string name="section_production">Relatórios de produção</string>
+    <string name="section_shipments">Expedições urgentes</string>
+    <string name="section_calendar">Calendário das unidades</string>
+    <string name="section_plants">Unidades</string>
+    <string name="section_clients">Clientes</string>
+    <string name="section_suppliers">Fornecedores</string>
+    <string name="section_styles">Modelos</string>
+    <string name="section_projects">Projetos</string>
+    <string name="section_users">Usuários</string>
+    <string name="section_calculator">Calculadora</string>
+    <string name="section_settings">Configurações</string>
+    <string name="section_group_operations">Operação</string>
+    <string name="section_group_catalogs">Cadastros</string>
+    <string name="section_group_tools">Ferramentas</string>
+
+    <!-- Relative due dates -->
+    <string name="fmt_no_date">Sem data</string>
+    <string name="fmt_due_yesterday">Venceu ontem</string>
+    <string name="fmt_due_today">Vence hoje</string>
+    <string name="fmt_due_tomorrow">Vence amanhã</string>
+    <plurals name="fmt_overdue_days">
+        <item quantity="one">Vencido há %1$d dia</item>
+        <item quantity="many">Vencido há %1$d dias</item>
+        <item quantity="other">Vencido há %1$d dias</item>
+    </plurals>
+    <plurals name="fmt_in_days">
+        <item quantity="one">Em %1$d dia</item>
+        <item quantity="many">Em %1$d dias</item>
+        <item quantity="other">Em %1$d dias</item>
+    </plurals>
+
+    <!-- Fallback names -->
+    <string name="graph_no_client">Sem cliente</string>
+    <string name="graph_no_style">Sem modelo</string>
+    <string name="graph_no_plant">Sem unidade</string>
+    <string name="graph_cut_fallback">Corte</string>
+    <string name="report_summary_plant">%1$s produzidas · %2$s operadores · %3$s faltas</string>
+    <string name="report_summary_cut">%1$s · %2$s cortadas</string>
+    <string name="report_summary_shipment">Expedição nº %1$s · %2$s peças</string>
+
+    <!-- User policy -->
+    <string name="policy_cannot_delete_self">Você não pode excluir o seu próprio usuário.</string>
+    <string name="policy_cannot_deactivate_self">Você não pode desativar o seu próprio usuário.</string>
+    <string name="policy_cannot_change_own_role">Você não pode mudar o seu próprio cargo.</string>
+    <string name="policy_last_admin">Deve restar pelo menos um administrador ativo.</string>
+
+    <!-- Assignment rules -->
+    <string name="assign_error_missing_date">Escolha uma data no calendário.</string>
+    <string name="assign_error_invalid_quantity">Informe uma quantidade maior que zero.</string>
+    <string name="assign_error_exceeds_remaining">A quantidade não pode ser maior do que falta alocar (%1$s).</string>
+    <string name="assign_error_exceeds_capacity">A unidade atingiu a capacidade máxima desse mês. Disponível: %1$s.</string>
+
+    <!-- Local sign-in -->
+    <string name="auth_error_empty_fields">Preencha todos os campos para entrar.</string>
+    <string name="auth_error_unknown_email">Parece que você não tem acesso ao Trama. Fale com o administrador.</string>
+    <string name="auth_error_wrong_password">O e-mail e a senha não conferem. Tente novamente.</string>
+    <string name="auth_error_inactive">Seu usuário está desativado. Fale com o administrador.</string>
+    <string name="auth_error_email_taken">Já existe um usuário com esse e-mail.</string>
+    <string name="auth_error_weak_password">A senha deve ter pelo menos 6 caracteres.</string>
+
+    <!-- Production service -->
+    <string name="error_order_code_required">Informe o código do corte.</string>
+    <string name="error_quantity_positive">A quantidade deve ser maior que zero.</string>
+    <string name="error_price_negative">O preço não pode ser negativo.</string>
+    <plurals name="error_quantity_below_assigned">
+        <item quantity="one">Já há %1$s peça alocada; a quantidade não pode ser menor.</item>
+        <item quantity="many">Já há %1$s peças alocadas; a quantidade não pode ser menor.</item>
+        <item quantity="other">Já há %1$s peças alocadas; a quantidade não pode ser menor.</item>
+    </plurals>
+    <string name="error_order_has_reports">Não é possível excluir: o corte já tem relatórios de produção.</string>
+    <string name="error_order_missing">O corte não existe mais.</string>
+    <string name="error_plant_missing">A unidade não existe mais.</string>
+    <string name="error_assignment_has_reports">Não é possível excluir: o corte já tem relatórios.</string>
+    <string name="error_cut_report_exists">Este corte já tem um relatório de corte. Edite-o em vez de criar outro.</string>
+    <string name="error_shipment_fields">Informe o número da expedição e uma quantidade maior que zero.</string>
+    <string name="error_plant_has_assignments">Não é possível excluir: a unidade tem cortes alocados.</string>
+    <string name="error_client_has_orders">Não é possível excluir: o cliente tem cortes.</string>
+    <string name="error_read_only_licence">Sua licença está vencida ou suspensa: os dados estão somente para leitura. Renove-a para salvar alterações.</string>
+    <string name="error_generic">Ocorreu um erro.</string>
+
+    <!-- Catalog service -->
+    <string name="catalog_error_empty_name_plant">Informe o nome da unidade.</string>
+    <string name="catalog_error_empty_name_client">Informe o nome do cliente.</string>
+    <string name="catalog_error_empty_name_supplier">Informe o nome do fornecedor.</string>
+    <string name="catalog_error_empty_name_style">Informe o nome do modelo.</string>
+    <string name="catalog_error_duplicate_plant">Já existe uma unidade com esse nome.</string>
+    <string name="catalog_error_duplicate_client">Já existe um cliente com esse nome.</string>
+    <string name="catalog_error_duplicate_supplier">Já existe um fornecedor com esse nome.</string>
+    <string name="catalog_error_duplicate_style">Já existe um modelo com esse nome.</string>
+    <string name="catalog_error_invalid_capacity">A capacidade máxima mensal deve ser maior que zero.</string>
+    <string name="catalog_error_invalid_email">O e-mail “%1$s” não é válido.</string>
+    <string name="catalog_error_missing_project_client">Escolha um cliente ou digite o nome dele.</string>
+    <string name="catalog_error_negative_amount">Quantidade, preço e minutagem não podem ser negativos.</string>
+    <string name="catalog_error_empty_user_name">Informe o nome e o e-mail do usuário.</string>
+    <string name="catalog_error_plant_required">Um gerente de unidade precisa ter uma unidade atribuída.</string>
+
+    <!-- Backups -->
+    <string name="backup_error_invalid_file">O arquivo não é um backup válido do Trama.</string>
+    <string name="backup_error_unsupported_version">Este backup é de uma versão mais nova do Trama (formato %1$d). Atualize o app para restaurá-lo.</string>
+    <string name="backup_count_plants">Unidades</string>
+    <string name="backup_count_clients">Clientes</string>
+    <string name="backup_count_suppliers">Fornecedores</string>
+    <string name="backup_count_styles">Modelos</string>
+    <string name="backup_count_orders">Cortes</string>
+    <string name="backup_count_assignments">Alocações</string>
+    <string name="backup_count_reports">Relatórios</string>
+    <string name="backup_count_projects">Projetos</string>
+    <string name="backup_count_users">Usuários</string>
+    <plurals name="backup_count_plants">
+        <item quantity="one">%1$d unidade</item>
+        <item quantity="many">%1$d unidades</item>
+        <item quantity="other">%1$d unidades</item>
+    </plurals>
+    <plurals name="backup_count_clients">
+        <item quantity="one">%1$d cliente</item>
+        <item quantity="many">%1$d clientes</item>
+        <item quantity="other">%1$d clientes</item>
+    </plurals>
+    <plurals name="backup_count_suppliers">
+        <item quantity="one">%1$d fornecedor</item>
+        <item quantity="many">%1$d fornecedores</item>
+        <item quantity="other">%1$d fornecedores</item>
+    </plurals>
+    <plurals name="backup_count_styles">
+        <item quantity="one">%1$d modelo</item>
+        <item quantity="many">%1$d modelos</item>
+        <item quantity="other">%1$d modelos</item>
+    </plurals>
+    <plurals name="backup_count_orders">
+        <item quantity="one">%1$d corte</item>
+        <item quantity="many">%1$d cortes</item>
+        <item quantity="other">%1$d cortes</item>
+    </plurals>
+    <plurals name="backup_count_assignments">
+        <item quantity="one">%1$d alocação</item>
+        <item quantity="many">%1$d alocações</item>
+        <item quantity="other">%1$d alocações</item>
+    </plurals>
+    <plurals name="backup_count_reports">
+        <item quantity="one">%1$d relatório</item>
+        <item quantity="many">%1$d relatórios</item>
+        <item quantity="other">%1$d relatórios</item>
+    </plurals>
+    <plurals name="backup_count_projects">
+        <item quantity="one">%1$d projeto</item>
+        <item quantity="many">%1$d projetos</item>
+        <item quantity="other">%1$d projetos</item>
+    </plurals>
+    <plurals name="backup_count_users">
+        <item quantity="one">%1$d usuário</item>
+        <item quantity="many">%1$d usuários</item>
+        <item quantity="other">%1$d usuários</item>
+    </plurals>
+
+    <!-- Cloud API and sync -->
+    <string name="api_error_offline">Sem conexão com o servidor do Trama. Verifique sua internet e tente novamente.</string>
+    <string name="api_error_bad_response">Resposta inesperada do servidor. Tente mais tarde.</string>
+    <string name="api_error_session_expired">Sua sessão expirou. Entre novamente.</string>
+    <string name="api_error_too_large">O envio é grande demais; sincronize em partes.</string>
+    <string name="api_error_unavailable">O servidor do Trama não está disponível. Tente mais tarde.</string>
+    <string name="api_error_generic">Ocorreu um erro no servidor (%1$d).</string>
+    <string name="sync_connect_first">Conecte sua licença para sincronizar.</string>
+    <string name="sync_done">Sincronizado</string>
+    <string name="sync_error_empty_credentials">Informe seu e-mail e sua senha.</string>
+    <string name="sync_error_cloud_session_expired">Sua sessão na nuvem expirou. Conecte sua licença novamente.</string>
+    <string name="sync_error_licence_blocked">Sua licença não permite salvar alterações.</string>
+    <string name="sync_error_record_too_large">Um registro é grande demais para sincronizar (verifique as imagens).</string>
+
+    <!-- Demo data -->
+    <string name="demo_company">Têxteis Demo</string>
+    <string name="demo_plant_north">Unidade Norte</string>
+    <string name="demo_plant_south">Unidade Sul</string>
+    <string name="demo_plant_bajio">Unidade Bajío</string>
+    <string name="demo_role_purchasing">Compras</string>
+    <string name="demo_role_quality">Qualidade</string>
+    <string name="demo_role_product_director">Diretora de produto</string>
+    <string name="demo_role_sourcing_manager">Gerente de suprimentos</string>
+    <string name="demo_role_planning">Planejamento</string>
+    <string name="demo_role_sales">Vendas</string>
+    <string name="demo_role_account_executive">Executiva de contas</string>
+    <string name="demo_role_commercial_director">Diretor comercial</string>
+    <string name="demo_style_skirt">Saia plissada SK-210</string>
+    <string name="demo_style_jeans">Calça jeans skinny DN-88</string>
+    <string name="demo_style_blouse">Blusa de linho BL-14</string>
+    <string name="demo_style_legging">Legging esportiva LG-301</string>
+    <string name="demo_style_jacket">Jaqueta jeans JK-05</string>
+    <string name="demo_garment_skirt">Saia</string>
+    <string name="demo_garment_jeans">Calça jeans</string>
+    <string name="demo_garment_blouse">Blusa</string>
+    <string name="demo_garment_legging">Legging</string>
+    <string name="demo_garment_jacket">Jaqueta</string>
+    <string name="demo_fabric_poplin" formatted="false">Tricoline 100% algodão</string>
+    <string name="demo_fabric_linen">Linho lavado</string>
+    <string name="demo_project_note_pending">Peça-piloto aprovada; falta o preço final.</string>
+    <string name="demo_project_note_accepted">Entregas parciais a cada 15 dias.</string>
+    <string name="demo_project_note_declined">O cliente encontrou um fornecedor mais barato.</string>
+</resources>
