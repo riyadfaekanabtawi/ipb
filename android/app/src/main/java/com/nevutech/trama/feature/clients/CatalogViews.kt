@@ -274,6 +274,7 @@ fun MenuItem(text: String, icon: ImageVector, destructive: Boolean = false, enab
 }
 
 /** Brand hero header used at the top of catalog detail screens. */
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 fun DetailHero(
     title: String,
@@ -307,7 +308,9 @@ fun DetailHero(
                     leading()
                     titles()
                 }
-                Row(horizontalArrangement = Arrangement.spacedBy(10.dp), content = trailing)
+                androidx.compose.foundation.layout.FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp), content = trailing,
+                )
             }
         }
     }
