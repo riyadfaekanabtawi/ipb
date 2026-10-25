@@ -4,7 +4,7 @@
     with the same format arguments (checked by StringResourcesTest). Feature screens keep their
     copy in strings_<area>.xml files next to this one.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
     <string name="app_name" translatable="false">Trama</string>
 
     <!-- Roles (raw values stay in Spanish in the database) -->

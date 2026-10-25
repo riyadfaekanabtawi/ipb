@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Words shared by many screens (Spanish, Mexico). -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
     <string name="common_cancel">Cancelar</string>
     <string name="common_save">Guardar</string>
     <string name="common_edit">Editar</string>
@@ -9,8 +9,6 @@
     <string name="common_done">Listo</string>
     <string name="common_ok">Aceptar</string>
     <string name="common_back">Volver</string>
-    <string name="common_add">Agregar</string>
-    <string name="common_search">Buscar</string>
     <string name="common_more_options">Más opciones</string>
     <string name="common_see_all">Ver todos</string>
     <string name="common_all_masc">Todos</string>

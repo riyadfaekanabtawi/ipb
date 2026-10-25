@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="common_cancel">Cancel</string>
     <string name="common_save">Save</string>
     <string name="common_edit">Edit</string>
@@ -8,8 +8,6 @@
     <string name="common_done">Done</string>
     <string name="common_ok">OK</string>
     <string name="common_back">Back</string>
-    <string name="common_add">Add</string>
-    <string name="common_search">Search</string>
     <string name="common_more_options">More options</string>
     <string name="common_see_all">See all</string>
     <string name="common_all_masc">All</string>
