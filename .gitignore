@@ -35,6 +35,7 @@ web/dist/
 !.claude/
 .claude/settings.local.json
 .claude/worktrees/
+android/build/
 
 # Contact API
 contact-api/node_modules/
