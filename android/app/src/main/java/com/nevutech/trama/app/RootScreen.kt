@@ -18,10 +18,11 @@ import com.nevutech.trama.feature.auth.OnboardingScreen
 
 /** Switches between onboarding (no users yet), sign in, and the main shell. */
 @Composable
-fun RootScreen(debugStartSection: String? = null) {
+fun RootScreen(debugStartSection: String? = null, debugStartRoute: String? = null) {
     val app = LocalApp.current
     val user by app.session.user.collectAsState()
-    val userCount by app.db.dao().userCountFlow().collectAsState(initial = -1)
+    val userCountFlow = remember(app) { app.db.dao().userCountFlow() }
+    val userCount by userCountFlow.collectAsState(initial = -1)
     val graph by rememberGraph()
     var restored by remember { mutableStateOf(false) }
 
@@ -44,7 +45,7 @@ fun RootScreen(debugStartSection: String? = null) {
                 Phase.Loading -> Box {}
                 Phase.Onboarding -> OnboardingScreen()
                 Phase.Login -> LoginScreen()
-                Phase.Main -> MainShell(debugStartSection)
+                Phase.Main -> MainShell(debugStartSection, debugStartRoute)
             }
         }
         ToastHost(app.toasts)

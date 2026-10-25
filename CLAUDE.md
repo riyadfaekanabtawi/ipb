@@ -11,7 +11,7 @@ catalogs (plants, clients, suppliers, styles, users, projects) and a production 
 |---|---|
 | `ios/` | iPad app: SwiftUI + Core Data, XcodeGen (`ios/project.yml`) |
 | `web/` | Static sales landing page, deployed to a Hugging Face Space by GitHub Actions |
-| `android/` | Planned Kotlin/Compose port (see `android/README.md`) |
+| `android/` | Android app: Kotlin + Jetpack Compose + Room; same rules and backup format as iOS (see `android/README.md`) |
 | `docs/DOMAIN.md` | **The behavior contract shared by all platforms.** Update it with any rule change |
 
 ## Commands (iOS)
@@ -28,6 +28,15 @@ xcodebuild -project Trama.xcodeproj -scheme Trama -destination "platform=iOS Sim
 - DEBUG launch args for QA and screenshots: `-uiTestDemo` (in-memory demo store), `-loginAs admin@demo.local`, `-openSection <AppSection rawValue>`, `-openRoute firstAssignment|firstOrder`.
 - Demo password `trama123`. Accounts: `admin@`, `cortes@`, `planta@`, `envios@demo.local`.
 - The bundle id stays `com.nevutech.ipb` so IPB's installed iPads update in place.
+
+## Commands (Android)
+
+```bash
+cd android && ./gradlew :app:testDebugUnitTest   # 47 JVM/Robolectric tests
+./gradlew :app:installDebug                         # needs a running emulator (AVD `trama_tablet`)
+```
+
+Rule changes must land in `docs/DOMAIN.md`, iOS and Android together, with tests on both sides.
 
 ## Commands (web)
 

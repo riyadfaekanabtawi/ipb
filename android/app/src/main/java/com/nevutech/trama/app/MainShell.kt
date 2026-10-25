@@ -92,7 +92,7 @@ import kotlinx.coroutines.launch
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainShell(debugStartSection: String? = null) {
+fun MainShell(debugStartSection: String? = null, debugStartRoute: String? = null) {
     val app = LocalApp.current
     val user by app.session.user.collectAsState()
     val role = app.session.role
@@ -107,6 +107,17 @@ fun MainShell(debugStartSection: String? = null) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     var confirmSignOut by remember { mutableStateOf(false) }
+
+    // DEBUG QA hook (iOS parity): open the first assignment/order once the graph has data.
+    val graphForRoute by rememberGraph()
+    var routeOpened by remember { mutableStateOf(false) }
+    androidx.compose.runtime.LaunchedEffect(graphForRoute, debugStartRoute) {
+        if (routeOpened || debugStartRoute == null) return@LaunchedEffect
+        when (debugStartRoute) {
+            "firstAssignment" -> graphForRoute.assignments.minByOrNull { it.scheduledDate ?: Long.MAX_VALUE }?.let { routeOpened = true; navigator.openAssignment(it.id) }
+            "firstOrder" -> graphForRoute.orders.minByOrNull { it.code }?.let { routeOpened = true; navigator.openOrder(it.id) }
+        }
+    }
 
     val select: (AppSection) -> Unit = { section ->
         navigator.openSection(section)

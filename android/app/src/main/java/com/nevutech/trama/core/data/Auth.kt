@@ -1,7 +1,9 @@
 package com.nevutech.trama.core.data
 
 import com.nevutech.trama.core.domain.Role
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.security.MessageDigest
@@ -26,6 +28,10 @@ object PasswordHasher {
         val key = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256").generateSecret(spec).encoded
         return Base64.getEncoder().encodeToString(key)
     }
+
+    /** Key derivation is deliberately slow (~0.5–1 s on phones): never run it on the main thread. */
+    suspend fun hashAsync(password: String, salt: String): String = withContext(Dispatchers.Default) { hash(password, salt) }
+    suspend fun verifyAsync(password: String, hash: String?, salt: String?): Boolean = withContext(Dispatchers.Default) { verify(password, hash, salt) }
 
     fun verify(password: String, hash: String?, salt: String?): Boolean {
         if (hash == null || salt == null) return false
@@ -62,7 +68,7 @@ class Session(private val dao: TramaDao, private val settings: SettingsStore) {
         val normalized = email.trim().lowercase()
         if (normalized.isEmpty() || password.isEmpty()) throw AuthException(AuthError.EmptyFields)
         val user = dao.userByEmail(normalized) ?: throw AuthException(AuthError.UnknownEmail)
-        if (!PasswordHasher.verify(password, user.passwordHash, user.passwordSalt)) throw AuthException(AuthError.WrongPassword)
+        if (!PasswordHasher.verifyAsync(password, user.passwordHash, user.passwordSalt)) throw AuthException(AuthError.WrongPassword)
         if (!user.isActive) throw AuthException(AuthError.Inactive)
         adopt(user)
     }
@@ -77,10 +83,15 @@ class Session(private val dao: TramaDao, private val settings: SettingsStore) {
         settings.setSessionUserId(null)
     }
 
-    /** Keeps the in-memory user fresh after edits (role change, deactivation, restore). */
-    fun refresh(graph: Graph) {
+    /**
+     * Keeps the in-memory user fresh after edits (role change, deactivation, restore). Graph
+     * snapshots can lag behind writes (or still be the initial empty graph), so a user missing
+     * from the graph is confirmed against the database before signing them out.
+     */
+    suspend fun refresh(graph: Graph) {
         val current = _user.value ?: return
-        _user.value = graph.user(current.id)?.takeIf { it.isActive }
+        val fromGraph = graph.user(current.id)
+        _user.value = if (fromGraph != null) fromGraph.takeIf { it.isActive } else dao.user(current.id)?.takeIf { it.isActive }
     }
 
     companion object {
@@ -95,16 +106,16 @@ class Session(private val dao: TramaDao, private val settings: SettingsStore) {
             val salt = PasswordHasher.makeSalt()
             val user = UserEntity(
                 firstName = firstName.trim(), lastName = lastName.trim(), email = normalized, phone = phone.trim(),
-                role = role.raw, passwordHash = PasswordHasher.hash(password, salt), passwordSalt = salt,
+                role = role.raw, passwordHash = PasswordHasher.hashAsync(password, salt), passwordSalt = salt,
                 plantId = if (role == Role.PlantManager) plantId else null, avatarFile = avatarFile,
             )
             dao.insertUser(user)
             return user
         }
 
-        fun withPassword(user: UserEntity, password: String): UserEntity {
+        suspend fun withPassword(user: UserEntity, password: String): UserEntity {
             val salt = PasswordHasher.makeSalt()
-            return user.copy(passwordHash = PasswordHasher.hash(password, salt), passwordSalt = salt, updatedAt = now())
+            return user.copy(passwordHash = PasswordHasher.hashAsync(password, salt), passwordSalt = salt, updatedAt = now())
         }
     }
 }

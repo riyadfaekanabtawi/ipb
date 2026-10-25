@@ -2,6 +2,7 @@ package com.nevutech.trama.designsystem
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
@@ -132,7 +133,10 @@ fun TramaTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable () ->
             colorScheme = scheme,
             typography = TramaTypography,
             shapes = Shapes(small = RoundedCornerShape(10.dp), medium = RoundedCornerShape(16.dp), large = RoundedCornerShape(22.dp)),
-            content = content,
-        )
+        ) {
+            // Screens draw on custom canvases rather than Material Surfaces, so set the default
+            // text/icon color explicitly; otherwise it falls back to black in dark mode.
+            CompositionLocalProvider(LocalContentColor provides c.ink, content = content)
+        }
     }
 }
