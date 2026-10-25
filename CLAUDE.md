@@ -50,7 +50,8 @@ Rule changes must land in `docs/DOMAIN.md`, iOS and Android together, with tests
 - Layers:
   - `Core/Domain`: pure rules, unit tested.
   - `Core/Persistence`: model `Trama.xcdatamodeld` (Xcode codegen) + `Entities+Domain.swift`.
-  - `Core/Services`: `ProductionService` and `CatalogService` (**all writes**), `Session` (auth), `BackupService`, `DemoSeeder`, legacy import.
+  - `Core/Services`: `ProductionService` and `CatalogService` (**all writes**, saved with `saveTracked`), `Session` (auth), `BackupService`, `DemoSeeder`, legacy import.
+  - `Core/Sync`: optional licence + sync with the platform API (`SyncEngine`, outbox, `APIClient`). Inert without a licence. Rules in `docs/DOMAIN.md` (13–22). API base URL: `TRAMA_API_BASE_URL` build setting; DEBUG launch arg `-apiBase http://localhost:8787/api`.
   - `DesignSystem`: `Theme`/`Brand`/`Fmt` + components.
   - `Features/<Area>`: the screens.
 - Environment: `Session`, `AppRouter`, `ToastCenter`, `ConnectivityMonitor`, `\.managedObjectContext`, `\.persistence`.
