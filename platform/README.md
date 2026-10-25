@@ -55,6 +55,13 @@ Entities: `plants clients suppliers contacts styles orders assignments reports p
 Conflicts are last-writer-wins on `updatedAt` (clamped to now + 5 min); a stale push is
 rejected with the server copy so the client adopts it. Deletes are tombstones.
 
+## Emails
+
+Invitations, password resets and admin access emails are built in `src/mail.ts` with the branded
+HTML layout in `src/email-layout.ts` (table-based, inline styles, dark-mode aware, plain-text
+fallback). `contact-api/lib/email-layout.js` is its JavaScript twin; keep both in sync. Without
+`GMAIL_*` configured, emails are captured in memory instead of sent (tests, local dev).
+
 ## Develop
 
 ```bash

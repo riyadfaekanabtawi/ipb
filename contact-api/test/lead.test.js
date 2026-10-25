@@ -113,3 +113,15 @@ test("the auto-reply follows the page language", () => {
   // The internal notification stays in Spanish.
   assert.match(internalEmail(parseLead({ ...valid, lang: "pt", pais: "BR", telefono: "+55 11987654321" }, now).lead).text, /Idioma del sitio: Portugués/);
 });
+
+test("HTML emails use the branded layout, escape input and follow the page language", () => {
+  const lead = parseLead({ ...valid, nombre: "Laura <script>", lang: "en", pais: "US", telefono: "+1 2125550123", mensaje: "<img src=x>" }, now).lead;
+  const reply = autoReplyEmail(lead);
+  assert.match(reply.html, /^<!doctype html>/);
+  assert.match(reply.html, /What happens next/);
+  assert.match(reply.html, /\/en\/index\.html#precios/);
+  assert.ok(!reply.html.includes("<script>"));
+  const internal = internalEmail(lead);
+  assert.ok(internal.html.includes("&lt;img src=x&gt;"));
+  assert.match(internal.html, /mailto:/);
+});
