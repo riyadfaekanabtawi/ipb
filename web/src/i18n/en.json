@@ -2,11 +2,11 @@
   "meta": {
     "lang": "en",
     "og_locale": "en_US",
-    "title": "Trama | Garment manufacturing software that works offline",
-    "description": "Trama is garment manufacturing software for apparel factories and contract sewing plants: cut order management, capacity-based plant scheduling, production tracking and urgent shipments. Offline iPad and Android app plus a web version. From $49/month.",
+    "title": "Trama | Go digital: garment manufacturing software for apparel factories",
+    "description": "Trama digitizes your apparel factory or contract sewing plant: cut orders, capacity-based plant scheduling, production tracking and urgent shipments in one easy system. Goodbye paper and spreadsheets. iPad and Android app (works offline too) plus a web version. From $49/month.",
     "keywords": "garment manufacturing software, apparel production tracking, cut order management, offline factory app, apparel manufacturing software, sewing factory software, textile production software, production control for garment factories",
-    "og_title": "Trama | Garment manufacturing software for the factory floor",
-    "og_description": "Cut orders, plants and shipments in one board. An offline app for iPad and Android, plus a web version for the office. From $49/month.",
+    "og_title": "Trama | Take your garment factory digital, from cutting to shipping",
+    "og_description": "Drop the paper, spreadsheets and phone calls. Cut orders, plants, production and shipments on one board your whole team can use. iPad, Android and Web. From $49/month.",
     "og_image_alt": "Trama: apparel production tracking on a tablet, showing the production dashboard",
     "app_category": "Garment production control",
     "app_alt_name": "Trama · Garment production control",
@@ -18,7 +18,7 @@
     "skip": "Skip to content",
     "home_aria": "Trama, home",
     "nav_aria": "Main",
-    "nav": { "what": "What it is", "product": "Product", "compare": "App vs Web", "pricing": "Pricing", "faq": "FAQ" },
+    "nav": { "what": "What it is", "product": "Product", "compare": "App vs Web", "pricing": "Pricing", "faq": "FAQ", "benefits": "Benefits", "easy": "Easy to use" },
     "login": "Log in",
     "cta": "Request a licence",
     "menu_open": "Open menu",
@@ -26,14 +26,15 @@
     "lang_current": "current language"
   },
   "hero": {
-    "eyebrow": "For garment factories and sewing plants · iPad, Android and Web",
-    "h1": "Your garment production, <em>under control</em>. Even when the internet drops.",
-    "lead": "Trama connects cut orders, plants and shipments in a single board. Assign work by capacity, track every garment from the cutting table to the warehouse, and spot what's urgent before it becomes a problem.",
+    "eyebrow": "The modern way to make garments · iPad, Android and Web",
+    "h1": "Take your garment factory digital. <em>From paper to one board.</em>",
+    "lead": "Trama brings cut orders, plants, production and shipments into one system your team learns in minutes. Leave notebooks, spreadsheets and status calls behind: everyone reports from a tablet and you see the whole factory, as it happens.",
     "cta_primary": "Book a demo",
     "cta_secondary": "See pricing →",
+    "chips": ["Paperless", "Easy to use", "Real time", "Works offline", "Multilingual"],
     "facts": [
-      { "n": "100%", "label": "offline in the app" },
-      { "n": "4", "label": "roles with permissions" },
+      { "n": "1", "label": "system for the whole factory" },
+      { "n": "4", "label": "roles, each sees their part" },
       { "n": "$49", "label": "per month, starting at" }
     ],
     "device_aria": "Trama running on a tablet",
@@ -44,6 +45,33 @@
     "float_b_sub": "Due in 2 and 4 days"
   },
   "origin": "Born on the production floor of <strong>Industrial Peña Balles</strong>, a multi-plant garment manufacturer in Mexico: years of real cut orders, plants and deliveries turned into a tool any factory can use.",
+  "digital": {
+    "eyebrow": "Go digital",
+    "h2": "What changes when your whole factory runs on Trama.",
+    "lead": "Most sewing plants and contract manufacturers still run on paper, spreadsheets and chat messages. It works… until a cut order gets lost or a delivery slips.",
+    "before": "Without Trama",
+    "after": "With Trama",
+    "pairs": [
+      { "before": "Cut orders written in notebooks and spreadsheets nobody updates in time.", "after": "Each cut order is entered once, with customer, style, quantity, price and due date." },
+      { "before": "Calls and chat messages to find out how far each plant is.", "after": "Every plant reports its daily progress and the office sees it instantly." },
+      { "before": "Assigning by gut feeling: one plant overloaded, another idle.", "after": "Capacity-based assignment: you know whether a cut order fits before you send it." },
+      { "before": "You hear about the delay when the customer is already complaining.", "after": "Urgent shipments show up on their own, sorted by due date." },
+      { "before": "Know-how lives in one person's head.", "after": "Full history, roles and backups: operations don't depend on anyone." }
+    ]
+  },
+  "benefits": {
+    "eyebrow": "Benefits",
+    "h2": "What your factory gains by going digital.",
+    "lead": "Less time chasing information, more time producing. These are the changes you notice from the first month.",
+    "items": [
+      { "icon": "truck", "h": "On-time deliveries", "p": "See what's due this week and which pieces are left to ship, before it's too late." },
+      { "icon": "factory", "h": "Capacity put to good use", "p": "Spread work across plants by their real capacity and avoid bottlenecks." },
+      { "icon": "chart", "h": "Decisions backed by data", "p": "A dashboard with production, revenue and progress by plant. No waiting for the month-end report." },
+      { "icon": "users", "h": "One coordinated team", "p": "Cutting, plants, shipping and management work from the same information, no broken telephone." },
+      { "icon": "clock", "h": "Less data entry, fewer errors", "p": "Report in a couple of taps on the tablet. No more copying paper into spreadsheets at the end of the day." },
+      { "icon": "shield", "h": "Your data, protected", "p": "Users with permissions, hashed passwords, automatic backups and encrypted cloud data." }
+    ]
+  },
   "what": {
     "eyebrow": "What Trama is",
     "h2": "Garment manufacturing software, built for the tablet.",
@@ -87,6 +115,22 @@
       { "icon": "book", "h": "Complete catalogs", "p": "Customers and suppliers with unlimited contacts, a style gallery with photos, projects and quotes." }
     ]
   },
+  "easy": {
+    "eyebrow": "Easy to use",
+    "h2": "If you can use a phone, you can use Trama.",
+    "lead": "Clear screens, big buttons and your own language. Built with floor managers, not with IT engineers.",
+    "steps": [
+      { "h": "Enter the cut order", "p": "Customer, style, quantity and due date. Done in under a minute." },
+      { "h": "Assign it to a plant", "p": "Trama shows which one has room that month. You choose." },
+      { "h": "Report progress", "p": "Each manager logs pieces sewn, pressed, packed and shipped from their tablet." },
+      { "h": "Deliver on time", "p": "See everything on the board and act before anything falls behind." }
+    ],
+    "points": [
+      { "b": "No manuals", "p": "Each role learns their part in a short training session." },
+      { "b": "No IT department", "p": "We install it, migrate your data and stay with you." },
+      { "b": "No signal needed", "p": "The app keeps working even when the internet drops." }
+    ]
+  },
   "showcase": {
     "eyebrow": "Tour",
     "h2": "Native on iPad and Android. It feels fast because it is.",
@@ -102,7 +146,7 @@
   },
   "offline": {
     "eyebrow": "Offline",
-    "h2": "Your plant's Wi-Fi doesn't decide when you work.",
+    "h2": "And if the internet drops, your factory keeps working.",
     "lead": "With the app, your data lives on the iPad or Android tablet, in a local database. No servers going down, no loading screens, no hunting for signal on the shop floor.",
     "items": [
       { "b": "On-device database", "p": "Cut orders, reports, catalogs and images are stored on the tablet." },
@@ -184,6 +228,8 @@
     "h2": "Questions we often get.",
     "items": [
       { "q": "How much does Trama cost?", "a": "Web is $49 per month, Plant $99, Multi-plant $249 and Enterprise starts at $590, plus taxes. Pay yearly and you get 2 months free. Pricing is per company, not per user." },
+      { "q": "Is Trama hard to use?", "a": "No. It's designed for tablets, with simple screens for each role. Each manager only sees what they need and learns their part in a short training session; you don't need an IT department." },
+      { "q": "What does my factory gain by digitizing production?", "a": "You drop the paper, spreadsheets and phone calls to find out how each cut order is going. The whole factory works from the same real-time information: you assign by capacity, spot at-risk deliveries early and make decisions with production and revenue data." },
       { "q": "What's the difference between the app and the web version?", "a": "The iPad and Android app keeps your data on the device, so it works offline, it's faster and it uses the camera for style photos. The web version needs no installation and runs on any computer, but it requires a connection. Plant, Multi-plant and Enterprise include both." },
       { "q": "Can I download Trama from the App Store or Google Play?", "a": "No. The apps are distributed privately to licensed companies, so you control which devices have them and nobody outside your company can install them. The web version is accessed with a username and password." },
       { "q": "Do I need internet to use it?", "a": "Not with the app: sign-in, cut orders, reports, catalogs and charts all work offline, and everything syncs when the connection comes back. The web version does need a connection." },

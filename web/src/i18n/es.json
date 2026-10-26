@@ -2,11 +2,11 @@
   "meta": {
     "lang": "es-MX",
     "og_locale": "es_MX",
-    "title": "Trama | Software de producción textil para maquiladoras y confección",
-    "description": "Trama es el software de control de producción para maquiladoras y fábricas de confección: control de cortes, asignación a plantas por capacidad y envíos urgentes. App para iPad y Android sin internet, y versión Web. Desde $49 USD al mes.",
+    "title": "Trama | Digitaliza tu producción textil: software para maquiladoras y confección",
+    "description": "Trama digitaliza tu fábrica de confección o maquiladora: cortes, asignación a plantas por capacidad, reportes de producción y envíos urgentes en un solo sistema, fácil de usar. Adiós al papel y al Excel. App para iPad y Android (también sin internet) y versión Web. Desde $49 USD al mes.",
     "keywords": "software de producción textil, control de producción textil, sistema para maquiladoras, software para confección, control de cortes, software para fábricas de confección, gestión de plantas de confección, MES textil, app para iPad y Android textil",
-    "og_title": "Trama | Software de producción textil para maquiladoras",
-    "og_description": "Cortes, plantas y envíos de tu fábrica de confección en un solo tablero. App sin internet para iPad y Android, y versión Web. Desde $49 USD al mes.",
+    "og_title": "Trama | Digitaliza tu fábrica textil, del corte al envío",
+    "og_description": "Deja el papel, el Excel y las llamadas. Cortes, plantas, producción y envíos en un solo tablero, fácil de usar para todo tu equipo. iPad, Android y Web. Desde $49 USD al mes.",
     "og_image_alt": "Trama: control de producción textil en tableta, con el dashboard de producción",
     "app_category": "Control de producción textil",
     "app_alt_name": "Trama · Control de producción textil",
@@ -18,7 +18,7 @@
     "skip": "Saltar al contenido",
     "home_aria": "Trama, inicio",
     "nav_aria": "Principal",
-    "nav": { "what": "Qué es", "product": "Producto", "compare": "App o Web", "pricing": "Precios", "faq": "Preguntas" },
+    "nav": { "what": "Qué es", "product": "Producto", "compare": "App o Web", "pricing": "Precios", "faq": "Preguntas", "benefits": "Beneficios", "easy": "Fácil de usar" },
     "login": "Iniciar sesión",
     "cta": "Solicitar licencia",
     "menu_open": "Abrir menú",
@@ -26,14 +26,15 @@
     "lang_current": "idioma actual"
   },
   "hero": {
-    "eyebrow": "Para maquiladoras y fábricas de confección · iPad, Android y Web",
-    "h1": "Tu producción textil, <em>bajo control</em>. Aunque se caiga el internet.",
-    "lead": "Trama es el sistema para maquiladoras que conecta cortes, plantas y envíos en un solo tablero. Asigna por capacidad, sigue cada prenda de la mesa de corte a la bodega y entérate de lo urgente antes de que lo sea.",
+    "eyebrow": "La forma moderna de producir ropa · iPad, Android y Web",
+    "h1": "Digitaliza tu fábrica textil. <em>Del papel a un solo tablero.</em>",
+    "lead": "Trama reúne cortes, plantas, producción y envíos en un sistema que tu equipo aprende en minutos. Deja atrás las libretas, los Excel y las llamadas para preguntar cómo va todo: cada quien reporta desde la tableta y tú ves la fábrica completa, al momento.",
     "cta_primary": "Agenda una demo",
     "cta_secondary": "Ver precios →",
+    "chips": ["Cero papel", "Fácil de usar", "En tiempo real", "Funciona sin internet", "En español"],
     "facts": [
-      { "n": "100%", "label": "sin conexión en la app" },
-      { "n": "4", "label": "roles con permisos" },
+      { "n": "1", "label": "sistema para toda la fábrica" },
+      { "n": "4", "label": "roles, cada quien ve lo suyo" },
       { "n": "$49", "label": "USD al mes, desde" }
     ],
     "device_aria": "Captura de Trama en tableta",
@@ -44,6 +45,33 @@
     "float_b_sub": "Vencen en 2 y 4 días"
   },
   "origin": "Nacido en el piso de producción de <strong>Industrial Peña Balles</strong>: años de cortes, plantas y entregas reales convertidos en una herramienta que cualquier fábrica puede usar.",
+  "digital": {
+    "eyebrow": "Digitaliza tu operación",
+    "h2": "Así cambia tu fábrica cuando todo está en Trama.",
+    "lead": "La mayoría de los talleres y maquiladoras todavía corren con papel, hojas de cálculo y mensajes. Funciona… hasta que un corte se pierde o una entrega se atrasa.",
+    "before": "Sin Trama",
+    "after": "Con Trama",
+    "pairs": [
+      { "before": "Cortes anotados en libretas y Excel que nadie actualiza a tiempo.", "after": "Cada corte se registra una vez, con cliente, estilo, cantidad, precio y fecha de entrega." },
+      { "before": "Llamadas y WhatsApp para saber cuánto lleva cada planta.", "after": "Cada planta reporta su avance diario y la oficina lo ve al momento." },
+      { "before": "Asignar a ojo: una planta saturada y otra sin trabajo.", "after": "Asignación por capacidad mensual: sabes si el corte cabe antes de mandarlo." },
+      { "before": "Te enteras del retraso cuando el cliente ya reclamó.", "after": "Los envíos urgentes aparecen solos, ordenados por fecha de entrega." },
+      { "before": "La información vive en la cabeza de una sola persona.", "after": "Historial completo, roles y respaldos: la operación no depende de nadie." }
+    ]
+  },
+  "benefits": {
+    "eyebrow": "Beneficios",
+    "h2": "Lo que gana tu fábrica al digitalizarse.",
+    "lead": "Menos tiempo persiguiendo información y más tiempo produciendo. Estos son los cambios que se notan desde el primer mes.",
+    "items": [
+      { "icon": "truck", "h": "Entregas a tiempo", "p": "Ves qué vence esta semana y qué prendas faltan por enviar, antes de que sea tarde." },
+      { "icon": "factory", "h": "Capacidad bien aprovechada", "p": "Reparte el trabajo entre plantas según su capacidad real y evita cuellos de botella." },
+      { "icon": "chart", "h": "Decisiones con datos", "p": "Dashboard con producción, ingresos y avance por planta. Sin esperar el reporte de fin de mes." },
+      { "icon": "users", "h": "Todo el equipo coordinado", "p": "Corte, planta, envíos y dirección trabajan sobre la misma información, sin teléfono descompuesto." },
+      { "icon": "clock", "h": "Menos captura, menos errores", "p": "Se reporta en un par de toques desde la tableta. Nada de pasar papeles a Excel al final del día." },
+      { "icon": "shield", "h": "Tu información segura", "p": "Usuarios con permisos, contraseñas cifradas, respaldos automáticos y datos cifrados en la nube." }
+    ]
+  },
   "what": {
     "eyebrow": "Qué es Trama",
     "h2": "Software de control de producción textil, hecho para la tableta.",
@@ -87,6 +115,22 @@
       { "icon": "book", "h": "Catálogos completos", "p": "Clientes y proveedores con contactos ilimitados, galería de estilos con foto, proyectos y cotizaciones." }
     ]
   },
+  "easy": {
+    "eyebrow": "Fácil de usar",
+    "h2": "Si sabes usar un celular, sabes usar Trama.",
+    "lead": "Pantallas claras, botones grandes y todo en español. Hecho junto con gerentes de piso, no con ingenieros de sistemas.",
+    "steps": [
+      { "h": "Registra el corte", "p": "Cliente, estilo, cantidad y fecha de entrega. Listo en menos de un minuto." },
+      { "h": "Asígnalo a una planta", "p": "Trama te dice cuál tiene espacio ese mes. Tú eliges." },
+      { "h": "Reporta el avance", "p": "Cada gerente captura lo producido, planchado, empacado y enviado desde su tableta." },
+      { "h": "Entrega a tiempo", "p": "Ves todo en el tablero y actúas antes de que algo se atrase." }
+    ],
+    "points": [
+      { "b": "Sin manuales", "p": "Cada rol aprende su parte en una capacitación corta." },
+      { "b": "Sin área de sistemas", "p": "Nosotros instalamos, migramos tus datos y te acompañamos." },
+      { "b": "Sin depender de la señal", "p": "La app sigue funcionando aunque se caiga el internet." }
+    ]
+  },
   "showcase": {
     "eyebrow": "Recorrido",
     "h2": "Nativo en iPad y Android. Se siente rápido porque lo es.",
@@ -102,7 +146,7 @@
   },
   "offline": {
     "eyebrow": "Sin conexión",
-    "h2": "El internet de la planta no decide cuándo trabajas.",
+    "h2": "Y si se cae el internet, tu fábrica sigue trabajando.",
     "lead": "Con la app, tus datos viven en el iPad o la tableta Android, en una base de datos local. Sin servidores que se caen, sin pantallas de carga y sin depender de la señal en la nave.",
     "items": [
       { "b": "Base de datos en el dispositivo", "p": "Cortes, reportes, catálogos e imágenes se guardan en la tableta." },
@@ -184,6 +228,8 @@
     "h2": "Lo que nos suelen preguntar.",
     "items": [
       { "q": "¿Cuánto cuesta Trama?", "a": "Web cuesta $49 USD al mes, Planta $99, Multiplanta $249 y Empresa desde $590, más IVA. Si pagas anual, tienes 2 meses gratis. El precio es por empresa, no por usuario." },
+      { "q": "¿Es difícil de usar Trama?", "a": "No. Está diseñado para tableta, en español y con pantallas sencillas para cada rol. Cada gerente solo ve lo que necesita y aprende su parte en una capacitación corta; no necesitas un área de sistemas." },
+      { "q": "¿Qué gana mi fábrica al digitalizar la producción?", "a": "Dejas el papel, el Excel y las llamadas para saber cómo va cada corte. Toda la fábrica trabaja con la misma información en tiempo real: asignas por capacidad, detectas a tiempo las entregas en riesgo y tomas decisiones con datos de producción e ingresos." },
       { "q": "¿Cuál es la diferencia entre la app y la versión Web?", "a": "La app para iPad y Android guarda los datos en el dispositivo, así que funciona sin internet, es más rápida y usa la cámara para las fotos de estilos. La versión Web no requiere instalación y se usa desde cualquier computadora, pero necesita conexión. Planta, Multiplanta y Empresa incluyen ambas." },
       { "q": "¿Puedo descargar Trama de la App Store o Google Play?", "a": "No. Las apps se distribuyen de forma privada a las empresas con licencia, así controlas qué dispositivos las tienen y nadie fuera de tu empresa puede instalarlas. La versión Web se usa con usuario y contraseña." },
       { "q": "¿Necesito internet para usarla?", "a": "Con la app, no: inicio de sesión, cortes, reportes, catálogos y gráficas funcionan sin conexión, y todo se sincroniza cuando vuelve el internet. La versión Web sí necesita conexión." },

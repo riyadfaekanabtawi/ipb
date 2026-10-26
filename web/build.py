@@ -222,6 +222,7 @@ def build_context(site, langs, dicts, code, legal):
         "compare_rows": rows, "compare_cards": cards, "showcase_tabs": tabs,
         "showcase_first_alt": tabs[0]["alt"],
         "licensing_steps": [{**s, "n": i + 1} for i, s in enumerate(d["licensing"]["steps"])],
+        "easy_steps": [{**s, "n": i + 1} for i, s in enumerate(d["easy"]["steps"])],
         "cap_plant_0": d["product"]["cap"]["plants"][0], "cap_plant_1": d["product"]["cap"]["plants"][1],
         "cap_plant_2": d["product"]["cap"]["plants"][2],
         "year": site["lastmod"][:4],

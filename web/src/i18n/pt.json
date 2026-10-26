@@ -2,11 +2,11 @@
   "meta": {
     "lang": "pt-BR",
     "og_locale": "pt_BR",
-    "title": "Trama | Software de produção têxtil e controle de produção de confecção",
-    "description": "Trama é o sistema para confecção e facção que controla a produção do corte à expedição: ordens de corte, distribuição entre unidades por capacidade e entregas urgentes. App para iPad e Android que funciona sem internet, e versão Web. A partir de US$ 49 por mês.",
+    "title": "Trama | Digitalize sua confecção: software de produção têxtil",
+    "description": "Trama digitaliza sua confecção ou facção: ordens de corte, distribuição entre unidades por capacidade, apontamentos de produção e entregas urgentes em um só sistema, fácil de usar. Adeus papel e planilha. App para iPad e Android (funciona até sem internet) e versão Web. A partir de US$ 49 por mês.",
     "keywords": "software de produção têxtil, controle de produção de confecção, sistema para confecção, sistema para facção, software para confecção, controle de corte, gestão de produção têxtil, PCP confecção, app para confecção offline",
-    "og_title": "Trama | Software de produção têxtil para confecções",
-    "og_description": "Cortes, unidades e expedição da sua confecção em um só painel. App offline para iPad e Android, e versão Web para o escritório. A partir de US$ 49 por mês.",
+    "og_title": "Trama | Digitalize sua confecção, do corte à expedição",
+    "og_description": "Deixe o papel, as planilhas e as ligações. Cortes, unidades, produção e expedição em um só painel que toda a equipe usa. iPad, Android e Web. A partir de US$ 49 por mês.",
     "og_image_alt": "Trama: controle de produção de confecção no tablet, com o painel de produção",
     "app_category": "Controle de produção têxtil",
     "app_alt_name": "Trama · Controle de produção têxtil",
@@ -18,7 +18,7 @@
     "skip": "Pular para o conteúdo",
     "home_aria": "Trama, início",
     "nav_aria": "Principal",
-    "nav": { "what": "O que é", "product": "Produto", "compare": "App ou Web", "pricing": "Preços", "faq": "Dúvidas" },
+    "nav": { "what": "O que é", "product": "Produto", "compare": "App ou Web", "pricing": "Preços", "faq": "Dúvidas", "benefits": "Benefícios", "easy": "Fácil de usar" },
     "login": "Entrar",
     "cta": "Solicitar licença",
     "menu_open": "Abrir menu",
@@ -26,14 +26,15 @@
     "lang_current": "idioma atual"
   },
   "hero": {
-    "eyebrow": "Para confecções e facções · iPad, Android e Web",
-    "h1": "Sua produção de confecção <em>sob controle</em>. Mesmo quando a internet cai.",
-    "lead": "Trama é o sistema para confecção que conecta corte, unidades e expedição em um só painel. Distribua a produção pela capacidade, acompanhe cada peça da mesa de corte ao estoque e saiba o que é urgente antes que vire problema.",
+    "eyebrow": "O jeito moderno de produzir roupa · iPad, Android e Web",
+    "h1": "Digitalize sua confecção. <em>Do papel a um só painel.</em>",
+    "lead": "Trama reúne corte, unidades, produção e expedição em um sistema que sua equipe aprende em minutos. Deixe para trás cadernos, planilhas e ligações para saber como está tudo: cada um aponta pelo tablet e você vê a fábrica inteira, na hora.",
     "cta_primary": "Agende uma demonstração",
     "cta_secondary": "Ver preços →",
+    "chips": ["Zero papel", "Fácil de usar", "Em tempo real", "Funciona sem internet", "Em português"],
     "facts": [
-      { "n": "100%", "label": "offline no app" },
-      { "n": "4", "label": "perfis com permissões" },
+      { "n": "1", "label": "sistema para a fábrica toda" },
+      { "n": "4", "label": "perfis, cada um vê o seu" },
       { "n": "US$ 49", "label": "por mês, a partir de" }
     ],
     "device_aria": "Trama em um tablet",
@@ -44,6 +45,33 @@
     "float_b_sub": "Vencem em 2 e 4 dias"
   },
   "origin": "Nasceu no chão de fábrica da <strong>Industrial Peña Balles</strong>, uma confecção mexicana com várias unidades: anos de cortes, produção e entregas reais transformados em uma ferramenta que qualquer confecção pode usar.",
+  "digital": {
+    "eyebrow": "Digitalize sua operação",
+    "h2": "O que muda quando a fábrica inteira está no Trama.",
+    "lead": "A maioria das confecções e facções ainda funciona com papel, planilhas e mensagens. Dá certo… até um corte se perder ou uma entrega atrasar.",
+    "before": "Sem o Trama",
+    "after": "Com o Trama",
+    "pairs": [
+      { "before": "Cortes anotados em cadernos e planilhas que ninguém atualiza a tempo.", "after": "Cada corte é registrado uma vez, com cliente, modelo, quantidade, preço e data de entrega." },
+      { "before": "Ligações e WhatsApp para saber quanto cada unidade já produziu.", "after": "Cada unidade aponta o avanço diário e o escritório vê na hora." },
+      { "before": "Distribuir no olho: uma unidade sobrecarregada e outra parada.", "after": "Alocação pela capacidade mensal: você sabe se o corte cabe antes de enviar." },
+      { "before": "Você descobre o atraso quando o cliente já reclamou.", "after": "As entregas urgentes aparecem sozinhas, ordenadas pela data de entrega." },
+      { "before": "A informação fica na cabeça de uma só pessoa.", "after": "Histórico completo, perfis e backups: a operação não depende de ninguém." }
+    ]
+  },
+  "benefits": {
+    "eyebrow": "Benefícios",
+    "h2": "O que sua confecção ganha ao se digitalizar.",
+    "lead": "Menos tempo correndo atrás de informação e mais tempo produzindo. São mudanças que você percebe já no primeiro mês.",
+    "items": [
+      { "icon": "truck", "h": "Entregas no prazo", "p": "Veja o que vence nesta semana e quais peças faltam expedir, antes que seja tarde." },
+      { "icon": "factory", "h": "Capacidade bem aproveitada", "p": "Distribua o trabalho entre unidades pela capacidade real e evite gargalos." },
+      { "icon": "chart", "h": "Decisões com dados", "p": "Painel com produção, faturamento e avanço por unidade. Sem esperar o relatório do fim do mês." },
+      { "icon": "users", "h": "Equipe toda alinhada", "p": "Corte, unidades, expedição e diretoria trabalham com a mesma informação, sem telefone sem fio." },
+      { "icon": "clock", "h": "Menos digitação, menos erros", "p": "Aponte em poucos toques no tablet. Nada de passar papel para planilha no fim do dia." },
+      { "icon": "shield", "h": "Seus dados protegidos", "p": "Usuários com permissões, senhas protegidas, backups automáticos e dados criptografados na nuvem." }
+    ]
+  },
   "what": {
     "eyebrow": "O que é o Trama",
     "h2": "Software de produção têxtil, feito para o tablet.",
@@ -87,6 +115,22 @@
       { "icon": "book", "h": "Cadastros completos", "p": "Clientes e fornecedores com contatos ilimitados, galeria de modelos com foto, projetos e orçamentos." }
     ]
   },
+  "easy": {
+    "eyebrow": "Fácil de usar",
+    "h2": "Se você sabe usar um celular, sabe usar o Trama.",
+    "lead": "Telas claras, botões grandes e tudo em português. Feito junto com gerentes de chão de fábrica, não com engenheiros de TI.",
+    "steps": [
+      { "h": "Registre o corte", "p": "Cliente, modelo, quantidade e data de entrega. Pronto em menos de um minuto." },
+      { "h": "Aloque em uma unidade", "p": "O Trama mostra qual tem espaço naquele mês. Você escolhe." },
+      { "h": "Aponte o avanço", "p": "Cada gerente registra o que foi produzido, passado, embalado e expedido pelo tablet." },
+      { "h": "Entregue no prazo", "p": "Veja tudo no painel e aja antes que algo atrase." }
+    ],
+    "points": [
+      { "b": "Sem manuais", "p": "Cada perfil aprende a sua parte em um treinamento curto." },
+      { "b": "Sem equipe de TI", "p": "Nós instalamos, migramos seus dados e acompanhamos você." },
+      { "b": "Sem depender do sinal", "p": "O app continua funcionando mesmo quando a internet cai." }
+    ]
+  },
   "showcase": {
     "eyebrow": "Tour",
     "h2": "Nativo no iPad e no Android. Parece rápido porque é.",
@@ -102,7 +146,7 @@
   },
   "offline": {
     "eyebrow": "Offline",
-    "h2": "A internet da fábrica não decide quando você trabalha.",
+    "h2": "E se a internet cair, sua fábrica continua trabalhando.",
     "lead": "Com o app, seus dados ficam no iPad ou no tablet Android, em um banco de dados local. Sem servidor fora do ar, sem tela de carregamento e sem depender do sinal no galpão.",
     "items": [
       { "b": "Banco de dados no aparelho", "p": "Cortes, apontamentos, cadastros e imagens ficam salvos no tablet." },
@@ -184,6 +228,8 @@
     "h2": "O que costumam nos perguntar.",
     "items": [
       { "q": "Quanto custa o Trama?", "a": "O plano Web custa US$ 49 por mês, Planta US$ 99, Multiplanta US$ 249 e Empresa a partir de US$ 590, mais impostos. No pagamento anual, você ganha 2 meses grátis. O preço é por empresa, não por usuário." },
+      { "q": "O Trama é difícil de usar?", "a": "Não. Foi feito para tablet, com telas simples para cada perfil. Cada gerente vê só o que precisa e aprende a sua parte em um treinamento curto; você não precisa de uma equipe de TI." },
+      { "q": "O que minha confecção ganha ao digitalizar a produção?", "a": "Você deixa o papel, as planilhas e as ligações para saber como está cada corte. A fábrica inteira trabalha com a mesma informação em tempo real: aloca pela capacidade, identifica cedo as entregas em risco e decide com dados de produção e faturamento." },
       { "q": "Qual a diferença entre o app e a versão Web?", "a": "O app para iPad e Android guarda os dados no aparelho, então funciona sem internet, é mais rápido e usa a câmera para as fotos dos modelos. A versão Web não precisa de instalação e roda em qualquer computador, mas exige conexão. Os planos Planta, Multiplanta e Empresa incluem os dois." },
       { "q": "Posso baixar o Trama na App Store ou no Google Play?", "a": "Não. Os apps são distribuídos de forma privada para as empresas licenciadas, assim você controla quais aparelhos têm o app e ninguém de fora da empresa consegue instalar. A versão Web é acessada com usuário e senha." },
       { "q": "Preciso de internet para usar?", "a": "Com o app, não: login, cortes, apontamentos, cadastros e gráficos funcionam offline, e tudo sincroniza quando a internet volta. A versão Web precisa de conexão." },
