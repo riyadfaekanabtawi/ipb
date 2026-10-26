@@ -70,6 +70,11 @@
     <symbol id="i-tablet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M11 18h2"/></symbol>
     <symbol id="i-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
     <symbol id="i-login" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-paper" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></symbol>
   </svg>
   <a class="skip" href="#contenido">{{ui.skip}}</a>
 
@@ -80,8 +85,9 @@
         <span>Trama</span>
       </a>
       <nav class="nav__links" aria-label="{{ui.nav_aria|e}}">
+        <a href="#beneficios">{{ui.nav.benefits}}</a>
         <a href="#producto">{{ui.nav.product}}</a>
-        <a href="#app-o-web">{{ui.nav.compare}}</a>
+        <a href="#facil">{{ui.nav.easy}}</a>
         <a href="#precios">{{ui.nav.pricing}}</a>
         <a href="#preguntas">{{ui.nav.faq}}</a>
       </nav>
@@ -97,7 +103,9 @@
       </button>
     </div>
     <div class="mobile-menu" id="mobile-menu" hidden>
+      <a href="#beneficios">{{ui.nav.benefits}}</a>
       <a href="#producto">{{ui.nav.product}}</a>
+      <a href="#facil">{{ui.nav.easy}}</a>
       <a href="#app-o-web">{{ui.nav.compare}}</a>
       <a href="#precios">{{ui.nav.pricing}}</a>
       <a href="#preguntas">{{ui.nav.faq}}</a>
@@ -116,6 +124,11 @@
           <p class="eyebrow"><span class="dot"></span> {{hero.eyebrow}}</p>
           <h1>{{hero.h1}}</h1>
           <p class="lead">{{hero.lead}}</p>
+          <ul class="hero__chips">
+{{#hero.chips}}
+            <li><svg class="ico" aria-hidden="true"><use href="#i-yes"/></svg>{{.}}</li>
+{{/hero.chips}}
+          </ul>
           <div class="hero__cta">
             <a class="btn" href="#contacto">{{hero.cta_primary}}</a>
             <a class="btn btn--ghost" href="#precios">{{hero.cta_secondary}}</a>
@@ -146,6 +159,51 @@
     <section class="origin">
       <div class="wrap origin__inner">
         <p>{{origin}}</p>
+      </div>
+    </section>
+
+    <!-- DIGITAL: before / after -->
+    <section id="digitaliza" class="section digital">
+      <div class="wrap">
+        <header class="section__head section__head--center">
+          <p class="eyebrow">{{digital.eyebrow}}</p>
+          <h2>{{digital.h2}}</h2>
+          <p class="lead">{{digital.lead}}</p>
+        </header>
+        <div class="digital__grid">
+          <div class="digital__col digital__col--before">
+            <h3><span class="digital__icon"><svg class="ico" aria-hidden="true"><use href="#i-paper"/></svg></span>{{digital.before}}</h3>
+            <ul>
+{{#digital.pairs}}
+              <li><svg class="ico" aria-hidden="true"><use href="#i-no"/></svg><span>{{before}}</span></li>
+{{/digital.pairs}}
+            </ul>
+          </div>
+          <div class="digital__col digital__col--after">
+            <h3><span class="digital__icon"><img src="{{base}}assets/icon.png" alt="" width="28" height="28"></span>{{digital.after}}</h3>
+            <ul>
+{{#digital.pairs}}
+              <li><svg class="ico" aria-hidden="true"><use href="#i-yes"/></svg><span>{{after}}</span></li>
+{{/digital.pairs}}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENEFITS -->
+    <section id="beneficios" class="section benefits">
+      <div class="wrap">
+        <header class="section__head">
+          <p class="eyebrow">{{benefits.eyebrow}}</p>
+          <h2>{{benefits.h2}}</h2>
+          <p class="lead">{{benefits.lead}}</p>
+        </header>
+        <div class="benefits__grid">
+{{#benefits.items}}
+          <article class="benefit"><span class="benefit__icon"><svg class="ico" aria-hidden="true"><use href="#i-{{icon}}"/></svg></span><h3>{{h}}</h3><p>{{p}}</p></article>
+{{/benefits.items}}
+        </div>
       </div>
     </section>
 
@@ -227,6 +285,27 @@
           </article>
 {{/product.minis}}
         </div>
+      </div>
+    </section>
+
+    <!-- EASY -->
+    <section id="facil" class="section easy">
+      <div class="wrap">
+        <header class="section__head section__head--center">
+          <p class="eyebrow eyebrow--light">{{easy.eyebrow}}</p>
+          <h2>{{easy.h2}}</h2>
+          <p class="lead">{{easy.lead}}</p>
+        </header>
+        <ol class="flow">
+{{#easy_steps}}
+          <li><span>{{n}}</span><h3>{{h}}</h3><p>{{p}}</p></li>
+{{/easy_steps}}
+        </ol>
+        <ul class="easy__points">
+{{#easy.points}}
+          <li><b>{{b}}</b><span>{{p}}</span></li>
+{{/easy.points}}
+        </ul>
       </div>
     </section>
 

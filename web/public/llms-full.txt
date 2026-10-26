@@ -54,6 +54,12 @@ Web para la oficina, app para el piso. La app nativa en iPad o Android sigue tra
 ### ¿Cuánto cuesta Trama?
 Web cuesta $49 USD al mes, Planta $99, Multiplanta $249 y Empresa desde $590, más IVA. Si pagas anual, tienes 2 meses gratis. El precio es por empresa, no por usuario.
 
+### ¿Es difícil de usar Trama?
+No. Está diseñado para tableta, en español y con pantallas sencillas para cada rol. Cada gerente solo ve lo que necesita y aprende su parte en una capacitación corta; no necesitas un área de sistemas.
+
+### ¿Qué gana mi fábrica al digitalizar la producción?
+Dejas el papel, el Excel y las llamadas para saber cómo va cada corte. Toda la fábrica trabaja con la misma información en tiempo real: asignas por capacidad, detectas a tiempo las entregas en riesgo y tomas decisiones con datos de producción e ingresos.
+
 ### ¿Cuál es la diferencia entre la app y la versión Web?
 La app para iPad y Android guarda los datos en el dispositivo, así que funciona sin internet, es más rápida y usa la cámara para las fotos de estilos. La versión Web no requiere instalación y se usa desde cualquier computadora, pero necesita conexión. Planta, Multiplanta y Empresa incluyen ambas.
 
